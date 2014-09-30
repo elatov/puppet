@@ -1,0 +1,72 @@
+{
+  "name": "alkivi-zabbix",
+  "version": "0.0.3",
+  "source": "https://github.com/alkivi-sas/puppet-zabbix",
+  "author": "alkivi",
+  "license": "LGPLv3",
+  "summary": "Controls Zabbix server,proxy and agent",
+  "description": "Setup Zabbix Server, Proxy or Agent with several custom agent parameters",
+  "project_page": "https://github.com/alkivi-sas/puppet-zabbix",
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">=3.1.1"
+    },
+    {
+      "name": "puppetlabs/apt",
+      "version_requirement": ">=1.4.2"
+    },
+    {
+      "name": "alkivi/mysql",
+      "version_requirement": ">0.x"
+    },
+    {
+      "name": "alkivi/alkivi_base",
+      "version_requirement": ">0.x"
+    }
+  ],
+  "types": [
+
+  ],
+  "checksums": {
+    "LICENSE": "c8156b3403995b12675506b785491cd2",
+    "Modulefile": "2c6fb6afe29dd07b059fdcd23368745b",
+    "README.md": "5cf2343e68aeb4d439180b0a14ed5c89",
+    "TODO.md": "26c435f416620ad84057ec6a0dfe5ea6",
+    "files/backuppc-data.pl": "a5fbd5ed2b0b5833c2c6fb45f1cf81e8",
+    "files/backuppc-discovery.pl": "39a205037643be7aab0725890d5b8afb",
+    "files/backuppc.conf": "dbd50590e91cc30001c1c2d60229145f",
+    "files/io-data.pl": "36796eda38a0f0b1293d857814b1b058",
+    "files/md-discovery.sh": "4647aad14d60b62d93131615d141db9f",
+    "files/mysql.conf": "4f4b63b7d1a190b8afd04f14fe9165b7",
+    "files/raid.conf": "ca9a53dd4ccf8744068afdd349d06ac8",
+    "files/smart-data.pl": "ded20af5f50031e842ee02795f50cadc",
+    "files/smart-discovery.pl": "5a66ec8a79d008d8daeb985f4252adc7",
+    "files/smart.conf": "05c82196b30f2efc2379091b0cf7bdda",
+    "files/ups.conf": "67e284794cd9d1a48a65bcfa4a7993bf",
+    "files/zabbix.rules": "df36b9703e3bfecc10f341587c79a179",
+    "manifests/agent/config.pp": "764b54ea187b91e14f70a85c8cf74752",
+    "manifests/agent/install.pp": "27ad7417000287aa1614d9af566a71a7",
+    "manifests/agent/params.pp": "4ab46f03b80bf2a64cc5bcd9b48330d1",
+    "manifests/agent/service.pp": "3e2bdeecc540ad8bbb600a9f8d11e5ad",
+    "manifests/agent.pp": "c525f7529c298020483250aa3c340def",
+    "manifests/init.pp": "365208631f9b20bc081930a5dfd5cf7f",
+    "manifests/proxy/config.pp": "cb8d55396e9b0fc4379c117241b87d38",
+    "manifests/proxy/install.pp": "de2ff65cbeaac1704e9c164de0ad5705",
+    "manifests/proxy/params.pp": "a2621c75520a2c2a09f2fbb668adc27c",
+    "manifests/proxy/service.pp": "4602be4d7f21e7d6a20a699ef6092790",
+    "manifests/proxy.pp": "26878b5bff37f9bba6fc98b70b0927ba",
+    "manifests/server/config.pp": "b44e9e079d900b81a3baab3d07bb448e",
+    "manifests/server/install.pp": "948b47708c7cf31c63e0aeb949c61e73",
+    "manifests/server/params.pp": "0ef1aa43cd34937ab5dbd24da3283f95",
+    "manifests/server/service.pp": "73900a1da126f8974af4126bc077cd67",
+    "manifests/server.pp": "f5e6516834103ad615eec9454573597f",
+    "spec/spec_helper.rb": "a55d1e6483344f8ec6963fcb2c220372",
+    "templates/proxy.preseed.erb": "7397b0fd927d0453132a35d14eebfd1f",
+    "templates/server.preseed.erb": "bae9e6d02b3debad41a4e182c6cd76df",
+    "templates/zabbix_agentd.conf.erb": "3f81f907046e661fd27a6bfadc5e8137",
+    "templates/zabbix_proxy.conf.erb": "8a5a779e4ba54aa19a0abc8ec27a69d5",
+    "templates/zabbix_server.conf.erb": "b9bf38f36318fe2357e7dca224fd2f9e",
+    "tests/init.pp": "5fab1cf35685b290a8a29b13c4445d0c"
+  }
+}

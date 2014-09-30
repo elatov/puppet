@@ -1,0 +1,5 @@
+*
+!zabbix/
+!zabbix/**
+zabbix/.project
+!.gitignore
