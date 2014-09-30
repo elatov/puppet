@@ -9,19 +9,19 @@
 #
 class my_mysql (
   ## Packages
-  $package_name	= $my_mysql::params::my_mysql_package_name,
+#  $package_name	= $my_mysql::params::my_mysql_package_name,
   
   ## Services
-  $service_name	= $my_mysql::params::my_mysql_service_name,
+#  $service_name	= $my_mysql::params::my_mysql_service_name,
   
   ## Dirs
   $config_dir		= $my_mysql::params::my_mysql_config_dir,
-  $service_dir		= $my_mysql::params::my_mysql_service_dir,
-  $home					= $my_mysql::params::my_mysql_home,
+#  $service_dir		= $my_mysql::params::my_mysql_service_dir,
+#  $home					= $my_mysql::params::my_mysql_home,
   
   ## Conf Files
   $config_file		= $my_mysql::params::my_mysql_config_file,
-  $service_file	= $my_mysql::params::my_mysql_service_file,
+#  $service_file	= $my_mysql::params::my_mysql_service_file,
   
   ## settings
   $settings			= $my_mysql::params::my_mysql_settings,
@@ -29,10 +29,10 @@ class my_mysql (
 
   # validate parameters here
   validate_hash($settings)
-  validate_string($package_name)
+  validate_string($config_dir)
 
   class { 'my_mysql::install': } ->
   class { 'my_mysql::config': } ~>
-  class { 'my_mysql::service': } ->
+#  class { 'my_mysql::service': } ->
   Class['my_mysql']
 }

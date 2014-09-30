@@ -2,5 +2,9 @@
 #
 class my_mysql::install {
 
-  ensure_packages ($my_mysql::package_name,{ 'ensure'=> 'present' })
+	class { '::mysql::server':
+		root_password           => $my_mysql::settings['root_password'],
+		manage_config_file      => false,
+		remove_default_accounts => true,
+	}
 }

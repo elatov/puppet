@@ -6,18 +6,18 @@
 class my_mysql::params {
 
 	$my_mysql_settings	=	{
-										'user' 	=> 'elatov',
-										'host'	=> $::hostname,
+										'user' 	        => 'elatov',
+										'root_password'	=> 'password',
 										}
 	case $::osfamily {
 		'Debian': {
-			$my_mysql_package_name		= 'my_mysql'
-			$my_mysql_service_name		= 'my_mysql'
-			$my_mysql_config_dir			= '/etc/default'
-			$my_mysql_service_dir			= '/etc/init.d'
-			$my_mysql_home						= '/usr/local/my_mysql'
-			$my_mysql_config_file			= 'my_mysql.sysconf.init'
-			$my_mysql_service_file		= 'my_mysql.init'
+#			$my_mysql_package_name		= 'my_mysql'
+#			$my_mysql_service_name		= 'my_mysql'
+			$my_mysql_config_dir			= '/etc/mysql/conf.d'
+#			$my_mysql_service_dir			= '/etc/init.d'
+#			$my_mysql_home						= '/usr/local/my_mysql'
+			$my_mysql_config_file			= 'extra_options.conf'
+#			$my_mysql_service_file		= 'my_mysql.init'
 		}
 		'RedHat': {
 			$my_mysql_package_name		= 'my_mysql'
