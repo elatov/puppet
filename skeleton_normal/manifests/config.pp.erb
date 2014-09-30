@@ -1,0 +1,43 @@
+# == Class <%= metadata.name %>::config
+#
+# This class is called from <%= metadata.name %>
+#
+class <%= metadata.name %>::config {
+
+  ensure_resource ('user',$<%= metadata.name %>::settings['user'],{ 'ensure'=> 'present' })
+    
+  if $<%= metadata.name %>::service_file =~ /(?i:service)/ {
+    file { $<%= metadata.name %>::service_file:
+      ensure  => "present",
+      path    => "${<%= metadata.name %>::service_dir}/${<%= metadata.name %>::service_file}",
+      mode    => '0644',
+      content => template("<%= metadata.name %>/${<%= metadata.name %>::service_file}.erb"),
+    }~>
+    exec { "${module_name}-reload-systemd":
+      path    		=> ["/bin","/usr/bin"],
+      command 		=> "systemctl daemon-reload",
+      refreshonly => true,
+    }
+  }
+  
+  if $<%= metadata.name %>::service_file =~ /(?i:init)/ {
+    file { $<%= metadata.name %>::service_file:
+      ensure  => 'present',
+      path    => "${<%= metadata.name %>::service_dir}/<%= metadata.name %>",
+      mode    => '0755',
+      content => "puppet:///modules/<%= metadata.name %>/${<%= metadata.name %>::service_file}",
+    }
+  }
+  
+  
+  file { $<%= metadata.name %>::config_dir:
+    ensure  => 'directory',
+  }
+  
+  file { $<%= metadata.name %>::config_file:
+    ensure  => 'present',
+    path    => "${<%= metadata.name %>::config_dir}/<%= metadata.name %>",
+    content => template("<%= metadata.name %>/${<%= metadata.name %>::config_file}.erb"),
+    require => File [$<%= metadata.name %>::config_dir],
+  }
+}

@@ -1,0 +1,38 @@
+# == Class: <%= metadata.name %>
+#
+# Full description of class <%= metadata.name %> here.
+#
+# === Parameters
+#
+# [*sample_parameter*]
+#   Explanation of what this parameter affects and what it defaults to.
+#
+class <%= metadata.name %> (
+  ## Packages
+  $package_name	= $<%= metadata.name %>::params::<%= metadata.name %>_package_name,
+  
+  ## Services
+  $service_name	= $<%= metadata.name %>::params::<%= metadata.name %>_service_name,
+  
+  ## Dirs
+  $config_dir		= $<%= metadata.name %>::params::<%= metadata.name %>_config_dir,
+  $service_dir		= $<%= metadata.name %>::params::<%= metadata.name %>_service_dir,
+  $home					= $<%= metadata.name %>::params::<%= metadata.name %>_home,
+  
+  ## Conf Files
+  $config_file		= $<%= metadata.name %>::params::<%= metadata.name %>_config_file,
+  $service_file	= $<%= metadata.name %>::params::<%= metadata.name %>_service_file,
+  
+  ## settings
+  $settings			= $<%= metadata.name %>::params::<%= metadata.name %>_settings,
+) inherits <%= metadata.name %>::params {
+
+  # validate parameters here
+  validate_hash($settings)
+  validate_string($package_name)
+
+  class { '<%= metadata.name %>::install': } ->
+  class { '<%= metadata.name %>::config': } ~>
+  class { '<%= metadata.name %>::service': } ->
+  Class['<%= metadata.name %>']
+}

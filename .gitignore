@@ -11,4 +11,7 @@ apt/.project
 !stdlib/
 !stdlib/**
 stdlib/.project
+!skeleton_normal/
+!skeleton_normal/**
+skeleton_normal/.project
 !.gitignore
