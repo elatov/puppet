@@ -5,4 +5,10 @@ zabbix/.project
 !mysql/
 !mysql/**
 mysql/.project
+!apt/
+!apt/**
+apt/.project
+!stdlib/
+!stdlib/**
+stdlib/.project
 !.gitignore
