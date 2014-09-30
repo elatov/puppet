@@ -2,4 +2,7 @@
 !zabbix/
 !zabbix/**
 zabbix/.project
+!mysql/
+!mysql/**
+mysql/.project
 !.gitignore
