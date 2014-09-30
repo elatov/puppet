@@ -14,4 +14,7 @@ stdlib/.project
 !skeleton_normal/
 !skeleton_normal/**
 skeleton_normal/.project
+!my_mysql/
+!my_mysql/**
+my_mysql/.project
 !.gitignore
