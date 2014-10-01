@@ -1,12 +1,27 @@
 class zabbix::server::install () {
-  mysql::db{ "${zabbix::server::server_zabbix_default_settings['dBName']}":
-    user      => "${zabbix::server::server_zabbix_default_settings['dBUser']}",
-    password  => "${zabbix::server::server_zabbix_default_settings['dBPassword']}",
-    host      => "${zabbix::server::server_zabbix_default_settings['dBHost']}",
-    grant     => "ALL",
-    require => Class['mysql::server'],
+  
+  if ($zabbix::server::enable_partition_mysql){
+    file {'/tmp/zabbix-part.sql':
+      ensure => present,
+      source => "puppet:///modules/zabbix/zabbix-part.sql",
+    }
+    mysql::db{ "${zabbix::server::server_zabbix_default_settings['dBName']}":
+      user      => "${zabbix::server::server_zabbix_default_settings['dBUser']}",
+      password  => "${zabbix::server::server_zabbix_default_settings['dBPassword']}",
+      host      => "${zabbix::server::server_zabbix_default_settings['dBHost']}",
+      grant     => "ALL",
+      sql       => '/tmp/zabbix-part.sql',
+      require => [Class['mysql::server'],File['/tmp/zabbix-part.sql']]
+    }
+  }else{
+	  mysql::db{ "${zabbix::server::server_zabbix_default_settings['dBName']}":
+	    user      => "${zabbix::server::server_zabbix_default_settings['dBUser']}",
+	    password  => "${zabbix::server::server_zabbix_default_settings['dBPassword']}",
+	    host      => "${zabbix::server::server_zabbix_default_settings['dBHost']}",
+	    grant     => "ALL",
+	    require => Class['mysql::server'],
+	  }
   }
-
  case $::operatingsystem {
     /(?i:CentOS|fedora)/: { 
       include zabbix::repo::centos

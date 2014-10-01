@@ -1,0 +1,2 @@
+#!/bin/sh
+/usr/bin/mysql -h <%= @settings['dBHost'] %> -u <%= @settings['dBUser'] %> -p<%= @settings['dBPassword'] %> <%= @settings['dBName'] %> -e "CALL partition_maintenance_all('zabbix');"
