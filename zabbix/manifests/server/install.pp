@@ -24,7 +24,7 @@ class zabbix::server::install () {
 	    password  => "${zabbix::server::server_zabbix_default_settings['dBPassword']}",
 	    host      => "${zabbix::server::server_zabbix_default_settings['dBHost']}",
 	    grant     => "ALL",
-	    sql       => '/usr/share/zabbix-server-mysql/images.sql'
+	    sql       => '/usr/share/zabbix-server-mysql/images.sql',
 	    require => Class['mysql::server'],
 	  }
   }
