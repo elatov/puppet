@@ -16,6 +16,19 @@ class zabbix::server::config () {
       require => Package['anacron'],
     }
    }
+   
+   if ($zabbix::server::enable_web){
+    augeas { "${module_name}-modify-php-timezone":
+      lens       => 'Httpd.lns',
+      incl       => '/etc/zabbix/apache.conf',
+      context    => '/files/etc/zabbix/apache.conf',
+      changes    => ["set Directory[arg = '\"/usr/share/zabbix\"']/directive[last()+1] 'php_value'",
+                     "set Directory[arg = '\"/usr/share/zabbix\"']/directive[last()]/arg[1] 'date.timezone'",
+                     "set Directory[arg = '\"/usr/share/zabbix\"']/directive[last()]/arg[2] 'America/Denver'",],
+      onlyif     => "match Directory/directive[arg = 'America/Denver'] size < 1 ",
+      notify     => Service['httpd']
+    }
+  }
 #  file { '/var/log/zabbix-server':
 #    ensure => directory,
 #    mode   => '0750',

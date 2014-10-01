@@ -1,6 +1,7 @@
 class zabbix::server (
   ## Packages
   $package_name           = $zabbix::params::server_zabbix_package_name,
+  $web_package_name       = $zabbix::params::server_zabbix_web_package_name,
   
   ## Services
   $service_name           = $zabbix::params::server_zabbix_service_name,
@@ -16,6 +17,7 @@ class zabbix::server (
   $default_settings       = $zabbix::params::server_zabbix_default_settings,
   $version                = $zabbix::params::server_zabbix_version,
   $enable_partition_mysql = $zabbix::params::server_zabbix_enable_partition_mysql,
+  $enable_web             = $zabbix::params::server_zabbix_enable_partition_mysql,
     
 ) inherits zabbix::params {
 
@@ -23,10 +25,8 @@ class zabbix::server (
   validate_hash($default_settings)
   validate_string($package_name)
   
-  # Merge settings if override-hash is passed in
-#  if $override_settings == undef {
-    $settings = deep_merge($zabbix::params::server_zabbix_default_settings, $override_settings)
-#  }
+  # Merge settings with override-hash even if it's empty
+  $settings = deep_merge($zabbix::params::server_zabbix_default_settings, $override_settings)
   
   class { 'zabbix::server::install': } ->
   class { 'zabbix::server::config': } ~>
