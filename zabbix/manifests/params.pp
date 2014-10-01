@@ -1,22 +1,22 @@
 class zabbix::params {
 	case $::osfamily {
 		'Debian': {
-		    $server_zabbix_config_dir          = '/etc/zabbix'
-		    $server_zabbix_config_file         = 'zabbix_server.conf'
-		    $server_zabbix_package_name        = 'zabbix-server-mysql'
-		    $server_zabbix_service_name        = 'zabbix-server'
-		    $server_zabbix_settings            = '2.4'
-		    $server_zabbix_default_settings    = { 'logFile'                => '/var/log/zabbix-server/zabbix_server.log',
-		                                           'logFileSize'            => '1',
-		                                           'pidFile'                => '/var/run/zabbix/zabbix_server.pid',
-		                                           'dBHost'                 => 'localhost',
-		                                           'dBName'                 => 'zabbix',
-		                                           'dBUser'                 => 'zabbix',
-		                                           'dBPassword'             => 'password',
-		                                           'listenIp'               => $::ipaddress,
-		                                           'housekeepingFrequency'  => '1',
-		                                           'disableHousekeeping'    => '0',
-		                                          }
+		    $server_zabbix_config_dir             = '/etc/zabbix'
+		    $server_zabbix_config_file            = 'zabbix_server.conf'
+		    $server_zabbix_package_name           = 'zabbix-server-mysql'
+		    $server_zabbix_service_name           = 'zabbix-server'
+		    $server_zabbix_version                = '2.4'
+		    $server_zabbix_enable_partition_mysql = true
+		    $server_zabbix_default_settings       = { 'logFile'                => '/var/log/zabbix-server/zabbix_server.log',
+		                                              'logFileSize'            => '1',
+		                                              'pidFile'                => '/var/run/zabbix/zabbix_server.pid',
+		                                              'dBHost'                 => 'localhost',
+		                                              'dBName'                 => 'zabbix',
+		                                              'dBUser'                 => 'zabbix',
+		                                              'dBPassword'             => 'password',
+		                                              'startVMwareCollectors'  => '1',
+		                                              'listenIp'               => $::ipaddress,
+		                                            }
 		}
 		'Redhat': {
 		  $zabbix_server_config_dir          = '/etc/zabbix'

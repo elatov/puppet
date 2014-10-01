@@ -1,7 +1,10 @@
 class zabbix::server::install () {
-  mysql::database{ "${zabbix::server::server_zabbix_default_settings['dBName']}":
-    user    => "${zabbix::server::server_zabbix_default_settings['dBUser']}",
-    require => Class['mysql'],
+  mysql::db{ "${zabbix::server::server_zabbix_default_settings['dBName']}":
+    user      => "${zabbix::server::server_zabbix_default_settings['dBUser']}",
+    password  => "${zabbix::server::server_zabbix_default_settings['dBPassword']}",
+    host      => "${zabbix::server::server_zabbix_default_settings['dBHost']}",
+    grant     => "ALL",
+    require => Class['mysql::server'],
   }
 
  case $::operatingsystem {
@@ -27,6 +30,6 @@ class zabbix::server::install () {
   package { $zabbix::server::package_name:
     ensure       => installed,
 #    responsefile => '/root/preseed/zabbix-server.preseed',
-    require      => Mysql::Database['zabbix'],
+    require      => Mysql::Db['zabbix'],
   }
 }

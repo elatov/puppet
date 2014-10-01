@@ -2,7 +2,17 @@
 # To get more information about Zabbix,
 # visit http://www.zabbix.com
 
+
 ############ GENERAL PARAMETERS #################
+
+### Option: NodeID
+#	Unique NodeID in distributed setup.
+#	0 - standalone server
+#
+# Mandatory: no
+# Range: 0-999
+# Default:
+# NodeID=0
 
 ### Option: ListenPort
 #	Listen port for trapper.
@@ -10,7 +20,7 @@
 # Mandatory: no
 # Range: 1024-32767
 # Default:
-# ListenPort=10051
+ListenPort=<%= @listenPort %>
 
 ### Option: SourceIP
 #	Source IP address for outgoing connections.
@@ -18,6 +28,7 @@
 # Mandatory: no
 # Default:
 # SourceIP=
+<% if @sourceIP %>#SourceIP=<%= @sourceIP %><% end %>
 
 ### Option: LogFile
 #	Name of log file.
@@ -27,7 +38,7 @@
 # Default:
 # LogFile=
 
-LogFile=/var/log/zabbix/zabbix_server.log
+LogFile=<%= @logFile %>
 
 ### Option: LogFileSize
 #	Maximum size of log file in MB.
@@ -36,13 +47,11 @@ LogFile=/var/log/zabbix/zabbix_server.log
 # Mandatory: no
 # Range: 0-1024
 # Default:
-# LogFileSize=1
-
-<% if @settings['logFileSize'] %>LogFileSize=<%= @settings['logFileSize'] %><% end %>
+<% if @logFileSize %>LogFileSize=<%= @logFileSize %><% end %>
 
 ### Option: DebugLevel
 #	Specifies debug level
-#	0 - basic information about starting and stopping of Zabbix processes
+#	0 - no debug
 #	1 - critical information
 #	2 - error information
 #	3 - warnings
@@ -52,6 +61,7 @@ LogFile=/var/log/zabbix/zabbix_server.log
 # Range: 0-4
 # Default:
 # DebugLevel=3
+DebugLevel=<%= @debugLevel %>
 
 ### Option: PidFile
 #	Name of PID file.
@@ -59,8 +69,7 @@ LogFile=/var/log/zabbix/zabbix_server.log
 # Mandatory: no
 # Default:
 # PidFile=/tmp/zabbix_server.pid
-
-PidFile=/var/run/zabbix/zabbix_server.pid
+PidFile=<%= @pidFile  %>
 
 ### Option: DBHost
 #	Database host name.
@@ -70,8 +79,7 @@ PidFile=/var/run/zabbix/zabbix_server.pid
 # Mandatory: no
 # Default:
 # DBHost=localhost
-
-<% if @settings['dBHost'] %>DBHost=<%= @settings['dBHost'] %><% end %>
+DBHost=<%= @dBHost %>
 
 ### Option: DBName
 #	Database name.
@@ -81,10 +89,10 @@ PidFile=/var/run/zabbix/zabbix_server.pid
 # Default:
 # DBName=
 
-<% if @settings['dBName'] %>DBName=<%= @settings['dBName'] %><% end %>
+DBName=<%= @dBName %>
 
 ### Option: DBSchema
-#	Schema name. Used for IBM DB2 and PostgreSQL.
+#	Schema name. Used for IBM DB2.
 #
 # Mandatory: no
 # Default:
@@ -97,7 +105,7 @@ PidFile=/var/run/zabbix/zabbix_server.pid
 # Default:
 # DBUser=
 
-<% if @settings['dBUser'] %>DBUser=<%= @settings['dBUser'] %><% end %>
+DBUser=<%= @dBUser %>
 
 ### Option: DBPassword
 #	Database password. Ignored for SQLite.
@@ -106,8 +114,7 @@ PidFile=/var/run/zabbix/zabbix_server.pid
 # Mandatory: no
 # Default:
 # DBPassword=
-
-<% if @settings['dBPassword'] %>DBPassword=<%= @settings['dBPassword'] %><% end %>
+DBPassword=<%= @dBPassword %>
 
 ### Option: DBSocket
 #	Path to MySQL socket.
@@ -115,8 +122,6 @@ PidFile=/var/run/zabbix/zabbix_server.pid
 # Mandatory: no
 # Default:
 # DBSocket=/tmp/mysql.sock
-
-DBSocket=/var/run/mysqld/mysqld.sock
 
 ### Option: DBPort
 #	Database port when not using local socket. Ignored for SQLite.
@@ -134,7 +139,7 @@ DBSocket=/var/run/mysqld/mysqld.sock
 # Mandatory: no
 # Range: 0-1000
 # Default:
-# StartPollers=5
+StartPollers=<%= @startPollers %>
 
 ### Option: StartIPMIPollers
 #	Number of pre-forked instances of IPMI pollers.
@@ -143,27 +148,28 @@ DBSocket=/var/run/mysqld/mysqld.sock
 # Range: 0-1000
 # Default:
 # StartIPMIPollers=0
+StartIPMIPollers=<%= @startIPMIPollers %>
 
 ### Option: StartPollersUnreachable
-#	Number of pre-forked instances of pollers for unreachable hosts (including IPMI and Java).
-#	At least one poller for unreachable hosts must be running if regular, IPMI or Java pollers
-#	are started.
+#	Number of pre-forked instances of pollers for unreachable hosts (including IPMI).
 #
 # Mandatory: no
 # Range: 0-1000
 # Default:
 # StartPollersUnreachable=1
+StartPollersUnreachable=<%= @startPollersUnreachable %>
+
 
 ### Option: StartTrappers
 #	Number of pre-forked instances of trappers.
-#	Trappers accept incoming connections from Zabbix sender, active agents and active proxies.
-#	At least one trapper process must be running to display server availability and view queue
-#	in the frontend.
+#	Trappers accept incoming connections from Zabbix sender, active agents, active proxies and child nodes.
+#	At least one trapper process must be running to display server availability in the frontend.
 #
 # Mandatory: no
 # Range: 0-1000
 # Default:
 # StartTrappers=5
+StartTrappers=<%= @startTrappers %>
 
 ### Option: StartPingers
 #	Number of pre-forked instances of ICMP pingers.
@@ -172,6 +178,7 @@ DBSocket=/var/run/mysqld/mysqld.sock
 # Range: 0-1000
 # Default:
 # StartPingers=1
+StartPingers=<%= @startPingers %>
 
 ### Option: StartDiscoverers
 #	Number of pre-forked instances of discoverers.
@@ -180,6 +187,7 @@ DBSocket=/var/run/mysqld/mysqld.sock
 # Range: 0-250
 # Default:
 # StartDiscoverers=1
+StartDiscoverers=<%= @startDiscoverers %>
 
 ### Option: StartHTTPPollers
 #	Number of pre-forked instances of HTTP pollers.
@@ -188,16 +196,7 @@ DBSocket=/var/run/mysqld/mysqld.sock
 # Range: 0-1000
 # Default:
 # StartHTTPPollers=1
-
-### Option: StartTimers
-#	Number of pre-forked instances of timers.
-#	Timers process time-based trigger functions and maintenance periods.
-#	Only the first timer process handles the maintenance periods.
-#
-# Mandatory: no
-# Range: 1-1000
-# Default:
-# StartTimers=1
+StartHTTPPollers=<%= @startHTTPPollers %>
 
 ### Option: JavaGateway
 #	IP address (or hostname) of Zabbix Java gateway.
@@ -223,33 +222,6 @@ DBSocket=/var/run/mysqld/mysqld.sock
 # Default:
 # StartJavaPollers=0
 
-### Option: StartVMwareCollectors
-#	Number of pre-forked vmware collector instances.
-#
-# Mandatory: no
-# Range: 0-250
-# Default:
-# StartVMwareCollectors=0
-<% if @settings['startVMwareCollectors'] %>StartVMwareCollectors=<%= @settings['startVMwareCollectors'] %><% end %>
-
-### Option: VMwareFrequency
-#	How often Zabbix will connect to VMware service to obtain a new data.
-#
-# Mandatory: no
-# Range: 10-86400
-# Default:
-# VMwareFrequency=60
-
-### Option: VMwareCacheSize
-#	Size of VMware cache, in bytes.
-#	Shared memory size for storing VMware data.
-#	Only used if VMware collectors are started.
-#
-# Mandatory: no
-# Range: 256K-2G
-# Default:
-# VMwareCacheSize=8M
-
 ### Option: SNMPTrapperFile
 #	Temporary file used for passing data from SNMP trap daemon to the server.
 #	Must be the same as in zabbix_trap_receiver.pl or SNMPTT configuration file.
@@ -274,20 +246,18 @@ DBSocket=/var/run/mysqld/mysqld.sock
 # Default:
 # ListenIP=0.0.0.0
 
-<% if @settings['listenIp'] %>ListenIP=<%= @settings['listenIp'] %><% end %>
+# ListenIP=127.0.0.1
+<% if @listenIP %>#ListenIP=<%= @listenIP %><% end %>
 
 ### Option: HousekeepingFrequency
 #	How often Zabbix will perform housekeeping procedure (in hours).
-#	Housekeeping is removing unnecessary information from history, alert, alarm, and other tables.
-#	To prevent housekeeper from being overloaded (for example, when history and trend periods
-#	are greatly reduced), no more than 4xHousekeepingFrequency hours of outdated history are
-#	deleted in one housekeeping cycle, for each item.
-#	To lower load on server startup housekeeping is postponed for 30 minutes after server start.
+#	Housekeeping is removing unnecessary information from history, alert, and alarms tables.
 #
 # Mandatory: no
 # Range: 1-24
 # Default:
 # HousekeepingFrequency=1
+HousekeepingFrequency=<%= @housekeepingFrequency %>
 
 ### Option: MaxHousekeeperDelete
 #	The table "housekeeper" contains "tasks" for housekeeping procedure in the format:
@@ -301,6 +271,16 @@ DBSocket=/var/run/mysqld/mysqld.sock
 # Range: 0-1000000
 # Default:
 # MaxHousekeeperDelete=500
+MaxHousekeeperDelete=<%= @maxHousekeeperDelete %>
+
+### Option: DisableHousekeeping
+#	If set to 1, disables housekeeping.
+#
+# Mandatory: no
+# Range: 0-1
+# Default:
+# DisableHousekeeping=0
+DisableHousekeeping=<%= @disableHousekeeping %>
 
 ### Option: SenderFrequency
 #	How often Zabbix will try to send unsent alerts (in seconds).
@@ -309,15 +289,16 @@ DBSocket=/var/run/mysqld/mysqld.sock
 # Range: 5-3600
 # Default:
 # SenderFrequency=30
+SenderFrequency=<%= @senderFrequency %>
 
 ### Option: CacheSize
 #	Size of configuration cache, in bytes.
 #	Shared memory size for storing host, item and trigger data.
 #
 # Mandatory: no
-# Range: 128K-8G
+# Range: 128K-2G
 # Default:
-# CacheSize=8M
+CacheSize=<%= @cacheSize %>
 
 ### Option: CacheUpdateFrequency
 #	How often Zabbix will perform update of configuration cache, in seconds.
@@ -326,6 +307,7 @@ DBSocket=/var/run/mysqld/mysqld.sock
 # Range: 1-3600
 # Default:
 # CacheUpdateFrequency=60
+CacheUpdateFrequency=<%= @cacheUpdateFrequency %>
 
 ### Option: StartDBSyncers
 #	Number of pre-forked instances of DB Syncers
@@ -334,6 +316,7 @@ DBSocket=/var/run/mysqld/mysqld.sock
 # Range: 1-100
 # Default:
 # StartDBSyncers=4
+StartDBSyncers=<%= @startDBSyncers %>
 
 ### Option: HistoryCacheSize
 #	Size of history cache, in bytes.
@@ -343,6 +326,7 @@ DBSocket=/var/run/mysqld/mysqld.sock
 # Range: 128K-2G
 # Default:
 # HistoryCacheSize=8M
+HistoryCacheSize=<%= @historyCacheSize %>
 
 ### Option: TrendCacheSize
 #	Size of trend cache, in bytes.
@@ -352,6 +336,7 @@ DBSocket=/var/run/mysqld/mysqld.sock
 # Range: 128K-2G
 # Default:
 # TrendCacheSize=4M
+TrendCacheSize=<%= @trendCacheSize %>
 
 ### Option: HistoryTextCacheSize
 #	Size of text history cache, in bytes.
@@ -361,16 +346,25 @@ DBSocket=/var/run/mysqld/mysqld.sock
 # Range: 128K-2G
 # Default:
 # HistoryTextCacheSize=16M
+HistoryTextCacheSize=<%= @historyTextCacheSize %>
 
-### Option: ValueCacheSize
-#	Size of history value cache, in bytes.
-#	Shared memory size for caching item history data requests.
-#	Setting to 0 disables value cache.
+### Option: NodeNoEvents
+#	If set to '1' local events won't be sent to master node.
+#	This won't impact ability of this node to propagate events from its child nodes.
 #
 # Mandatory: no
-# Range: 0,128K-64G
+# Range: 0-1
 # Default:
-# ValueCacheSize=8M
+# NodeNoEvents=0
+
+### Option: NodeNoHistory
+#	If set to '1' local history won't be sent to master node.
+#	This won't impact ability of this node to propagate history from its child nodes.
+#
+# Mandatory: no
+# Range: 0-1
+# Default:
+# NodeNoHistory=0
 
 ### Option: Timeout
 #	Specifies how long we wait for agent, SNMP device or external check (in seconds).
@@ -379,6 +373,7 @@ DBSocket=/var/run/mysqld/mysqld.sock
 # Range: 1-30
 # Default:
 # Timeout=3
+Timeout=<%= @timeout %>
 
 ### Option: TrapperTimeout
 #	Specifies how many seconds trapper may spend processing new data.
@@ -387,6 +382,8 @@ DBSocket=/var/run/mysqld/mysqld.sock
 # Range: 1-300
 # Default:
 # TrapperTimeout=300
+TrapperTimeout=<%= @trapperTimeout %>
+
 
 ### Option: UnreachablePeriod
 #	After how many seconds of unreachability treat a host as unavailable.
@@ -395,6 +392,7 @@ DBSocket=/var/run/mysqld/mysqld.sock
 # Range: 1-3600
 # Default:
 # UnreachablePeriod=45
+UnreachablePeriod=<%= @unreachablePeriod %>
 
 ### Option: UnavailableDelay
 #	How often host is checked for availability during the unavailability period, in seconds.
@@ -403,6 +401,7 @@ DBSocket=/var/run/mysqld/mysqld.sock
 # Range: 1-3600
 # Default:
 # UnavailableDelay=60
+UnavailableDelay=<%= @unavailableDelay %>
 
 ### Option: UnreachableDelay
 #	How often host is checked for availability during the unreachability period, in seconds.
@@ -419,8 +418,7 @@ DBSocket=/var/run/mysqld/mysqld.sock
 # Mandatory: no
 # Default:
 # AlertScriptsPath=${datadir}/zabbix/alertscripts
-
-AlertScriptsPath=/usr/lib/zabbix/alertscripts
+AlertScriptsPath=<%= @alertScriptsPath %>
 
 ### Option: ExternalScripts
 #	Full path to location of external scripts.
@@ -429,8 +427,7 @@ AlertScriptsPath=/usr/lib/zabbix/alertscripts
 # Mandatory: no
 # Default:
 # ExternalScripts=${datadir}/zabbix/externalscripts
-
-ExternalScripts=/usr/lib/zabbix/externalscripts
+ExternalScripts=<%= @externalScripts %>
 
 ### Option: FpingLocation
 #	Location of fping.
@@ -439,8 +436,7 @@ ExternalScripts=/usr/lib/zabbix/externalscripts
 # Mandatory: no
 # Default:
 # FpingLocation=/usr/sbin/fping
-
-FpingLocation=/usr/bin/fping
+FpingLocation=<%= @fpingLocation %>
 
 ### Option: Fping6Location
 #	Location of fping6.
@@ -450,11 +446,10 @@ FpingLocation=/usr/bin/fping
 # Mandatory: no
 # Default:
 # Fping6Location=/usr/sbin/fping6
-
-Fping6Location=/usr/bin/fping6
+Fping6Location=<%= @fping6Location %>
 
 ### Option: SSHKeyLocation
-#	Location of public and private keys for SSH checks and actions.
+#	Location of public and private keys for SSH checks and actions
 #
 # Mandatory: no
 # Default:
@@ -462,7 +457,6 @@ Fping6Location=/usr/bin/fping6
 
 ### Option: LogSlowQueries
 #	How long a database query may take before being logged (in milliseconds).
-#	Only works if DebugLevel set to 3 or 4.
 #	0 - don't log slow queries.
 #
 # Mandatory: no
@@ -476,6 +470,17 @@ Fping6Location=/usr/bin/fping6
 # Mandatory: no
 # Default:
 # TmpDir=/tmp
+
+### Option: Include
+#	You may include individual files or all files in a directory in the configuration file.
+#	Installing Zabbix will create include directory in /usr/local/etc, unless modified during the compile time.
+#
+# Mandatory: no
+# Default:
+# Include=
+
+# Include=/usr/local/etc/zabbix_server.general.conf
+# Include=/usr/local/etc/zabbix_server.conf.d/
 
 ### Option: StartProxyPollers
 #	Number of pre-forked instances of pollers for passive proxies.
@@ -502,79 +507,3 @@ Fping6Location=/usr/bin/fping6
 # Range: 1-3600
 # Default:
 # ProxyDataFrequency=1
-
-### Option: AllowRoot
-#	Allow the server to run as 'root'. If disabled and the server is started by 'root', the server
-#	will try to switch to the user specified by the User configuration option instead.
-#	Has no effect if started under a regular user.
-#	0 - do not allow
-#	1 - allow
-#
-# Mandatory: no
-# Default:
-# AllowRoot=0
-
-### Option: User
-#	Drop privileges to a specific, existing user on the system.
-#	Only has effect if run as 'root' and AllowRoot is disabled.
-#
-# Mandatory: no
-# Default:
-# User=zabbix
-
-### Option: Include
-#	You may include individual files or all files in a directory in the configuration file.
-#	Installing Zabbix will create include directory in /usr/local/etc, unless modified during the compile time.
-#
-# Mandatory: no
-# Default:
-# Include=
-
-# Include=/usr/local/etc/zabbix_server.general.conf
-# Include=/usr/local/etc/zabbix_server.conf.d/
-# Include=/usr/local/etc/zabbix_server.conf.d/*.conf
-
-### Option: SSLCertLocation
-#	Location of SSL client certificates.
-#	This parameter is used only in web monitoring.
-#
-# Mandatory: no
-# Default:
-# SSLCertLocation=${datadir}/zabbix/ssl/certs
-
-### Option: SSLKeyLocation
-#	Location of private keys for SSL client certificates.
-#	This parameter is used only in web monitoring.
-#
-# Mandatory: no
-# Default:
-# SSLKeyLocation=${datadir}/zabbix/ssl/keys
-
-### Option: SSLCALocation
-#	Override the location of certificate authority (CA) files for SSL server certificate verification.
-#	If not set, system-wide directory will be used.
-#	This parameter is used only in web monitoring.
-#
-# Mandatory: no
-# Default:
-# SSLCALocation=
-
-####### LOADABLE MODULES #######
-
-### Option: LoadModulePath
-#	Full path to location of server modules.
-#	Default depends on compilation options.
-#
-# Mandatory: no
-# Default:
-# LoadModulePath=${libdir}/modules
-
-### Option: LoadModule
-#	Module to load at server startup. Modules are used to extend functionality of the server.
-#	Format: LoadModule=<module.so>
-#	The modules must be located in directory specified by LoadModulePath.
-#	It is allowed to include multiple LoadModule parameters.
-#
-# Mandatory: no
-# Default:
-# LoadModule=
