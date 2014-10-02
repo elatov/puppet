@@ -26,4 +26,7 @@ wordpress/.project
 !concat/
 !concat/**
 concat/.project
+!my_wp/
+!my_wp/**
+my_wp/.project
 !.gitignore
