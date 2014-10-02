@@ -1,5 +1,5 @@
 class zabbix::server::service () {
-  service { $zabbix::server::params::service_name:
+  service { $zabbix::server::service_name:
     ensure     => running,
     hasstatus  => true,
     hasrestart => true,

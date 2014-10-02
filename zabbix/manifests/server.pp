@@ -25,12 +25,16 @@ class zabbix::server (
   validate_hash($default_settings)
   validate_string($package_name)
   
+  # check to see if passed in override hash is a hash
+  if !($override_settings == undef){
+    validate_hash($override_settings)
+  }
   # Merge settings with override-hash even if it's empty
   $settings = deep_merge($zabbix::params::server_zabbix_default_settings, $override_settings)
   
   class { 'zabbix::server::install': } ->
   class { 'zabbix::server::config': } ~>
-#  class { 'zabbix::server::service': } ->
+  class { 'zabbix::server::service': } ->
   Class['zabbix::server']
 }
 

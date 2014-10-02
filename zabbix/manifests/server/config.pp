@@ -26,7 +26,15 @@ class zabbix::server::config () {
                      "set Directory[arg = '\"/usr/share/zabbix\"']/directive[last()]/arg[1] 'date.timezone'",
                      "set Directory[arg = '\"/usr/share/zabbix\"']/directive[last()]/arg[2] 'America/Denver'",],
       onlyif     => "match Directory/directive[arg = 'America/Denver'] size < 1 ",
-      notify     => Service['httpd']
+      require => Package["$zabbix::server::web_package_name"],
+#      notify     => Service['httpd']
+    }
+    
+    file {'/etc/zabbix/web/zabbix.conf.php':
+      ensure  => present,
+      content => template('zabbix/zabbix.conf.php.erb'),
+      require => Package["$zabbix::server::web_package_name"],
+#      notify     => Service['httpd']
     }
   }
 #  file { '/var/log/zabbix-server':
