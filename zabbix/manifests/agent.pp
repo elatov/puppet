@@ -23,7 +23,7 @@ class zabbix::agent (
   validate_hash($default_settings)
   validate_string($package_name)
   
-  # check to see if passed in override hash is a hash
+  # check to see if override hash is a hash
   if !($override_settings == undef){
     validate_hash($override_settings)
   }

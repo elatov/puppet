@@ -15,14 +15,14 @@ class zabbix::agent::config () {
       require => File[$zabbix::agent::custom_scripts_dir],
     }
 
-    # Push rules to user paremters
+    # rules for user parameters
     file { "${zabbix::agent::agentd_conf_dir}/smart.conf":
       source  => 'puppet:///modules/zabbix/smart.conf',
       require => File[$zabbix::agent::agentd_conf_dir],
       mode => '644',
     }
 
-    # sudoers for puppet smartctl
+    # sudoers for smartctl
     sudo::conf { "${module_name}-agentd-smartctl":
       priority => 20,
       content  => "zabbix ALL=(ALL) NOPASSWD: /usr/sbin/smartctl",
@@ -35,13 +35,14 @@ class zabbix::agent::config () {
       source  => 'puppet:///modules/zabbix/md-discovery.sh',
       require => File[$zabbix::agent::custom_scripts_dir],
     }
-
+    
+    # rules for user parameters
     file { "${zabbix::agent::agentd_conf_dir}/raid.conf":
       source  => 'puppet:///modules/zabbix/raid.conf',
       require => File[$zabbix::agent::agentd_conf_dir],
     }
 
-    # sudoers for puppet mdadm
+    # sudoers for mdadm
     sudo::conf { "${module_name}-agentd-mdadm":
       priority => 20,
       content  => "zabbix ALL=(ALL) NOPASSWD: /sbin/mdadm --detail *\n",
@@ -54,7 +55,8 @@ class zabbix::agent::config () {
       source  => 'puppet:///modules/zabbix/discover_disk.pl',
       require => File[$zabbix::agent::custom_scripts_dir],
     }
-
+     
+    # rules for user parameters
     file { "${zabbix::agent::agentd_conf_dir}/disk_perf.conf":
       source  => 'puppet:///modules/zabbix/disk_perf.conf',
       require => File[$zabbix::agent::agentd_conf_dir],
@@ -90,10 +92,10 @@ class zabbix::agent::config () {
       $config_path = "/etc/${zabbix::agent::config_file}"
     }
     /(?i:Debian)/: { 
-      $config_path = "/etc/zabbix/${zabbix::agent::config_file}"
+      $config_path = "${zabbix::agent::config_dir}/${zabbix::agent::config_file}"
     }
     default: {
-      $config_path = "/etc/zabbix/${zabbix::agent::config_file}"
+      $config_path = "${zabbix::agent::config_dir}/${zabbix::agent::config_file}"
     }
   }
   

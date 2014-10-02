@@ -32,7 +32,7 @@ class zabbix::server::install () {
     
 	case $::operatingsystem {
 		/(?i:CentOS|fedora)/: { 
-		  include zabbix::repo::centos
+#		  include zabbix::repo::centos
 		}
 		/(?i:Debian)/: { 
 			apt::source { 'zabbix':
