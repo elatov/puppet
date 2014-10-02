@@ -5,35 +5,29 @@
 #
 class my_wp::params {
 
-	$my_wp_settings	=	{
-										'user' 	=> 'elatov',
-										'host'	=> $::hostname,
-										}
+#	$my_wp_settings	=	{
+#										'user' 	=> 'elatov',
+#										'host'	=> $::hostname,
+#										}
+	
+	$my_wp_enable_main_wp  = true
+	$my_wp_main_wp_name    = 'wordpress'
+	$my_wp_main_db_pass    = 'password'
+	
+	$my_wp_enable_cs_wp    = true
+	$my_wp_cs_wp_name      = 'cs4113'
+  $my_wp_cs_db_pass      = 'password'
+	
 	case $::osfamily {
 		'Debian': {
-			$my_wp_package_name		= 'my_wp'
-			$my_wp_service_name		= 'my_wp'
-			$my_wp_config_dir			= '/etc/default'
-			$my_wp_service_dir			= '/etc/init.d'
-			$my_wp_home						= '/usr/local/my_wp'
-			$my_wp_config_file			= 'my_wp.sysconf.init'
-			$my_wp_service_file		= 'my_wp.init'
+			$my_wp_apache_docroot	  = '/var/www'
+      $my_wp_wp_owner         = 'www-data'
+      $my_wp_wp_group         = 'www-data'
 		}
 		'RedHat': {
-			$my_wp_package_name		= 'my_wp'
-			$my_wp_service_name		= 'my_wp'
-			$my_wp_config_dir			= '/etc/sysconfig'
-			$my_wp_home						= '/usr/local/my_wp'
-			
-			if $::operatingsystemmajrelease >= 7 {
-				$my_wp_service_dir  	= '/usr/lib/systemd/system'
-				$my_wp_config_file  	= 'my_wp.sysconf.systemd'
-				$my_wp_service_file 	= 'my_wp.service'
-			}else{
-				$my_wp_service_dir		= '/etc/init.d'
-				$my_wp_config_file		= 'my_wp.sysconf.init'
-				$my_wp_service_file	= 'my_wp.init'
-			}
+			$my_wp_apache_docroot    = '/var/www'
+      $my_wp_wp_owner         = 'www'
+      $my_wp_wp_group         = 'www'
 		}
 		default: {
 			fail("${::operatingsystem} not supported")

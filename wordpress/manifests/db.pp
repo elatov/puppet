@@ -1,4 +1,4 @@
-class wordpress::db (
+define wordpress::db (
   $create_db,
   $create_db_user,
   $db_name,

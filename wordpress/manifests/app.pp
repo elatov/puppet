@@ -1,4 +1,4 @@
-class wordpress::app (
+define wordpress::app (
   $install_dir,
   $install_url,
   $version,
