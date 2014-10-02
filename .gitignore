@@ -23,4 +23,7 @@ sudo/.project
 !wordpress/
 !wordpress/**
 wordpress/.project
+!concat/
+!concat/**
+concat/.project
 !.gitignore
