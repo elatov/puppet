@@ -9,8 +9,7 @@
 # Mandatory: no
 # Default:
 # PidFile=/tmp/zabbix_agentd.pid
-
-PidFile=/var/run/zabbix/zabbix_agentd.pid
+PidFile=<%= @pidFile %>
 
 ### Option: LogFile
 #	Name of log file.
@@ -20,7 +19,7 @@ PidFile=/var/run/zabbix/zabbix_agentd.pid
 # Default:
 # LogFile=
 
-LogFile=/var/log/zabbix/zabbix_agentd.log
+LogFile=<%= @logFile %>
 
 ### Option: LogFileSize
 #	Maximum size of log file in MB.
@@ -30,16 +29,11 @@ LogFile=/var/log/zabbix/zabbix_agentd.log
 # Range: 0-1024
 # Default:
 # LogFileSize=1
-
-<% if @settings['logFileSize'] %>
-LogFileSize=<%= @settings['logFileSize'] %>
-<% else %> 
-LogFileSize=0
-<% end %>
+<% if @logFileSize %>LogFileSize=<%= @logFileSize %><% end %>
 
 ### Option: DebugLevel
 #	Specifies debug level
-#	0 - basic information about starting and stopping of Zabbix processes
+#	0 - no debug
 #	1 - critical information
 #	2 - error information
 #	3 - warnings
@@ -49,6 +43,7 @@ LogFileSize=0
 # Range: 0-4
 # Default:
 # DebugLevel=3
+<% if @debugLevel %>DebugLevel=<%= @debugLevel %><% end %>
 
 ### Option: SourceIP
 #	Source IP address for outgoing connections.
@@ -80,18 +75,14 @@ LogFileSize=0
 ### Option: Server
 #	List of comma delimited IP addresses (or hostnames) of Zabbix servers.
 #	Incoming connections will be accepted only from the hosts listed here.
+#	No spaces allowed.
 #	If IPv6 support is enabled then '127.0.0.1', '::127.0.0.1', '::ffff:127.0.0.1' are treated equally.
 #
 # Mandatory: no
 # Default:
 # Server=
 
-<% if @settings['server'] %>
-Server=<%= @settings['server'] %>
-<% else %> 
-Server=127.0.0.1
-<% end %>
-
+Server=<%= @server.join(',') %>
 
 ### Option: ListenPort
 #	Agent will listen on this port for connections from the server.
@@ -109,10 +100,6 @@ Server=127.0.0.1
 # Default:
 # ListenIP=0.0.0.0
 
-<% if @settings['listenIp'] %>
-ListenIP=<%= @settings['listenIp'] %>
-<% end %>
-
 ### Option: StartAgents
 #	Number of pre-forked instances of zabbix_agentd that process passive checks.
 #	If set to 0, disables passive checks and the agent will not listen on any TCP port.
@@ -121,10 +108,7 @@ ListenIP=<%= @settings['listenIp'] %>
 # Range: 0-100
 # Default:
 # StartAgents=3
-
-<% if @settings['startagents'] %>
-StartAgents=<%= @settings['startagents'] %>
-<% end %>
+StartAgents=<%= @startagents %>
 ##### Active checks related
 
 ### Option: ServerActive
@@ -138,8 +122,7 @@ StartAgents=<%= @settings['startagents'] %>
 # Mandatory: no
 # Default:
 # ServerActive=
-
-#ServerActive=127.0.0.1
+<% if @serverActive %>ServerActive=<%= @serverActive.join(',') %><% end %>
 
 ### Option: Hostname
 #	Unique, case sensitive hostname.
@@ -150,41 +133,16 @@ StartAgents=<%= @settings['startagents'] %>
 # Default:
 # Hostname=
 
-<% if @settings['hostname'] %>
-Hostname=<%= @settings['hostname'] %>
-<% else %> 
-Hostname=Zabbix Server
-<% end %>
+Hostname=<%= @hostname %>
+
 
 ### Option: HostnameItem
-#	Item used for generating Hostname if it is undefined. Ignored if Hostname is defined.
-#	Does not support UserParameters or aliases.
+#	Item used for generating Hostname if it is undefined.
+#	Ignored if Hostname is defined.
 #
 # Mandatory: no
 # Default:
 # HostnameItem=system.hostname
-
-### Option: HostMetadata
-#	Optional parameter that defines host metadata.
-#	Host metadata is used at host auto-registration process.
-#	An agent will issue an error and not start if the value is over limit of 255 characters.
-#	If not defined, value will be acquired from HostMetadataItem.
-#
-# Mandatory: no
-# Range: 0-255 characters
-# Default:
-# HostMetadata=
-
-### Option: HostMetadataItem
-#	Optional parameter that defines an item used for getting host metadata.
-#	Host metadata is used at host auto-registration process.
-#	During an auto-registration request an agent will log a warning message if
-#	the value returned by specified item is over limit of 255 characters.
-#	This option is only used when HostMetadata is not defined.
-#
-# Mandatory: no
-# Default:
-# HostMetadataItem=
 
 ### Option: RefreshActiveChecks
 #	How often list of active checks is refreshed, in seconds.
@@ -222,16 +180,20 @@ Hostname=Zabbix Server
 # Default:
 # MaxLinesPerSecond=100
 
+### Option: AllowRoot
+#	Allow the agent to run as 'root'. If disabled and the agent is started by 'root', the agent
+#       will try to switch to user 'zabbix' instead. Has no effect if started under a regular user.
+#	0 - do not allow
+#	1 - allow
+#
+# Mandatory: no
+# Default:
+# AllowRoot=0
+
 ############ ADVANCED PARAMETERS #################
 
 ### Option: Alias
-#	Sets an alias for an item key. It can be used to substitute long and complex item key with a smaller and simpler one.
-#	Multiple Alias parameters may be present. Multiple parameters with the same Alias key are not allowed.
-#	Different Alias keys may reference the same item key.
-#	For example, to retrieve the ID of user 'zabbix':
-#	Alias=zabbix.userid:vfs.file.regexp[/etc/passwd,^zabbix:.:([0-9]+),,,,\1]
-#	Now shorthand key zabbix.userid may be used to retrieve data.
-#	Aliases can be used in HostMetadataItem but not in HostnameItem parameters.
+#	Sets an alias for parameter. It can be useful to substitute long and complex parameter name with a smaller and simpler one.
 #
 # Mandatory: no
 # Range:
@@ -245,25 +207,6 @@ Hostname=Zabbix Server
 # Default:
 # Timeout=3
 
-### Option: AllowRoot
-#	Allow the agent to run as 'root'. If disabled and the agent is started by 'root', the agent
-#	will try to switch to the user specified by the User configuration option instead.
-#	Has no effect if started under a regular user.
-#	0 - do not allow
-#	1 - allow
-#
-# Mandatory: no
-# Default:
-# AllowRoot=0
-
-### Option: User
-#	Drop privileges to a specific, existing user on the system.
-#	Only has effect if run as 'root' and AllowRoot is disabled.
-#
-# Mandatory: no
-# Default:
-# User=zabbix
-
 ### Option: Include
 #	You may include individual files or all files in a directory in the configuration file.
 #	Installing Zabbix will create include directory in /usr/local/etc, unless modified during the compile time.
@@ -272,11 +215,9 @@ Hostname=Zabbix Server
 # Default:
 # Include=
 
-Include=/etc/zabbix/zabbix_agentd.d/
-
 # Include=/usr/local/etc/zabbix_agentd.userparams.conf
 # Include=/usr/local/etc/zabbix_agentd.conf.d/
-# Include=/usr/local/etc/zabbix_agentd.conf.d/*.conf
+Include=/etc/zabbix/zabbix_agentd.conf.d/
 
 ####### USER-DEFINED MONITORED PARAMETERS #######
 
@@ -298,23 +239,3 @@ Include=/etc/zabbix/zabbix_agentd.d/
 # Mandatory: no
 # Default:
 # UserParameter=
-
-####### LOADABLE MODULES #######
-
-### Option: LoadModulePath
-#	Full path to location of agent modules.
-#	Default depends on compilation options.
-#
-# Mandatory: no
-# Default:
-# LoadModulePath=${libdir}/modules
-
-### Option: LoadModule
-#	Module to load at agent startup. Modules are used to extend functionality of the agent.
-#	Format: LoadModule=<module.so>
-#	The modules must be located in directory specified by LoadModulePath.
-#	It is allowed to include multiple LoadModule parameters.
-#
-# Mandatory: no
-# Default:
-# LoadModule=

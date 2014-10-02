@@ -1,12 +1,11 @@
 class zabbix::agent::install () {
-  package { $zabbix::agent::params::package_name:
-    ensure  => installed,
-  }
+  
+  ensure_packages($zabbix::agent::package_name,{ ensure  => 'present',})
   
   if $::operatingsystem =~ /(?i:CentOS|fedora)/ {
-    exec {'systemd-tmpfiles':
+    exec {"${module_name}-systemd-tmpfiles":
         command => "/bin/systemd-tmpfiles --create zabbix.conf",
-        require => Package ["$zabbix::agent::params::package_name"],
+        require => Package ["$zabbix::agent::package_name"],
         unless => "/bin/test -d /var/run/zabbix",
     }  
   } 
