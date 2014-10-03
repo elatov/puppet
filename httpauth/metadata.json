@@ -1,0 +1,63 @@
+{
+  "types": [
+    {
+      "providers": [
+        {
+          "doc": "Manage HTTP Basic and Digest authentication files",
+          "name": "httpauth"
+        }
+      ],
+      "properties": [
+        {
+          "doc": "  Valid values are `present`, `absent`.",
+          "name": "ensure"
+        }
+      ],
+      "doc": "Manage HTTP Basic or Digest password files.    httpauth { 'user':                           file => '/path/to/password/file',          password => 'password',                    mechanism => basic,                        ensure => present,                       }                                      ",
+      "name": "httpauth",
+      "parameters": [
+        {
+          "doc": "The name of the user to be managed.",
+          "name": "name"
+        },
+        {
+          "doc": "The HTTP password file to be managed. If it doesn't exist it is created.",
+          "name": "file"
+        },
+        {
+          "doc": "The password in plaintext.",
+          "name": "password"
+        },
+        {
+          "doc": "The realm - defaults to nil and mainly used for Digest authentication.",
+          "name": "realm"
+        },
+        {
+          "doc": "The authentication mechanism to use - either basic or digest. Default to basic.  Valid values are `basic`, `digest`.",
+          "name": "mechanism"
+        }
+      ]
+    }
+  ],
+  "author": "puppet",
+  "dependencies": [
+
+  ],
+  "license": "Apache 2.0",
+  "summary": "Puppet type for managing HTTP Basic and Digest auth files, a la htpasswd.",
+  "project_page": "https://github.com/jamtur01/puppet-httpauth",
+  "description": "UNKNOWN",
+  "source": "UNKNOWN",
+  "checksums": {
+    "spec/spec.opts": "a600ded995d948e393fbe2320ba8e51c",
+    "lib/puppet/type/httpauth.rb": "beab42ad1086202db040c72bc6783494",
+    "lib/puppet/provider/httpauth/httpauth.rb": "c71417aa66ca270ffa501f779f87de62",
+    "spec/unit/type/httpauth.rb": "a42a6d3b57debd7fca90d832ba7094a7",
+    "Rakefile": "871849fbd09bcc076f4ab87ff750ddf6",
+    "README.markdown": "1a4288364496bddee1cbd102099fecf1",
+    "Modulefile": "eaba4cd27b76a1c9787f56d86d5305a5",
+    "spec/spec_helper.rb": "f6e809f57723ea8a2bd121ad99bfce4c"
+  },
+  "version": "0.0.2",
+  "name": "puppet-httpauth"
+}

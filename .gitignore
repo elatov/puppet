@@ -35,4 +35,7 @@ apache/.project
 !my_apache/
 !my_apache/**
 my_apache/.project
+!httpauth/
+!httpauth/**
+httpauth/.project
 !.gitignore
