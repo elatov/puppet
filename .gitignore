@@ -32,4 +32,7 @@ my_wp/.project
 !apache/
 !apache/**
 apache/.project
+!my_apache/
+!my_apache/**
+my_apache/.project
 !.gitignore
