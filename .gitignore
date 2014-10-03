@@ -29,4 +29,7 @@ concat/.project
 !my_wp/
 !my_wp/**
 my_wp/.project
+!apache/
+!apache/**
+apache/.project
 !.gitignore
