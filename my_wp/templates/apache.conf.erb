@@ -1,0 +1,26 @@
+<Directory /var/www/wordpress/>
+  <Files wp-login.php>
+     Order Deny,Allow
+     Deny from all
+     #Allow from 50.134.151.233 192.168.1.1/255.255.255.0
+     #Allow from 192.168.1.106 216.98.195.98
+     Allow from 192.168.1.1/255.255.255.0
+   </Files>
+
+   <IfModule mod_rewrite.c>
+     RewriteEngine On
+     RewriteBase /wordpress/
+     RewriteRule ^index\.php$ - [L]
+     RewriteCond %{REQUEST_FILENAME} !-f
+     RewriteCond %{REQUEST_FILENAME} !-d
+     RewriteRule . /wordpress/index.php [L]
+   </IfModule>
+</Directory>
+
+<Directory /var/www/wordpress/wp-admin/>
+  Order Deny,Allow
+  Deny from all
+  #Allow from 50.134.151.233 216.52.185.72 192.168.1.1/255.255.255.0
+  #Allow from 192.168.1.1/255.255.255.0 216.98.195.98
+  Allow from 192.168.1.1/255.255.255.0
+</Directory>
