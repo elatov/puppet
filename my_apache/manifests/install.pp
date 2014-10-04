@@ -4,8 +4,9 @@ class my_apache::install {
 
   class { 'apache': 
     mpm_module          => 'prefork',
-    #default_confd_files => false,
+    default_confd_files => false,
     default_vhost       => false,
+    purge_configs       => false,
   }
   
   apache::vhost {"${my_apache::settings['hostname']}":

@@ -1,4 +1,5 @@
 define wordpress::app (
+  $instance_name        = $title,
   $install_dir,
   $install_url,
   $version,
@@ -50,16 +51,16 @@ define wordpress::app (
   }
 
   ## Download and extract
-  exec { 'Download wordpress':
+  exec { "Download wordpress for ${instance_name}":
     command => "wget ${install_url}/wordpress-${version}.tar.gz",
     creates => "${install_dir}/wordpress-${version}.tar.gz",
     require => File[$install_dir],
-  }
-  -> exec { 'Extract wordpress':
+  }-> 
+    exec { "Extract wordpress for ${instance_name}":
     command => "tar zxvf ./wordpress-${version}.tar.gz --strip-components=1",
     creates => "${install_dir}/index.php",
   }
-  ~> exec { 'Change ownership':
+  ~> exec { "Change ownership for ${instance_name}":
     command     => "chown -R ${wp_owner}:${wp_group} ${install_dir}",
     refreshonly => true,
   }
@@ -71,22 +72,22 @@ define wordpress::app (
     ensure  => present,
     content => template('wordpress/wp-keysalts.php.erb'),
     replace => false,
-    require => Exec['Extract wordpress'],
+    require => Exec["Extract wordpress for ${instance_name}"],
   }
   concat { "${install_dir}/wp-config.php":
     owner   => $wp_owner,
     group   => $wp_group,
     mode    => '0755',
-    require => Exec['Extract wordpress'],
+    require => Exec["Extract wordpress for ${instance_name}"],
   }
-  concat::fragment { 'wp-config.php keysalts':
+  concat::fragment { "wp-config.php keysalts for ${name}":
     target  => "${install_dir}/wp-config.php",
     source  => "${install_dir}/wp-keysalts.php",
     order   => '10',
     require => File["${install_dir}/wp-keysalts.php"],
   }
   # Template uses: $db_name, $db_user, $db_password, $db_host, $wp_proxy, $wp_proxy_host, $wp_proxy_port, $wp_multisite, $wp_site_domain
-  concat::fragment { 'wp-config.php body':
+  concat::fragment { "wp-config.php body for ${name}":
     target  => "${install_dir}/wp-config.php",
     content => template('wordpress/wp-config.php.erb'),
     order   => '20',
