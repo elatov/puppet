@@ -38,4 +38,7 @@ my_apache/.project
 !httpauth/
 !httpauth/**
 httpauth/.project
+!timezone/
+!timezone/**
+timezone/.project
 !.gitignore
