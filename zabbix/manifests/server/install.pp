@@ -3,8 +3,9 @@ class zabbix::server::install () {
   if ($zabbix::server::enable_partition_mysql){
     
     file {'/usr/share/zabbix-server-mysql/zabbix-part.sql':
-      ensure => present,
-      source => "puppet:///modules/zabbix/zabbix-part.sql",
+      ensure  => present,
+      source  => "puppet:///modules/zabbix/zabbix-part.sql",
+      require => Package[$zabbix::server::package_name],
     }
     
     exec {"${module_name}-concat-sql-files":
