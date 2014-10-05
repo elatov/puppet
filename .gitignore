@@ -44,4 +44,7 @@ timezone/.project
 !logrotate/
 !logrotate/**
 logrotate/.project
+!rsyslog/
+!rsyslog/**
+rsyslog/.project
 !.gitignore
