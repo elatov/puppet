@@ -1,0 +1,204 @@
+2013-08-18 Michael Arnold <github@razorsedge.org> - 4.6.0
+=========================================================
+
+ Michael Arnold <github@razorsedge.org> (2):
+  * Add LICENSE reference to README.md.
+  * Update versions for 4.6.0 release.
+ 
+ Wolf Noble <wnoble@datapipe.com> (1):
+  * Merge in vmware_puppetfact module
+ 
+
+2013-07-22 Michael Arnold <github@razorsedge.org> - 4.5.0
+=========================================================
+
+ Michael Arnold <github@razorsedge.org> (16):
+  * Update tests/init.pp to local standards.
+  * Update .travis.yml to support updated Puppet versions.
+  * Update Modulefile to use correct license name.
+  * Moved package repo config into vmwaretools::repo.
+  * Clean up vmwaretools_ntp_spec.rb.
+  * Removed last references to open-vm-tools.
+  * Refactor vmwaretools_spec.rb.
+  * Renamed vmwaretools_spec.rb.
+  * Cleaned out unused code from Rspec tests.
+  * Move $ensure to top of class to make lint happy.
+  * Fix typos in README.md.
+  * Expand Puppet versions tested in Travis-CI.
+  * Rake validate to also check ERB for syntax errors.
+  * Remove git-log-to-changelog from Modulefile.
+  * Install $majdistrelease pattern in params.pp.
+  * Update versions for 4.5.0 release.
+ 
+
+2013-05-25 Michael Arnold <github@razorsedge.org> - 4.4.1
+=========================================================
+
+ Michael Arnold <github@razorsedge.org> (2):
+  * Add CHANGELOG generation during module build.
+  * Update versions for 4.4.1 release.
+ 
+
+2013-05-25 Michael Arnold <github@razorsedge.org> - 4.4.0
+=========================================================
+
+ Michael Arnold <github@razorsedge.org> (6):
+  * Use puppetlabs-stdlib 2.6.0 for testing.
+  * Added manage_repository parameter.
+  * Update README.md about manage_repository parameter.
+  * Updated README.md.
+  * Fix Markdown code blocks in README.md.
+  * Update versions for 4.4.0 release.
+ 
+
+2013-02-05 Michael Arnold <github@razorsedge.org> - 4.3.0
+=========================================================
+
+ Michael Arnold <github@razorsedge.org> (5):
+  * Add parameters to customize vmware-tools yumrepo.
+  * Update README for yumrepo parameters.
+  * Update rake and Travis testing environment.
+  * Increase puppetlabs/stdlib dependency to 2.3.0.
+  * Update versions for 4.3.0 release.
+ 
+
+2013-01-12 Michael Arnold <github@razorsedge.org> - 4.2.0
+=========================================================
+
+ Michael Arnold <github@razorsedge.org> (4):
+  * Update Travis config file.
+  * Allow tools to report version to vCenter.
+  * Update README.md
+  * Update versions for 4.2.0 release.
+ 
+
+2012-10-27 Michael Arnold <github@razorsedge.org> - 4.1.2
+=========================================================
+
+ Michael Arnold <github@razorsedge.org> (3):
+  * Converted to puppetlabs_spec_helper.
+  * Support upstart in VMware Tools 5.1 on EL6
+  * Forge 4.1.2 release.
+ 
+
+2012-10-21 Michael Arnold <github@razorsedge.org> - 4.1.1
+=========================================================
+
+ Michael Arnold <github@razorsedge.org> (3):
+  * OSP 5.0+ rhel does not have i686 directory.
+  * Converted to puppetlabs_spec_helper.
+  * Forge 4.1.1 release.
+ 
+
+2012-08-05 Michael Arnold <github@razorsedge.org> - 4.1.0
+=========================================================
+
+ Geoff Davis <gadavis@ucsd.edu> (15):
+  * Update module for ESX tools 5.0
+  * Restore compatibility with 3.x series
+  * Make ntp class compatible with parameterized base class
+  * Update copyright info with UC
+  * Fix handling of multiple gpgkeys for the yum repo
+  * fix regression on 5x packagename
+  * Fix variable check in ntp class
+  * remove variable check completely from ntp class
+  * re-add variable check, fully qual the variable
+  * put the condition in the right block
+  * qualify variable in vmwaretools::ntp
+  * Fix tests for existing cases on main class
+  * Change ntp test to check for vmwaretools base class
+  * readability enhancements to init.pp
+  * Add specific tests for 3.x, 4.0x, 4.1x, and 5.0u1 to RedHat
+ 
+ Michael Arnold <github@razorsedge.org> (10):
+  * Touch-ups for OSP 5.0 support
+  * Update rspec integration.
+  * Add support for Top Scope variables.
+  * Move $majdistrelease into case statement.
+  * Update Geppetto and Travis-CI configs.
+  * Add additional package to vmwaretools::ntp rspec.
+  * Update Modulefile documentation.
+  * Fixed error in vmwaretools::ntp and added tests.
+  * More documentation updates.
+  * Forge 4.1.0 release.
+ 
+
+2012-07-18 Michael Arnold <github@razorsedge.org> - 4.0.2
+=========================================================
+
+ Michael Arnold <github@razorsedge.org> (1):
+  * Fix the yumrepo gpgkey URL due to upstream move.
+ 
+
+2012-05-26 Michael Arnold <github@razorsedge.org> - 4.0.1
+=========================================================
+
+ Michael Arnold <github@razorsedge.org> (1):
+  * Change github account to razorsedge
+ 
+
+2012-04-21 Michael Arnold <github@razorsedge.org> - 4.0.0
+=========================================================
+
+ Michael Arnold <github@razorsedge.org> (25):
+  * Parameterized Class
+  * First attempt at rspec tests.
+  * First attempt at rspec tests.
+  * Added support for Travis-CI.
+  * Fix errors discovered by puppet-lint.
+  * Added Travis-CI graphic to README.
+  * Remove puppet-module from Rakefile.
+  * Update Travis-CI config file.
+  * Massive update to unit tests.
+  * Small refactor of ::params.
+  * Removed unneeded path value from Execs.
+  * Reverse the descriptions in Rakefile.
+  * Fixed class syntax in README.md.
+  * Fix Travis-CI configs to use the master branch.
+  * ISSUE: Rpm install fails
+  * Consolidate yumrepo.
+  * Reformat and update puppet documentation.
+  * TODO: Confirm that vmtoolsd works the same
+  * TODO: split vmware-tools.syncTime out to a module
+  * Forgot to fully qualify $::virtual.
+  * Update the Travis-CI config file.
+  * Drop support for Fedora
+  * More mods to Rakefile.
+  * Forge 4.0.0 release.
+  * Fixed missing doco entry.
+ 
+
+2012-03-29 Michael Arnold <github@razorsedge.org> - 3.0.1
+=========================================================
+
+ Michael Arnold <github@razorsedge.org> (4):
+  * Style Guide - Quotes
+  * 4.1 tools service name is vmtoolsd
+  * Accidentally removed Fedora support.
+  * Forge 3.0.1 release.
+ 
+
+2012-03-18 Michael Arnold <github@razorsedge.org> - 3.0.0
+=========================================================
+
+ Michael Arnold <github@razorsedge.org> (3):
+  * Added a little more documentation.
+  * Slight formatting fixes.
+  * Refactored and renamed for Forge 3.0.0 release.
+ 
+
+2012-03-10 Michael Arnold <github@razorsedge.org> - 2.0.0
+=========================================================
+
+ Michael Arnold <github@razorsedge.org> (2):
+  * Refactored for 2.0.0 release.
+  * Removed $lsbmajdistrelease.
+ 
+ Mike Arnold <mike@razorsedge.org> (1):
+  * Added TODO file.
+ 
+
+2011-09-04 Mike Arnold <mike@razorsedge.org> - 1.0.0
+====================================================
+
+

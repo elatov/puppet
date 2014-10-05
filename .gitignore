@@ -56,4 +56,7 @@ clean_usr_local/.project
 !ossec/
 !ossec/**
 ossec/.project
+!vmwaretools/
+!vmwaretools/**
+vmwaretools/.project
 !.gitignore

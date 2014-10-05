@@ -1,0 +1,45 @@
+{
+  "license": "Apache License, Version 2.0",
+  "source": "git://github.com/razorsedge/puppet-vmwaretools.git",
+  "types": [
+
+  ],
+  "description": "This module manages the installation of the VMware Tools Operating System Specific Packages.",
+  "version": "4.6.0",
+  "checksums": {
+    "README.md": "bf8f3016d412f52bb0ae53f12491f449",
+    "LICENSE": "4f960dc2fd2d219b183be6460aa70af3",
+    "manifests/init.pp": "759a2ddc8cd7678c2e4e37c88b3ebebf",
+    "tests/init_class.pp": "b534e8b00253ee1755dc098879e3a862",
+    "manifests/params.pp": "afb01ab0066e17f88e8304e43c52a0e3",
+    "spec/classes/vmwaretools_init_spec.rb": "3bd5325a4651385a0c640ba0b5e12d77",
+    "tests/ntp_topscope.pp": "1e3af82a8d74e87022974a1d4f7db25e",
+    "tests/init_topscope.pp": "0fc5e9c3825a93cafaff215bedd64e25",
+    "tests/ntp_class.pp": "9e593eb003ad841d09742ed1dd41a69d",
+    "manifests/ntp.pp": "cb574879972c0a9f8eb4a0843fd4be19",
+    "spec/classes/vmwaretools_repo_spec.rb": "79dbc92f1de8566a24c3c9b3564554a0",
+    "spec/unit/vmware_facts_spec.rb": "b6080ebdf414202915a0b430fc773166",
+    "Gemfile": "1b70435ff14bcdcf2282fd2087a0ef34",
+    "spec/classes/vmwaretools_ntp_spec.rb": "05e025856bb250d8bf714f54062ff7c8",
+    "CHANGELOG": "39a6272884c86fbf1141c7e1f2e27aee",
+    "TODO": "a73f97affa5f40b941c6f91863e1311c",
+    "manifests/repo.pp": "e43bbfc680186b1551ffa667c5a2dc55",
+    "lib/facter/vmware.rb": "654152b4808f9ad6df5c9704d628ec6b",
+    "DEVELOP.md": "5e1631e8c6b5035d22b06344530c0c69",
+    "Rakefile": "def98248c821b8c5555ebe63d97b8e0f",
+    "spec/spec_helper.rb": "3ea886dd135e120afa31e0aab12e85b0",
+    "tests/ntp.pp": "e6eeb1d254944407ad354842e97f7c01",
+    "tests/init.pp": "e80eeecaa718ba8998e3b93e7bddecd6",
+    "Modulefile": "16818dedf550bb7a8bfc932e5b7ca991"
+  },
+  "project_page": "https://github.com/razorsedge/puppet-vmwaretools",
+  "summary": "VMware Tools OSP installation.",
+  "name": "razorsedge-vmwaretools",
+  "author": "razorsedge",
+  "dependencies": [
+    {
+      "version_requirement": ">=2.3.0",
+      "name": "puppetlabs/stdlib"
+    }
+  ]
+}
