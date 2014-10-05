@@ -21,9 +21,19 @@ class ossec::client::install inherits ossec::params {
 #        pin        => '510',
       }
       
+      apt::source { 'backports':
+        location   => "http://http.debian.net/debian",
+        release    => 'wheezy-backports',
+        repos      => 'main',
+        #key        => '9A1B1C65',
+        #key_source => 'http://ossec.alienvault.com/repos/apt/conf/ossec-key.gpg.key',
+        include_src => false,
+#        pin        => '510',
+      }
+      
       ensure_packages($ossec_client_package_name,
                       {ensure => 'present',
-                       require  => Apt::Source['alienvault']
+                       require  => [Apt::Source['alienvault'],Apt::Source['backports']],
                       })
     }
     default: {
