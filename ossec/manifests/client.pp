@@ -30,7 +30,7 @@ class ossec::client (
 inherits ossec::params {
 
   # validate parameters here
-  validate_hash(default_settings)
+  validate_hash($default_settings)
   validate_string($package_name)
 
   # check to see if override hash is a hash
