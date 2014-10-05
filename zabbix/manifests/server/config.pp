@@ -18,7 +18,7 @@ class zabbix::server::config () {
     
     file {'/etc/mysql/conf.d/zab.cnf':
       ensure  => 'present',
-      content => '[mysqld]\n open_files_limit = 15000',
+      content => "[mysqld]\nopen_files_limit = 15000\n",
 #      notify  => Service ['mysqld']
     }
    }
