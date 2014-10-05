@@ -50,4 +50,7 @@ rsyslog/.project
 !alternatives/
 !alternatives/**
 alternatives/.project
+!clean_usr_local/
+!clean_usr_local/**
+clean_usr_local/.project
 !.gitignore
