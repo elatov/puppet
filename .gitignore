@@ -47,4 +47,7 @@ logrotate/.project
 !rsyslog/
 !rsyslog/**
 rsyslog/.project
+!alternatives/
+!alternatives/**
+alternatives/.project
 !.gitignore
