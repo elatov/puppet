@@ -15,6 +15,12 @@ class zabbix::server::config () {
       mode    => '0755',
       require => Package['anacron'],
     }
+    
+    file {'/etc/mysql/conf.d/zab.cnf':
+      ensure  => 'present',
+      content => '[mysqld]\n open_files_limit = 15000',
+      notify  => Service ['mysqld']
+    }
    }
    
    if ($zabbix::server::enable_web){
@@ -27,7 +33,7 @@ class zabbix::server::config () {
                      "set Directory[arg = '\"/usr/share/zabbix\"']/directive[last()]/arg[2] 'America/Denver'",],
       onlyif     => "match Directory/directive[arg = 'America/Denver'] size < 1 ",
       require => Package["$zabbix::server::web_package_name"],
-#      notify     => Service['httpd']
+      notify     => Service['httpd']
     }
     
     file {'/etc/zabbix/web/zabbix.conf.php':
