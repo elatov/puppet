@@ -31,10 +31,10 @@ class ossec::params {
 			### Client
 			$ossec_client_package_name		= 'ossec-hids-agent'
 			$ossec_client_service_name		= 'ossec'
-			$ossec_client_config_dir			= '/etc/default'
+			$ossec_client_config_dir			= '/var/ossec/etc'
 			$ossec_client_service_dir			= '/etc/init.d'
 			$ossec_client_home						= '/var/ossec'
-			$ossec_client_config_file			= 'ossec.config'
+			$ossec_client_config_file			= 'ossec-agent.conf.${::operatingsystem}'
 			$ossec_client_service_file		= 'ossec.init'
 		}
 		'RedHat': {
