@@ -41,4 +41,7 @@ httpauth/.project
 !timezone/
 !timezone/**
 timezone/.project
+!logrotate/
+!logrotate/**
+logrotate/.project
 !.gitignore
