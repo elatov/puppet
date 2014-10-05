@@ -21,7 +21,6 @@ class ossec::params {
 		'Debian': {
 			### Server
 			$ossec_server_package_name		= 'ossec'
-			$ossec_server_package_name		= 'ossec'
 			$ossec_server_service_name		= 'ossec'
 			$ossec_server_config_dir			= '/etc/default'
 			$ossec_server_service_dir			= '/etc/init.d'
@@ -30,7 +29,6 @@ class ossec::params {
 			$ossec_server_service_file		= 'ossec.init'
 			
 			### Client
-			$ossec_client_package_name		= 'ossec'
 			$ossec_client_package_name		= 'ossec'
 			$ossec_client_service_name		= 'ossec'
 			$ossec_client_config_dir			= '/etc/default'
