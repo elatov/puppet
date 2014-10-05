@@ -6,7 +6,7 @@ class ossec::client::install inherits ossec::params {
     'RedHat': {
 		  ensure_resource ('yumrepo','atomic',{'ensure' => 'present'})
 		  ensure_packages ($ossec_client_package_name,
-		                   { 'ensure'   => 'latest' ,
+		                   { 'ensure'   => 'present' ,
 		                     'require'  => Class['atomic']
 		                   })
     }
@@ -20,6 +20,11 @@ class ossec::client::install inherits ossec::params {
         include_src => false,
 #        pin        => '510',
       }
+      
+      ensure_packages($ossec_client_package_name,
+                      {ensure => 'present',
+                       require  => Apt::Source['alienvault']
+                      })
     }
     default: {
       fail("${::operatingsystem} not supported")

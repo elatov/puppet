@@ -29,7 +29,7 @@ class ossec::params {
 			$ossec_server_service_file		= 'ossec.init'
 			
 			### Client
-			$ossec_client_package_name		= 'ossec'
+			$ossec_client_package_name		= 'ossec-hids-agent'
 			$ossec_client_service_name		= 'ossec'
 			$ossec_client_config_dir			= '/etc/default'
 			$ossec_client_service_dir			= '/etc/init.d'
