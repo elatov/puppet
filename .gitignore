@@ -53,4 +53,7 @@ alternatives/.project
 !clean_usr_local/
 !clean_usr_local/**
 clean_usr_local/.project
+!ossec/
+!ossec/**
+ossec/.project
 !.gitignore
