@@ -160,7 +160,7 @@ class vmwaretools::params {
   case $::osfamily {
     'RedHat': {
       case $::operatingsystem {
-        'Fedora', 'CentOS','Debian': {
+        'Fedora', 'CentOS': {
           $package_name_5x    = 'open-vm-tools'
           $enable_osp         = false
           $service_name_5x    = 'vmtoolsd'
@@ -190,6 +190,12 @@ class vmwaretools::params {
         default => $::architecture,
       }
       $baseurl_string = 'rhel'  # must be lower case
+    }
+    
+    'Debian': {
+          $package_name_5x    = 'open-vm-tools'
+          $enable_osp         = false
+          $service_name_5x    = 'vmtoolsd'
     }
     'Suse': {
       $package_name_4x = 'vmware-tools-nox'
