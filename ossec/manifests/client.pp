@@ -42,6 +42,6 @@ inherits ossec::params {
   
   class { 'ossec::client::install': } ->
   class { 'ossec::client::config': } ~>
-#  class { 'ossec::client::service': } ->
+  class { 'ossec::client::service': } ->
   Class['ossec::client']
 }

@@ -1,11 +1,11 @@
 # == Class ossec::client::install
 #
-class ossec::client::install inherits ossec::params {
+class ossec::client::install {
 
   case $::osfamily {
     'RedHat': {
 		  ensure_resource ('yumrepo','atomic',{'ensure' => 'present'})
-		  ensure_packages ($ossec_client_package_name,
+		  ensure_packages ($ossec::client::package_name,
 		                   { 'ensure'   => 'present' ,
 		                     'require'  => Class['atomic']
 		                   })
@@ -21,7 +21,7 @@ class ossec::client::install inherits ossec::params {
 #        pin        => '510',
       }
             
-      ensure_packages($ossec_client_package_name,
+      ensure_packages($ossec::client::package_name,
                       {ensure => 'present',
                        require  => Apt::Source['alienvault'],
                       })
