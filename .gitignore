@@ -59,4 +59,7 @@ ossec/.project
 !vmwaretools/
 !vmwaretools/**
 vmwaretools/.project
+!augeasproviders/
+!augeasproviders/**
+augeasproviders/.project
 !.gitignore
