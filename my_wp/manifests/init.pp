@@ -10,6 +10,7 @@
 class my_wp (
   ## Dirs
   $apache_docroot		= $my_wp::params::my_wp_apache_docroot,
+  $apache_confdir		= $my_wp::params::my_wp_apache_conf_dir,
   
   ## Conf Files
 #  $config_file		= $my_wp::params::my_wp_config_file,
@@ -34,7 +35,7 @@ class my_wp (
   validate_string($apache_docroot)
 
   class { 'my_wp::install': } ->
-#  class { 'my_wp::config': } ~>
+  class { 'my_wp::config': } ~>
 #  class { 'my_wp::service': } ->
   Class['my_wp']
 }

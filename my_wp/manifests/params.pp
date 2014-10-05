@@ -23,6 +23,7 @@ class my_wp::params {
 			$my_wp_apache_docroot	  = '/var/www'
       $my_wp_wp_owner         = 'www-data'
       $my_wp_wp_group         = 'www-data'
+      $my_wp_apache_conf_dir  = '/etc/apache2/conf.d'
 		}
 		'RedHat': {
 			$my_wp_apache_docroot    = '/var/www'
