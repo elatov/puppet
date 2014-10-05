@@ -15,7 +15,7 @@ class rsyslog::config {
   if ($rsyslog::iptables_conf){
     file {"${rsyslog::rsyslog_d}/iptables.conf":
       ensure => "present",
-      source => "puppet:///modules/my_rsyslog/iptables.conf",
+      source => "puppet:///modules/rsyslog/iptables.conf",
       require => File[$rsyslog::rsyslog_d],
     }
 		logrotate::rule { 'iptables-log':

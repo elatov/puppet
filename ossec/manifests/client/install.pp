@@ -15,7 +15,7 @@ class ossec::client::install inherits ossec::params {
         location   => "http://ossec.alienvault.com/repos/apt/debian",
         release    => 'wheezy',
         repos      => 'main',
-#        key        => '79EA5ED4',
+        key        => '14B9C8DB9A1B1C65',
         key_source => 'http://ossec.alienvault.com/repos/apt/conf/ossec-key.gpg.key',
 #        pin        => '510',
       }
