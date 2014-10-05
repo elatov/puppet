@@ -17,6 +17,7 @@ class ossec::client::install inherits ossec::params {
         repos      => 'main',
         key        => '9A1B1C65',
         key_source => 'http://ossec.alienvault.com/repos/apt/conf/ossec-key.gpg.key',
+        include_src => false,
 #        pin        => '510',
       }
     }
