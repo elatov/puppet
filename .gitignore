@@ -62,4 +62,7 @@ vmwaretools/.project
 !augeasproviders/
 !augeasproviders/**
 augeasproviders/.project
+!kmod/
+!kmod/**
+kmod/.project
 !.gitignore
