@@ -10,10 +10,10 @@ class ossec::params {
 										'host'	=> $::hostname,
 										}
 										
-	$ossec_client_settings	=	{
+	$ossec_client_default_settings	=	{
 										'user' 	        => 'ossec',
 										'add_user'      => 'elatov',
-										'server_ip'	    => '10.0.0.3',
+										'server_ip'	    => '192.168.2.1',
 										'timezone_file' => '/usr/share/zoneinfo/America/Denver',
                     'initial_setup' =>  true,
 										}

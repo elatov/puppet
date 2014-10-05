@@ -11,7 +11,14 @@ class ossec::client::install inherits ossec::params {
 		                   })
     }
     'Debian': {
-      
+      apt::source { 'alienvault':
+        location   => "http://ossec.alienvault.com/repos/apt/debian",
+        release    => 'wheezy',
+        repos      => 'main',
+#        key        => '79EA5ED4',
+        key_source => 'http://ossec.alienvault.com/repos/apt/conf/ossec-key.gpg.key',
+#        pin        => '510',
+      }
     }
     default: {
       fail("${::operatingsystem} not supported")
