@@ -2,7 +2,7 @@
 
 <ossec_config>
   <client>
-    <server-ip><%= @ossec_client_settings['server_ip'] %></server-ip>
+    <server-ip><%= @settings['server_ip'] %></server-ip>
   </client>
 
   <syscheck>
@@ -63,12 +63,12 @@
   
   <localfile>
     <log_format>apache</log_format>
-    <location>/var/log/apache2/<%= @::hostname %>_access_log</location>
+    <location>/var/log/apache2/<%= @hostname %>_access_log</location>
   </localfile>
   
   <localfile>
     <log_format>apache</log_format>
-    <location>/var/log/apache2/<%= @::hostname %>_error_log</location>
+    <location>/var/log/apache2/<%= @hostname %>_error_log</location>
   </localfile>
   
   <localfile>
