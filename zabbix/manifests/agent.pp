@@ -28,7 +28,7 @@ class zabbix::agent (
     validate_hash($override_settings)
   }
   # Merge settings with override-hash even if it's empty
-  $settings = deep_merge($zabbix::params::server_zabbix_default_settings, $override_settings)
+  $settings = deep_merge($zabbix::params::agent_zabbix_default_settings, $override_settings)
   notify {"end hash looks like this ${settings}":}
   
   class { 'zabbix::agent::install': } ->
