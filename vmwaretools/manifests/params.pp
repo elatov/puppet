@@ -195,7 +195,7 @@ class vmwaretools::params {
     'Debian': {
           $package_name_5x    = 'open-vm-tools'
           $enable_osp         = false
-          $service_name_5x    = 'vmtoolsd'
+          $service_name_5x    = 'open-vm-tools'
     }
     'Suse': {
       $package_name_4x = 'vmware-tools-nox'
