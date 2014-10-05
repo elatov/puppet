@@ -93,44 +93,33 @@ define wordpress (
   $wp_site_domain       = '',
   
 ) {
-   File {
-    owner  => $wp_owner,
-    group  => $wp_group,
-    mode   => '0644',
+  wordpress::app { $title:
+	  install_dir          => $install_dir,
+	  install_url          => $install_url,
+	  version              => $version,
+	  db_name              => $db_name,
+	  db_host              => $db_host,
+	  db_user              => $db_user,
+	  db_password          => $db_password,
+	  wp_owner             => $wp_owner,
+	  wp_group             => $wp_group,
+	  wp_lang              => $wp_lang,
+	  wp_plugin_dir        => $wp_plugin_dir,
+	  wp_additional_config => $wp_additional_config,
+	  wp_table_prefix      => $wp_table_prefix,
+	  wp_proxy_host        => $wp_proxy_host,
+	  wp_proxy_port        => $wp_proxy_port,
+	  wp_multisite         => $wp_multisite,
+	  wp_site_domain       => $wp_site_domain, 
   }
-  Exec {
-    path      => ['/bin','/sbin','/usr/bin','/usr/sbin'],
-    cwd       => $install_dir,
-    logoutput => 'on_failure',
-    user      => $wp_owner,
-    group     => $wp_group,
-  }
-
-  ## Installation directory
-  if ! defined(File[$install_dir]) {
-    file { $install_dir:
-      ensure  => directory,
-      recurse => true,
-    }
-  } else {
-    notice("Warning: cannot manage the permissions of ${install_dir}, as another resource (perhaps apache::vhost?) is managing it.")
-  }
-
  
-  if $create_db {
-    mysql_database { $db_name:
-      charset => 'utf8',
-    }
-  }
-  if $create_db_user {
-    mysql_user { "${db_user}@${db_host}":
-      password_hash => mysql_password($db_password),
-    }
-    mysql_grant { "${db_user}@${db_host}/${db_name}.*":
-      table      => "${db_name}.*",
-      user       => "${db_user}@${db_host}",
-      privileges => ['ALL'],
-    }
+  wordpress::db { $title:
+	  create_db        => $create_db,
+	  create_db_user   => $create_db_user,
+	  db_name          => $db_name,
+	  db_host          => $db_host,
+	  db_user          => $db_user,
+	  db_password      => $db_password,
   }
 }
 

@@ -1,4 +1,5 @@
 define wordpress::db (
+  $instance_name = $title,
   $create_db,
   $create_db_user,
   $db_name,
@@ -13,7 +14,7 @@ define wordpress::db (
   if $create_db {
     mysql_database { $db_name:
       charset => 'utf8',
-      require => Class['wordpress::app'],
+      require => Wordpress::App[$title],
     }
   }
   if $create_db_user {
@@ -25,7 +26,7 @@ define wordpress::db (
       table      => "${db_name}.*",
       user       => "${db_user}@${db_host}",
       privileges => ['ALL'],
-      require    => Class['wordpress::app'],
+      require    => Wordpress::App[$title],
     }
   }
 
