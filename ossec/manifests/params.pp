@@ -34,7 +34,7 @@ class ossec::params {
 			$ossec_client_config_dir			= '/var/ossec/etc'
 			$ossec_client_service_dir			= '/etc/init.d'
 			$ossec_client_home						= '/var/ossec'
-			$ossec_client_config_file			= 'ossec-agent.conf.${::operatingsystem}'
+			$ossec_client_config_file			= "ossec-agent.conf.${::operatingsystem}"
 			$ossec_client_service_file		= 'ossec.init'
 		}
 		'RedHat': {
