@@ -160,7 +160,7 @@ class vmwaretools::params {
   case $::osfamily {
     'RedHat': {
       case $::operatingsystem {
-        'Fedora', 'CentOS': {
+        'Fedora', 'CentOS','Debian': {
           $package_name_5x    = 'open-vm-tools'
           $enable_osp         = false
           $service_name_5x    = 'vmtoolsd'
