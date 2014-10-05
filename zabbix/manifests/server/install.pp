@@ -53,7 +53,7 @@ class zabbix::server::install () {
   package { $zabbix::server::package_name:
     ensure       => installed,
 #    responsefile => '/root/preseed/zabbix-server.preseed',
-    require      => Mysql::Db['zabbix'],
+#    require      => Mysql::Db['zabbix'],
   }
   
   if ($zabbix::server::enable_web){
