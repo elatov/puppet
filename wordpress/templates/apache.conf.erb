@@ -1,4 +1,4 @@
-<Directory /var/www/<%= @wp_name %>/>
+<Directory /var/www/<%= @instance_name %>/>
   <Files wp-login.php>
      Order Deny,Allow
      Deny from all
@@ -8,15 +8,15 @@
 
    <IfModule mod_rewrite.c>
      RewriteEngine On
-     RewriteBase /<%= @wp_name %>/
+     RewriteBase /<%= @instance_name %>/
      RewriteRule ^index\.php$ - [L]
      RewriteCond %{REQUEST_FILENAME} !-f
      RewriteCond %{REQUEST_FILENAME} !-d
-     RewriteRule . /<%= @wp_name %>/index.php [L]
+     RewriteRule . /<%= @instance_name %>/index.php [L]
    </IfModule>
 </Directory>
 
-<Directory /var/www/<%= @wp_name %>/wp-admin/>
+<Directory /var/www/<%= @instance_name %>/wp-admin/>
   Order Deny,Allow
   Deny from all
   #Allow from 50.134.151.233 216.52.185.72 192.168.1.1/255.255.255.0
