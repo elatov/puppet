@@ -68,4 +68,7 @@ kmod/.project
 !pkgng/
 !pkgng/**
 pkgng/.project
+!pf/
+!pf/**
+pf/.project
 !.gitignore
