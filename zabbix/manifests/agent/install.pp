@@ -15,6 +15,9 @@ class zabbix::agent::install () {
 	        pin        => '510',
 	      }
 	    }
+	    /(?i:FreeBSD)/:{
+        ensure_packages('pkg',{ ensure  => 'present',})
+	    }
 	    default: {
 	      fail("Module ${module_name} is not supported on ${::operatingsystem}")
 	    }

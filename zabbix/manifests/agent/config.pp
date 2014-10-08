@@ -7,7 +7,20 @@ class zabbix::agent::config () {
   file { $zabbix::agent::agentd_conf_dir:
     ensure => directory,
   }
+  
+  if ($::osfamily == 'FreeBSD'){
+    file {'/var/log/zabbix':
+      ensure => 'directory',
+      owner  => 'zabbix',
+      group  => 'zabbix',
+    }
 
+    file {'/var/run/zabbix':
+      ensure => 'directory',
+      owner  => 'zabbix',
+      group  => 'zabbix',
+    }
+  }
   if($zabbix::agent::settings['smart']) {
     # Add custom scripts for smart status
     file { "${zabbix::agent::custom_scripts_dir}/get_smart_value.bash":
@@ -50,26 +63,40 @@ class zabbix::agent::config () {
   }
 
   if($zabbix::agent::settings['disk_perf']){
-    # Add custom script
-    file { "${zabbix::agent::custom_scripts_dir}/discover_disk.pl":
-      source  => 'puppet:///modules/zabbix/discover_disk.pl',
-      require => File[$zabbix::agent::custom_scripts_dir],
-    }
-     
-    # rules for user parameters
-    file { "${zabbix::agent::agentd_conf_dir}/disk_perf.conf":
-      source  => 'puppet:///modules/zabbix/disk_perf.conf',
-      require => File[$zabbix::agent::agentd_conf_dir],
-      mode => "644",
-    }
-
-    # systat
-    ensure_packages("sysstat", {ensure => "present"})
-    
-    cron {"zabbix-disk-perf":
-      command => "/usr/bin/iostat -x 1 2 > /tmp/iostat.txt",
-      user => "zabbix",
-      require => Package ["sysstat"],
+    if ($::osfamily == 'FreeBSD'){
+      # rules for user parameters
+      file { "${zabbix::agent::agentd_conf_dir}/disk_perf.conf":
+        source  => 'puppet:///modules/zabbix/disk_perf-freebsd.conf',
+        require => File[$zabbix::agent::agentd_conf_dir],
+        mode => "644",
+      }
+      
+      cron {"zabbix-disk-perf-freebsd":
+        command => "/usr/sbin/iostat -x -t da 1 2 > /tmp/iostat.txt",
+        user => "zabbix",
+      }
+    } else {
+	    # Add custom script
+	    file { "${zabbix::agent::custom_scripts_dir}/discover_disk.pl":
+	      source  => 'puppet:///modules/zabbix/discover_disk.pl',
+	      require => File[$zabbix::agent::custom_scripts_dir],
+	    }
+	     
+	    # rules for user parameters
+	    file { "${zabbix::agent::agentd_conf_dir}/disk_perf.conf":
+	      source  => 'puppet:///modules/zabbix/disk_perf.conf',
+	      require => File[$zabbix::agent::agentd_conf_dir],
+	      mode => "644",
+	    }
+	
+	    # systat
+	    ensure_packages("sysstat", {ensure => "present"})
+	    
+	    cron {"zabbix-disk-perf":
+	      command => "/usr/bin/iostat -x 1 2 > /tmp/iostat.txt",
+	      user => "zabbix",
+	      require => Package ["sysstat"],
+	    }
     }
   }
   

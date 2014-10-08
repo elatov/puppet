@@ -40,18 +40,18 @@ class zabbix::params {
                                                  'disk_perf'              => false,
                                                 }
 		}
-		'Redhat': {
-			$zabbix_server_config_dir          = '/etc/zabbix'
-			$zabbix_server_package_name        = 'zabbix-server-mysql'
+		'FreeBSD': {
+			$zabbix_server_config_dir          = '/usr/local/etc/zabbix22'
+			$zabbix_server_package_name        = 'zabbix22-server'
 			$zabbix_server_service_name        = 'zabbix-server'
 			
 			### Client/Agent
-			$agent_zabbix_config_dir             = '/etc/zabbix'
+			$agent_zabbix_config_dir             = '/usr/local/etc/zabbix22'
 			$agent_zabbix_custom_scripts_dir     = "${agent_zabbix_config_dir}/custom-scripts.d"
-      $agent_zabbix_agentd_conf_dir        = "${agent_zabbix_config_dir}/zabbix_agentd.d"
+      $agent_zabbix_agentd_conf_dir        = "${agent_zabbix_config_dir}/zabbix_agentd.conf.d"
 			$agent_zabbix_config_file            = 'zabbix_agentd.conf'
 			$agent_zabbix_package_name           = 'zabbix22-agent'
-			$agent_zabbix_service_name           = 'zabbix-agent'
+			$agent_zabbix_service_name           = 'zabbix_agentd'
 			$agent_zabbix_version                = '2.2'
 			$agent_zabbix_default_settings       = { 'logFile'                => '/var/log/zabbix/zabbix_agentd.log',
                                                  'logFileSize'            => '1',
@@ -65,7 +65,31 @@ class zabbix::params {
                                                 }
 			
 		}
-	    
+	    'Redhat': {
+      $zabbix_server_config_dir          = '/etc/zabbix'
+      $zabbix_server_package_name        = 'zabbix-server-mysql'
+      $zabbix_server_service_name        = 'zabbix-server'
+      
+      ### Client/Agent
+      $agent_zabbix_config_dir             = '/etc/zabbix'
+      $agent_zabbix_custom_scripts_dir     = "${agent_zabbix_config_dir}/custom-scripts.d"
+      $agent_zabbix_agentd_conf_dir        = "${agent_zabbix_config_dir}/zabbix_agentd.d"
+      $agent_zabbix_config_file            = 'zabbix_agentd.conf'
+      $agent_zabbix_package_name           = 'zabbix22-agent'
+      $agent_zabbix_service_name           = 'zabbix-agent'
+      $agent_zabbix_version                = '2.2'
+      $agent_zabbix_default_settings       = { 'logFile'                => '/var/log/zabbix/zabbix_agentd.log',
+                                                 'logFileSize'            => '1',
+                                                 'pidFile'                => '/var/run/zabbix/zabbix_agentd.pid',
+                                                 'startagents'            => '1',
+                                                 'server'                 => '127.0.0.1',
+                                                 'hostname'               => $::fqdn,
+                                                 'listenIp'               => $::ipaddress,
+                                                 'smart'                  => false,
+                                                 'disk_perf'              => false,
+                                                }
+      
+    }
 	    default: {
 	      fail("${::module} is unsupported on ${::osfamily}")
 	    }
