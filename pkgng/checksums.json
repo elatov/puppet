@@ -1,0 +1,20 @@
+{
+  "Gemfile": "f3dcc11b0975a22a730843a29be9bd41",
+  "Gemfile.lock": "07abfeaddbcffa997de0ad19fa723502",
+  "LICENSE": "974ba50a88ee58f288764b2c22d9acfc",
+  "Modulefile": "7efb9690e39035ad6a35c137e4971dc0",
+  "README.md": "c6cc5a29414b6e916139a5c641327105",
+  "Rakefile": "4b094da49cc9fb042f171245046bd0ed",
+  "lib/facter/pkgng.rb": "db1070c9394d4369911b5f3771de6d0b",
+  "lib/puppet/provider/package/pkgng.rb": "f162489542cdd3c49309954c28aea36e",
+  "manifests/init.pp": "26a91c123e11b428c356269f97635415",
+  "manifests/params.pp": "a54fcb060da34921734463eb80941573",
+  "manifests/repo.pp": "70a61835b2b1969e0061ae8f6de678e6",
+  "spec/fixtures/pkg.info": "6c53f9635a69af60c698526c7f7f25b9",
+  "spec/fixtures/pkg.query": "5ccc366aca3dd348433d63de2df84a65",
+  "spec/fixtures/pkg.query_absent": "99a35ce836720a94297ae65653b501da",
+  "spec/fixtures/pkg.version": "b999cb380debb4573809d6d122e57c94",
+  "spec/spec_helper.rb": "9cd8b7c674491c0f9b7220e1dd986e04",
+  "spec/unit/puppet/provider/pkgng_spec.rb": "87621c42505067ce1924b67635028a28",
+  "templates/repo.erb": "fb839554b6798fd11deaf5014ce0400d"
+}

@@ -65,4 +65,7 @@ augeasproviders/.project
 !kmod/
 !kmod/**
 kmod/.project
+!pkgng/
+!pkgng/**
+pkgng/.project
 !.gitignore
