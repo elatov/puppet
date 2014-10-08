@@ -16,22 +16,30 @@ class pf (
   
   ## Dirs
   $config_dir		= $pf::params::pf_config_dir,
-  $service_dir		= $pf::params::pf_service_dir,
+  $service_dir	= $pf::params::pf_service_dir,
   $home					= $pf::params::pf_home,
   
   ## Conf Files
   $config_file		= $pf::params::pf_config_file,
-  $service_file	= $pf::params::pf_service_file,
+  $rc_conf_file	  = $pf::params::pf_rc_conf_file,
   
   ## settings
-  $settings			= $pf::params::pf_settings,
+  $override_settings      = undef,
+  $default_settings      	= $pf::params::default_pf_settings,
 ) inherits pf::params {
 
   # validate parameters here
-  validate_hash($settings)
+  validate_hash($default_settings)
   validate_string($package_name)
 
-  class { 'pf::install': } ->
+  # check to see if override hash is a hash
+  if !($override_settings == undef){
+    validate_hash($override_settings)
+  }
+  # Merge settings with override-hash even if it's empty
+  $settings = deep_merge($pf::params::default_pf_settings, $override_settings)
+  
+#  class { 'pf::install': } ->
   class { 'pf::config': } ~>
   class { 'pf::service': } ->
   Class['pf']

@@ -5,35 +5,26 @@
 #
 class pf::params {
 
-	$pf_settings	=	{
-										'user' 	=> 'elatov',
-										'host'	=> $::hostname,
-										}
+	
 	case $::osfamily {
-		'Debian': {
+		'FreeBSD': {
 			$pf_package_name		= 'pf'
 			$pf_service_name		= 'pf'
-			$pf_config_dir			= '/etc/default'
+			## Dirs
+			$pf_config_dir			= '/etc'
 			$pf_service_dir			= '/etc/init.d'
-			$pf_home						= '/usr/local/pf'
-			$pf_config_file			= 'pf.sysconf.init'
-			$pf_service_file		= 'pf.init'
-		}
-		'RedHat': {
-			$pf_package_name		= 'pf'
-			$pf_service_name		= 'pf'
-			$pf_config_dir			= '/etc/sysconfig'
-			$pf_home						= '/usr/local/pf'
+			$pf_home						= '/etc/pf'
 			
-			if $::operatingsystemmajrelease >= 7 {
-				$pf_service_dir  	= '/usr/lib/systemd/system'
-				$pf_config_file  	= 'pf.sysconf.systemd'
-				$pf_service_file 	= 'pf.service'
-			}else{
-				$pf_service_dir		= '/etc/init.d'
-				$pf_config_file		= 'pf.sysconf.init'
-				$pf_service_file	= 'pf.init'
-			}
+			### Files
+			$pf_config_file			= 'pf.conf'
+			$pf_rc_conf_file		= 'rc.conf'
+			
+			### Settings
+      $default_pf_settings  = { 'pf_enable'      => 'YES',
+                                'pf_rules'       => "${pf_home}/${pf_config_file}",
+                                'pflog_enable'   => 'YES',
+                                'pflog_logfile'  => '/var/log/pf.log'
+                              }
 		}
 		default: {
 			fail("${::operatingsystem} not supported")
