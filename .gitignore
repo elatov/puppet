@@ -77,4 +77,7 @@ mysudo/.project
 !dis_ipv6/
 !dis_ipv6/**
 dis_ipv6/.project
+!cronjobs/
+!cronjobs/**
+cronjobs/.project
 !.gitignore
