@@ -31,6 +31,10 @@ class rsyslog::config {
   }
   
   if ($::osfamily == 'FreeBSD'){
+    file_line { "syslogd_e_in_${rsyslog::rc_conf}":
+      path => $rsyslog::rc_conf,
+      line => "syslogd_enable=\"YES\"",
+    } 
 		file_line { "syslogd_f_in_${rsyslog::rc_conf}":
 			path => $rsyslog::rc_conf,
 			line => "syslogd_flags=\"-4 -s -v -v\"",
