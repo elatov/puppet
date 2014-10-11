@@ -74,4 +74,7 @@ pf/.project
 !mysudo/
 !mysudo/**
 mysudo/.project
+!dis_ipv6/
+!dis_ipv6/**
+dis_ipv6/.project
 !.gitignore
