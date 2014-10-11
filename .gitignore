@@ -71,4 +71,7 @@ pkgng/.project
 !pf/
 !pf/**
 pf/.project
+!mysudo/
+!mysudo/**
+mysudo/.project
 !.gitignore
