@@ -38,7 +38,7 @@ class rsyslog::config {
   
     file_line { "enable_remote_in_${rsyslog::conf_file}":
       path => $rsyslog::conf_file,
-      line => "*.*\t@${settings['server']}",
+      line => "*.*\t@${rsyslog::settings['server']}",
     } 
   }
 }
