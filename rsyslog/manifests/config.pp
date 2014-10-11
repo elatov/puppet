@@ -33,7 +33,7 @@ class rsyslog::config {
   if ($::osfamily == 'FreeBSD'){
 		file_line { "syslogd_f_in_${rsyslog::rc_conf}":
 			path => $rsyslog::rc_conf,
-			line => "syslogd_flags=\"-s -v -v\"",
+			line => "syslogd_flags=\"-4 -s -v -v\"",
 		} 
   
     file_line { "enable_remote_in_${rsyslog::conf_file}":
