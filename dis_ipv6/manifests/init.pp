@@ -165,10 +165,10 @@ class dis_ipv6 {
           line => "ipv6_activate_all_interfaces=\"NO\"",
         }
         
-         file_line { "ip6_n_in_rc_conf":
-          path => '/etc/rc.conf',
-          line => "ipv6_network_interfaces=\"none\"",
-        }
+				file_line { "ip6_n_in_rc_conf":
+					path => '/etc/rc.conf',
+					line => "ipv6_network_interfaces=\"none\"",
+				}
 	    }
 	    default: {
 	      class { 'augeasproviders::instances':

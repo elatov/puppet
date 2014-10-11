@@ -18,6 +18,10 @@ class rsyslog (
   ### Dir
   $rsyslog_d              = $rsyslog::params::rsyslog_d,
   
+  ### Conf File
+  $rc_conf                 = $rsyslog::params::rsyslog_rc_conf,
+  $conf_file               = $rsyslog::params::rsyslog_conf_file,
+  
   ### Service
   $service_name           = $rsyslog::params::rsyslog_service_name,
   

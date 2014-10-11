@@ -1,7 +1,9 @@
 class rsyslog::config {
-  file { $rsyslog::rsyslog_d:
-    ensure  => directory,
-    owner   => 'root',
+  if ($rsyslog::rsyslog_d != undef){
+	  file { $rsyslog::rsyslog_d:
+	    ensure  => directory,
+	    owner   => 'root',
+	  }
   }
   
   if ($rsyslog::remote_conf){
@@ -26,5 +28,17 @@ class rsyslog::config {
 			compress => true,
 			missingok => true,
 		}
+  }
+  
+  if ($::osfamily == 'FreeBSD'){
+		file_line { "syslogd_f_in_${rsyslog::rc_conf}":
+			path => $rsyslog::rc_conf,
+			line => "syslogd_flags=\"-s -v -v\"",
+		} 
+  
+    file_line { "enable_remote_in_${rsyslog::conf_file}":
+      path => $rsyslog::conf_file,
+      line => "*.*\t@${settings['server']}",
+    } 
   }
 }
