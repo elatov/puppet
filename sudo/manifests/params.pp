@@ -77,7 +77,7 @@ class sudo::params {
       }
     }
     freebsd: {
-      $package = 'security/sudo'
+      $package = 'sudo'
       $config_file = '/usr/local/etc/sudoers'
       $config_dir = '/usr/local/etc/sudoers.d/'
       $source = "${source_base}sudoers.freebsd"
