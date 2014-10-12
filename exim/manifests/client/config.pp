@@ -57,7 +57,36 @@ class exim::client::config {
 			group  => 'wheel',
 		}
     
+    ### Setup the logs to be rotated
+    newsyslog {'/var/log/exim/mainlog':
+      owner   => 'mailnull',
+      group   => 'mail',
+      mode    => '640',
+      keep    => '7',
+      size    => '*',
+      when    => '@T00',
+      flags   => 'N',
+    }
     
+    newsyslog {'/var/log/exim/paniclog':
+      owner   => 'mailnull',
+      group   => 'mail',
+      mode    => '640',
+      keep    => '7',
+      size    => '*',
+      when    => '@T00',
+      flags   => 'N',
+    }
+    
+    newsyslog {'/var/log/exim/rejectlog':
+      owner   => 'mailnull',
+      group   => 'mail',
+      mode    => '640',
+      keep    => '7',
+      size    => '*',
+      when    => '@T00',
+      flags   => 'N',
+    }
   }else{
 		service { $exim::client::settings['stopped_services']:
 		  ensure => "stopped",
