@@ -1,6 +1,6 @@
 # == Class ossec::server::install
 #
-class ossec::server::install inherits ossec::params {
+class ossec::server::install {
 
-  ensure_resource ('package',$ossec_server_package_name,{ 'ensure'=> 'latest' })
+  ensure_resource ('package',$ossec::server::package_name,{ 'ensure'=> 'present' })
 }

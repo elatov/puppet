@@ -5,18 +5,16 @@
 #
 class ossec::params {
 
-	$ossec_server_settings	=	{
-										'user' 	=> 'elatov',
-										'host'	=> $::hostname,
-										}
+	$ossec_server_default_settings	=	{ 'user' 	=> 'elatov',
+										                  'host'	=> $::hostname,
+										                }
 										
-	$ossec_client_default_settings	=	{
-										'user' 	        => 'ossec',
-										'add_user'      => 'elatov',
-										'server_ip'	    => '192.168.2.1',
-										'timezone_file' => '/usr/share/zoneinfo/America/Denver',
-                    'initial_setup' =>  true,
-										}
+	$ossec_client_default_settings	=	{ 'user' 	        => 'ossec',
+										                  'add_user'      => 'elatov',
+										                  'server_ip'	    => $::ipaddress,
+										                  'timezone_file' => '/usr/share/zoneinfo/America/Denver',
+                                      'initial_setup' =>  true,
+										                }
 	case $::osfamily {
 		'Debian': {
 			### Server
@@ -72,6 +70,23 @@ class ossec::params {
 				$ossec_client_service_file	= 'ossec.init'
 			}
 		}
+		'FreeBSD': {
+      ### Server
+      $ossec_server_package_name    = 'ossec-hids-server'
+      $ossec_server_service_name    = 'ossec-hids'
+      $ossec_server_config_dir      = '/usr/local/ossec-hids/etc'
+      $ossec_server_home            = '/usr/local/ossec-hids'
+      $ossec_server_config_file     = 'ossec.conf'
+      
+      ### Client
+      $ossec_client_package_name    = 'ossec-hids-agent'
+      $ossec_client_service_name    = 'ossec'
+      $ossec_client_config_dir      = '/var/ossec/etc'
+      $ossec_client_service_dir     = '/etc/init.d'
+      $ossec_client_home            = '/var/ossec'
+      $ossec_client_config_file     = "ossec-agent.conf.${::operatingsystem}"
+      $ossec_client_service_file    = 'ossec.init'
+    }
 		default: {
 			fail("${::operatingsystem} not supported")
 		}

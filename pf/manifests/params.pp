@@ -23,7 +23,7 @@ class pf::params {
       $default_pf_settings  = { 'pf_enable'      => 'YES',
                                 'pf_rules'       => "${pf_home}/${pf_config_file}",
                                 'pflog_enable'   => 'YES',
-                                'pflog_logfile'  => '/var/log/pf.log'
+                                'pflog_logfile'  => '/var/log/pflog'
                               }
 		}
 		default: {
