@@ -22,5 +22,13 @@ class ossec::server::config {
   file { "${ossec::server::config_dir}/shared":
     ensure => 'directory',
     mode   => '775',
+    group  => 'ossec',
   }
+
+    file { "${ossec::server::home}/queue/rootcheck":
+    ensure => 'directory',
+    mode   => '575',
+    group  => 'ossec',
+  }
+  
 }
