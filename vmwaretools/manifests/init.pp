@@ -274,6 +274,48 @@ class vmwaretools (
 	        notify  => Service[$service_name_real],
 	      }
       }
+      
+      if ($::osfamily == 'FreeBSD'){
+				augeas{"rc_conf_setting_vmblock":
+					incl    => '/etc/rc.conf',
+					lens    => 'Shellvars.lns',
+					context => '/files/etc/rc.conf',
+					changes => "set vmware_guest_vmblock_enable '\"YES\"'",
+					onlyif  => "match vmware_guest_vmblock_enable not_include YES",
+				}
+				
+				augeas{"rc_conf_setting_vmhgfs":
+          incl    => '/etc/rc.conf',
+          lens    => 'Shellvars.lns',
+          context => '/files/etc/rc.conf',
+          changes => "set vmware_guest_vmhgfs_enable '\"YES\"'",
+          onlyif  => "match vmware_guest_vmhgfs_enable not_include YES",
+        }
+        
+        augeas{"rc_conf_setting_vmmemctl":
+          incl    => '/etc/rc.conf',
+          lens    => 'Shellvars.lns',
+          context => '/files/etc/rc.conf',
+          changes => "set vmware_guest_vmmemctl_enable '\"YES\"'",
+          onlyif  => "match vmware_guest_vmmemctl_enable not_include YES",
+        }
+        
+        augeas{"rc_conf_setting_vmxnet":
+          incl    => '/etc/rc.conf',
+          lens    => 'Shellvars.lns',
+          context => '/files/etc/rc.conf',
+          changes => "set vmware_guest_vmxnet_enable '\"YES\"'",
+          onlyif  => "match vmware_guest_vmxnet_enable not_include YES",
+        }
+        
+        augeas{"rc_conf_setting_guestd":
+          incl    => '/etc/rc.conf',
+          lens    => 'Shellvars.lns',
+          context => '/files/etc/rc.conf',
+          changes => "set vmware_guestd_enable '\"YES\"'",
+          onlyif  => "match vmware_guestd_enable not_include YES",
+        }
+      }
       if ($::osfamily == 'RedHat') and ($vmwaretools::params::majdistrelease == '6') and ($rhel_upstart == true) {
         # VMware-tools 5.1 on EL6 is now using upstart and not System V init.
         # http://projects.puppetlabs.com/issues/11989#note-7
