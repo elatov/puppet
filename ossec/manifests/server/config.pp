@@ -19,7 +19,7 @@ class ossec::server::config {
     require => File [$ossec::server::config_dir],
   }
   
-  file { "${ossec::server::config_dir}/etc/shared":
+  file { "${ossec::server::config_dir}/shared":
     ensure => 'directory',
     mode   => '775',
   }
