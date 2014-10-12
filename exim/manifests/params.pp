@@ -14,7 +14,7 @@ class exim::params {
 										
 	$exim_client_settings_all    	=	{ 'add_user' 	      => 'test',
 										                'smart_relayhost'	=> $::hostname,
-										                'aliases'         => ['root','test'],
+										                'aliases'         => ['root'],
 										                'alias_recipient' => 'root'
 										              }
 	case $::osfamily {
