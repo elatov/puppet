@@ -18,7 +18,7 @@ class grive::config {
   } else {
     file { '/usr/local/bin/grive':
       ensure => 'link',
-      target => "${grive::settings['home_dir']}grive/bin/grive",
+      target => "${grive::settings['home_dir']}/grive/bin/grive",
     }
     
     file { "/home/${grive::settings['user']}/.gdrive/notes/backup/bin/rsync_backup.bash":
