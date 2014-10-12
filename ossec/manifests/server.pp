@@ -38,6 +38,6 @@ class ossec::server (
 
   class { 'ossec::server::install': } ->
   class { 'ossec::server::config': } ~>
-#  class { 'ossec::server::service': } ->
+  class { 'ossec::server::service': } ->
   Class['ossec::server']
 }
