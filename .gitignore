@@ -93,4 +93,7 @@ newsyslog/.project
 !grive/**
 grive/.project
 grive/files/
+!update_checker/
+!update_checker/**
+update_checker/.project
 !.gitignore
