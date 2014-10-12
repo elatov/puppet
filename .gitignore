@@ -96,4 +96,7 @@ grive/files/
 !update_checker/
 !update_checker/**
 update_checker/.project
+!selinux/
+!selinux/**
+selinux/.project
 !.gitignore
