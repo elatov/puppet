@@ -1,7 +1,6 @@
 class update_checker::params {
   
   $update_checker_user  = 'test'
-  $update_checker_test  = 'test'
   
   case $::osfamily {
     /(?i:RedHat)/: { 
@@ -20,7 +19,7 @@ class update_checker::params {
     /(?i:FreeBSD)/: { 
         $update_checker_script      = 'pkgng-check.bash'
         $update_checker_packages    = ['bash']
-        $update_checker_target_dir  = "/home/${update_checker::test}/.gdrive/notes/scripts/bash"
+        $update_checker_target_dir  = "/home/${update_checker::user}/.gdrive/notes/scripts/bash"
         $update_checker_cron_dir    = '/etc/periodic/daily'
     }
     default: {
