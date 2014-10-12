@@ -89,4 +89,8 @@ exim/.project
 !newsyslog/
 !newsyslog/**
 newsyslog/.project
+!grive/
+!grive/**
+grive/.project
+grive/files/
 !.gitignore
