@@ -83,4 +83,7 @@ cronjobs/.project
 !users/
 !users/**
 users/.project
+!exim/
+!exim/**
+exim/.project
 !.gitignore
