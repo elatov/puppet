@@ -80,4 +80,7 @@ dis_ipv6/.project
 !cronjobs/
 !cronjobs/**
 cronjobs/.project
+!users/
+!users/**
+users/.project
 !.gitignore
