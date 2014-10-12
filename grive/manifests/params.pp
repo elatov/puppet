@@ -34,7 +34,11 @@ class grive::params {
 		}
 		'FreeBSD': {
       $grive_settings_os  = {'pre_pkgs' => ['boost-libs',
-                                            'yajl',],
+                                            'yajl',
+                                            'curl',
+                                            'json-c',
+                                            'libgcrypt',
+                                            'libgpg-error'],
                             }
       
       
