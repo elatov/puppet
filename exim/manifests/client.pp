@@ -39,7 +39,7 @@ class exim::client (
     validate_hash($override_settings)
   }
   # Merge settings with override-hash even if it's empty
-  $settings = deep_merge($exim::params::exim_client_default_settings, $override_settings)
+  $settings = deep_merge($default_settings, $override_settings)
 
   class { 'exim::client::install': } ->
   class { 'exim::client::config': } ~>
