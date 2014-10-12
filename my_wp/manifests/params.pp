@@ -4,11 +4,6 @@
 # It sets variables according to platform
 #
 class my_wp::params {
-
-#	$my_wp_settings	=	{
-#										'user' 	=> 'elatov',
-#										'host'	=> $::hostname,
-#										}
 	
 	$my_wp_enable_main_wp  = true
 	$my_wp_main_wp_name    = 'wordpress'

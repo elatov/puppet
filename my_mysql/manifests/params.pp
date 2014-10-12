@@ -6,7 +6,6 @@
 class my_mysql::params {
 
 	$my_mysql_settings	=	{
-										'user' 	        => 'elatov',
 										'root_password'	=> 'password',
 										}
 	case $::osfamily {

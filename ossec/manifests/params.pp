@@ -5,14 +5,14 @@
 #
 class ossec::params {
 
-	$ossec_server_default_settings	=	{ 'add_user' 	=> 'elatov',
+	$ossec_server_default_settings	=	{ 'add_user' 	=> 'test',
 										                  'config'    => { 'email_to'     => "user@${::fqdn}",
                                                        'smtp_server'  => '127.0.0.1',
                                                        'email_from'   => "ossecm@${::domain}",}
 										                }
 										
 	$ossec_client_default_settings	=	{ 'user' 	        => 'ossec',
-										                  'add_user'      => 'elatov',
+										                  'add_user'      => 'test',
 										                  'server_ip'	    => $::ipaddress,
 										                  'timezone_file' => '/usr/share/zoneinfo/America/Denver',
                                       'initial_setup' =>  true,

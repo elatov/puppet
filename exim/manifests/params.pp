@@ -6,15 +6,15 @@
 class exim::params {
 
   $exim_server_initial_setup    = false
-	$exim_server_settings_all	    =	{ 'add_user'        => 'elatov',
+	$exim_server_settings_all	    =	{ 'add_user'        => 'test',
 										                'host'            => $::hostname,
-										                'aliases'         => ['root','elatov'],
+										                'aliases'         => ['root','test'],
 										                'alias_recipient' => 'root'
 										              }
 										
-	$exim_client_settings_all    	=	{ 'add_user' 	      => 'elatov',
+	$exim_client_settings_all    	=	{ 'add_user' 	      => 'test',
 										                'smart_relayhost'	=> $::hostname,
-										                'aliases'         => ['root','elatov'],
+										                'aliases'         => ['root','test'],
 										                'alias_recipient' => 'root'
 										              }
 	case $::osfamily {
@@ -46,7 +46,6 @@ class exim::params {
 			$exim_client_service_file		= 'exim.init'
 			$exim_client_absent_packages  = ['postfix','sendmail']
       $exim_client_stopped_services = ['postfix','sendmail' ]
-      $exim_client_aliases          = ['root','elatov']
 		}
 		'RedHat': {
 			### Server
@@ -61,7 +60,6 @@ class exim::params {
 			$exim_client_config_dir			= '/etc/sysconfig'
 			$exim_client_absent_packages  = ['postfix','sendmail']
       $exim_client_stopped_services = ['postfix','sendmail' ]
-      $exim_client_aliases          = ['root','elatov']
 			
 			if $::operatingsystemmajrelease >= 7 {
 				### Server
