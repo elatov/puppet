@@ -9,23 +9,21 @@
 #
 class ossec::server (
   ## Packages
-  $package_name	= $ossec::params::ossec_server_package_name,
+  $package_name	      = $ossec::params::ossec_server_package_name,
   
   ## Services
-  $service_name	= $ossec::params::ossec_server_service_name,
+  $service_name	      = $ossec::params::ossec_server_service_name,
   
   ## Dirs
-  $config_dir		= $ossec::params::ossec_server_config_dir,
-  $service_dir		= $ossec::params::ossec_server_service_dir,
-  $home					= $ossec::params::ossec_server_home,
+  $config_dir		      = $ossec::params::ossec_server_config_dir,
+  $home					      = $ossec::params::ossec_server_home,
   
   ## Conf Files
-  $config_file		= $ossec::params::ossec_server_config_file,
-  $service_file	= $ossec::params::ossec_server_service_file,
+  $config_file		    = $ossec::params::ossec_server_config_file,
   
   ## settings
-  $default_settings			= $ossec::params::ossec_server_default_settings,
-  $override_settings     = undef,
+  $default_settings		= $ossec::params::ossec_server_default_settings,
+  $override_settings  = undef,
 ) inherits ossec::params {
 
   # validate parameters here
@@ -39,7 +37,7 @@ class ossec::server (
   $settings = deep_merge($ossec::params::ossec_server_default_settings, $override_settings)
 
   class { 'ossec::server::install': } ->
-#  class { 'ossec::server::config': } ~>
+  class { 'ossec::server::config': } ~>
 #  class { 'ossec::server::service': } ->
   Class['ossec::server']
 }

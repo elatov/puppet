@@ -5,8 +5,10 @@
 #
 class ossec::params {
 
-	$ossec_server_default_settings	=	{ 'user' 	=> 'elatov',
-										                  'host'	=> $::hostname,
+	$ossec_server_default_settings	=	{ 'adduser' 	=> 'elatov',
+										                  'config'    => { 'email_to'     => "user@${::fqdn}",
+                                                       'smtp_server'  => '127.0.0.1',
+                                                       'email_from'   => "ossecm@${::domain}",}
 										                }
 										
 	$ossec_client_default_settings	=	{ 'user' 	        => 'ossec',
