@@ -31,8 +31,8 @@ class newsyslog (
   validate_hash($settings)
   validate_string($package_name)
 
-  class { 'newsyslog::install': } ->
-  class { 'newsyslog::config': } ~>
+#  class { 'newsyslog::install': } ->
+#  class { 'newsyslog::config': } ~>
   class { 'newsyslog::service': } ->
   Class['newsyslog']
 }

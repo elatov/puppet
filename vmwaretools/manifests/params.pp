@@ -192,7 +192,13 @@ class vmwaretools::params {
       $baseurl_string = 'rhel'  # must be lower case
     }
     
-    'Debian': {
+    'FreeBSD': {
+          $package_name_5x    = 'open-vm-tools-nox11'
+          $enable_osp         = false
+          $service_name_5x    = 'vmware-guestd'
+    }
+    
+     'Debian': {
           $package_name_5x    = 'open-vm-tools'
           $enable_osp         = false
           $service_name_5x    = 'open-vm-tools'

@@ -20,6 +20,16 @@ class zabbix::agent::config () {
       owner  => 'zabbix',
       group  => 'zabbix',
     }
+    newsyslog {'/var/log/zabbix/zabbix_agentd.log':
+      owner   => 'zabbix',
+      group   => 'zabbix',
+      mode    => '644',
+      keep    => '5',
+      size    => '*',
+      when    => '@T00',
+      flags   => 'JC',
+      pidfile => '/var/run/zabbix/zabbix.pid'
+    }
   }
   if($zabbix::agent::settings['smart']) {
     # Add custom scripts for smart status
