@@ -18,4 +18,8 @@ class ossec::server::config {
     content => template("ossec/ossec-server.conf.${::operatingsystem}.erb"),
     require => File [$ossec::server::config_dir],
   }
+  
+  file { "${ossec::server::config_dir}/etc/shared":
+    mode => '775',
+  }
 }
