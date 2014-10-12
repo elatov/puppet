@@ -86,4 +86,7 @@ users/.project
 !exim/
 !exim/**
 exim/.project
+!newsyslog/
+!newsyslog/**
+newsyslog/.project
 !.gitignore
