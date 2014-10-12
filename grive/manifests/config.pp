@@ -137,12 +137,12 @@ class grive::config {
             mode   => '0755',
           }
 	    }
-#	    /(?i:FreeBSD)/: { 
-#         file {"/home/${grive::settings['user']}/.gdrive/notes/scripts/sh/pkgngcheck.sh":
-#            ensure => 'present',
-#            mode   => '0755',
-#          }
-#      }
+	    /(?i:FreeBSD)/: { 
+         file {"/home/${grive::settings['user']}/.gdrive/notes/scripts/bash/pkgng-check.bash":
+            ensure => 'present',
+            mode   => '0755',
+          }
+      }
 	    default: {
 	        fail("The ${module_name} module is not supported on ${::osfamily}/${::operatingsystem}.")
 	    }
