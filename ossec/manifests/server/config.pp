@@ -20,6 +20,7 @@ class ossec::server::config {
   }
   
   file { "${ossec::server::config_dir}/etc/shared":
-    mode => '775',
+    ensure => 'directory',
+    mode   => '775',
   }
 }
