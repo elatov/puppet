@@ -8,7 +8,7 @@ class exim::params {
   $exim_server_initial_setup    = false
 	$exim_server_settings_all	    =	{ 'add_user'        => 'test',
 										                'host'            => $::hostname,
-										                'aliases'         => ['root','test'],
+										                'aliases'         => ['root'],
 										                'alias_recipient' => 'root'
 										              }
 										
