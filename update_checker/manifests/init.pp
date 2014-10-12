@@ -15,7 +15,6 @@ class update_checker(
   $update_script  = $update_checker::params::update_checker_script,
   $packages       = $update_checker::params::update_checker_packages,
   $cron_dir       = $update_checker::params::update_checker_cron_dir,
-  $target_dir     = $update_checker::params::update_checker_target_dir,
 ) inherits update_checker::params {
   
   validate_string($update_script)
