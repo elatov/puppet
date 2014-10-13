@@ -25,7 +25,7 @@
 
 Puppet::Type.type(:pkg_publisher).provide(:pkg_publisher) do
     desc "Provider for Solaris publishers"
-    confine :operatingsystem => [:omnios]
+    confine :operatingsystem => [:solaris]
     defaultfor :osfamily => :solaris, :kernelrelease => ['5.11', '5.12']
     commands :pkg => '/usr/bin/pkg'
 
