@@ -99,4 +99,7 @@ update_checker/.project
 !selinux/
 !selinux/**
 selinux/.project
+!solaris/
+!solaris/**
+solaris/.project
 !.gitignore
