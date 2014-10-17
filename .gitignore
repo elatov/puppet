@@ -102,4 +102,7 @@ selinux/.project
 !solaris/
 !solaris/**
 solaris/.project
+!smartd/
+!smartd/**
+smartd/.project
 !.gitignore
