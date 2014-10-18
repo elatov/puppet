@@ -27,7 +27,7 @@ class pkgsrc (
   $settings = deep_merge($default_settings, $override_settings)
 
   class { 'pkgsrc::install': } ->
-#  class { 'pkgsrc::config': } ~>
+  class { 'pkgsrc::config': } ~>
 #  class { 'pkgsrc::service': } ->
   Class['pkgsrc']
 }

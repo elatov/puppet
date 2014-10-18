@@ -4,18 +4,33 @@
 #
 class pkgsrc::config {
 
+  ensure_resource (file,$pkgsrc::settings['home'],{ensure => 'directory'})
+  
   exec { "${module_name}-wget-pkgsrc":
     path    => ['bin','/usr/bin'],
     cwd     => '/root/apps',
     command => "wget http://${settings['url']}/bootstrap-${settings['version']}-x86_64.tar.gz",
     require => File['/root/apps'],
-    unless  => "test -f /root/apps/bootstrap-${settings['version']}-x86_64.tar.gz",
+    creates  => "/root/apps/bootstrap-${settings['version']}-x86_64.tar.gz",
   }~>
   exec { "${module_name}-extract-pkgsrc":
-    path    => ['bin','/usr/bin'],
-    cwd     => '/root/apps',
-    command => "tar /root/apps/bootstrap-${settings['version']}-x86_64.tar.gz -C ${settings['home']} ",
-    unless  => "test -f /root/apps/bootstrap-${settings['version']}-x86_64.tar.gz",
+    path        => ['bin','/usr/bin'],
+    cwd         => '/root/apps',
+    command     => "tar xzf /root/apps/bootstrap-${settings['version']}-x86_64.tar.gz -C /",
+    require     => File[$pkgsrc::settings['home']],
+    refreshonly => true,
+    creates     => "/opt/local/etc"
+ }~>
+ exec { "${module_name}-rebuild-pkgsrc_index":
+    path        => ['/opt/local/sbin','/opt/local/bin'],
+    command     => "pkg_admin rebuild",
+    require     => File[$pkgsrc::settings['home']],
+    refreshonly => true,
+ }~>
+ exec { "${module_name}-update-pkgsrc_db":
+    path        => ['/opt/local/sbin','/opt/local/bin'],
+    command     => "pkgin -y up",
+    require     => File[$pkgsrc::settings['home']],
     refreshonly => true,
  }
 }
