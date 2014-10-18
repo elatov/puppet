@@ -63,7 +63,7 @@ class smartd::config {
   }
   
   if ($::operatingsystem == 'OmniOS'){
-    logadm { "/var/adm/smartd.log"
+    logadm { "/var/adm/smartd.log":
       count        => '4',
       post_command => "kill -HUP `cat /var/run/syslog.pid`",
     }
