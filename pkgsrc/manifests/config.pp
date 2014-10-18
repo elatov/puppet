@@ -19,7 +19,6 @@ class pkgsrc::config {
     cwd         => '/root/apps',
     command     => "tar xzf /root/apps/bootstrap-${pkgsrc::settings['version']}-x86_64.tar.gz -C /",
     require     => [File[$pkgsrc::home],Exec["${module_name}-wget-pkgsrc"]],
-    refreshonly => true,
     creates     => "/opt/local/etc"
  }~>
  exec { "${module_name}-rebuild-pkgsrc_index":
