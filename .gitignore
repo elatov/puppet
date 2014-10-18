@@ -105,4 +105,7 @@ solaris/.project
 !smartd/
 !smartd/**
 smartd/.project
+!logadm/
+!logadm/**
+logadm/.project
 !.gitignore
