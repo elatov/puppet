@@ -17,7 +17,7 @@ class pkgsrc (
 ) inherits pkgsrc::params {
 
   # validate parameters here
-  validate_hash($settings)
+  validate_hash($default_settings)
   
   # check to see if override hash is a hash
   if !($override_settings == undef){

@@ -29,7 +29,7 @@ class <%= metadata.name %> (
 ) inherits <%= metadata.name %>::params {
 
   # validate parameters here
-  validate_hash($settings)
+  validate_hash($default_settings)
   validate_string($package_name)
   
   # check to see if override hash is a hash
