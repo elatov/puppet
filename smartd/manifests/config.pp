@@ -34,7 +34,7 @@ class smartd::config {
       mode    => '0555',
       owner   => 'root',
       group   => 'bin',
-      content => "puppet:///modules/smartd/${smartd::service_file}",
+      source => "puppet:///modules/smartd/${smartd::service_file}",
     }->
     file { $smartd::manifest_file: 
       ensure  => "present",
@@ -42,7 +42,7 @@ class smartd::config {
       mode    => '0444',
       owner   => 'root',
       group   => 'sys',
-      content => "puppet:///modules/smartd/${smartd::manifest_file}",
+      source => "puppet:///modules/smartd/${smartd::manifest_file}",
     }~>
     exec { "${module_name}-import-svc":
       path        => ["/sbin","/usr/sbin"],

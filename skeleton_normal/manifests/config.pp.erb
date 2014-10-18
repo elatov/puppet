@@ -25,7 +25,7 @@ class <%= metadata.name %>::config {
       ensure  => 'present',
       path    => "${<%= metadata.name %>::service_dir}/<%= metadata.name %>",
       mode    => '0755',
-      content => "puppet:///modules/<%= metadata.name %>/${<%= metadata.name %>::service_file}",
+      source => "puppet:///modules/<%= metadata.name %>/${<%= metadata.name %>::service_file}",
     }
   }
   
