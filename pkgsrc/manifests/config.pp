@@ -9,14 +9,14 @@ class pkgsrc::config {
   exec { "${module_name}-wget-pkgsrc":
     path    => ['bin','/usr/bin'],
     cwd     => '/root/apps',
-    command => "wget http://${settings['url']}/bootstrap-${settings['version']}-x86_64.tar.gz",
+    command => "wget http://${pkgsrc::settings['url']}/bootstrap-${pkgsrc::settings['version']}-x86_64.tar.gz",
     require => File['/root/apps'],
-    creates  => "/root/apps/bootstrap-${settings['version']}-x86_64.tar.gz",
+    creates  => "/root/apps/bootstrap-${pkgsrc::settings['version']}-x86_64.tar.gz",
   }~>
   exec { "${module_name}-extract-pkgsrc":
     path        => ['bin','/usr/bin'],
     cwd         => '/root/apps',
-    command     => "tar xzf /root/apps/bootstrap-${settings['version']}-x86_64.tar.gz -C /",
+    command     => "tar xzf /root/apps/bootstrap-${pkgsrc::settings['version']}-x86_64.tar.gz -C /",
     require     => File[$pkgsrc::settings['home']],
     refreshonly => true,
     creates     => "/opt/local/etc"
