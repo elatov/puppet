@@ -5,10 +5,9 @@
 #
 class <%= metadata.name %>::params {
 
-	$<%= metadata.name %>_default_settings_all	=	{
-										'user' 	=> 'test',
-										'host'	=> $::hostname,
-										}
+	$<%= metadata.name %>_default_settings	=	{ 'user' 	=> 'test',
+												  'host'	=> $::hostname,
+												}
 	case $::osfamily {
 		'Debian': {
 			$<%= metadata.name %>_package_name		= '<%= metadata.name %>'
@@ -41,5 +40,5 @@ class <%= metadata.name %>::params {
 			fail("${::operatingsystem} not supported")
 		}
 	}
-	$<%= metadata.name %>_default_settings = merge($<%= metadata.name %>_settings_all,$<%= metadata.name %>_settings_os)
+	$<%= metadata.name %>_default_settings = merge($<%= metadata.name %>default_settings,$<%= metadata.name %>_settings_os)
 }

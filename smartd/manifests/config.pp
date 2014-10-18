@@ -63,20 +63,9 @@ class smartd::config {
   }
   
   if ($::operatingsystem == 'OmniOS'){
-#    file { $smartd::logadm_file:
-#      ensure => 'present',
-#      path   => "${smartd::logadm_dir}/smartd.conf",
-#      source => "puppet:///modules/smartd/${smartd::logadm_file}",
-#    }
-  logadm {'/var/adm/smartd.log':
-    count => 3,
-    post_command => "kill -HUP `cat /var/run/syslog.pid`"
-  }
-#    exec { "${module_name}-logadm-refresh":
-#      path        => ["/sbin","/usr/sbin"],
-#      command     => "logadm",
-#      refreshonly => true,
-#    }
-    #notify {"we are here":}
+	  logadm {'/var/adm/smartd.log':
+	    count => 3,
+	    post_command => "kill -HUP `cat /var/run/syslog.pid`"
+	  }
   }
 }

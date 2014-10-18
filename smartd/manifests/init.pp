@@ -18,13 +18,11 @@ class smartd (
   $config_dir		      = $smartd::params::smartd_config_dir,
   $service_dir	      = $smartd::params::smartd_service_dir,
   $manifest_dir	      = $smartd::params::smartd_manifest_dir,
-  $logadm_dir         = $smartd::params::smartd_logadm_dir,
   
   ## Conf Files
   $config_file	      = $smartd::params::smartd_config_file,
   $service_file	      = $smartd::params::smartd_service_file,
   $manifest_file      = $smartd::params::smartd_manifest_file,
-  $logadm_file        = $smartd::params::smartd_logadm_file,
   
   ## settings
   $override_settings  = undef,
