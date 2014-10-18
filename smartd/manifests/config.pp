@@ -61,4 +61,11 @@ class smartd::config {
     content => template("smartd/${smartd::config_file}.erb"),
     require => File [$smartd::config_dir],
   }
+  
+  if ($::operatingsystem == 'OmniOS'){
+    logadm { "/var/adm/smartd.log"
+      count        => '4',
+      post_command => "kill -HUP `cat /var/run/syslog.pid`",
+    }
+  }
 }
