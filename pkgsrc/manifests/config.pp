@@ -12,12 +12,13 @@ class pkgsrc::config {
     command => "wget http://${pkgsrc::settings['url']}/bootstrap-${pkgsrc::settings['version']}-x86_64.tar.gz",
     require => File['/root/apps'],
     creates  => "/root/apps/bootstrap-${pkgsrc::settings['version']}-x86_64.tar.gz",
-  }~>
+  }
+  
   exec { "${module_name}-extract-pkgsrc":
     path        => ['bin','/usr/bin'],
     cwd         => '/root/apps',
     command     => "tar xzf /root/apps/bootstrap-${pkgsrc::settings['version']}-x86_64.tar.gz -C /",
-    require     => File[$pkgsrc::home],
+    require     => [File[$pkgsrc::home],Exec["${module_name}-wget-pkgsrc"]],
     refreshonly => true,
     creates     => "/opt/local/etc"
  }~>
