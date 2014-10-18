@@ -5,7 +5,7 @@
 #
 class <%= metadata.name %>::params {
 
-	$<%= metadata.name %>_settings	=	{
+	$<%= metadata.name %>_default_settings_all	=	{
 										'user' 	=> 'test',
 										'host'	=> $::hostname,
 										}
@@ -18,12 +18,14 @@ class <%= metadata.name %>::params {
 			$<%= metadata.name %>_home						= '/usr/local/<%= metadata.name %>'
 			$<%= metadata.name %>_config_file			= '<%= metadata.name %>.sysconf.init'
 			$<%= metadata.name %>_service_file		= '<%= metadata.name %>.init'
+			$<%= metadata.name %>_settings_os		= { }
 		}
 		'RedHat': {
 			$<%= metadata.name %>_package_name		= '<%= metadata.name %>'
 			$<%= metadata.name %>_service_name		= '<%= metadata.name %>'
 			$<%= metadata.name %>_config_dir			= '/etc/sysconfig'
 			$<%= metadata.name %>_home						= '/usr/local/<%= metadata.name %>'
+			$<%= metadata.name %>_settings_os		= { }
 			
 			if $::operatingsystemmajrelease >= 7 {
 				$<%= metadata.name %>_service_dir  	= '/usr/lib/systemd/system'
@@ -39,4 +41,5 @@ class <%= metadata.name %>::params {
 			fail("${::operatingsystem} not supported")
 		}
 	}
+	$<%= metadata.name %>_default_settings = merge($<%= metadata.name %>_settings_all,$<%= metadata.name %>_settings_os)
 }

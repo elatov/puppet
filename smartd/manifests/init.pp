@@ -16,11 +16,11 @@ class smartd (
   
   ## Dirs
   $config_dir		= $smartd::params::smartd_config_dir,
-  $service_dir		= $smartd::params::smartd_service_dir,
+  $service_dir	= $smartd::params::smartd_service_dir,
   $home					= $smartd::params::smartd_home,
   
   ## Conf Files
-  $config_file		= $smartd::params::smartd_config_file,
+  $config_file	= $smartd::params::smartd_config_file,
   $service_file	= $smartd::params::smartd_service_file,
   
   ## settings

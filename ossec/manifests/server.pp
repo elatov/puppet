@@ -28,7 +28,7 @@ class ossec::server (
 
   # validate parameters here
   validate_hash($default_settings)
-  validate_string($ossec_server_package_name)
+  validate_string($package_name)
   
   if !($override_settings == undef){
     validate_hash($override_settings)

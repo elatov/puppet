@@ -16,20 +16,27 @@ class <%= metadata.name %> (
   
   ## Dirs
   $config_dir		= $<%= metadata.name %>::params::<%= metadata.name %>_config_dir,
-  $service_dir		= $<%= metadata.name %>::params::<%= metadata.name %>_service_dir,
   $home					= $<%= metadata.name %>::params::<%= metadata.name %>_home,
   
   ## Conf Files
-  $config_file		= $<%= metadata.name %>::params::<%= metadata.name %>_config_file,
+  $config_file	= $<%= metadata.name %>::params::<%= metadata.name %>_config_file,
   $service_file	= $<%= metadata.name %>::params::<%= metadata.name %>_service_file,
   
   ## settings
-  $settings			= $<%= metadata.name %>::params::<%= metadata.name %>_settings,
+  $override_settings      = undef,
+  $default_settings			= $<%= metadata.name %>::params::<%= metadata.name %>_default_settings,
 ) inherits <%= metadata.name %>::params {
 
   # validate parameters here
   validate_hash($settings)
   validate_string($package_name)
+  
+  # check to see if override hash is a hash
+  if !($override_settings == undef){
+    validate_hash($override_settings)
+  }
+  # Merge settings with override-hash even if it's empty
+  $settings = deep_merge($default_settings, $override_settings)
 
   class { '<%= metadata.name %>::install': } ->
   class { '<%= metadata.name %>::config': } ~>
