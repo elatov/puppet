@@ -9,23 +9,24 @@
 #
 class smartd (
   ## Packages
-  $package_name	= $smartd::params::smartd_package_name,
+  $package_name	      = $smartd::params::smartd_package_name,
   
   ## Services
-  $service_name	= $smartd::params::smartd_service_name,
+  $service_name	      = $smartd::params::smartd_service_name,
   
   ## Dirs
-  $config_dir		= $smartd::params::smartd_config_dir,
-  $service_dir	= $smartd::params::smartd_service_dir,
-  $home					= $smartd::params::smartd_home,
+  $config_dir		      = $smartd::params::smartd_config_dir,
+  $service_dir	      = $smartd::params::smartd_service_dir,
+  $manifest_dir	      = $smartd::params::smartd_manifest_dir,
   
   ## Conf Files
-  $config_file	= $smartd::params::smartd_config_file,
-  $service_file	= $smartd::params::smartd_service_file,
+  $config_file	      = $smartd::params::smartd_config_file,
+  $service_file	      = $smartd::params::smartd_service_file,
+  $manifest_file      = $smartd::params::smartd_manifest_file,
   
   ## settings
-  $override_settings    = undef,
-  $default_settings			= $smartd::params::smartd_default_settings,
+  $override_settings  = undef,
+  $default_settings		= $smartd::params::smartd_default_settings,
 ) inherits smartd::params {
 
   # validate parameters here
@@ -40,7 +41,7 @@ class smartd (
   $settings = deep_merge($default_settings, $override_settings)
   
   class { 'smartd::install': } ->
-#  class { 'smartd::config': } ~>
+  class { 'smartd::config': } ~>
 #  class { 'smartd::service': } ->
   Class['smartd']
 }

@@ -15,7 +15,6 @@ class smartd::params {
 			$smartd_service_name		     = 'smartd'
 			$smartd_config_dir			     = '/etc/default'
 			$smartd_service_dir			     = '/etc/init.d'
-			$smartd_home						     = '/usr/local/smartd'
 			$smartd_config_file			     = 'smartd.sysconf.init'
 			$smartd_service_file		     = 'smartd.init'
 			$smartd_default_settings_os  = {}
@@ -24,7 +23,6 @@ class smartd::params {
 			$smartd_package_name		     = 'smartd'
 			$smartd_service_name		     = 'smartd'
 			$smartd_config_dir			     = '/etc/sysconfig'
-			$smartd_home						     = '/usr/local/smartd'
 			$smartd_default_settings_os  = {}
 			
 			if $::operatingsystemmajrelease >= 7 {
@@ -43,12 +41,12 @@ class smartd::params {
       ### Service
       $smartd_service_name         = 'smartd'
       #### Dir
-      $smartd_config_dir           = '/etc'
+      $smartd_config_dir           = '/usr/local/etc/'
       $smartd_service_dir          = '/lib/svc/method'
       $smartd_manifest_dir         = '/var/svc/manifest/application/'
       ### Config Files
       $smartd_config_file          = 'smartd.conf'
-      $smartd_service_file         = 'svc-smartd'
+      $smartd_service_file         = 'smartd.smf'
       $smartd_manifest_file        = 'smartd.xml'
       ### Settings
       $smartd_default_settings_os  = { 'devicescan'   => false }
