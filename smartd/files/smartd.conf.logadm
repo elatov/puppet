@@ -1,0 +1,1 @@
+/var/adm/smartd.log -C 4 -a 'kill -HUP `cat /var/run/syslog.pid`'
