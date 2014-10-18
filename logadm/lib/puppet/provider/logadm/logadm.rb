@@ -136,31 +136,5 @@ Puppet::Type.type(:logadm).provide(:logadm) do
         end
     end
 
-    ensurable do
-        desc "Ensure that an entry is present, or that it is absent.
-            "
-        newvalue(:present) do
-            if @resource.entry_on_disk
-                if !@resource.entry_is_correct?
-                    @resource.backup
-                    @resource.remove_entry
-                    @resource.add_entry
-                    @resource.validate_entry
-                end
-            else
-                @resource.backup
-                @resource.add_entry
-                @resource.validate_entry
-            end
-        end
-
-        newvalue(:absent) do
-            if @resource.entry_on_disk
-                @resource.backup
-                @resource.remove_entry
-            end
-        end
-        defaultto :present
-    end
 
 end
