@@ -1,7 +1,6 @@
 <% if @settings['devicescan'] -%>
 DEVICESCAN -m <%= @mail_to %> <% if @settings['devicescan_options'] %><%= ' ' + @settings['devicescan_options'] %><% end %>
 <% end -%>
-
 <% @settings['devices'].each do |dev| -%>
 <%= dev['device'] %><% if dev.has_key?('options') -%><%= ' ' + dev['options'] %><% end %>
 <% end -%>
