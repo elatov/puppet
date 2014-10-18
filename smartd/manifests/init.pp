@@ -24,15 +24,23 @@ class smartd (
   $service_file	= $smartd::params::smartd_service_file,
   
   ## settings
-  $settings			= $smartd::params::smartd_settings,
+  $override_settings    = undef,
+  $default_settings			= $smartd::params::smartd_default_settings,
 ) inherits smartd::params {
 
   # validate parameters here
-  validate_hash($settings)
+  validate_hash($default_settings)
   validate_string($package_name)
 
+  # check to see if override hash is a hash
+  if !($override_settings == undef){
+    validate_hash($override_settings)
+  }
+  # Merge settings with override-hash even if it's empty
+  $settings = deep_merge($default_settings, $override_settings)
+  
   class { 'smartd::install': } ->
-  class { 'smartd::config': } ~>
-  class { 'smartd::service': } ->
+#  class { 'smartd::config': } ~>
+#  class { 'smartd::service': } ->
   Class['smartd']
 }
