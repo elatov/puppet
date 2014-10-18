@@ -4,7 +4,7 @@
 #
 class pkgsrc::config {
 
-  ensure_resource (file,$pkgsrc::settings['home'],{ensure => 'directory'})
+  ensure_resource (file,$pkgsrc::home,{ensure => 'directory'})
   
   exec { "${module_name}-wget-pkgsrc":
     path    => ['bin','/usr/bin'],
