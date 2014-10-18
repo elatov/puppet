@@ -5,7 +5,7 @@
 #
 class pkgsrc::params {
 
-	$pkgsrc_default_settings	=	{	'version' 	=> '2014Q2',
+	$pkgsrc_settings_all	=	{	'version' 	=> '2014Q2',
 	                              'url'       => 'pkgsrc.joyent.com/packages/SmartOS/bootstrap',
                                 'upgrade'   => false,
 										          }
@@ -18,5 +18,5 @@ class pkgsrc::params {
 			fail("${::operatingsystem} not supported")
 		}
 	}
-	$pkgsrc_default_settings = merge($pkgsrc_default_settings,$pkgsrc_settings_os)
+	$pkgsrc_default_settings = merge($pkgsrc_settings_all,$pkgsrc_settings_os)
 }
