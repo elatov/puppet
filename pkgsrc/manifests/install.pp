@@ -11,7 +11,7 @@ class pkgsrc::install {
   if ($pkgsrc::settings['upgrade']){
     exec { "${module_name}-backup-old-pkgsrc":
       path    => ['bin','/usr/bin'],
-      command => "mv ${pkgsrc::settings['home']} ${pkgsrc::settings['home']}_${timestamp}",
+      command => "mv ${pkgsrc::home} ${pkgsrc::home}_${timestamp}",
     }->
     file { $pkgsrc::home:
       ensure => 'directory',
