@@ -17,7 +17,7 @@ class smartd (
   ## Dirs
   $config_dir		      = $smartd::params::smartd_config_dir,
   $service_dir	      = $smartd::params::smartd_service_dir,
-  $manifest_dir	      = smartd_manifest_dir,
+  $manifest_dir	      = $smartd::params::smartd_manifest_dir,
   $logadm_dir         = $smartd::params::smartd_logadm_dir,
   
   ## Conf Files

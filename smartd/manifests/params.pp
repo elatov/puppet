@@ -38,18 +38,22 @@ class smartd::params {
 		'Solaris': {
 		  ### Package
       $smartd_package_name         = 'smartmontools'
+     
       ### Service
       $smartd_service_name         = 'smartd'
+     
       #### Dir
       $smartd_config_dir           = '/usr/local/etc/'
       $smartd_service_dir          = '/lib/svc/method'
       $smartd_manifest_dir         = '/var/svc/manifest/application/'
       $smartd_logadm_dir           = '/etc/logadm.d'
+
       ### Config Files
       $smartd_config_file          = 'smartd.conf'
       $smartd_service_file         = 'smartd.smf'
       $smartd_manifest_file        = 'smartd.xml'
       $smartd_logadm_file          = 'smartd.conf.logadm'
+      
       ### Settings
       $smartd_default_settings_os  = { 'devicescan'   => false }
     }
