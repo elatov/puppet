@@ -1,6 +1,6 @@
 #!/bin/sh
-CMD="/usr/local/sbin/smartd"
-CONF="/usr/local/etc/smartd.conf"
+CMD="/opt/omni/sbin/smartd"
+CONF="/opt/omni/etcsmartd.conf"
 VAR="-l local3"
 RETVAL=0
 start() {
