@@ -108,4 +108,7 @@ smartd/.project
 !logadm/
 !logadm/**
 logadm/.project
+!pkgsrc/
+!pkgsrc/**
+pkgsrc/.project
 !.gitignore
