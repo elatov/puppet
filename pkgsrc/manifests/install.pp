@@ -13,7 +13,7 @@ class pkgsrc::install {
       path    => ['bin','/usr/bin'],
       command => "mv ${pkgsrc::settings['home']} ${pkgsrc::settings['home']}_${timestamp}",
     }->
-    file { $pkgsrc::settings['home']:
+    file { $pkgsrc::home:
       ensure => 'directory',
     }
     
