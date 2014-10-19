@@ -8,10 +8,15 @@ class zabbix::agent (
   ## Dirs
   $config_dir             = $zabbix::params::agent_zabbix_config_dir,
   $custom_scripts_dir     = $zabbix::params::agent_zabbix_custom_scripts_dir,
-  $agentd_conf_dir        = $zabbix::params::agent_zabbix_agentd_conf_dir,
+  $agentd_conf_dir        = $zabbix::params::agent_zabbix_conf_dir,
+  $manifest_dir           = $zabbix::params::agent_zabbix_manifest_dir,
+  $service_dir            = $zabbix::params::agent_zabbix_service_dir,
+  $home_dir               = $zabbix::params::agent_zabbix_home_dir,
   
   ## Conf Files
   $config_file            = $zabbix::params::agent_zabbix_config_file,
+  $manigest_file          = $zabbix::params::agent_zabbix_manifest_file,
+  $service_file           = $zabbix::params::agent_zabbix_service_file,
   
   ## settings
   $override_settings      = undef,
@@ -32,7 +37,7 @@ class zabbix::agent (
 #  notify {"end hash looks like this ${settings}":}
   
   class { 'zabbix::agent::install': } ->
-  class { 'zabbix::agent::config': } ~>
-  class { 'zabbix::agent::service': } ->
+#  class { 'zabbix::agent::config': } ~>
+#  class { 'zabbix::agent::service': } ->
   Class['zabbix::agent']
 }

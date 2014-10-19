@@ -3,7 +3,6 @@ class zabbix::agent::install () {
   if !(defined(Class ["zabbix::server"])){
 	  case $::operatingsystem {
 	    /(?i:CentOS|fedora)/: { 
-	#     include zabbix::repo::centos
 	    }
 	    /(?i:Debian)/: { 
 	      apt::source { 'zabbix':
@@ -16,14 +15,35 @@ class zabbix::agent::install () {
 	      }
 	    }
 	    /(?i:FreeBSD)/:{
-        ensure_packages('pkg',{ ensure  => 'present',})
 	    }
+	    /(?i:OmniOS)/:{
+      }
+	    
 	    default: {
 	      fail("Module ${module_name} is not supported on ${::operatingsystem}")
 	    }
 	  }
   }
-  ensure_packages($zabbix::agent::package_name,{ ensure  => 'present',})
+  if ($::operatingsystem != 'OmniOS'){
+    file { $zabbix::agent::home_dir:
+      ensure => 'directory',
+    }
+
+    file { $zabbix::agent::package_name:
+      ensure => 'present',
+      path   => "/root/apps/${zabbix::agent::package_name}",
+      source => "puppet:///modules/zabbix/${zabbix::agent::package_name}",
+    }
+    
+    exec { "${module_name}-extract-zabbix":
+      path    => ['/usr/bin','/usr/sbin'],
+      command => "tar xvf /root/apps/${zabbix::agent::package_name} -C ${zabbix::agent::home_dir}",
+      creates => "${zabbix::agent::home_dir}/bin",
+      require => [File[$zabbix::agent::home_dir],File[$zabbix::agent::package_name]],
+    }
+  }else{
+    ensure_packages($zabbix::agent::package_name,{ ensure  => 'present',})
+  }  
   
   if $::operatingsystem =~ /(?i:CentOS|fedora)/ {
     exec {"${module_name}-systemd-tmpfiles":
