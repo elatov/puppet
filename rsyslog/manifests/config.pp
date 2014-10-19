@@ -58,7 +58,7 @@ class rsyslog::config {
     }->
     file_line { "enable_mail-crit_in_${rsyslog::conf_file}":
       path  => $rsyslog::conf_file,
-      match => "*daemon*/var/adm/messages$",
+      match => "*.daemon.*/var/adm/messages$",
       line  => "*.err;kern.debug;daemon.notice\t/var/adm/messages",
     }->
     file_line { "enable_smartd_in_${rsyslog::conf_file}":
