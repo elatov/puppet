@@ -13,14 +13,16 @@ class sendmail::config {
     path    => "${sendmail::cf_dir}/${sendmail::mc_file}",
     content => template("sendmail/${sendmail::mc_file}.erb"),
     require => File [$sendmail::cf_dir],
-  }->
+  }~>
   exec { "${module_name}-m4-gen-sm-config":
-    cwd     => $sendmail::cf_dir,
-    command => "/usr/ccs/bin/m4 ../m4/cf.m4 sm.mc > sm.cf",
-    creates => "${sendmail::cf_dir}/sm.cf",
-  }->
+    cwd         => $sendmail::cf_dir,
+    command     => "/usr/ccs/bin/m4 ../m4/cf.m4 sm.mc > sm.cf",
+    creates     => "${sendmail::cf_dir}/sm.cf",
+    refreshonly => true,
+  }~>
 	exec { "${module_name}-cp-${sendmail::config_file}":
-		command => "/usr/bin/cp ${sendmail::cf_dir}/sm.cf ${sendmail::config_dir}/${sendmail::config_file}",
-		onlyif  => "/usr/sbin/sendmail -C ${sendmail::cf_dir}/sm.cf -v root < /dev/null",
+		command     => "/usr/bin/cp ${sendmail::cf_dir}/sm.cf ${sendmail::config_dir}/${sendmail::config_file}",
+		onlyif      => "/usr/sbin/sendmail -C ${sendmail::cf_dir}/sm.cf -v root < /dev/null",
+		refreshonly => true,
 	}
 }
