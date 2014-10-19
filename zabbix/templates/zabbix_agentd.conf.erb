@@ -256,7 +256,7 @@ Hostname=Zabbix Server
 # AllowRoot=0
 <% if @settings['allow_root'] -%>
 AllowRoot=<%= @settings['allow_root'] -%>
-
+<% end -%>
 ### Option: User
 #	Drop privileges to a specific, existing user on the system.
 #	Only has effect if run as 'root' and AllowRoot is disabled.
