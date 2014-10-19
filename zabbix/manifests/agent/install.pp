@@ -25,8 +25,10 @@ class zabbix::agent::install () {
 	  }
   }
   if ($::operatingsystem == 'OmniOS'){
-    file { $zabbix::agent::home_dir:
-      ensure => 'directory',
+    ensure_resource(file,'/usr/local',{ensure => 'directory'})
+    file { [$zabbix::agent::home_dir]:
+      ensure  => 'directory',
+      require => File['/usr/local'],
     }
 
     file { $zabbix::agent::package_name:
