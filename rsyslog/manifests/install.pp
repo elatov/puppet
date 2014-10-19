@@ -1,5 +1,5 @@
 class rsyslog::install {
-  if ($::osfamily != 'FreeBSD'){
+  if ($::osfamily != /(?i:FreeBSD|Solaris)/ ){
     ensure_packages($rsyslog::package_name,{ensure => 'present'})
   }
 }

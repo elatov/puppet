@@ -26,9 +26,9 @@ class sendmail::config {
 		refreshonly => true,
 	}
 	
-	 if ($sendmail::settings['aliases']){
-    sendmail::aliases{$sendmail::settings['aliases']:
-      alias_recipient => $sendmail::settings['alias_recipient'],
-    }
-  }
+	if ($sendmail::settings['aliases']){
+		sendmail::aliases{ $sendmail::settings['aliases']:
+		  alias_recipient => $sendmail::settings['alias_recipient'],
+		}
+	}
 }
