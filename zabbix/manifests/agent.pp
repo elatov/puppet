@@ -38,6 +38,6 @@ class zabbix::agent (
   
   class { 'zabbix::agent::install': } ->
   class { 'zabbix::agent::config': } ~>
-#  class { 'zabbix::agent::service': } ->
+  class { 'zabbix::agent::service': } ->
   Class['zabbix::agent']
 }
