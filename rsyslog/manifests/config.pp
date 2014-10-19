@@ -56,6 +56,11 @@ class rsyslog::config {
       match => "^mail.debug*",
       line  => "mail.debug;mail.err;mail.alert;mail.warning;mail.info;mail.notice;mail.emerg\t/var/adm/mail.log",
     }->
+    file_line { "enable_mail-crit_in_${rsyslog::conf_file}":
+      path  => $rsyslog::conf_file,
+      match => "*/var/adm/messages$",
+      line  => "*.err;kern.debug;daemon.notice;mail.crit\t/var/adm/messages",
+    }->
     file_line { "enable_smartd_in_${rsyslog::conf_file}":
       path => $rsyslog::conf_file,
       line => "local3.warning;local3.err;local3.alert;local3.debug;local3.info;local3.notice;local3.debug\t/var/adm/smartd.log",
