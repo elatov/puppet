@@ -1,6 +1,6 @@
 #!/bin/sh
-CMD="<%= @homedir %>/sbin/zabbix_agentd"
-CONF="<%= @agentd_conf_dir %>/zabbix_agentd.conf"
+CMD="<%= @home_dir %>/sbin/zabbix_agentd"
+CONF="<%= @config_dir %>/zabbix_agentd.conf"
 RETVAL=0
 start() {
    echo "Starting Zabbix-agent: \c"
