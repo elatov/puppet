@@ -25,4 +25,10 @@ class sendmail::config {
 		onlyif      => "/usr/sbin/sendmail -C ${sendmail::cf_dir}/sm.cf -v root < /dev/null |  /usr/bin/grep 'go ahead'",
 		refreshonly => true,
 	}
+	
+	 if ($sendmail::settings['aliases']){
+    sendmail::aliases{$sendmail::settings['aliases']:
+      alias_recipient => $sendmail::settings['alias_recipient'],
+    }
+  }
 }
