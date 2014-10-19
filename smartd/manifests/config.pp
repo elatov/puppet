@@ -23,7 +23,7 @@ class smartd::config {
       ensure  => 'present',
       path    => "${smartd::service_dir}/smartd",
       mode    => '0755',
-      content => "puppet:///modules/smartd/${smartd::service_file}",
+      source => "puppet:///modules/smartd/${smartd::service_file}",
     }
   }
   
