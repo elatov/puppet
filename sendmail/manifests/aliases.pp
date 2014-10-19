@@ -17,7 +17,7 @@ define sendmail::aliases (
   }
   
   exec { "newalias-${alias}":
-    path         => ["/bin/","/usr/bin"],
+    path         => ["/bin/","/usr/bin","/usr/sbin"],
     command       => "newaliases",
     refreshonly   => true,
   }
