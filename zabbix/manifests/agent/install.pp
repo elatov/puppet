@@ -24,7 +24,7 @@ class zabbix::agent::install () {
 	    }
 	  }
   }
-  if ($::operatingsystem != 'OmniOS'){
+  if ($::operatingsystem == 'OmniOS'){
     file { $zabbix::agent::home_dir:
       ensure => 'directory',
     }
