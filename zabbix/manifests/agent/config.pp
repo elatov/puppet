@@ -9,7 +9,7 @@ class zabbix::agent::config () {
 
 	file { $zabbix::agent::agentd_conf_dir:
 		ensure => directory,
-		require => File[$zabbix::params::server_zabbix_config_dir],
+		require => File[$zabbix::agent::config_dir],
 	}
   
   if ($::osfamily == 'FreeBSD'){
