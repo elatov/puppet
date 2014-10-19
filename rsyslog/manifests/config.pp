@@ -53,7 +53,7 @@ class rsyslog::config {
     }->
     file_line { "enable_mail_in_${rsyslog::conf_file}":
       path  => $rsyslog::conf_file,
-      match => "*mail.debug*",
+      match => "mail.debug",
       line  => "mail.warning;mail.err;mail.alert;mail.debug;mail.info;mail.notice;mail.debug\t/var/adm/mail.log",
     }->
     file_line { "enable_mail-crit_in_${rsyslog::conf_file}":
