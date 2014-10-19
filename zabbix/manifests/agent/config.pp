@@ -1,6 +1,6 @@
 class zabbix::agent::config () {
   
-  ensure_resource (file,$zabbix::params::server_zabbix_config_dir,{ensure => 'directory'})
+  ensure_resource (file,$zabbix::agent::config_dir,{ensure => 'directory'})
   
 	file { $zabbix::agent::custom_scripts_dir:
 		ensure  => directory,
@@ -48,7 +48,7 @@ class zabbix::agent::config () {
     
     file { $zabbix::agent::service_file:
       ensure  => "present",
-      path    => "${smartd::service_dir}/svc-zabbix-agent",
+      path    => "${zabbix::agent::service_dir}/svc-zabbix-agent",
       mode    => '0555',
       owner   => 'root',
       group   => 'bin',
