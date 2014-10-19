@@ -54,22 +54,22 @@ class rsyslog::config {
     file_line { "enable_mail_in_${rsyslog::conf_file}":
       path  => $rsyslog::conf_file,
       match => "^mail.debug*",
-      line  => "mail.debug;mail.err;mail.alert;mail.warning;mail.info;mail.notice;mail.emerg;mail.crit;\t/var/adm/mail.log",
+      line  => "mail.debug;mail.err;mail.alert;mail.warning;mail.info;mail.notice;mail.emerg;mail.crit\t/var/adm/mail.log",
     }->
     file_line { "enable_smartd_in_${rsyslog::conf_file}":
       path => $rsyslog::conf_file,
-      line => "local3.warning;local3.err;local3.alert;local3.debug;local3.info;local3.notice;local3.debug;local3.crit;\t/var/adm/smartd.log",
+      line => "local3.warning;local3.err;local3.alert;local3.debug;local3.info;local3.notice;local3.debug;local3.crit\t/var/adm/smartd.log",
     }-> 
     file { '/var/adm/auth.log':
       ensure => 'present',
     }->
     file_line { "enable_auth_in_${rsyslog::conf_file}":
       path => $rsyslog::conf_file,
-      line => "auth.warning;auth.err;auth.alert;auth.debug;auth.info;auth.notice;auth.debug;auth.crit;\t/var/adm/auth.log",
+      line => "auth.warning;auth.err;auth.alert;auth.debug;auth.info;auth.notice;auth.debug;auth.crit\t/var/adm/auth.log",
     }-> 
     file_line { "enable_remote_in_${rsyslog::conf_file}":
       path => $rsyslog::conf_file,
-      line => "*.emerg;*.alert;*.crit;*.err;*.warning;*.notice;*.info;*.debug;\t@${rsyslog::settings['server']}",
+      line => "*.emerg;*.alert;*.crit;*.err;*.warning;*.notice;*.info;*.debug\t@${rsyslog::settings['server']}",
     }
   }
 }
