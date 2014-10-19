@@ -90,7 +90,7 @@ class zabbix::params {
 			                                       }
 			  
 		}
-		'OmniOS': {
+		'Solaris': {
       ### Client/Agent
       ## Package
       $agent_zabbix_package_name           = 'zabbix_agents_2.2.5.solaris11.amd64.tar.gz'
