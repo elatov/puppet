@@ -33,10 +33,12 @@ class ossec::client::install {
 	      require => File['/usr/local'],
 	    }
 	
+      ensure_resource(file,'/root/apps',{ensure => 'directory'})
 	    file { $ossec::client::package_name:
 	      ensure => 'present',
 	      path   => "/root/apps/${ossec::client::package_name}",
 	      source => "puppet:///modules/ossec/${ossec::client::package_name}",
+	      require => File['/root/apps'],
 	    }
 	    
 	    exec { "${module_name}-extract-ossec":
