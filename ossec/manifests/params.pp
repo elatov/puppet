@@ -117,12 +117,10 @@ class ossec::params {
       $ossec_client_service_name    = 'ossec'
       ## Dirs
       $ossec_client_config_dir      = '/usr/local/ossec/etc'
-      $ossec_client_service_dir     = '/lib/svc/method/'
       $ossec_client_home_dir        = '/usr/local/ossec'
       $ossec_client_manifest_dir    = '/var/svc/manifest/application/'
       ### Files
       $ossec_client_config_file     = "ossec-agent.conf"
-      $ossec_client_service_file    = 'ossec.smf'
       $ossec_client_manifest_file   = 'ossec.xml'
       ## Settings
       $ossec_client_settings_os     = { 'config' => { 'logs' => {'/var/log/syslog'    => 'syslog',

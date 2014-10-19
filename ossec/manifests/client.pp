@@ -43,7 +43,7 @@ inherits ossec::params {
   $settings = deep_merge($ossec::params::ossec_client_default_settings, $override_settings)
   
   class { 'ossec::client::install': } ->
-#  class { 'ossec::client::config': } ~>
+  class { 'ossec::client::config': } ~>
 #  class { 'ossec::client::service': } ->
   Class['ossec::client']
 }

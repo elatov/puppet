@@ -36,4 +36,20 @@ class ossec::client::config {
 	    onlyif  => "match rule[*]/su not_include ossec",
 	  }
   }
+  
+  if ($::operatingsystem == 'OmniOS'){
+    file { $ossec::client::manifest_file: 
+      ensure  => "present",
+      path    => "${ossec::client::manifest_dir}/${zabbix::agent::manifest_file}",
+      mode    => '0444',
+      owner   => 'root',
+      group   => 'sys',
+      source => "puppet:///modules/ossec/${ossec::client::manifest_file}.erb",
+    }~>
+    exec { "${module_name}-import-svc":
+      path        => ["/sbin","/usr/sbin"],
+      command     => "svccfg import ${ossec::client::manifest_dir}/${ossec::client::manifest_file}",
+      refreshonly => true,
+    }
+  }
 }
