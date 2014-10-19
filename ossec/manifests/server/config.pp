@@ -25,13 +25,13 @@ class ossec::server::config {
     group  => 'ossec',
   }
   
-  file { "${ossec::server::home}/queue":
+  file { "${ossec::server::home_dir}/queue":
     ensure => 'directory',
     mode   => '755',
     owner  => 'ossec',
   }
   
-	file { "${ossec::server::home}/queue/rootcheck":
+	file { "${ossec::server::home_dir}/queue/rootcheck":
 		ensure => 'directory',
 		mode   => '575',
 		group  => 'ossec',

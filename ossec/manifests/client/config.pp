@@ -4,7 +4,7 @@
 #
 class ossec::client::config {
   
-  if !($ossec::client::settings['add_user'] == undef) {
+  if ($ossec::client::settings['add_user'] != undef) {
     User <| title == "${ossec::client::settings['add_user']}" |> { groups +> ["ossec"] }
   }
   
@@ -20,17 +20,20 @@ class ossec::client::config {
     require => File [$ossec::client::config_dir],
   }
   
-  file {"${ossec::client::config_dir}/localtime":
-    ensure  => 'link',
-    target   => $ossec::client::settings['timezone_file'],
-    force   => true
+  if ($ossec::client::settings['timezone_file'] != undef) {
+	  file {"${ossec::client::config_dir}/localtime":
+	    ensure  => 'link',
+	    target   => $ossec::client::settings['timezone_file'],
+	    force   => true
+	  }
   }
   
-  augeas {"${module_name}-ossec-hids-su-owner":
-    lens    => 'Logrotate.lns',
-    incl    => '/etc/logrotate.d/ossec-hids',
-    changes => ["setm rule[*] su/owner ossec","setm rule[*] su/group ossec"],
-    onlyif  => "match rule[*]/su not_include ossec",
+  if ($::operatingsystem != 'OmniOS'){
+	  augeas {"${module_name}-ossec-hids-su-owner":
+	    lens    => 'Logrotate.lns',
+	    incl    => '/etc/logrotate.d/ossec-hids',
+	    changes => ["setm rule[*] su/owner ossec","setm rule[*] su/group ossec"],
+	    onlyif  => "match rule[*]/su not_include ossec",
+	  }
   }
-
 }

@@ -16,7 +16,7 @@ class ossec::server (
   
   ## Dirs
   $config_dir		      = $ossec::params::ossec_server_config_dir,
-  $home					      = $ossec::params::ossec_server_home,
+  $home_dir					  = $ossec::params::ossec_server_home_dir,
   
   ## Conf Files
   $config_file		    = $ossec::params::ossec_server_config_file,

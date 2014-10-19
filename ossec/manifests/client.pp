@@ -17,11 +17,13 @@ class ossec::client (
   ## Dirs
   $config_dir		          = $ossec::params::ossec_client_config_dir,
   $service_dir		        = $ossec::params::ossec_client_service_dir,
-  $client_home					  = $ossec::params::ossec_client_home,
+  $manifest_dir           = $ossec::params::ossec_client_manifest_dir,
+  $home_dir					      = $ossec::params::ossec_client_home_dir,
   
   ## Conf Files
   $config_file		        = $ossec::params::ossec_client_config_file,
   $service_file	          = $ossec::params::ossec_client_service_file,
+  $manifest_file          = $ossec::params::ossec_client_manifest_file,
   
   ## settings
   $override_settings      = undef,
@@ -41,7 +43,7 @@ inherits ossec::params {
   $settings = deep_merge($ossec::params::ossec_client_default_settings, $override_settings)
   
   class { 'ossec::client::install': } ->
-  class { 'ossec::client::config': } ~>
-  class { 'ossec::client::service': } ->
+#  class { 'ossec::client::config': } ~>
+#  class { 'ossec::client::service': } ->
   Class['ossec::client']
 }
