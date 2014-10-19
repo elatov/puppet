@@ -40,6 +40,6 @@ class sendmail (
 
   class { 'sendmail::install': } ->
   class { 'sendmail::config': } ~>
-#  class { 'sendmail::service': } ->
+  class { 'sendmail::service': } ->
   Class['sendmail']
 }
