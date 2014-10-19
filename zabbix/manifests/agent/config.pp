@@ -4,7 +4,7 @@ class zabbix::agent::config () {
   
 	file { $zabbix::agent::custom_scripts_dir:
 		ensure  => directory,
-		require => File[$zabbix::params::server_zabbix_config_dir],
+		require => File[$zabbix::agent::config_dir],
 	}
 
 	file { $zabbix::agent::agentd_conf_dir:
