@@ -26,6 +26,10 @@ class sendmail::config {
 		refreshonly => true,
 	}
 	
+	logadm {'/var/adm/mail.log':
+		count => 3,
+		post_command => "kill -HUP `cat /var/run/syslog.pid`"
+	}
 	if ($sendmail::settings['aliases']){
 		sendmail::aliases{ $sendmail::settings['aliases']:
 		  alias_recipient => $sendmail::settings['alias_recipient'],
