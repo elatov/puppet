@@ -50,7 +50,10 @@ class rsyslog::config {
     file_line { "enable_remote_in_${rsyslog::conf_file}":
       path => $rsyslog::conf_file,
       line => "*.emerg;*.alert;*.crit;*.err;*.warning;*.notice;*.info;*.debug;\t@${rsyslog::settings['server']}",
-    } 
+    }
+    file { '/var/adm/mail.log':
+      ensure => 'present',
+    }->
     file_line { "enable_mail_in_${rsyslog::conf_file}":
       path  => $rsyslog::conf_file,
       match => "^mail.debug*",
@@ -62,9 +65,12 @@ class rsyslog::config {
       line => "local3.warning;local3.err;local3.alert;local3.debug;local3.info;local3.notice;local3.debug;local3.crit;\t/var/adm/smartd.log",
     } 
     
+     file { '/var/adm/auth.log':
+      ensure => 'present',
+    }->
     file_line { "enable_auth_in_${rsyslog::conf_file}":
       path => $rsyslog::conf_file,
-      line => "auth.warning;auth.err;auth.alert;auth.debug;auth.info;auth.notice;auth.debug;auth.crit;\t/var/adm/smartd.log",
+      line => "auth.warning;auth.err;auth.alert;auth.debug;auth.info;auth.notice;auth.debug;auth.crit;\t/var/adm/auth.log",
     } 
   }
 }
