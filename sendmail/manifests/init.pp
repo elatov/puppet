@@ -16,6 +16,7 @@ class sendmail (
   
   ## Dirs
   $config_dir		        = $sendmail::params::sendmail_config_dir,
+  $cf_dir               = $sendmail::params::sendmail_cf_dir,
   
   ## Conf Files
   $config_file	        = $sendmail::params::sendmail_config_file,
@@ -38,7 +39,7 @@ class sendmail (
   $settings = deep_merge($default_settings, $override_settings)
 
   class { 'sendmail::install': } ->
-#  class { 'sendmail::config': } ~>
+  class { 'sendmail::config': } ~>
 #  class { 'sendmail::service': } ->
   Class['sendmail']
 }
