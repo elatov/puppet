@@ -10,7 +10,11 @@
 # Default:
 # PidFile=/tmp/zabbix_agentd.pid
 
+<% if @settings['pidFile'] -%>
+PidFile=<%= @settings['pidFile'] -%>
+<% else -%> 
 PidFile=/var/run/zabbix/zabbix_agentd.pid
+<% end -%>
 
 ### Option: LogFile
 #	Name of log file.
@@ -20,7 +24,11 @@ PidFile=/var/run/zabbix/zabbix_agentd.pid
 # Default:
 # LogFile=
 
+<% if @settings['logFile'] -%>
+LogFile=<%= @settings['logFile'] -%>
+<% else -%> 
 LogFile=/var/log/zabbix/zabbix_agentd.log
+<% end -%>
 
 ### Option: LogFileSize
 #	Maximum size of log file in MB.
