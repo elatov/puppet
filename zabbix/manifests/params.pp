@@ -111,7 +111,7 @@ class zabbix::params {
       
       ## Settings
       $agent_zabbix_version                = '2.2'
-      $agent_zabbix_default_settings       = { 'logFile'                => '/var/log/zabbix/zabbix_agentd.log',
+      $agent_zabbix_default_settings       = { 'logFile'                => '/var/adm/zabbix/zabbix_agentd.log',
                                                'logFileSize'            => '1',
                                                'pidFile'                => '/var/run/zabbix_agentd.pid',
                                                'startagents'            => '1',
