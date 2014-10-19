@@ -1,12 +1,16 @@
 class zabbix::agent::config () {
   
+  ensure_resource (file,$zabbix::params::server_zabbix_config_dir,{ensure => 'directory'})
+  
 	file { $zabbix::agent::custom_scripts_dir:
-	 ensure => directory,
+		ensure  => directory,
+		require => File[$zabbix::params::server_zabbix_config_dir],
 	}
 
-  file { $zabbix::agent::agentd_conf_dir:
-    ensure => directory,
-  }
+	file { $zabbix::agent::agentd_conf_dir:
+		ensure => directory,
+		require => File[$zabbix::params::server_zabbix_config_dir],
+	}
   
   if ($::osfamily == 'FreeBSD'){
     file {'/var/log/zabbix':
@@ -31,6 +35,39 @@ class zabbix::agent::config () {
       pidfile => '/var/run/zabbix/zabbix.pid'
     }
   }
+  
+  if ($::osfamily == 'Solaris'){
+    file {'/var/adm/zabbix':
+      ensure => 'directory',
+    }
+
+    logadm { "${zabbix::agent::settings['logFile']}":
+      count          => '5',
+      copy_truncate  => true,
+    }
+    
+    file { $zabbix::agent::service_file:
+      ensure  => "present",
+      path    => "${smartd::service_dir}/svc-zabbix-agent",
+      mode    => '0555',
+      owner   => 'root',
+      group   => 'bin',
+      content => template("zabbix/${zabbix::agent::service_file}.erb"),
+    }->
+    file { $zabbix::agent::manifest_file: 
+      ensure  => "present",
+      path    => "${zabbix::agent::manifest_dir}/${zabbix::agent::manifest_file}",
+      mode    => '0444',
+      owner   => 'root',
+      group   => 'sys',
+      source => "puppet:///modules/zabbix/${zabbix::agent::manifest_file}",
+    }~>
+    exec { "${module_name}-import-svc":
+      path        => ["/sbin","/usr/sbin"],
+      command     => "svccfg import ${zabbix::agent::manifest_dir}/${zabbix::agent::manifest_file}",
+      refreshonly => true,
+    }
+  }
   if($zabbix::agent::settings['smart']) {
     # Add custom scripts for smart status
     file { "${zabbix::agent::custom_scripts_dir}/get_smart_value.bash":
@@ -39,16 +76,24 @@ class zabbix::agent::config () {
     }
 
     # rules for user parameters
-    file { "${zabbix::agent::agentd_conf_dir}/smart.conf":
-      source  => 'puppet:///modules/zabbix/smart.conf',
-      require => File[$zabbix::agent::agentd_conf_dir],
-      mode => '644',
-    }
-
-    # sudoers for smartctl
-    sudo::conf { "${module_name}-agentd-smartctl":
-      priority => 20,
-      content  => "zabbix ALL=(ALL) NOPASSWD: /usr/sbin/smartctl",
+    if ($::osfamily == 'Solaris'){
+      file { "${zabbix::agent::agentd_conf_dir}/smart-sunos.conf":
+        source  => 'puppet:///modules/zabbix/smart.conf',
+        require => File[$zabbix::agent::agentd_conf_dir],
+        mode => '644',
+      }
+    }else{
+	    file { "${zabbix::agent::agentd_conf_dir}/smart.conf":
+	      source  => 'puppet:///modules/zabbix/smart.conf',
+	      require => File[$zabbix::agent::agentd_conf_dir],
+	      mode => '644',
+	    }
+	    
+      # sudoers for smartctl
+	    sudo::conf { "${module_name}-agentd-smartctl":
+        priority => 20,
+        content  => "zabbix ALL=(ALL) NOPASSWD: /usr/sbin/smartctl",
+      }
     }
   }
 
@@ -66,9 +111,11 @@ class zabbix::agent::config () {
     }
 
     # sudoers for mdadm
-    sudo::conf { "${module_name}-agentd-mdadm":
-      priority => 20,
-      content  => "zabbix ALL=(ALL) NOPASSWD: /sbin/mdadm --detail *\n",
+    if ($::operatingsystem != 'OmniOS'){
+	    sudo::conf { "${module_name}-agentd-mdadm":
+	      priority => 20,
+	      content  => "zabbix ALL=(ALL) NOPASSWD: /sbin/mdadm --detail *\n",
+	    }
     }
   }
 
@@ -84,6 +131,17 @@ class zabbix::agent::config () {
       cron {"zabbix-disk-perf-freebsd":
         command => "/usr/sbin/iostat -x -t da 1 2 > /tmp/iostat.txt",
         user => "zabbix",
+      }
+    }elsif  ($::osfamily == 'Solaris'){
+      # rules for user parameters
+      file { "${zabbix::agent::agentd_conf_dir}/disk_perf.conf":
+        source  => 'puppet:///modules/zabbix/disk_perf-sunos.conf',
+        require => File[$zabbix::agent::agentd_conf_dir],
+        mode => "644",
+      }
+      
+      cron {"zabbix-disk-perf-sunos":
+        command => "/usr/bin/iostat -xn 1 2 > /tmp/iostat.txt",
       }
     } else {
 	    # Add custom script

@@ -15,7 +15,7 @@ class zabbix::agent (
   
   ## Conf Files
   $config_file            = $zabbix::params::agent_zabbix_config_file,
-  $manigest_file          = $zabbix::params::agent_zabbix_manifest_file,
+  $manifest_file          = $zabbix::params::agent_zabbix_manifest_file,
   $service_file           = $zabbix::params::agent_zabbix_service_file,
   
   ## settings
@@ -37,7 +37,7 @@ class zabbix::agent (
 #  notify {"end hash looks like this ${settings}":}
   
   class { 'zabbix::agent::install': } ->
-#  class { 'zabbix::agent::config': } ~>
+  class { 'zabbix::agent::config': } ~>
 #  class { 'zabbix::agent::service': } ->
   Class['zabbix::agent']
 }
