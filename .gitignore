@@ -111,4 +111,7 @@ logadm/.project
 !pkgsrc/
 !pkgsrc/**
 pkgsrc/.project
+!sendmail/
+!sendmail/**
+sendmail/.project
 !.gitignore
