@@ -22,7 +22,7 @@ class sendmail::config {
   }~>
 	exec { "${module_name}-cp-${sendmail::config_file}":
 		command     => "/usr/bin/cp ${sendmail::cf_dir}/sm.cf ${sendmail::config_dir}/${sendmail::config_file}",
-		onlyif      => "/usr/sbin/sendmail -C ${sendmail::cf_dir}/sm.cf -v root < /dev/null",
+		onlyif      => "/usr/sbin/sendmail -C ${sendmail::cf_dir}/sm.cf -v root < /dev/null |  /usr/bin/grep 'go ahead'",
 		refreshonly => true,
 	}
 }
