@@ -40,9 +40,16 @@ class grive::params {
                                             'libgcrypt',
                                             'libgpg-error'],
                             }
-      
-      
-      
+    }
+    'Solaris': {
+      $grive_settings_os  = {'pre_pkgs'   => ['json-c',
+                                              'curl',
+                                             ],
+                             'pre_pkgin'  => [ 'boost',
+                                               'libgcrypt',
+                                               'yajl'
+                                             ]
+                            }
     }
 		default: {
 			fail("${::operatingsystem} not supported")
