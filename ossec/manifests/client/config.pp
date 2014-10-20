@@ -44,7 +44,7 @@ class ossec::client::config {
       mode    => '0444',
       owner   => 'root',
       group   => 'sys',
-      source => "puppet:///modules/ossec/${ossec::client::manifest_file}.erb",
+      content => "template(ossec/${ossec::client::manifest_file}.erb)",
     }~>
     exec { "${module_name}-import-svc":
       path        => ["/sbin","/usr/sbin"],
