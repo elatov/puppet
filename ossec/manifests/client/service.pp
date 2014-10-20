@@ -5,7 +5,7 @@
 #
 class ossec::client::service{
 
-  if !$ossec::client::settings['initial_setup'] { 
+  if ($ossec::client::settings['initial_setup'] == false or $ossec::client::settings['initial_setup'] == undef) { 
     service { $ossec::client::service_name:
 	    ensure     => running,
 	    enable     => true,

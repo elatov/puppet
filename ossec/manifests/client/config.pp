@@ -51,5 +51,20 @@ class ossec::client::config {
       command     => "svccfg import ${ossec::client::manifest_dir}/${ossec::client::manifest_file}",
       refreshonly => true,
     }
+    
+    group { 'ossec':
+      ensure => present,
+      gid    => '100'
+    }
+    user { 'ossec':
+      ensure      => 'present',
+      uid         => '100',
+      gid         => '100',
+      shell       => '/bin/false',
+      home        => $ossec::client::home_dir,
+      allowdupe   => false,
+      managehome  => true,
+      require    => Group['ossec']
+    }
   }
 }
