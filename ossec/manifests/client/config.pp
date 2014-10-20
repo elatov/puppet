@@ -40,7 +40,7 @@ class ossec::client::config {
   if ($::operatingsystem == 'OmniOS'){
     file { $ossec::client::manifest_file: 
       ensure  => "present",
-      path    => "${ossec::client::manifest_dir}/${zabbix::agent::manifest_file}",
+      path    => "${ossec::client::manifest_dir}/${ossec::client::manifest_file}",
       mode    => '0444',
       owner   => 'root',
       group   => 'sys',
