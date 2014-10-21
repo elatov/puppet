@@ -1,19 +1,38 @@
 class update_checker::config {
-	file { $update_checker::cron_dir:
-		ensure  => directory,
-		owner   => 'root',
+  
+  if ($update_checker::cron_dir != undef){
+		file { $update_checker::cron_dir:
+			ensure  => directory,
+			owner   => 'root',
+		}
 	}
   
   case $::osfamily {
     /(?i:RedHat)/: { 
-        $update_checker_target_dir  = "/home/${update_checker::user}/.gdrive/notes/scripts/sh"
+        $update_checker_target_dir  = "${update_checker::user_home_dir}/.gdrive/notes/scripts/sh"
 
     }
     /(?i:Debian)/: { 
-        $update_checker_target_dir  = "/home/${update_checker::user}/.gdrive/notes/scripts/csh"
+        $update_checker_target_dir  = "${update_checker::user_home_dir}/.gdrive/notes/scripts/csh"
     }
     /(?i:FreeBSD)/: { 
-        $update_checker_target_dir  = "/home/${update_checker::user}/.gdrive/notes/scripts/bash"
+        $update_checker_target_dir  = "${update_checker::user_home_dir}/.gdrive/notes/scripts/bash"
+    }
+     /(?i:Solaris)/: { 
+       cron {"pkg-check":
+          command => "${update_checker::user_home_dir}/.gdrive/notes/scripts/bash/$update_checker::update_script",
+          user => "root",
+          minute => "30",
+          hour   => "00",
+          require => Class['grive'],
+        }
+        cron {"pkgin-check":
+          command => "${update_checker::user_home_dir}/.gdrive/notes/scripts/bash/pkgin-check.bash",
+          user => "root",
+          minute => "00",
+          hour   => "01",
+          require => Class['grive'],
+        }
     }
     default: {
         fail("The ${module_name} module is not supported on ${::osfamily}/${::operatingsystem}.")
@@ -26,7 +45,7 @@ class update_checker::config {
 			target  => "${update_checker_target_dir}/${update_checker::update_script}",
 			require => Class['grive']
 		}
-	} else {
+	} elsif ( $::osfamily =~ /(?i:RedHat|Debian)/ ) {
 		file {"$update_checker::cron_dir/$update_checker::update_script":
       ensure  => "link",
       target  => "${update_checker_target_dir}/${update_checker::update_script}",

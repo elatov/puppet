@@ -19,6 +19,10 @@ class update_checker(
   
   validate_string($update_script)
   
+   ## Get the User's Home Directory
+  $var  = "home_${user}"
+  $user_home_dir = inline_template("<%= scope.lookupvar('::$var') %>")
+  
   class { 'update_checker::install': }->
   class { 'update_checker::config': } ->
   Class['update_checker']

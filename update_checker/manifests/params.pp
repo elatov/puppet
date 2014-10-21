@@ -19,6 +19,10 @@ class update_checker::params {
         $update_checker_packages    = ['bash']
         $update_checker_cron_dir    = '/etc/periodic/daily'
     }
+    /(?i:Solaris)/: { 
+        $update_checker_script      = 'pkg-check.bash'
+        $update_checker_packages    = ['bash']
+    }
     default: {
         fail("The ${module_name} module is not supported on ${::osfamily}/${::operatingsystem}.")
     }
