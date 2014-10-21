@@ -114,4 +114,7 @@ pkgsrc/.project
 !sendmail/
 !sendmail/**
 sendmail/.project
+!custom/
+!custom/**
+custom/.project
 !.gitignore
