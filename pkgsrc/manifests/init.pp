@@ -25,6 +25,10 @@ class pkgsrc (
   }
   # Merge settings with override-hash even if it's empty
   $settings = deep_merge($default_settings, $override_settings)
+  
+  ## Get the User's Home Directory
+  $var  = "home_${settings['user']}"
+  $user_home_dir = inline_template("<%= scope.lookupvar('::$var') %>")
 
   class { 'pkgsrc::install': } ->
   class { 'pkgsrc::config': } ~>

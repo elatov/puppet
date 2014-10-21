@@ -12,7 +12,7 @@ class pkgsrc::params {
 	case $::osfamily {
 		'Solaris': {
 			$pkgsrc_home					= '/opt/local'
-			$pkgsrc_settings_os		= {}
+			$pkgsrc_settings_os		= { 'user'  => 'test'}
 		}
 		default: {
 			fail("${::operatingsystem} not supported")

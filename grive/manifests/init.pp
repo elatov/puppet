@@ -27,7 +27,11 @@ class grive (
   }
   # Merge settings with override-hash even if it's empty
   $settings = deep_merge($default_settings, $override_settings)
-
+  
+  ## Get the User's Home Directory
+  $var  = "home_${settings['user']}"
+  $user_home_dir = inline_template("<%= scope.lookupvar('::$var') %>")
+  
   class { 'grive::install': } ->
   class { 'grive::config': } ~>
 #  class { 'grive::service': } ->

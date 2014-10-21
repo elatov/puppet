@@ -4,33 +4,33 @@
 #
 class grive::config {
 
-  ensure_resource ('user',$grive::settings['user'],{ 'ensure'=> 'present' })
-    
   # create .gdrive dir
-  file{"/home/${grive::settings['user']}/.gdrive":
+  file{"${grive::user_home_dir}/.gdrive":
     ensure  => 'directory',
     owner   => $grive::settings['user'],
     group   => $grive::settings['user'],
   }
  
   if $grive::initial_setup {
-   notify {"go run grive -a in /home/${grive::settings['user']}/.gdrive":}
+   notify {"go run grive -a in ${grive::user_home_dir}/.gdrive":}
   } else {
+    ensure_resource ('file','/usr/local/bin',{'ensure' => 'directory',})
+    
     file { '/usr/local/bin/grive':
       ensure => 'link',
       target => "${grive::settings['home_dir']}/grive/bin/grive",
     }
     
-    file { "/home/${grive::settings['user']}/.gdrive/notes/backup/bin/rsync_backup.bash":
+    file { "${grive::user_home_dir}/.gdrive/notes/backup/bin/rsync_backup.bash":
       mode => '0755',
     }->
     file { '/usr/local/backup':
       ensure  => 'link',
-      target  => "/home/${grive::settings['user']}/.gdrive/notes/backup",
+      target  => "${grive::user_home_dir}/.gdrive/notes/backup",
     }-> 
      file { '/usr/local/bin/rsync_backup':
       ensure  => 'link',
-      target  => "/home/${grive::settings['user']}/.gdrive/notes/backup/bin/rsync_backup.bash",
+      target  => "${grive::user_home_dir}/.gdrive/notes/backup/bin/rsync_backup.bash",
     }
     case $grive::settings['host'] {
       m2:{
@@ -60,85 +60,105 @@ class grive::config {
           monthday => ["12","26"],
         }
       }
+      zfs:{
+        cron {"backup":
+          command => "/usr/local/bin/rsync_backup",
+          user => "root",
+          minute => "30",
+          hour   => "03",
+          monthday => ["10","24"],
+        }
+      }
     }
     
-		file { "/home/${grive::settings['user']}/.bashrc":
+		file { "${grive::user_home_dir}/.bashrc":
 			ensure => 'link',
-			target => "/home/${grive::settings['user']}/.gdrive/notes/.bashrc",
+			target => "${grive::user_home_dir}/.gdrive/notes/.bashrc",
 		}
-		file { "/home/${grive::settings['user']}/.bash_profile":
+		file { "${grive::user_home_dir}/.bash_profile":
       ensure => 'link',
-      target => "/home/${grive::settings['user']}/.gdrive/notes/.bash_profile",
+      target => "${grive::user_home_dir}/.gdrive/notes/.bash_profile",
     }
     
-    file { "/home/${grive::settings['user']}/.bash_aliases":
+    file { "${grive::user_home_dir}/.bash_aliases":
       ensure => 'link',
-      target => "/home/${grive::settings['user']}/.gdrive/notes/.bash_aliases",
+      target => "${grive::user_home_dir}/.gdrive/notes/.bash_aliases",
     }
     
-    file { "/home/${grive::settings['user']}/.vimrc":
+    file { "${grive::user_home_dir}/.vimrc":
       ensure => 'link',
-      target => "/home/${grive::settings['user']}/.gdrive/notes/.vimrc",
+      target => "${grive::user_home_dir}/.gdrive/notes/.vimrc",
     }
     
-    file { "/home/${grive::settings['user']}/.inputrc":
+    file { "${grive::user_home_dir}/.inputrc":
       ensure => 'link',
-      target => "/home/${grive::settings['user']}/.gdrive/notes/.inputrc",
+      target => "${grive::user_home_dir}/.gdrive/notes/.inputrc",
     }
     
-    file { "/home/${grive::settings['user']}/.screenrc":
+    file { "${grive::user_home_dir}/.screenrc":
       ensure => 'link',
-      target => "/home/${grive::settings['user']}/.gdrive/notes/.screenrc",
+      target => "${grive::user_home_dir}/.gdrive/notes/.screenrc",
     }
     
-    file { "/home/${grive::settings['user']}/.tricks":
+    file { "${grive::user_home_dir}/.tricks":
       ensure => 'link',
-      target => "/home/${grive::settings['user']}/.gdrive/notes/.tricks",
+      target => "${grive::user_home_dir}/.gdrive/notes/.tricks",
     }
     
-    file {"/home/${grive::settings['user']}/.ssh":
+    file {"${grive::user_home_dir}/.ssh":
       ensure => 'directory',
       mode   => '0700',
       owner  => $grive::settings['user'],
       group  => $grive::settings['user'],
     }
-    file { "/home/${grive::settings['user']}/.ssh/config":
+    file { "${grive::user_home_dir}/.ssh/config":
       ensure  => 'link',
-      target  => "/home/${grive::settings['user']}/.gdrive/notes/.ssh/config",
-      require => File["/home/${grive::settings['user']}/.ssh"],
+      target  => "${grive::user_home_dir}/.gdrive/notes/.ssh/config",
+      require => File["${grive::user_home_dir}/.ssh"],
     }
     
-    file { "/home/${grive::settings['user']}/.gdrive/notes/scripts/bash/vigsync.bash":
+    file { "${grive::user_home_dir}/.gdrive/notes/scripts/bash/vigsync.bash":
       mode => '0755',
     }->
     file { '/usr/local/bin/vigsync':
       ensure  => 'link',
-      target  => "/home/${grive::settings['user']}/.gdrive/notes/scripts/bash/vigsync.bash",
+      target  => "${grive::user_home_dir}/.gdrive/notes/scripts/bash/vigsync.bash",
     }
     
-    file { "/home/${grive::settings['user']}/.gdrive/notes/scripts/python/ps_mem.py":
+    file { "${grive::user_home_dir}/.gdrive/notes/scripts/python/ps_mem.py":
       mode => '0755',
     }->
     file { '/usr/local/bin/ps_mem.py':
       ensure  => 'link',
-      target  => "/home/${grive::settings['user']}/.gdrive/notes/scripts/python/ps_mem.py",
+      target  => "${grive::user_home_dir}/.gdrive/notes/scripts/python/ps_mem.py",
     }
     
     case $::osfamily {
 	    /(?i:RedHat)/: { 
-	        file {"/home/${grive::settings['user']}/.gdrive/notes/scripts/sh/yumnotifier.sh":
+	        file {"${grive::user_home_dir}/.gdrive/notes/scripts/sh/yumnotifier.sh":
             ensure => 'present',
             mode   => '0755',
           }
 	    }
 	    /(?i:Debian)/: { 
-	       file {"/home/${grive::settings['user']}/.gdrive/notes/scripts/csh/aptgetcheck.csh":
+	       file {"${grive::user_home_dir}/.gdrive/notes/scripts/csh/aptgetcheck.csh":
             ensure => 'present',
             mode   => '0755',
           }
 	    }
 	    /(?i:FreeBSD)/: { 
-         file {"/home/${grive::settings['user']}/.gdrive/notes/scripts/bash/pkgng-check.bash":
+         file {"${grive::user_home_dir}/.gdrive/notes/scripts/bash/pkgng-check.bash":
+            ensure => 'present',
+            mode   => '0755',
+          }
+      }
+      /(?i:Solaris)/: { 
+         file {"${grive::user_home_dir}/.gdrive/notes/scripts/bash/pkgin-check.bash":
+            ensure => 'present',
+            mode   => '0755',
+          }
+          
+          file {"${grive::user_home_dir}/.gdrive/notes/scripts/bash/pkg-check.bash":
             ensure => 'present',
             mode   => '0755',
           }

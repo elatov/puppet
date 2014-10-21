@@ -4,9 +4,11 @@ class pkgsrc::install {
 
   $timestamp = generate('/usr/bin/date', '+%Y%d%m')
   
-  file { '/root/apps':
-    ensure  => 'directory',
-  }
+  ensure_resource ('file',
+                   "${pkgsrc::user_home_dir}/apps",
+                   {'ensure' => 'directory',
+                    'owner'  => "${pkgsrc::settings['user']}",
+                    'group'  => "${pkgsrc::settings['user']}"})
   
   if ($pkgsrc::settings['upgrade']){
     exec { "${module_name}-backup-old-pkgsrc":
