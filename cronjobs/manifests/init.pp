@@ -45,6 +45,13 @@ class cronjobs {
       }
 
     }
+    'Solaris': {
+      cron {"ntp":
+        command   => '/usr/sbin/ntpdate -s 0.north-america.pool.ntp.org',
+        user      => 'root',
+        minute    => '35',
+      }
+    }
     default: {
       fail("${::operatingsystem} not supported")
     }
