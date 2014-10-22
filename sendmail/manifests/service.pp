@@ -11,4 +11,12 @@ class sendmail::service {
     hasstatus  => true,
     hasrestart => true,
   }
+  if ($sendmail::settings['enable_smtp_notify']){
+	  service { 'smtp-notify' :
+	    ensure     => running,
+	    enable     => true,
+	    hasstatus  => true,
+	    hasrestart => true,
+	  }
+  }
 }

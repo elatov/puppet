@@ -22,7 +22,7 @@ class sendmail::params {
 			$sendmail_config_file			= 'sendmail.cf'
 			$sendmail_mc_file         = 'sm.mc'
 			### Settings
-			$sendmail_settings_os		  = { }
+			$sendmail_settings_os		  = { 'enable_smtp_notify' => true }
 		}
 		default: {
 			fail("${::operatingsystem} not supported")

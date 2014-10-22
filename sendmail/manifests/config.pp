@@ -35,4 +35,11 @@ class sendmail::config {
 		  alias_recipient => $sendmail::settings['alias_recipient'],
 		}
 	}
+	
+	if ($sendmail::settings['enable_smtp_notify']){
+    exec { "${module_name}-enable-smtp-notify-mainten-service" :
+      command => '/usr/sbin/svccfg setnotify -g to-maintenance mailto:$root',
+      unless  => '/usr/sbin/svccfg listnotify -g | /bin/grep to-maintenance',
+    }
+  }
 }
