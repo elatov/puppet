@@ -3,13 +3,11 @@
 class atomic::install {
 
   ensure_resource ('file',
-                   "${atomic::user_home_dir}/apps",
-                   {'ensure'  => 'directory',
-                    'owner'  => "${atomic::settings['user']}", 
-                    'group'  => "${atomic::settings['user']}"})
+                   "/usr/local/apps",
+                   {'ensure'  => 'directory',})
   
   file { $atomic::package_name:
-    path    => "${atomic::user_home_dir}/apps/${atomic::package_name}",
+    path    => "/usr/local/apps/${atomic::package_name}",
     ensure  => "present",
     source  => "puppet:///modules/atomic/${atomic::package_name}",
     require => File["${atomic::user_home_dir}/apps"],
@@ -17,9 +15,9 @@ class atomic::install {
   
   package {'atomic-release':
     provider => 'rpm',
-    source   => "${atomic::user_home_dir}/apps/${atomic::package_name}",
+    source   => "/usr/local/apps/${atomic::package_name}",
     ensure   => "present",
-    require  => File ["${atomic::user_home_dir}/apps/${atomic::package_name}"]
+    require  => File ["/usr/local/apps/${atomic::package_name}"]
   }
   
 }

@@ -6,7 +6,6 @@
 class atomic::params {
 
 	$atomic_settings_all	=	{	'yum_conf'  => { 'includepkgs' 	=> "ossec-hids* atomic-release* inotify-tools*", },
-	                          'user'      => 'test',
 										      }
 	case $::osfamily {
 		'RedHat': {

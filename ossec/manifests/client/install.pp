@@ -4,10 +4,9 @@ class ossec::client::install {
 
   case $::osfamily {
     'RedHat': {
-		  ensure_resource ('yumrepo','atomic',{'ensure' => 'present'})
 		  ensure_packages ($ossec::client::package_name,
 		                   { 'ensure'   => 'present' ,
-		                     'require'  => Yumrepo['atomic']
+		                     'require'  => Class['atomic']
 		                   })
     }
     'Debian': {
@@ -33,12 +32,12 @@ class ossec::client::install {
 	      require => File['/usr/local'],
 	    }
 	
-      ensure_resource(file,'/root/apps',{ensure => 'directory'})
+      ensure_resource(file,'/usr/local/apps',{ensure => 'directory'})
 	    file { $ossec::client::package_name:
 	      ensure => 'present',
 	      path   => "/root/apps/${ossec::client::package_name}",
 	      source => "puppet:///modules/ossec/${ossec::client::package_name}",
-	      require => File['/root/apps'],
+	      require => File['/usr/local/apps'],
 	    }
 	    
 	    exec { "${module_name}-extract-ossec":
