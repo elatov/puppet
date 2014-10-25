@@ -27,12 +27,11 @@ class grive::install  {
 		source => "puppet:///modules/grive/${grive::package_name}",
 #    source => "/tmp/vagrant-puppet-3/modules-0/grive/files/${grive::package_name}",
 		require => File ["${grive::user_home_dir}/apps"], 
-	}~>	
+	}->
 	# extract the TAR
 	exec {"install-$grive::package_name":
     command     => "tar xjf ${grive::user_home_dir}/apps/${grive::package_name} -C ${grive::settings['home_dir']}",
     provider    => "shell",
-    refreshonly => true,
     creates     => "${grive::settings['home_dir']}/grive/bin/grive",
     require     => File[$grive::settings['home_dir']],
 	}
