@@ -51,10 +51,8 @@ class exim::params {
 			### Client
 			## Package
 			$exim_client_package_name		= 'exim'
-			$exim_client_absent_packages  = ['postfix','sendmail']
 			## Service
 			$exim_client_service_name		= 'exim'
-      $exim_client_stopped_services = ['postfix','sendmail' ]
 			## Directories
 			$exim_client_config_dir			= '/etc/exim'
 			## Config Files
@@ -85,17 +83,17 @@ class exim::params {
       
       ### Settings
       $exim_client_settings_os     = { 'stopped_services'  => ['sendmail'],
-                                          'rc_conf'           => { 'sendmail_enable'           => 'NO',
-                                                                   'sendmail_submit_enable'    => 'NO',
-                                                                   'sendmail_outbound_enable'  => 'NO',
-                                                                   'sendmail_msp_queue_enable' => 'NO',
-                                                                   'exim_enable'               => 'YES', 
-                                                                  },
-                                          'periodic_conf'     => { 'daily_clean_hoststat_enable'        => 'NO',
-                                                                   'daily_status_mail_rejects_enable'   => 'NO',
-                                                                   'daily_status_include_submit_mailq'  => 'NO',
-                                                                   'daily_submit_queuerun'              => 'NO',
-                                                                 },
+                                       'rc_conf'           => { 'sendmail_enable'           => 'NO',
+                                                                'sendmail_submit_enable'    => 'NO',
+                                                                'sendmail_outbound_enable'  => 'NO',
+                                                                'sendmail_msp_queue_enable' => 'NO',
+                                                                'exim_enable'               => 'YES', 
+                                                              },
+                                       'periodic_conf'     => { 'daily_clean_hoststat_enable'        => 'NO',
+                                                                'daily_status_mail_rejects_enable'   => 'NO',
+                                                                'daily_status_include_submit_mailq'  => 'NO',
+                                                                'daily_submit_queuerun'              => 'NO',
+                                                              },
                                         }
       
     }
