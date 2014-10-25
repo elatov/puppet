@@ -40,7 +40,7 @@ inherits ossec::params {
     validate_hash($override_settings)
   }
   # Merge settings with override-hash even if it's empty
-  $settings = deep_merge($ossec::params::ossec_client_default_settings, $override_settings)
+  $settings = deep_merge($default_settings, $override_settings)
   
   class { 'ossec::client::install': } ->
   class { 'ossec::client::config': } ~>
