@@ -9,24 +9,33 @@
 #
 class atomic (
   ## Packages
-  $atomic_rpm_name          = $atomic::params::atomic_rpm_name,
-  
-  ## Services
-  #$atomic_service_name	= $atomic::params::atomic_service_name,
+  $package_name       = $atomic::params::atomic_package_name,
   
   ## Dirs
-  $atomic_config_dir		    = $atomic::params::atomic_config_dir,
+  $config_dir		      = $atomic::params::atomic_config_dir,
     
   ## Conf Files
-  $atomic_config_file		    = $atomic::params::atomic_config_file,
+  $config_file		    = $atomic::params::atomic_config_file,
   
   ## settings
-  $atomic_settings			    = $atomic::params::atomic_settings,
+  $override_settings  = undef,
+  $default_settings   = $atomic::params::atomic_default_settings,
 ) inherits atomic::params {
 
   # validate parameters here
-  validate_hash($atomic_settings)
-  validate_string($atomic_rpm_name)
+  validate_hash($default_settings)
+  validate_string($package_name)
+  
+  # check to see if override hash is a hash
+  if !($override_settings == undef){
+    validate_hash($override_settings)
+  }
+  # Merge settings with override-hash even if it's empty
+  $settings = deep_merge($default_settings, $override_settings)
+  
+  ## Get the User's Home Directory
+  $var  = "home_${settings['user']}"
+  $user_home_dir = inline_template("<%= scope.lookupvar('::$var') %>")
 
   class { 'atomic::install': } ->
   class { 'atomic::config': } ->

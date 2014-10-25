@@ -3,18 +3,22 @@
 # This class is called from atomic::config
 #
 define atomic::settings (
-    $key          = $title,
-#    $array_index  = size($atomic::params::atomic_settings[$title]) ,
-    $array_index  = 1,
-    $settings     = $atomic::params::atomic_settings,
-    $config_file  = "${atomic::params::atomic_config_dir}/${atomic::params::atomic_config_file}",
+    $key            = $title,
+    $settings_hash  = {},
+    $config_file    = 'file.conf',
 ) {
   
-  
-  
-  $value = $atomic::params::atomic_settings[$key]
+  validate_hash($settings_hash)  
+  $value = $settings_hash[$key]
   validate_string($value)
   
+  augeas{"${module_name}_setting_${key}":
+    incl    => "${config_file}", 
+    lens    => 'Yum.lns',
+    context => "/files${config_file}",
+    changes => "set atomic/${key} '${value}'",
+    onlyif  => "match atomic/${key} not_include '${value}'",
+  }
    
 #  if is_array($value){
 ##    $size           = size($value)
@@ -48,11 +52,5 @@ define atomic::settings (
 #    #notify {"size of array is $size":}
 #  }
 #  
-	augeas{"${module_name}_setting_${key}":
-		incl    => "${config_file}", 
-		lens    => 'Yum.lns',
-		context => "/files${config_file}",
-		changes => "set atomic/${key} '${value}'",
-		onlyif  => "match atomic/${key} not_include '${value}'",
-	}
+	
 }

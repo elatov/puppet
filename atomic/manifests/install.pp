@@ -1,22 +1,25 @@
 # == Class atomic::install
 #
-class atomic::install inherits atomic::params {
+class atomic::install {
 
   ensure_resource ('file',
-                   "/home/${atomic_user}/apps",
-                   {'ensure'  => 'directory','owner'  => "${atomic_user}", 'group'  => "${atomic_user}"})
+                   "${atomic::user_home_dir}/apps",
+                   {'ensure'  => 'directory',
+                    'owner'  => "${atomic::settings['user']}", 
+                    'group'  => "${atomic::settings['user']}"})
   
-  file { $atomic_rpm_name:
-    path    => "/home/elatov/apps/${atomic_rpm_name}",
+  file { $atomic::package_name:
+    path    => "${atomic::user_home_dir}/apps/${atomic::package_name}",
     ensure  => "present",
-    source  => "puppet:///modules/atomic/${atomic_rpm_name}",
+    source  => "puppet:///modules/atomic/${atomic::package_name}",
+    require => File["${atomic::user_home_dir}/apps"],
   }
   
   package {'atomic-release':
     provider => 'rpm',
-    source   => "/home/elatov/apps/${atomic_rpm_name}",
+    source   => "${atomic::user_home_dir}/apps/${atomic::package_name}",
     ensure   => "present",
-    require  => File ["/home/elatov/apps/${atomic_rpm_name}"]
+    require  => File ["${atomic::user_home_dir}/apps/${atomic::package_name}"]
   }
   
 }
