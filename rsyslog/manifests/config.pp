@@ -11,14 +11,16 @@ class rsyslog::config {
       ensure => "present",
       content => template("rsyslog/remote.conf.erb"),
       require => File[$rsyslog::rsyslog_d],
+      mode    => '0644',
     }
   }
   
   if ($rsyslog::iptables_conf){
     file {"${rsyslog::rsyslog_d}/iptables.conf":
-      ensure => "present",
-      source => "puppet:///modules/rsyslog/iptables.conf",
+      ensure  => "present",
+      source  => "puppet:///modules/rsyslog/iptables.conf",
       require => File[$rsyslog::rsyslog_d],
+      mode    => '0644',
     }
 		logrotate::rule { 'iptables-log':
 			path         => '/var/log/iptables.log',
