@@ -10,7 +10,7 @@ class atomic::install {
     path    => "/usr/local/apps/${atomic::package_name}",
     ensure  => "present",
     source  => "puppet:///modules/atomic/${atomic::package_name}",
-    require => File["${atomic::user_home_dir}/apps"],
+    require => File['/usr/local/apps'],
   }
   
   package {'atomic-release':
