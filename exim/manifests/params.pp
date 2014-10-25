@@ -48,40 +48,17 @@ class exim::params {
       $exim_client_stopped_services = ['postfix','sendmail' ]
 		}
 		'RedHat': {
-			### Server
-			$exim_server_package_name		= 'exim'
-			$exim_server_service_name		= 'exim'
-			$exim_server_config_dir			= '/etc/sysconfig'
-			$exim_server_home						= '/usr/local/exim'
-			
 			### Client
+			## Package
 			$exim_client_package_name		= 'exim'
-			$exim_client_service_name		= 'exim'
-			$exim_client_config_dir			= '/etc/sysconfig'
 			$exim_client_absent_packages  = ['postfix','sendmail']
+			## Service
+			$exim_client_service_name		= 'exim'
       $exim_client_stopped_services = ['postfix','sendmail' ]
-			
-			if $::operatingsystemmajrelease >= 7 {
-				### Server
-				$exim_server_service_dir  	= '/usr/lib/systemd/system'
-				$exim_server_config_file  	= 'exim.sysconf.systemd'
-				$exim_server_service_file 	= 'exim.service'
-				
-				### Client
-				$exim_client_service_dir  	= '/usr/lib/systemd/system'
-				$exim_client_config_file  	= 'exim.conf.systemd'
-				$exim_client_service_file 	= 'exim.service'
-			}else{
-				### Server
-				$exim_server_service_dir		= '/etc/init.d'
-				$exim_server_config_file		= 'exim.conf.init'
-				$exim_server_service_file	= 'exim.init'
-				
-				### Client
-				$exim_client_service_dir		= '/etc/init.d'
-				$exim_client_config_file		= 'exim.conf.init'
-				$exim_client_service_file	  = 'exim.init'
-			}
+			## Directories
+			$exim_client_config_dir			= '/etc/exim'
+			## Config Files
+			$exim_client_config_file  	= 'exim.conf'
 		}
 		'FreeBSD': {      
       ## Client
