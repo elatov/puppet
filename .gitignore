@@ -118,4 +118,7 @@ sendmail/.project
 !custom/
 !custom/**
 custom/.project
+!epel/
+!epel/**
+epel/.project
 !.gitignore
