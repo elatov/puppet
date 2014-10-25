@@ -28,7 +28,7 @@ class grive::install  {
 	}->
 	# extract the TAR
 	exec {"install-$grive::package_name":
-    command     => "tar xjf /usr/local/apps/apps/${grive::package_name} -C ${grive::settings['home_dir']}",
+    command     => "tar xjf /usr/local/apps/${grive::package_name} -C ${grive::settings['home_dir']}",
     provider    => "shell",
     creates     => "${grive::settings['home_dir']}/grive/bin/grive",
     require     => File[$grive::settings['home_dir']],
