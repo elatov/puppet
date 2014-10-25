@@ -15,7 +15,7 @@ class ossec::client::config {
   
   file { $ossec::client::config_file:
     ensure  => 'present',
-    path    => "${ossec::client::config_dir}/ossec.conf",
+    path    => "${ossec::client::config_dir}/${ossec::client::config_file}",
     content => template("ossec/${ossec::client::config_file}.erb"),
     require => File [$ossec::client::config_dir],
   }
