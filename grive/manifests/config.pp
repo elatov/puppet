@@ -69,6 +69,15 @@ class grive::config {
           monthday => ["10","24"],
         }
       }
+      puppet:{
+        cron {"backup":
+          command => "/usr/local/bin/rsync_backup",
+          user => "root",
+          minute => "30",
+          hour   => "05",
+          monthday => ["8","22"],
+        }
+      }
     }
     
 		file { "${grive::user_home_dir}/.bashrc":

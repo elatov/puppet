@@ -43,12 +43,12 @@ class grive::params {
     }
     'Solaris': {
       $grive_settings_os  = {'pre_pkgs'  => [ 'boost',
-                                               'libgcrypt',
-                                               'yajl',
-                                               'json-c',
-                                               'curl',
-                                               'gcc47',
-                                               'expat',
+                                              'libgcrypt',
+                                              'yajl',
+                                              'json-c',
+                                              'curl',
+                                              'gcc47',
+                                              'expat',
                                              ]
                             }
     }
