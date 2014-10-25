@@ -121,4 +121,7 @@ custom/.project
 !epel/
 !epel/**
 epel/.project
+!atomic/
+!atomic/**
+atomic/.project
 !.gitignore
