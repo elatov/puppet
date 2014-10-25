@@ -42,6 +42,8 @@ inherits ossec::params {
   # Merge settings with override-hash even if it's empty
   $settings = deep_merge($default_settings, $override_settings)
   
+  notify {"end hash looks like this ${settings}":}
+  
   class { 'ossec::client::install': } ->
   class { 'ossec::client::config': } ~>
   class { 'ossec::client::service': } ->
