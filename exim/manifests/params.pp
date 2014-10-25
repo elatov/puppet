@@ -27,7 +27,7 @@ class exim::params {
 			$exim_server_config_file         = 'update-exim4.conf.conf'
 			$exim_server_passwd_file         = 'passwd.client'
       $exim_server_template_conf_file  = 'main/02_exim4-config_options'
-      $exim_server_settings_extra      = { 'config' => { 'dc_eximconfig_configtype' => 'smarthost',
+      $exim_server_settings_os         = { 'config' => { 'dc_eximconfig_configtype' => 'smarthost',
                                                          'dc_other_hostnames'       => "$::fqdn",
                                                          'dc_local_interfaces'      => "$::ipaddress",
                                                          'dc_minimaldns'            => "true",
@@ -59,6 +59,10 @@ class exim::params {
 			$exim_client_config_dir			= '/etc/exim'
 			## Config Files
 			$exim_client_config_file  	= 'exim.conf'
+			### settings
+			$exim_client_settings_os    = { 'stopped_services'  => ['postfix','sendmail'],
+			                                'absent_packages'   => ['postfix','sendmail'],
+			                              }
 		}
 		'FreeBSD': {      
       ## Client
@@ -80,7 +84,7 @@ class exim::params {
 
       
       ### Settings
-      $exim_client_settings_extra     = { 'stopped_services'  => ['sendmail'],
+      $exim_client_settings_os     = { 'stopped_services'  => ['sendmail'],
                                           'rc_conf'           => { 'sendmail_enable'           => 'NO',
                                                                    'sendmail_submit_enable'    => 'NO',
                                                                    'sendmail_outbound_enable'  => 'NO',
@@ -99,6 +103,6 @@ class exim::params {
 			fail("${::operatingsystem} not supported")
 		}
 	}
-	$exim_server_default_settings = merge($exim_server_settings_all,$exim_server_settings_extra)
-	$exim_client_default_settings = merge($exim_client_settings_all,$exim_client_settings_extra)
+	$exim_server_default_settings = merge($exim_server_settings_all,$exim_server_settings_os)
+	$exim_client_default_settings = merge($exim_client_settings_all,$exim_client_settings_os)
 }

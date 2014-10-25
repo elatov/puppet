@@ -88,11 +88,11 @@ class exim::client::config {
       flags   => 'N',
     }
   }else{
-#    if ($::osfamily == 'RedHat'){
-#      alternatives { 'mta':
-#       path => '/usr/bin/vim.basic',
-#      }
-#    }
+    if ($::osfamily == 'RedHat'){
+      alternatives { 'mta':
+       path => '/usr/sbin/sendmail.exim',
+      }
+    }
 		service { $exim::client::settings['stopped_services']:
 		  ensure => "stopped",
 		}->
