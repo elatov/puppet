@@ -7,7 +7,7 @@ class zabbix::agent::config () {
 		require => File[$zabbix::agent::config_dir],
 	}
 
-	file { $zabbix::agent::agentd_conf_dir:
+	file { $zabbix::agent::custom_conf_dir:
 		ensure => directory,
 		require => File[$zabbix::agent::config_dir],
 	}
@@ -77,15 +77,15 @@ class zabbix::agent::config () {
 
     # rules for user parameters
     if ($::osfamily == 'Solaris'){
-      file { "${zabbix::agent::agentd_conf_dir}/smart-sunos.conf":
+      file { "${zabbix::agent::custom_conf_dir}/smart-sunos.conf":
         source  => 'puppet:///modules/zabbix/smart.conf',
-        require => File[$zabbix::agent::agentd_conf_dir],
+        require => File[$zabbix::agent::custom_conf_dir],
         mode => '644',
       }
     }else{
-	    file { "${zabbix::agent::agentd_conf_dir}/smart.conf":
+	    file { "${zabbix::agent::custom_conf_dir}/smart.conf":
 	      source  => 'puppet:///modules/zabbix/smart.conf',
-	      require => File[$zabbix::agent::agentd_conf_dir],
+	      require => File[$zabbix::agent::custom_conf_dir],
 	      mode => '644',
 	    }
 	    
@@ -105,9 +105,9 @@ class zabbix::agent::config () {
     }
     
     # rules for user parameters
-    file { "${zabbix::agent::agentd_conf_dir}/raid.conf":
+    file { "${zabbix::agent::custom_conf_dir}/raid.conf":
       source  => 'puppet:///modules/zabbix/raid.conf',
-      require => File[$zabbix::agent::agentd_conf_dir],
+      require => File[$zabbix::agent::custom_conf_dir],
     }
 
     # sudoers for mdadm
@@ -122,9 +122,9 @@ class zabbix::agent::config () {
   if($zabbix::agent::settings['disk_perf']){
     if ($::osfamily == 'FreeBSD'){
       # rules for user parameters
-      file { "${zabbix::agent::agentd_conf_dir}/disk_perf.conf":
+      file { "${zabbix::agent::custom_conf_dir}/disk_perf.conf":
         source  => 'puppet:///modules/zabbix/disk_perf-freebsd.conf',
-        require => File[$zabbix::agent::agentd_conf_dir],
+        require => File[$zabbix::agent::custom_conf_dir],
         mode => "644",
       }
       
@@ -134,9 +134,9 @@ class zabbix::agent::config () {
       }
     }elsif  ($::osfamily == 'Solaris'){
       # rules for user parameters
-      file { "${zabbix::agent::agentd_conf_dir}/disk_perf.conf":
+      file { "${zabbix::agent::custom_conf_dir}/disk_perf.conf":
         source  => 'puppet:///modules/zabbix/disk_perf-sunos.conf',
-        require => File[$zabbix::agent::agentd_conf_dir],
+        require => File[$zabbix::agent::custom_conf_dir],
         mode => "644",
       }
       
@@ -151,9 +151,9 @@ class zabbix::agent::config () {
 	    }
 	     
 	    # rules for user parameters
-	    file { "${zabbix::agent::agentd_conf_dir}/disk_perf.conf":
+	    file { "${zabbix::agent::custom_conf_dir}/disk_perf.conf":
 	      source  => 'puppet:///modules/zabbix/disk_perf.conf',
-	      require => File[$zabbix::agent::agentd_conf_dir],
+	      require => File[$zabbix::agent::custom_conf_dir],
 	      mode => "644",
 	    }
 	

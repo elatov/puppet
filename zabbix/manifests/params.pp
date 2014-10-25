@@ -23,7 +23,7 @@ class zabbix::params {
 			### Client/Agent
 			$agent_zabbix_config_dir             = '/etc/zabbix'
 			$agent_zabbix_custom_scripts_dir     = "${agent_zabbix_config_dir}/custom-scripts.d"
-			$agent_zabbix_agentd_conf_dir        = "${agent_zabbix_config_dir}/zabbix_agentd.d"
+			$agent_zabbix_custom_conf_dir        = "${agent_zabbix_config_dir}/zabbix_agentd.d"
 			$agent_zabbix_config_file            = 'zabbix_agentd.conf'
 			$agent_zabbix_package_name           = 'zabbix-agent'
 			$agent_zabbix_service_name           = 'zabbix-agent'
@@ -48,7 +48,7 @@ class zabbix::params {
 			### Client/Agent
 			$agent_zabbix_config_dir             = '/usr/local/etc/zabbix22'
 			$agent_zabbix_custom_scripts_dir     = "${agent_zabbix_config_dir}/custom-scripts.d"
-			$agent_zabbix_agentd_conf_dir        = "${agent_zabbix_config_dir}/zabbix_agentd.conf.d"
+			$agent_zabbix_custom_conf_dir        = "${agent_zabbix_config_dir}/zabbix_agentd.conf.d"
 			$agent_zabbix_config_file            = 'zabbix_agentd.conf'
 			$agent_zabbix_package_name           = 'zabbix22-agent'
 			$agent_zabbix_service_name           = 'zabbix_agentd'
@@ -66,17 +66,18 @@ class zabbix::params {
 				
 		}
 		'Redhat': {
-			$zabbix_server_config_dir          = '/etc/zabbix'
-			$zabbix_server_package_name        = 'zabbix-server-mysql'
-			$zabbix_server_service_name        = 'zabbix-server'
-			
 			### Client/Agent
+			## Package
+			$agent_zabbix_package_name           = 'zabbix22-agent'
+			## Service
+			$agent_zabbix_service_name           = 'zabbix-agent'
+			## Directories
 			$agent_zabbix_config_dir             = '/etc/zabbix'
 			$agent_zabbix_custom_scripts_dir     = "${agent_zabbix_config_dir}/custom-scripts.d"
-			$agent_zabbix_agentd_conf_dir        = "${agent_zabbix_config_dir}/zabbix_agentd.d"
+			$agent_zabbix_custom_conf_dir        = "${agent_zabbix_config_dir}/zabbix_agentd.d"
+			## Conf Files
 			$agent_zabbix_config_file            = 'zabbix_agentd.conf'
-			$agent_zabbix_package_name           = 'zabbix22-agent'
-			$agent_zabbix_service_name           = 'zabbix-agent'
+			## Settings
 			$agent_zabbix_version                = '2.2'
 			$agent_zabbix_default_settings       = { 'logFile'                => '/var/log/zabbix/zabbix_agentd.log',
 			                                         'logFileSize'            => '1',
@@ -100,7 +101,7 @@ class zabbix::params {
       $agent_zabbix_home_dir               = '/usr/local/zabbix'
       $agent_zabbix_config_dir             = '/etc/zabbix'
       $agent_zabbix_custom_scripts_dir     = "${agent_zabbix_config_dir}/custom-scripts.d"
-      $agent_zabbix_conf_dir               = "${agent_zabbix_config_dir}/zabbix_agentd.d"
+      $agent_zabbix_custom_conf_dir        = "${agent_zabbix_config_dir}/zabbix_agentd.d"
       $agent_zabbix_manifest_dir           = '/var/svc/manifest/application/'
       $agent_zabbix_service_dir            = '/lib/svc/method/'
       
