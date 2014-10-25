@@ -7,7 +7,7 @@ class ossec::client::install {
 		  ensure_resource ('yumrepo','atomic',{'ensure' => 'present'})
 		  ensure_packages ($ossec::client::package_name,
 		                   { 'ensure'   => 'present' ,
-		                     'require'  => Class['atomic']
+		                     'require'  => Yumrepo['atomic']
 		                   })
     }
     'Debian': {
