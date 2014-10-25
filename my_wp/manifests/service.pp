@@ -5,10 +5,10 @@
 #
 class my_wp::service {
 
-  service { $my_wp::service_name:
-    ensure     => running,
-    enable     => true,
-    hasstatus  => true,
-    hasrestart => true,
-  }
+#  service { $my_wp::service_name:
+#    ensure     => running,
+#    enable     => true,
+#    hasstatus  => true,
+#    hasrestart => true,
+#  }
 }

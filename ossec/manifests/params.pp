@@ -14,24 +14,20 @@ class ossec::params {
                                   'initial_setup' =>  true,
 										            }
 	case $::osfamily {
-		'Debian': {
-			### Server
-			$ossec_server_package_name		= 'ossec'
-			$ossec_server_service_name		= 'ossec'
-			$ossec_server_config_dir			= '/etc/default'
-			$ossec_server_service_dir			= '/etc/init.d'
-			$ossec_server_home_dir				= '/usr/local/ossec'
-			$ossec_server_config_file			= 'ossec.sysconf.init'
-			$ossec_server_service_file		= 'ossec.init'
-			
+		'Debian': {			
 			### Client
+			## Package
 			$ossec_client_package_name		= 'ossec-hids-agent'
+			## Service
 			$ossec_client_service_name		= 'ossec'
+			## Dirs
 			$ossec_client_config_dir			= '/var/ossec/etc'
 			$ossec_client_service_dir			= '/etc/init.d'
 			$ossec_client_home_dir				= '/var/ossec'
+			## Conf Files
 			$ossec_client_config_file			= "ossec-agent.conf.${::operatingsystem}"
 			$ossec_client_service_file		= 'ossec.init'
+			## Settings
 			$osser_client_settings_os     = { 'add_user'      => 'test',
 			                                  'config'        => { 'logs' => { '/var/log/messages'       => 'syslog',
                                                                          '/var/log/auth.log'       => 'syslog',
@@ -48,17 +44,17 @@ class ossec::params {
                                       }
 		}
 		'RedHat': {
-			### Server
-			$ossec_server_package_name		= 'ossec'
-			$ossec_server_service_name		= 'ossec'
-			$ossec_server_config_dir			= '/etc/sysconfig'
-			$ossec_server_home_dir				= '/usr/local/ossec'
-			
 			### Client
+			## Package
 			$ossec_client_package_name		= 'ossec-hids-client'
+			## Service
 			$ossec_client_service_name		= 'ossec-hids'
+			## Dirs
 			$ossec_client_config_dir			= '/var/ossec/etc'
 			$ossec_client_home_dir   			= '/var/ossec'
+			## Conf Files
+      $ossec_client_config_file     = "ossec-agent.conf"
+			## Settings
 			$osser_client_settings_os     = { 'timezone_file' => '/usr/share/zoneinfo/America/Denver',
                                         'add_user'      => 'test',
                                         'config'        => { 'logs' => { '/var/log/messages'       => 'syslog',
@@ -68,28 +64,6 @@ class ossec::params {
                                                                         }
                                                            }
                                       }
-			
-			if $::operatingsystemmajrelease >= 7 {
-				### Server
-				$ossec_server_service_dir  	= '/usr/lib/systemd/system'
-				$ossec_server_config_file  	= 'ossec.sysconf.systemd'
-				$ossec_server_service_file 	= 'ossec.service'
-				
-				### Client
-				#$ossec_client_service_dir  	= '/usr/lib/systemd/system'
-				$ossec_client_config_file  	= "ossec-agent.conf.${::operatingsystem}"
-				#$ossec_client_service_file 	= 'ossec.service'
-			}else{
-				### Server
-				$ossec_server_service_dir		= '/etc/init.d'
-				$ossec_server_config_file		= 'ossec.conf.init'
-				$ossec_server_service_file	= 'ossec.init'
-				
-				### Client
-				$ossec_client_service_dir		= '/etc/init.d'
-				$ossec_client_config_file		= 'ossec.conf.init'
-				$ossec_client_service_file	= 'ossec.init'
-			}
 		}
 		'FreeBSD': {
       ### Server

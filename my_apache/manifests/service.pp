@@ -5,10 +5,10 @@
 #
 class my_apache::service {
 
-  service { $my_apache::service_name:
-    ensure     => running,
-    enable     => true,
-    hasstatus  => true,
-    hasrestart => true,
-  }
+#  service { $my_apache::service_name:
+#    ensure     => running,
+#    enable     => true,
+#    hasstatus  => true,
+#    hasrestart => true,
+#  }
 }
