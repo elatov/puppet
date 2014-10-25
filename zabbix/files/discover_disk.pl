@@ -10,11 +10,11 @@ for (`cat /proc/diskstats`)
   ($major,$minor,$disk) = m/^\s*([0-9]+)\s+([0-9]+)\s+(\S+)\s.*$/;
   #print("$major $minor $disk $diskdev $dmname $vmid $vmname \n");
 
-  print "\t,\n" if not $first;
-  $first = 0;
+  print "\t,\n" if not $firstline;
+  $firstline = 0;
 
   print "\t{\n";
-  print "\t\t\"{#DISK}\":\"$disk\",\n";
+  print "\t\t\"{#DISK}\":\"$disk\"\n";
   print "\t}\n";
   }
 
