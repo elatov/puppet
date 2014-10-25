@@ -12,10 +12,8 @@ class grive::install  {
   
   ensure_resource ('user',$grive::settings['user'],{ 'ensure'=> 'present' })  
 	ensure_resource ('file',
-                   "${grive::user_home_dir}/apps",
-                   {'ensure' => 'directory',
-                    'owner'  => "${grive::settings['user']}",
-                    'group'  => "${grive::settings['user']}"})
+                   '/usr/local/apps',
+                   {'ensure' => 'directory',})
                    
   file { $grive::settings['home_dir']:
     ensure => 'directory',
@@ -23,14 +21,14 @@ class grive::install  {
 	# let's get the TAR archive from the puppet master
 	file {"get-${grive::package_name}":
 		ensure => 'present',
-		path   => "${grive::user_home_dir}/apps/${grive::package_name}",
+		path   => "/usr/local/apps/${grive::package_name}",
 		source => "puppet:///modules/grive/${grive::package_name}",
 #    source => "/tmp/vagrant-puppet-3/modules-0/grive/files/${grive::package_name}",
-		require => File ["${grive::user_home_dir}/apps"], 
+		require => File ['/usr/local/apps'], 
 	}->
 	# extract the TAR
 	exec {"install-$grive::package_name":
-    command     => "tar xjf ${grive::user_home_dir}/apps/${grive::package_name} -C ${grive::settings['home_dir']}",
+    command     => "tar xjf /usr/local/apps/apps/${grive::package_name} -C ${grive::settings['home_dir']}",
     provider    => "shell",
     creates     => "${grive::settings['home_dir']}/grive/bin/grive",
     require     => File[$grive::settings['home_dir']],
