@@ -24,8 +24,8 @@ class grive::install  {
 	file {"get-${grive::package_name}":
 		ensure => 'present',
 		path   => "${grive::user_home_dir}/apps/${grive::package_name}",
-#		source => "puppet:///modules/grive/${grive::package_name}",
-    source => "/tmp/vagrant-puppet-3/modules-0/grive/files/${grive::package_name}",
+		source => "puppet:///modules/grive/${grive::package_name}",
+#    source => "/tmp/vagrant-puppet-3/modules-0/grive/files/${grive::package_name}",
 		require => File ["${grive::user_home_dir}/apps"], 
 	}~>	
 	# extract the TAR
