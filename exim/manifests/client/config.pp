@@ -89,8 +89,9 @@ class exim::client::config {
     }
   }else{
     if ($::osfamily == 'RedHat'){
-      alternatives { 'mta':
-       path => '/usr/sbin/sendmail.exim',
+      exec { "${module_name}-update-alt-mta":
+        command => '/sbin/alternatives --set mta /usr/sbin/sendmail.exim',
+        unless  => '/sbin/alternatives --list | /bin/grep mta | /bin/grep exim' 
       }
     }
 		service { $exim::client::settings['stopped_services']:
