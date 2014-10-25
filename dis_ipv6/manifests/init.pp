@@ -39,10 +39,17 @@ class dis_ipv6 {
                                },
            },
 	        }
-	        augeas { "main_cf_config":
-            context => "/files/etc/postfix/main.cf",
-            changes => ["set inet_protocols ipv4",],
-            notify => Service["postfix"],
+#	        augeas { "main_cf_config":
+#            context => "/files/etc/postfix/main.cf",
+#            changes => ["set inet_protocols ipv4",],
+#            notify => Service["postfix"],
+#          }
+          augeas {'disable_ipv6_host_entry':
+	          incl    => "/etc/hosts",
+	          lens    => "Hosts.lns",
+	          context => "/files/etc/hosts",
+	          changes => "rm *[ipaddr = '::1']",
+	          onlyif  => "match *[ipaddr = '::1'] size >= 1"
           }
 	      } else { 
 	        class { 'augeasproviders::instances':
@@ -60,11 +67,11 @@ class dis_ipv6 {
                                },
            }, 
 	        }
-	        augeas { "main_cf_config":
-            context => "/files/etc/postfix/main.cf",
-            changes => ["set inet_protocols ipv4",],
-            notify => Service["postfix"],
-          }
+#	        augeas { "main_cf_config":
+#            context => "/files/etc/postfix/main.cf",
+#            changes => ["set inet_protocols ipv4",],
+#            notify => Service["postfix"],
+#          }
 	      }
 	    }
 	    /(?i:fedora)/: { 
@@ -85,11 +92,11 @@ class dis_ipv6 {
                                },
            }, 
 	        }
-	        augeas { "main_cf_config":
-            context => "/files/etc/postfix/main.cf",
-            changes => ["set inet_protocols ipv4",],
-            notify => Service["postfix"],
-          }
+#	        augeas { "main_cf_config":
+#            context => "/files/etc/postfix/main.cf",
+#            changes => ["set inet_protocols ipv4",],
+#            notify => Service["postfix"],
+#          }
 	    }
 	    /(?i:Debian|Ubuntu)/: { 
 	      class { 'augeasproviders::instances':
