@@ -1,13 +1,15 @@
 # See README.md for further information on usage.
-class transmission::server::service inherits transmission::server {
+class transmission::server::service {
 
   if $caller_module_name != $module_name {
     fail("Use of private class ${name} by ${caller_module_name}")
   }
 
-  service { 'transmission-daemon':
-    ensure => $service_ensure,
-    name   => $service_name,
+  service { $transmission::server::service_name:
+    ensure     => running,
+    enable     => true,
+    hasstatus  => true,
+    hasrestart => true,
   }
 
 }

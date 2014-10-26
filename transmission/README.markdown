@@ -1,3 +1,0 @@
-# transmission #
-
-This is the transmission module. It provides...

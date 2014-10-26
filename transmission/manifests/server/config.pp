@@ -1,86 +1,69 @@
 # See README.md for further information on usage.
-class transmission::server::config inherits transmission::server {
+class transmission::server::config {
 
   if $caller_module_name != $module_name {
     fail("Use of private class ${name} by ${caller_module_name}")
   }
   
-  ensure_resource ('user',$username,{ 'ensure'=> 'present' })
+  ensure_resource ('user',$transmission::server::settings['user'],{ 'ensure'=> 'present' })
   
-  file { 'transmission_daemon_logdir':
-    ensure  => $log_dir_ensure,
-    path    => $log_dir,
-    owner   => $server_username,
-    group   => $server_username,
+  file { $transmission::server::log_dir:
+    ensure  => 'directory',
+    path    => $transmission::server::log_dir,
+    owner   => $transmission::server::settings['user'],
+    group   => $transmission::server::settings['user'],
   }
   
-    file { 'transmission_daemon_log_file':
-    ensure  => $log_file_ensure,
-    path    => "${log_dir}/${log_file}",
-    owner   => $server_username,
-    group   => $server_username,
-    require => File['transmission_daemon_logdir'],
+    file { $transmission::server::log_file:
+    ensure  => 'present',
+    path    => "${transmission::server::log_dir}/${transmission::server::log_file}",
+    owner   => $transmission::server::settings['user'],
+    group   => $transmission::server::settings['user'],
+    require => File[$transmission::server::log_dir],
   }
   
-  if $service_file =~ /(?i:service)/ {
-	  file { 'transmission_daemon_service_file':
-	    ensure  => $service_file_ensure,
-	    path    => "${service_file_dir}/${service_file}",
+  if $transmission::server::service_file =~ /(?i:service)/ {
+	  file { $transmission::server::service_file:
+	    ensure  => 'present',
+	    path    => "${transmission::server::service_dir}/${transmission::server::service_file}",
 	    mode    => '0644',
-	    content => template("transmission/${$service_file}.erb"),
+	    content => template("transmission/${transmission::server::service_file}.erb"),
 	  }~>
-	  exec { "transmission-reload-systemd":
+	  exec { "${module_name}-reload-systemd":
       path    => ["/bin","/usr/bin"],
       command => "systemctl daemon-reload",
       refreshonly => true,
     }
   }
   
-  if $service_file =~ /(?i:init)/ {
-    file { 'transmission_daemon_init_file':
-      ensure  => $service_file_ensure,
-      path    => "${service_file_dir}/${service_file}",
+  if $transmission::server::service_file =~ /(?i:init)/ {
+    file { $transmission::server::service_file:
+      ensure  => 'present',
+      path    => "${transmission::server::service_dir}/${transmission::server::service_file}",
       mode    => '0755',
-      content => "puppet:///modules/transmission/${service_file}",
+      content => "puppet:///modules/transmission/${transmission::server::service_file}",
     }
   }
-  
-  
-  file { 'transmission_daemon_config_dir':
-    ensure  => $config_dir_ensure,
-    path    => $config_dir,
-    owner   => $server_username,
-    group   => $server_username,
-  }
-  
-	file { 'transmission_daemon_config_file':
-		ensure  => $config_file_ensure,
-		path    => "${config_dir}/${config_file}",
-		owner   => $server_username,
-		group   => $server_username,
-		content => template("transmission/${config_file}.erb"),
-		require => File ['transmission_daemon_config_dir'],
-		replace => false,
+
+  if ($transmission::server::settings['initial_setup'] == true){  
+	  file { $transmission::server::config_dir:
+	    ensure  => 'directory',
+	    path    => $transmission::server::config_dir,
+	    owner   => $transmission::server::settings['user'],
+	    group   => $transmission::server::settings['user'],
+	  }
+	  
+		file { $transmission::server::config_file:
+			ensure  => 'present',
+			path    => "${transmission::server::config_dir}/${transmission::server::config_file}",
+			owner   => $transmission::server::settings['user'],
+			group   => $transmission::server::settings['user'],
+			content => template("transmission/${transmission::server::config_file}.erb"),
+			require => File [$transmission::server::config_dir],
+			replace => false,
+		}
 	}
 	
-	
-	
-	## Get the values from a hash and store in dirs
-	$dirs = values($transmission_settings)
-	
-	# Make sure dirs is a valid array and remove any duplicate entries
-	validate_array($dirs)
-	$udirs = unique($dirs)
-			
-	file { $udirs:
-		ensure => "directory",
-		owner => $username,
-		group => $username,
-	}	
-  
-  #$changes_string = inline_template("<% @transmission_settings.each_pair do |key, val| -%>set <%= key %> <%= val %>,<% end -%>")
-  #$changes_array = split($changes_string, ",")
-  
 	define modify_config ( $key=$title,$config_file,$transmission_settings ) {
 	
 		$con = "/files${config_file}"
@@ -96,14 +79,6 @@ class transmission::server::config inherits transmission::server {
 			onlyif  => "match dict/entry[.= \"$key\"]/string not_include $value",
 			#onlyif  => "match dict/entry[.= \"watch-dir\"]/string size==0",
 	 }
-	}
-  
-  $keys = keys($transmission_settings)
-	
-	modify_config { $keys:
-		config_file => "${config_dir}/${config_file}",
-		transmission_settings => $transmission_settings,
-		require => File ['transmission_daemon_config_dir'],
 	}
 }
 
