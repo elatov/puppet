@@ -37,7 +37,7 @@ class couchpotato (
   # Merge settings with override-hash even if it's empty
   $settings = deep_merge($default_settings, $override_settings)
   
-  notify {"end hash looks like this ${settings}":}
+#  notify {"end hash looks like this ${settings}":}
   
    ## Get the User's Home Directory
   $var  = "home_${settings['user']}"
