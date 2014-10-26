@@ -34,7 +34,7 @@ class nfs::params {
       ## Conf File
       $nfs_server_exports_file    = '/etc/exports'
 			## Settings
-			$nfs_server_settings_os     = { 'exports'  => {'/tmp' => "127.0.0.1/32(rw)"} }
+			$nfs_server_settings_os     = { }
 		
 			### Client
 			$nfs_client_package_name		= 'nfs'
