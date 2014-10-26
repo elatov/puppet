@@ -149,4 +149,8 @@ couchpotato/.project
 !vcsrepo/
 !vcsrepo/**
 vcsrepo/.project
+!transmission/
+!transmission/**
+transmission/files/settings.json
+transmission/.project
 !.gitignore
