@@ -47,12 +47,12 @@ class plexms::install {
       fail("${::operatingsystem} not supported")
     }
   }
-  ensure_resource ('user',$plexms::settings['User'],{ 'ensure'=> 'present' })
+  ensure_resource ('user',$plexms::settings['conf']['User'],{ 'ensure'=> 'present' })
 	# change ownership of /var/lib/plexmediaserver dir
 	file{$plexms::home_dir:
 		ensure => 'directory',
-		owner  => $plexms::settings['User'],
-		group  => $plexms::settings['Group'],
-		require => [Package [$plexms::package_name], User[$plexms::settings['User']]]
+		owner  => $plexms::settings['conf']['User'],
+		group  => $plexms::settings['conf']['Group'],
+		require => [Package [$plexms::package_name], User[$plexms::settings['conf']['User']]]
 	}
 }
