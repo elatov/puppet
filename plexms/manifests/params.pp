@@ -5,8 +5,8 @@
 #
 class plexms::params {
 
-	$plexms_settings_all	=	{ 'conf'  => {'user' 	=> 'test',
-										                    'group'	=> 'test',
+	$plexms_settings_all	=	{ 'conf'  => {'User' 	=> 'test',
+										                    'Group'	=> 'test',
 										                   }
 										      }
 

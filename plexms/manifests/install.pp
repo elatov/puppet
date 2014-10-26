@@ -1,6 +1,6 @@
 # == Class plexms::install
 #
-class plexms::install inherits plexms::params {
+class plexms::install {
   
   case $::osfamily {
     'Debian': {
@@ -12,7 +12,7 @@ class plexms::install inherits plexms::params {
 				include_src => false,
 			}
       
-      ensure_resource ('package',$plexms_package_name,{ 'ensure' => 'latest',
+      ensure_resource ('package',$plexms::package_name,{ 'ensure' => 'latest',
                                                          require => Apt::Source[$plexms::settings['apt_source']] })
       
     }
@@ -40,19 +40,19 @@ class plexms::install inherits plexms::params {
 					gpgcheck  => 1,
 					gpgkey    => "https://plex.tv/plex_pub_key.pub",
 				}
-				ensure_resource ('package',$plexms_package_name,{ 'ensure'=> 'present',require => Yumrepo['PlexRepo'] })
+				ensure_resource ('package',$plexms::package_name,{ 'ensure'=> 'present',require => Yumrepo['PlexRepo'] })
       }
     }
     default: {
       fail("${::operatingsystem} not supported")
     }
   }
-  ensure_resource ('user',$plexms::settings['user'],{ 'ensure'=> 'present' })
+  ensure_resource ('user',$plexms::settings['User'],{ 'ensure'=> 'present' })
 	# change ownership of /var/lib/plexmediaserver dir
 	file{$plexms::home_dir:
 		ensure => 'directory',
-		owner  => $plexms::settings['user'],
-		group  => $plexms::settings['group'],
-		require => [Package [$plexms::package_name], User[$plexms::settings['user']]]
+		owner  => $plexms::settings['User'],
+		group  => $plexms::settings['Group'],
+		require => [Package [$plexms::package_name], User[$plexms::settings['User']]]
 	}
 }

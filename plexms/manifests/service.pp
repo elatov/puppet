@@ -3,9 +3,9 @@
 # This class is meant to be called from plexms
 # It ensure the service is running
 #
-class plexms::service inherits plexms::params{
+class plexms::service{
 
-  service { $plexms_service_name:
+  service { $plexms::service_name:
     ensure     => running,
     enable     => true,
     hasstatus  => true,
