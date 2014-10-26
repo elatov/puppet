@@ -33,11 +33,11 @@ class transmission::params {
       
       ### Client
       ## Package
-      ## Service
-      ## Dirs
+      $transmission_client_package_name          = 'transmission-common'
       ## Config Files
+      $transmission_client_config_file           = 'netrc'
       ## Settings
-      $transmission_client_settings_os           = {}
+      $transmission_client_settings_os           = { 'initial_setup' => true }
       
     }
     'Debian': {

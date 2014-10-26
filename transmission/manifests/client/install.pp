@@ -5,9 +5,6 @@ class transmission::client::install inherits transmission::client {
     fail("Use of private class ${name} by ${caller_module_name}")
   }
 
-  package { 'client-transmission-package':
-    ensure => $package_ensure,
-    name   => $package_name,
-  }
+  ensure_resource(package,$transmission::client::package_name,{ensure => 'present'})
 
 }
