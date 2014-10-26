@@ -12,7 +12,7 @@ class couchpotato::params {
 		  ### Conf File
 		  $cp_settings_file       = 'settings.conf'
 		  ## settings
-		  $cp_settings_os         = {'pkg_pre' => ['git','python']}
+		  $cp_settings_os         = {'pkgs_pre' => ['git','python']}
 		  
   
 		  if $::operatingsystemmajrelease >= 7 {
