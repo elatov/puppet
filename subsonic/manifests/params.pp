@@ -21,7 +21,7 @@ class subsonic::params {
       $subsonic_install_dir         = '/usr/share/subsonic'
       $subsonic_home                = '/var/subsonic'
       ### settings
-      $subsonic_settings_os         = { 'pkg_pre'       => ['java-1.7.0-openjdk','unzip'],
+      $subsonic_settings_os         = { 'pkgs_pre'      => ['java-1.7.0-openjdk','unzip'],
                                         'enable_muscab' => true,
                                         'pgsql_pass'    => 'subsonic',
                                       }
