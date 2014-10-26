@@ -146,4 +146,7 @@ augeasproviders_grub/.project
 !couchpotato/**
 couchpotato/files/settings.conf
 couchpotato/.project
+!vcsrepo/
+!vcsrepo/**
+vcsrepo/.project
 !.gitignore
