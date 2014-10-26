@@ -4,25 +4,27 @@
 # It sets variables according to platform
 #
 class subsonic::params {
+    $subsonic_settings_all          = {'conf' => { 'user'       => 'test',
+                                                   'max_memory' => '150', 
+                                                   'host'       => $::ipaddress,
+                                                 }
+                                      }
   case $::osfamily {
     'Redhat': {
-      $subsonic_config_dir          = '/etc/sysconfig'
-      $java_jdk_package_name        = 'java-1.7.0-openjdk'
-      $unzip_package_name           = 'unzip'
-      $subsonic_package_name        = 'subsonic'
+      ### Package
+      $subsonic_package_name        = 'subsonic-5.0.rpm'
+      $subsonic_musiccabinet_zip    = 'subsonic-installer-standalone.zip'
+      ### Service
       $subsonic_service_name        = 'subsonic'
-      $subsonic_rpm                 = 'subsonic-4.9.rpm'
-      $subsonic_settings            = {
-                                      'user'       => 'test',
-                                      'max_memory' => '150', 
-                                      'host'       => $::ipaddress,
-                                      }
-      
-      $enable_musiccabinet          = true
-      $musiccabinet_zip             = 'subsonic-installer-standalone.zip'
+      ### Dirs
+      $subsonic_config_dir          = '/etc/sysconfig'
       $subsonic_install_dir         = '/usr/share/subsonic'
       $subsonic_home                = '/var/subsonic'
-      $postgres_password            = 'subsonic'
+      ### settings
+      $subsonic_settings_os         = { 'pkg_pre'       => ['java-1.7.0-openjdk','unzip'],
+                                        'enable_muscab' => true,
+                                        'pgsql_pass'    => 'subsonic',
+                                      }
       
       if $::operatingsystemmajrelease >= 7 {
         $subsonic_config_file       = 'subsonic-sysconf-systemd'
@@ -36,15 +38,17 @@ class subsonic::params {
       
     }
     'Debian': {
-      $java_jdk_package_name        = 'openjdk-7-jdk'
       $subsonic_config_dir          = '/etc/default'
       $subsonic_package_name        = 'subsonic'
       $subsonic_service_name        = 'subsonic'
       $subsonic_service_file        = 'subsonic.init'
       $subsonic_service_dir         = '/etc/init.d'
+      $subsonic_settings_os         = { 'pkg_pre'  => ['openjdk-7-jdk','unzip']
+                                      }
     }
     default: {
       fail("${::module} is unsupported on ${::osfamily}")
     }
   }
+  $subsonic_default_settings = merge($subsonic_settings_all,$subsonic_settings_os)
 }

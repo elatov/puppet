@@ -3,8 +3,8 @@ Description=Subsonic music server
 After=network.target
 
 [Service]
-EnvironmentFile=<%= @subsonic_config_dir %>/subsonic
-User=<%= subsonic_settings['user'] %>
+EnvironmentFile=<%= @config_dir %>/subsonic
+User=<%= @settings['conf']['user'] %>
 WorkingDirectory=/usr/share/subsonic
 SyslogIdentifier=subsonic
 ExecStart=/usr/bin/subsonic $SUBSONIC_ARGS
