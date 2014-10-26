@@ -139,4 +139,7 @@ subsonic/.project
 !postgresql/
 !postgresql/**
 postgresql/.project
+!augeasproviders_grub/
+!augeasproviders_grub/**
+augeasproviders_grub/.project
 !.gitignore
