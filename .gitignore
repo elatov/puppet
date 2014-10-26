@@ -153,4 +153,8 @@ vcsrepo/.project
 !transmission/**
 transmission/files/settings.json
 transmission/.project
+!plexms/
+!plexms/**
+plexms/files/*.rpm
+plexms/.project
 !.gitignore
