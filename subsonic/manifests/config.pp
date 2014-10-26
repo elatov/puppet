@@ -3,7 +3,7 @@
 # This class is called from subsonic
 #
 class subsonic::config {
-  ensure_resource ('user',$subsonic::settings['cof']['user'],{ 'ensure'=> 'present' })
+  ensure_resource ('user',$subsonic::settings['conf']['user'],{ 'ensure'=> 'present' })
     
   if $subsonic::service_file =~ /(?i:service)/ {
     file { 'subsonic_service_file':
