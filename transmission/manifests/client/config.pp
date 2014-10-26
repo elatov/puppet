@@ -16,7 +16,7 @@ class transmission::client::config {
 	    group   => $transmission::client::settings['user'],
 	    mode    => '0600',
 	    content => template("transmission/${transmission::client::config_file}.erb"),
-	    require => File ['transmission_client_config_dir'],
+	    require => File [$transmission::client::config_dir],
 	  }->
 	  notify{"Go fill out the .netrc file":}
   } 
