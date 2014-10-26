@@ -136,4 +136,9 @@ nfs/.project
 subsonic/files/*.rpm
 subsonic/files/*.zip
 subsonic/.project
+!subsonic/
+!subsonic/**
+!postgresql/
+!postgresql/**
+postgresql/.project
 !.gitignore
