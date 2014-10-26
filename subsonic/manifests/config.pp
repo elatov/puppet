@@ -19,10 +19,7 @@ class subsonic::config {
     }
   }
   
-  file { 'subsonic_sysconf_dir':
-    ensure  => 'directory',
-    path    => $subsonic::config_dir,
-  }
+  ensure_resource ('file',$subsonic::config_dir,{ensure  => 'directory',})
   
   file { 'subsonic_sysconf_file':
     ensure  => 'present',
