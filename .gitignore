@@ -128,4 +128,7 @@ atomic/.project
 !iptables/**
 iptables/files
 iptables/.project
+!nfs/
+!nfs/**
+nfs/.project
 !.gitignore
