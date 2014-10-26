@@ -41,7 +41,7 @@ class transmission::server::config {
       ensure  => 'present',
       path    => "${transmission::server::service_dir}/${transmission::server::service_file}",
       mode    => '0755',
-      content => "puppet:///modules/transmission/${transmission::server::service_file}",
+      source => "puppet:///modules/transmission/${transmission::server::service_file}",
     }
   }
 
@@ -58,7 +58,7 @@ class transmission::server::config {
 			path    => "${transmission::server::config_dir}/${transmission::server::config_file}",
 			owner   => $transmission::server::settings['user'],
 			group   => $transmission::server::settings['user'],
-			content => "puppet:///modules/transmission/${transmission::server::config_file}",
+			source => "puppet:///modules/transmission/${transmission::server::config_file}",
 			require => File [$transmission::server::config_dir],
 			replace => false,
 		}
