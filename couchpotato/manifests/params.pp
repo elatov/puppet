@@ -1,14 +1,32 @@
 class couchpotato::params {
-  $cp_install_dir = "/usr/local/couchpotato"
-  $cp_user = "test"
   
-  if $::operatingsystemmajrelease >= 7 {
-    $cp_service_file = "couchpotato.service"
-  }else{
-    $cp_service_file = "couchpotato.init"
-    $cp_sys_config_file      = "couchpotato.sysconf"
+  $cp_settings_all          = { 'user'   => 'test'
+                              }
+  case $::osfamily {
+    'Redhat': {
+      ### Service
+		  $cp_service_name        = 'couchpotato'
+		  ## Dirs
+		  $cp_install_dir         = '/usr/local/couchpotato'
+		  $cp_config_dir          = '/etc/sysconfig'
+		  ### Conf File
+		  $cp_settings_file       = 'settings.conf'
+		  ## settings
+		  $cp_settings_os         = {'pkg_pre' => ['git','python']}
+		  
+  
+		  if $::operatingsystemmajrelease >= 7 {
+		    $cp_service_file      = 'couchpotato.service'
+		    $cp_service_dir       = '/usr/lib/systemd/system'
+		  }else{
+		    $cp_service_file      = 'couchpotato.init'
+		    $cp_config_file       = 'couchpotato.sysconf'
+		    $cp_service_dir       = '/etc/init.d'
+		  }
+    }
+    default: {
+      fail("${::module} is unsupported on ${::osfamily}")
+    }
   }
-
-  $cp_service_name         = "couchpotato"
-  $cp_settings_file        = "settings.conf"
+  $cp_default_settings = merge($cp_settings_all,$cp_settings_os)
 }
