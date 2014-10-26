@@ -1,6 +1,6 @@
 # == Class nfs::server::install
 #
-class nfs::server::install inherits nfs::params {
+class nfs::server::install {
 
-  ensure_packages ($nfs_server_package_name,{ 'ensure'=> 'latest' })
+  ensure_packages ($nfs::server::package_name,{ 'ensure'=> 'latest' })
 }

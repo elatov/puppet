@@ -9,28 +9,29 @@
 #
 class nfs::server (
   ## Packages
-  $nfs_server_package_name	= $nfs::params::nfs_server_package_name,
+  $package_name	      = $nfs::params::nfs_server_package_name,
   
   ## Services
-  $nfs_server_service_name	= $nfs::params::nfs_server_service_name,
-  
-  ## Dirs
-  $nfs_server_config_dir		= $nfs::params::nfs_server_config_dir,
-  $nfs_server_service_dir		= $nfs::params::nfs_server_service_dir,
-#  $nfs_server_home					= $nfs::params::nfs_server_home,
+  $service_name	      = $nfs::params::nfs_server_service_name,
+  $service_pre        = $nfs::params::nfs_server_service_pre,
   
   ## Conf Files
-  $nfs_server_config_file		= $nfs::params::nfs_server_config_file,
-  $nfs_server_service_file	= $nfs::params::nfs_server_service_file,
-  $nfs_server_exports_file  = $nfs::params::nfs_server_exports_file,
+  $exports_file       = $nfs::params::nfs_server_exports_file,
   
   ## settings
-  $nfs_server_settings			= $nfs::params::nfs_server_settings,
+  $override_settings  = undef,
+  $default_settings		= $nfs::params::nfs_server_default_settings,
 ) inherits nfs::params {
 
   # validate parameters here
-  validate_hash($nfs_server_settings)
-  validate_string($nfs_server_package_name)
+  validate_hash($default_settings)
+  validate_string($package_name)
+  
+  if !($override_settings == undef){
+    validate_hash($override_settings)
+  }
+  # Merge settings with override-hash even if it's empty
+  $settings = deep_merge($default_settings, $override_settings)
 
   class { 'nfs::server::install': } ->
   class { 'nfs::server::config': } ~>
