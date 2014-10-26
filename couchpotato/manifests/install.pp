@@ -8,13 +8,15 @@ class couchpotato::install {
     ensure_resource('user', $couchpotato::settings['user'], {'ensure' => 'present'})
   }
   
-	# Clone the couchpotato source using vcsrepo
-	# depends on the vcsrepo module
-  vcsrepo { $couchpotato::install_dir:
-    ensure   => 'present',
-    provider => 'git',
-    source   => 'git://github.com/RuudBurger/CouchPotatoServer.git',
-    owner    => $couchpotato::settings['user'],
-    require  => [User[$couchpotato::settings['user']],Package[$couchpotato::settings['pkgs_pre']]],
+  if ($couchpotato::settings['initial_setup'] == true){
+		# Clone the couchpotato source using vcsrepo
+		# depends on the vcsrepo module
+	  vcsrepo { $couchpotato::install_dir:
+	    ensure   => 'present',
+	    provider => 'git',
+	    source   => 'git://github.com/RuudBurger/CouchPotatoServer.git',
+	    owner    => $couchpotato::settings['user'],
+	    require  => [User[$couchpotato::settings['user']],Package[$couchpotato::settings['pkgs_pre']]],
+	  }
   }
 }
