@@ -29,8 +29,8 @@ class subsonic::install {
       # change ownership of /var/subsonic dir
       file{ $subsonic::home_dir:
         ensure => 'directory',
-        owner  => $subsonic::settings['user'],
-        group  => $subsonic::settings['user'],
+        owner  => $subsonic::settings['conf']['user'],
+        group  => $subsonic::settings['conf']['user'],
       }->
       file {"/usr/bin/subsonic":
         ensure => 'link',
