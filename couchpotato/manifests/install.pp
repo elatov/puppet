@@ -15,6 +15,6 @@ class couchpotato::install {
     provider => 'git',
     source   => 'git://github.com/RuudBurger/CouchPotatoServer.git',
     owner    => $couchpotato::settings['user'],
-    require  => [User[$couchpotato::settings['user'],Package[$couchpotato::settings['pkgs_pre']]]],
+    require  => [User[$couchpotato::settings['user']],Package[$couchpotato::settings['pkgs_pre']]],
   }
 }
