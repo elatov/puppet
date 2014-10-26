@@ -49,7 +49,7 @@ class plexms::install {
   }
   ensure_resource ('user',$plexms::settings['conf']['User'],{ 'ensure'=> 'present' })
 	# change ownership of /var/lib/plexmediaserver dir
-	file{$plexms::home_dir:
+	file{ $plexms::home_dir:
 		ensure => 'directory',
 		owner  => $plexms::settings['conf']['User'],
 		group  => $plexms::settings['conf']['Group'],

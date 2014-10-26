@@ -17,7 +17,7 @@ class plexms (
   ## Dirs
   $config_dir		      = $plexms::params::plexms_config_dir,
   $service_dir		    = $plexms::params::plexms_service_dir,
-  $home_dir				    = $plexms::params::plexms_home,
+  $home_dir				    = $plexms::params::plexms_home_dir,
   
   ## Conf Files
   $config_file		    = $plexms::params::plexms_config_file,
