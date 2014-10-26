@@ -133,8 +133,9 @@ iptables/.project
 nfs/.project
 !subsonic/
 !subsonic/**
-subsonic/files/*.rpm
-subsonic/files/*.zip
+subsonic/files/subsonic-4.9.rpm
+subsonic/files/subsonic-5.0.rpm
+subsonic/files/subsonic-installer-standalone.zip
 subsonic/.project
 !postgresql/
 !postgresql/**
