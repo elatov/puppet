@@ -20,7 +20,7 @@ class subsonic::install {
       }
       
       # now install the rpm, also inhibiting the postinstall run scripts, since it automatically starts the service
-      package { $subsonic::package_name:
+      package { 'subsonic':
         provider => 'rpm',
         source   => "/usr/local/apps/${subsonic::package_name}",
         require  => [File ["get-${subsonic::package_name}"],Package[$subsonic::settings['pkgs_pre']]],
