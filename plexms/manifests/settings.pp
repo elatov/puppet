@@ -4,11 +4,11 @@
 #
 define plexms::settings (
     $key          = $title,
-    $settings     = $plexms::params::plexms_settings,
-    $config_file  = $plexms::params::plexms_config_file,
+    $settings,     
+    $config_file,
 ) {
   
-  $value = $plexms::params::plexms_settings[$key]
+  $value = $settings[$key]
   
   augeas{"plexms_setting_${key}":
        incl    => "${config_file}", 

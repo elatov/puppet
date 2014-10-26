@@ -13,7 +13,7 @@ class transmission::client(
   validate_hash ($default_settings)
   validate_string ($package_name)
   
-   if !($override_settings == undef){
+  if !($override_settings == undef){
     validate_hash($override_settings)
   }
   # Merge settings with override-hash even if it's empty

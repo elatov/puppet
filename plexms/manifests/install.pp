@@ -5,62 +5,54 @@ class plexms::install inherits plexms::params {
   case $::osfamily {
     'Debian': {
       
-			apt::source { $plexms_apt_source:
+			apt::source { $plexms::settings['apt_source']:
 				location    => 'http://shell.ninthgate.se/packages/debian',
 				release     => $::lsbdistcodename,
 				repos       => 'main',
 				include_src => false,
 			}
       
-      ensure_resource ('package',$plexms_package_name,{ 'ensure'=> 'latest',require => Apt::Source[$plexms_apt_source] })
+      ensure_resource ('package',$plexms_package_name,{ 'ensure' => 'latest',
+                                                         require => Apt::Source[$plexms::settings['apt_source']] })
       
     }
     'RedHat': {
       
-      if ($plexms_use_rpm){
-        ensure_resource ('file',
-                         "/home/${plexms_settings['User']}/apps",
-                         {'ensure'  => 'directory',
-                          'owner'   => $plexms_settings['User'],
-                          'group'   => $plexms_settings['User']})
+      if ( $plexms::settings['use_rpm'] == true ){
+        ensure_resource('file','/usr/local/apps',{ensure => 'directory'})
 
 				# let's get the RPM from the puppet master
-				file {"get-${plexms_rpm_name}":
+				file { "get-${plexms::settings['rpm_name']}":
 					ensure => 'present',
-					path   => "/home/${plexms_settings['User']}/apps/${plexms_rpm_name}",
-					source => "puppet:///modules/plexms/${plexms_rpm_name}",
-					require => File ["/home/${plexms_settings['User']}/apps"],
+					path   => "/usr/local/apps/${plexms::settings['rpm_name']}",
+					source => "puppet:///modules/plexms/${plexms::settings['rpm_name']}",
+					require => File ['/usr/local/apps'],
 				}->
-				package {$plexms_package_name:
+				package { $plexms::package_name:
 	        provider => 'rpm',
-	        source   => "/home/${plexms_settings['User']}/apps/${plexms_rpm_name}",
+	        source   => "/usr/local/apps/${plexms::settings['rpm_name']}",
         }
-        
-        
       } else {
-        
-				yumrepo { $plexms_yum_repo :
+				yumrepo { PlexRepo :
 					baseurl   => "http://plex.r.worldssl.net/PlexMediaServer/fedora-repo/release/\$basearch/",
 					descr     => "Plex Repository for Fedora",
 					enabled   => 1,
 					gpgcheck  => 1,
 					gpgkey    => "https://plex.tv/plex_pub_key.pub",
 				}
-								
-				ensure_resource ('package',$plexms_package_name,{ 'ensure'=> 'latest',require => Yumrepo[$plexms_yum_repo] })
-        
+				ensure_resource ('package',$plexms_package_name,{ 'ensure'=> 'present',require => Yumrepo['PlexRepo'] })
       }
-			
     }
     default: {
       fail("${::operatingsystem} not supported")
     }
   }
+  ensure_resource ('user',$plexms::settings['user'],{ 'ensure'=> 'present' })
 	# change ownership of /var/lib/plexmediaserver dir
-	file{$plexms_home:
+	file{$plexms::home_dir:
 		ensure => 'directory',
-		owner  => $plexms_settings['User'],
-		group  => $plexms_settings['User'],
-		require => Package [$plexms_package_name]
+		owner  => $plexms::settings['user'],
+		group  => $plexms::settings['group'],
+		require => [Package [$plexms::package_name], User[$plexms::settings['user']]]
 	}
 }

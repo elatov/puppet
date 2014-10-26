@@ -9,36 +9,37 @@
 #
 class plexms (
   ## Packages
-  $plexms_package_name	= $plexms::params::plexms_package_name,
-  $plexms_yum_repo      = $plexms::params::plexms_yum_repo,
-  $plexms_apt_source    = $plexms::params::plexms_apt_source,
-  $plexms_use_rpm       = $plexms::params::plexms_use_rpm,
-  $plexms_rpm_name      = $plexms::params::plexms_rpm_name,
+  $package_name	      = $plexms::params::plexms_package_name,
   
   ## Services
-  $plexms_service_name	= $plexms::params::plexms_service_name,
+  $service_name	      = $plexms::params::plexms_service_name,
   
   ## Dirs
-  $plexms_config_dir		= $plexms::params::plexms_config_dir,
-  $plexms_service_dir		= $plexms::params::plexms_service_dir,
-  $plexms_home					= $plexms::params::plexms_home,
+  $config_dir		      = $plexms::params::plexms_config_dir,
+  $service_dir		    = $plexms::params::plexms_service_dir,
+  $home_dir				    = $plexms::params::plexms_home,
   
   ## Conf Files
-  $plexms_config_file		= $plexms::params::plexms_config_file,
-  $plexms_service_file	= $plexms::params::plexms_service_file,
+  $config_file		    = $plexms::params::plexms_config_file,
+  $service_file	      = $plexms::params::plexms_service_file,
   
   ## settings
-  $plexms_settings			= $plexms::params::plexms_settings,
+  $default_settings		= $plexms::params::plexms_default_settings,
+  $override_settings   = undef
 ) inherits plexms::params {
 
   # validate parameters here
-  validate_hash($plexms_settings)
+  validate_hash($default_settings)
   validate_string($plexms_package_name)
+  
+   if !($override_settings == undef){
+    validate_hash($override_settings)
+  }
+  # Merge settings with override-hash even if it's empty
+  $settings = deep_merge($default_settings, $override_settings)
 
   class { 'plexms::install': } ->
   class { 'plexms::config': } ~>
   class { 'plexms::service': } ->
   Class['plexms']
-  #class { 'plexms::config': }->
-  #Class['plexms']
 }

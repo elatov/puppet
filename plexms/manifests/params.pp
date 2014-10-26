@@ -5,10 +5,10 @@
 #
 class plexms::params {
 
-	$plexms_settings	=	{
-										'user' 	=> 'test',
-										'group'	=> 'test',
-										}
+	$plexms_settings_all	=	{ 'conf'  => {'user' 	=> 'test',
+										                    'group'	=> 'test',
+										                   }
+										      }
 
 	case $::osfamily {
 		'Debian': {
@@ -19,19 +19,20 @@ class plexms::params {
 			$plexms_home						= '/var/lib/plexmediaserver'
 			$plexms_config_file			= 'plexms.sysconf.init'
 			$plexms_service_file		= 'plexms.init'
-			$plexms_apt_source      = 'APT_Plex_Source'
+			$plexms_settings_os     = {'apt_source' => 'APT_Plex_Source'}
 		}
 		'RedHat': {
+		  ### Package
 			$plexms_package_name		= 'plexmediaserver'
+			### Service
 			$plexms_service_name		= 'plexmediaserver'
+			### Dir
 			$plexms_config_dir			= '/etc/sysconfig'
-			$plexms_home						= '/var/lib/plexmediaserver'
-			$plexms_use_rpm         = true
-			if ($plexms_use_rpm){
-			  $plexms_rpm_name      = 'plexmediaserver-0.9.9.14.531-7eef8c6.x86_64.rpm'
-			} else {
-			  $plexms_yum_repo        = 'PlexRepo'
-			}
+			$plexms_home_dir			  = '/var/lib/plexmediaserver'
+			### Settings
+			$plexms_settings_os     = {'use_rpm'   => true,
+			                           'rpm_name'  => 'plexmediaserver-0.9.11.1.678-c48ffd2.x86_64.rpm'
+			                          }
 			
 			if $::operatingsystemmajrelease >= 7 {
 				$plexms_service_dir  	= '/usr/lib/systemd/system'
@@ -47,4 +48,5 @@ class plexms::params {
 			fail("${::operatingsystem} not supported")
 		}
 	}
+	$plexms_default_settings = merge($plexms_settings_all,$plexms_settings_os)
 }
