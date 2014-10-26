@@ -131,4 +131,9 @@ iptables/.project
 !nfs/
 !nfs/**
 nfs/.project
+!subsonic/
+!subsonic/**
+subsonic/files/*.rpm
+subsonic/files/*.zip
+subsonic/.project
 !.gitignore

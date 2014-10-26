@@ -1,0 +1,15 @@
+[Unit]
+Description=Subsonic music server
+After=network.target
+
+[Service]
+EnvironmentFile=<%= @subsonic_config_dir %>/subsonic
+User=<%= subsonic_settings['user'] %>
+WorkingDirectory=/usr/share/subsonic
+SyslogIdentifier=subsonic
+ExecStart=/usr/bin/subsonic $SUBSONIC_ARGS
+ExecStop=/bin/kill -15 $MAINPID
+Type=forking
+
+[Install]
+WantedBy=multi-user.target
