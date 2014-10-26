@@ -72,7 +72,7 @@ class subsonic::install {
 		  command   => "unzip -jo ${subsonic::musiccabinet_zip} subsonic-installer-standalone/subsonic* -d ${subsonic::install_dir}",
 		  require   => [File [$subsonic::musiccabinet_zip],
 		                Package[$subsonic::settings['pkgs_pre']],
-		                Package [$subsonic::package_name]],
+		                Package ['subsonic']],
 		  creates   => "${subsonic::install_dir}/subsonic.bat",
 		}
     
