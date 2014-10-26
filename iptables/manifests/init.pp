@@ -21,12 +21,20 @@ class iptables (
   $config_file	= $iptables::params::iptables_config_file,
   
   ## settings
-  $settings			= $iptables::params::iptables_settings,
+  $default_settings			= $iptables::params::iptables_default_settings,
+  $override_settings     = undef,
 ) inherits iptables::params {
 
   # validate parameters here
-  validate_hash($settings)
+  validate_hash($default_settings)
   validate_string($package_name)
+  
+  # check to see if override hash is a hash
+  if !($override_settings == undef){
+    validate_hash($override_settings)
+  }
+  # Merge settings with override-hash even if it's empty
+  $settings = deep_merge($default_settings, $override_settings)
 
   class { 'iptables::install': } ->
   class { 'iptables::config': } ~>
