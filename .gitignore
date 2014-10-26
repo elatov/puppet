@@ -142,4 +142,8 @@ postgresql/.project
 !augeasproviders_grub/
 !augeasproviders_grub/**
 augeasproviders_grub/.project
+!couchpotato/
+!couchpotato/**
+couchpotato/files/settings.conf
+couchpotato/.project
 !.gitignore
