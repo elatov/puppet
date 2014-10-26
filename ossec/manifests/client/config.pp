@@ -4,7 +4,7 @@
 #
 class ossec::client::config {
   
-  if ($ossec::client::settings['add_user'] != undef and $ossec::client::settings['initial_setup'] == true) {
+  if ($ossec::client::settings['add_user'] != undef and $ossec::client::settings['initial_setup'] == false) {
     User <| title == "${ossec::client::settings['add_user']}" |> { groups +> ["ossec"] }
   }
   
