@@ -33,14 +33,16 @@ class couchpotato::config {
     }
   }
   
-  file {"${couchpotato::user_home_dir}/.couchpotato":
-    ensure => 'directory',
-    owner => $couchpotato::settings['user'],
-  }
+  if ($couchpotato::settings['initial_setup'] == true){
+	  file { "${couchpotato::user_home_dir}/.couchpotato":
+	    ensure => 'directory',
+	    owner => $couchpotato::settings['user'],
+	  }
   
-  file {"${couchpotato::user_home_dir}/.couchpotato/$couchpotato::settings_file":
-    ensure  => 'present',
-    source  => "puppet:///modules/couchpotato/$couchpotato::settings_file",
-    require => File["${couchpotato::user_home_dir}/.couchpotato"]
+	  file { "${couchpotato::user_home_dir}/.couchpotato/$couchpotato::settings_file":
+	    ensure  => 'present',
+	    source  => "puppet:///modules/couchpotato/$couchpotato::settings_file",
+	    require => File["${couchpotato::user_home_dir}/.couchpotato"]
+	  }
   }
 }
