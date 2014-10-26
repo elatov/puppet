@@ -60,7 +60,6 @@ class transmission::server::config {
 			group   => $transmission::server::settings['user'],
 			source  => "puppet:///modules/transmission/${transmission::server::config_file}",
 			require => File [$transmission::server::config_dir],
-			replace => false,
 		}
 	}
 	
