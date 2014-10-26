@@ -5,8 +5,7 @@
 #
 class iptables::params {
 
-	$iptables_settings_all	=	{ 'remove_firewalld'   => false,
-										          'host'	             => $::hostname,
+	$iptables_settings_all	=	{ 'host'  => $::hostname,
 										        }
 	case $::operatingsystem {
     /(?i:CentOS|fedora)/: { 
