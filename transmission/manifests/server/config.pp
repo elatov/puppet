@@ -58,7 +58,7 @@ class transmission::server::config {
 			path    => "${transmission::server::config_dir}/${transmission::server::config_file}",
 			owner   => $transmission::server::settings['user'],
 			group   => $transmission::server::settings['user'],
-			content => template("transmission/${transmission::server::config_file}.erb"),
+			content => "puppet:///modules/transmission/${transmission::server::config_file}",
 			require => File [$transmission::server::config_dir],
 			replace => false,
 		}
