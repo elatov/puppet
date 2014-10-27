@@ -10,20 +10,29 @@ class <%= metadata.name %>::params {
 											}
 	case $::osfamily {
 		'Debian': {
+			### Packages
 			$<%= metadata.name %>_package_name		= '<%= metadata.name %>'
+			### Services
 			$<%= metadata.name %>_service_name		= '<%= metadata.name %>'
+			### Dirs
 			$<%= metadata.name %>_config_dir			= '/etc/default'
 			$<%= metadata.name %>_service_dir			= '/etc/init.d'
 			$<%= metadata.name %>_home_dir					= '/usr/local/<%= metadata.name %>'
+			### Conf Files
 			$<%= metadata.name %>_config_file			= '<%= metadata.name %>.sysconf.init'
 			$<%= metadata.name %>_service_file		= '<%= metadata.name %>.init'
+			## Settings
 			$<%= metadata.name %>_settings_os			= { }
 		}
 		'RedHat': {
+			### Packages
 			$<%= metadata.name %>_package_name		= '<%= metadata.name %>'
+			### Services
 			$<%= metadata.name %>_service_name		= '<%= metadata.name %>'
+			### Dirs
 			$<%= metadata.name %>_config_dir			= '/etc/sysconfig'
 			$<%= metadata.name %>_home_dir					= '/usr/local/<%= metadata.name %>'
+			### Settings
 			$<%= metadata.name %>_settings_os			= { }
 			
 			if $::operatingsystemmajrelease >= 7 {
