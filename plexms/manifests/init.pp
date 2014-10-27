@@ -30,7 +30,7 @@ class plexms (
 
   # validate parameters here
   validate_hash($default_settings)
-  validate_string($plexms_package_name)
+  validate_string($package_name)
   
    if !($override_settings == undef){
     validate_hash($override_settings)

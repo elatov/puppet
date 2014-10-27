@@ -1,6 +1,6 @@
 # == Class nfs::client::install
 #
-class nfs::client::install inherits nfs::params {
+class nfs::client::install{
 
-  ensure_resource ('package',$nfs_client_package_name,{ 'ensure'=> 'latest' })
+  ensure_resource ('package',$nfs::client::package_name,{ 'ensure'=> 'latest' })
 }
