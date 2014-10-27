@@ -2,5 +2,5 @@
 #
 class nfs::server::install {
 
-  ensure_packages ($nfs::server::package_name,{ 'ensure'=> 'latest' })
+  ensure_packages ($nfs::server::package_name,{ 'ensure'=> 'present' })
 }

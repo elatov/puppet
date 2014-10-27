@@ -12,7 +12,7 @@ class plexms::install {
 				include_src => false,
 			}
       
-      ensure_resource ('package',$plexms::package_name,{ 'ensure' => 'latest',
+      ensure_resource ('package',$plexms::package_name,{ 'ensure' => 'present',
                                                          require => Apt::Source[$plexms::settings['apt_source']] })
       
     }
