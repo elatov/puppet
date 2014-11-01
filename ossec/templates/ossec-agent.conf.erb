@@ -38,7 +38,7 @@
   </rootcheck>
 
 <% @settings['config']['logs'].each_pair do |action,type| -%>
-<% if type == ( "command" or "full_command") -%> 
+<% if type == ("command" or "full_command") -%> 
   <localfile>
     <log_format><%= type -%></log_format>
     <command><%= action -%></command>
