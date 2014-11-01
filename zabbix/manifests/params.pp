@@ -7,7 +7,7 @@ class zabbix::params {
 			$server_zabbix_package_name           = 'zabbix-server-mysql'
 			$server_zabbix_web_package_name       = 'zabbix-frontend-php'
 			$server_zabbix_service_name           = 'zabbix-server'
-			$server_zabbix_version                = '2.4'
+			$server_zabbix_version                = '2.2'
 			$server_zabbix_enable_partition_mysql = true
 			$server_zabbix_enable_web             = true
 			$server_zabbix_default_settings       = { 'logFile'                => '/var/log/zabbix-server/zabbix_server.log',
@@ -27,7 +27,6 @@ class zabbix::params {
 			$agent_zabbix_config_file            = 'zabbix_agentd.conf'
 			$agent_zabbix_package_name           = 'zabbix-agent'
 			$agent_zabbix_service_name           = 'zabbix-agent'
-			$agent_zabbix_version                = '2.4'
 			
 			$agent_zabbix_default_settings       = { 'logFile'                => '/var/log/zabbix/zabbix_agentd.log',
 			                                         'logFileSize'            => '1',
@@ -38,6 +37,7 @@ class zabbix::params {
 			                                         'listenIp'               => $::ipaddress,
 			                                         'smart'                  => false,
 			                                         'disk_perf'              => false,
+			                                         'version'                => '2.2',
 			                                       }
 	 }
 		'FreeBSD': {
