@@ -6,7 +6,7 @@ class exim::server::config {
 
   
   if ($exim::server::settings['add_user'] != undef) {
-    User <| title == "${exim::server::settings['add_user']}" |> { groups +> ['mail','adm'] }
+    User <| title == "${exim::server::settings['add_user']}" |> { groups +> ['adm'] }
   }
     
   file { $exim::server::config_dir:
