@@ -50,7 +50,7 @@ define kmod::load(
     'RedHat': {
       file { "/etc/sysconfig/modules/${name}.modules":
         ensure  => $ensure,
-        mode    => 0755,
+        mode    => '0755',
         content => template('kmod/redhat.modprobe.erb'),
       }
     }

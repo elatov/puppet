@@ -16,7 +16,7 @@ class kmod {
 #    ]: ensure => present,
 #  }
 
-		file { '/etc/modprobe.d/blacklist.conf': 
+		file { '/etc/modprobe.d/blacklist.local.conf': 
       ensure => present,
 		}
   
