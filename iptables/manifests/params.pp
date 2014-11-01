@@ -26,6 +26,7 @@ class iptables::params {
         $iptables_config_dir      = '/etc/sysconfig'
         $iptables_config_file     = 'iptables'
         $iptables_service_name    = 'iptables'
+        $iptables_settings_os     =  { }
 
       }
     }
@@ -34,6 +35,7 @@ class iptables::params {
 			$iptables_config_dir         = '/etc/iptables/'
 			$iptables_config_file        = 'rules.v4'
 			$iptables_service_name       = 'iptables-persistent'
+      $iptables_settings_os     =  { }
  
     }
     default: {
@@ -41,6 +43,7 @@ class iptables::params {
 			$iptables_config_dir         = '/etc/sysconfig'
 			$iptables_config_file        = 'iptables'
 			$iptables_service_name       = 'iptables'
+      $iptables_settings_os     =  { }
     }
   }
   $iptables_default_settings = merge($iptables_settings_all,$iptables_settings_os)
