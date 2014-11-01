@@ -157,4 +157,7 @@ transmission/.project
 !plexms/**
 plexms/files/*.rpm
 plexms/.project
+!extra_conf/
+!extra_conf/**
+extra_conf/.project
 !.gitignore
