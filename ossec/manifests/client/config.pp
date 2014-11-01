@@ -37,7 +37,7 @@ class ossec::client::config {
 	  }
   }
   
-  if ($::operatingsystem != 'OmniOS'){
+  if ($::operatingsystem !~ /(?i:OmniOS|Debian)/){
 	  augeas {"${module_name}-ossec-hids-su-owner":
 	    lens    => 'Logrotate.lns',
 	    incl    => '/etc/logrotate.d/ossec-hids',
