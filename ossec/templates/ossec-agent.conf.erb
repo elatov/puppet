@@ -37,10 +37,10 @@
     <system_audit><%= @home_dir %>/etc/shared/cis_rhel5_linux_rcl.txt</system_audit>
   </rootcheck>
 
-<% @settings['config']['logs'].each_pair do |action,type| -%>
+<% @settings['config']['logs'].each_pair do |log,log_type| -%>
   <localfile>
-    <log_format><%= type -%></log_format>
-    <location><%= action -%></location>
+    <log_format><%= log_type -%></log_format>
+    <location><%= log -%></location>
   </localfile>
 <% end -%>
 
