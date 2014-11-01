@@ -9,10 +9,10 @@
 #
 class pkgsrc (
   ## Dirs
-  $home					= $pkgsrc::params::pkgsrc_home,
+  $home_dir					    = $pkgsrc::params::pkgsrc_home_dir,
   
   ## settings
-  $override_settings      = undef,
+  $override_settings    = undef,
   $default_settings			= $pkgsrc::params::pkgsrc_default_settings,
 ) inherits pkgsrc::params {
 

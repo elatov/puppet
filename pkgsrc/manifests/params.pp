@@ -11,7 +11,7 @@ class pkgsrc::params {
 										      }
 	case $::osfamily {
 		'Solaris': {
-			$pkgsrc_home					= '/opt/local'
+			$pkgsrc_home_dir			= '/opt/local'
 			$pkgsrc_settings_os		= { 'user'  => 'test'}
 		}
 		default: {
