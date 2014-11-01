@@ -4,7 +4,7 @@
 #
 class smartd::config {
 
-  if $smartd::service_file =~ /(?i:service)/ {
+  if $smartd::service_file =~ /(?i:.service)/ {
     file { $smartd::service_file:
       ensure  => "present",
       path    => "${smartd::service_dir}/${smartd::service_file}",
