@@ -15,7 +15,6 @@ class zabbix::server (
   ## settings
   $override_settings      = undef,
   $default_settings       = $zabbix::params::server_zabbix_default_settings,
-  $version                = $zabbix::params::server_zabbix_version,
   $enable_partition_mysql = $zabbix::params::server_zabbix_enable_partition_mysql,
   $enable_web             = $zabbix::params::server_zabbix_enable_partition_mysql,
     

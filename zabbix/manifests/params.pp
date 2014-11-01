@@ -7,7 +7,6 @@ class zabbix::params {
 			$server_zabbix_package_name           = 'zabbix-server-mysql'
 			$server_zabbix_web_package_name       = 'zabbix-frontend-php'
 			$server_zabbix_service_name           = 'zabbix-server'
-			$server_zabbix_version                = '2.2'
 			$server_zabbix_enable_partition_mysql = true
 			$server_zabbix_enable_web             = true
 			$server_zabbix_default_settings       = { 'logFile'                => '/var/log/zabbix-server/zabbix_server.log',
@@ -19,6 +18,7 @@ class zabbix::params {
 			                                          'dBPassword'             => 'password',
 			                                          'startVMwareCollectors'  => '1',
 			                                          'listenIp'               => $::ipaddress,
+			                                          'version'                => '2.2',
 			                                        }
 			### Client/Agent
 			$agent_zabbix_config_dir             = '/etc/zabbix'
