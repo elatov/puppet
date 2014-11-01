@@ -38,17 +38,10 @@
   </rootcheck>
 
 <% @settings['config']['logs'].each_pair do |action,type| -%>
-  <% if type == "command" -%> 
-  <localfile>
-    <log_format><%= type -%></log_format>
-    <command><%= action -%></command>
-  </localfile>
-  <% else -%>
   <localfile>
     <log_format><%= type -%></log_format>
     <location><%= action -%></location>
   </localfile>
-  <% end -%>
 <% end -%>
 
 </ossec_config>
