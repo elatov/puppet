@@ -71,6 +71,7 @@ kmod/.project
 pkgng/.project
 !pf/
 !pf/**
+pf/files/pf.conf
 pf/.project
 !mysudo/
 !mysudo/**
