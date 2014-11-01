@@ -13,12 +13,21 @@ class ossec::client::config {
     ensure  => 'directory',
   }
   
-  file { $ossec::client::config_file:
-    ensure  => 'present',
-    path    => "${ossec::client::config_dir}/${ossec::client::config_file}",
-    content => template("ossec/${ossec::client::config_file}.erb"),
-    require => File [$ossec::client::config_dir],
-  }
+  if ($::osfamily == 'Debian'){
+	  file { $ossec::client::config_file:
+	    ensure  => 'present',
+	    path    => "${ossec::client::config_dir}/${ossec::client::config_file}",
+	    content => template('ossec/ossec-agent.conf.erb'),
+	    require => File [$ossec::client::config_dir],
+	  }
+	}elsif ($::osfamily == 'RedHat'){
+	  file { $ossec::client::config_file:
+      ensure  => 'present',
+      path    => "${ossec::client::config_dir}/${ossec::client::config_file}",
+      content => template("ossec/${ossec::client::config_file}.erb"),
+      require => File [$ossec::client::config_dir],
+    }
+	}
   
   if ($ossec::client::settings['timezone_file'] != undef) {
 	  file {"${ossec::client::config_dir}/localtime":

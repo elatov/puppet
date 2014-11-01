@@ -25,7 +25,7 @@ class ossec::params {
 			$ossec_client_service_dir			= '/etc/init.d'
 			$ossec_client_home_dir				= '/var/ossec'
 			## Conf Files
-			$ossec_client_config_file			= "ossec-agent.conf.${::operatingsystem}"
+			$ossec_client_config_file			= "ossec.conf"
 			$ossec_client_service_file		= 'ossec.init'
 			## Settings
 			$osser_client_settings_os     = { 'add_user'      => 'test',
