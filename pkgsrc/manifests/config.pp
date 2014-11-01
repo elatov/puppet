@@ -8,10 +8,10 @@ class pkgsrc::config {
   
   exec { "${module_name}-wget-pkgsrc":
     path    => ['bin','/usr/bin'],
-    cwd     => '/root/apps',
+    cwd     => '/usr/local/apps',
     command => "wget http://${pkgsrc::settings['url']}/bootstrap-${pkgsrc::settings['version']}-x86_64.tar.gz",
     require => File['/usr/local/apps'],
-    creates  => "/root/apps/bootstrap-${pkgsrc::settings['version']}-x86_64.tar.gz",
+    creates  => "/usr/local/apps/bootstrap-${pkgsrc::settings['version']}-x86_64.tar.gz",
   }
   
   exec { "${module_name}-extract-pkgsrc":
