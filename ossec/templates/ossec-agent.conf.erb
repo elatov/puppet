@@ -39,15 +39,17 @@
 
 <% @settings['config']['logs'].each_pair do |action,type| -%>
 <% if type == ( "command" or "command_full") -%> 
- <localfile>
+  <localfile>
     <log_format><%= type -%></log_format>
     <command><%= action -%></command>
- </localfile>
+  </localfile>
+  
 <% else -%>
- <localfile>
+  <localfile>
     <log_format><%= type -%></log_format>
     <location><%= action -%></location>
- </localfile>
+  </localfile>
+  
 <% end -%>
 <% end -%>
 </ossec_config>
