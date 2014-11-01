@@ -4,7 +4,10 @@
 #
 class exim::server::config {
 
-  ensure_resource ('user',$exim::server::settings['user'],{ 'ensure'=> 'present' })
+  
+  if ($exim::server::settings['add_user'] != undef) {
+    User <| title == "${exim::server::settings['add_user']}" |> { groups +> ['mail','exim'] }
+  }
     
   file { $exim::server::config_dir:
     ensure  => 'directory',
