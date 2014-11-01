@@ -30,6 +30,7 @@ class ossec::params {
 			## Settings
 			$osser_client_settings_os     = { 'add_user'      => 'test',
 			                                  'config'        => { 'logs' => { '/var/log/messages'       => 'syslog',
+                                                                         '/var/log/dpkg.log'       => 'syslog',
                                                                          '/var/log/auth.log'       => 'syslog',
                                                                          '/var/log/mail.log'       => 'syslog',
                                                                          '/var/log/exim4/mainlog'  => 'syslog',
@@ -37,8 +38,11 @@ class ossec::params {
                                                                          '/var/log/syslog'         => 'syslog',
                                                                          "/var/log/apache2/${hostname}_access_log"  => 'apache', 
                                                                          "/var/log/apache2/${hostname}_error_log"  => 'apache',
-                                                                         '/var/log/apache2/error_log '  => 'apache', 
-                                                                         '/var/log/apache2/access_log '  => 'apache', 
+                                                                         '/var/log/apache2/error.log '  => 'apache', 
+                                                                         '/var/log/apache2/access.log '  => 'apache',
+                                                                         'df -h'                   => 'command',
+                                                                         'netstat -tan |grep LISTEN |grep -v 127.0.0.1 | sort' => 'full_command',
+                                                                         'last -n 5'                 => 'full_command',
                                                                         }
                                                            }
                                       }
