@@ -175,7 +175,7 @@ class vmwaretools (
   }
 
   case $::virtual {
-    'vmware', 'virtualbox': {
+    /(?i:vmware|virtualbox)/: {
       $service_pattern = $tools_version ? {
         /3\..+/   => 'vmware-guestd',
         /(4.0).+/ => 'vmware-guestd',
