@@ -28,7 +28,7 @@ class ossec::params {
 			$ossec_client_config_file			= "ossec.conf"
 			$ossec_client_service_file		= 'ossec.init'
 			## Settings
-			$osser_client_settings_os     = { 'add_user'      => 'test',
+			$ossec_client_settings_os     = { 'add_user'      => 'test',
 			                                  'config'        => { 'logs' => { '/var/log/messages'                                   => 'syslog',
                                                                          '/var/log/dpkg.log'                                   => 'syslog',
                                                                          '/var/log/auth.log'                                   => 'syslog',
