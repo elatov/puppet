@@ -5,7 +5,11 @@
 class exim::client::config {
 
    if ($exim::client::settings['add_user'] != undef) {
-    User <| title == "${exim::client::settings['add_user']}" |> { groups +> ['mail','exim'] }
+		if ($::osfamily == 'FreeBSD'){
+		  User <| title == "${exim::client::settings['add_user']}" |> { groups +> ['mail'] }
+		}else{
+		  User <| title == "${exim::client::settings['add_user']}" |> { groups +> ['mail','exim'] }
+		}
   }
   
    if ($exim::client::settings['aliases']){
