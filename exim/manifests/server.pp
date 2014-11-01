@@ -25,13 +25,21 @@ class exim::server (
   $template_conf_file  = $exim::params::exim_server_template_conf_file,
   
   ## settings
-  $settings			       = $exim::params::exim_server_default_settings,
+  $default_settings		 = $exim::params::exim_server_default_settings,
   $initial_setup       = $exim::params::exim_server_initial_setup,
+  $override_settings   = undef,
 ) inherits exim::params {
 
   # validate parameters here
-  validate_hash($settings)
+  validate_hash($default_settings)
   validate_string($package_name)
+  
+   # check to see if override hash is a hash
+  if !($override_settings == undef){
+    validate_hash($override_settings)
+  }
+  # Merge settings with override-hash even if it's empty
+  $settings = deep_merge($default_settings, $override_settings)
 
   class { 'exim::server::install': } ->
   class { 'exim::server::config': } ~>
