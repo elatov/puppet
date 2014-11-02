@@ -32,7 +32,7 @@ class zabbix::agent::config () {
       size    => '*',
       when    => '@T00',
       flags   => 'JC',
-      pidfile => '/var/run/zabbix/zabbix.pid'
+      pidfile => '/var/run/zabbix/zabbix_agentd.pid'
     }
   }
   
