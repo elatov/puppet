@@ -8,8 +8,11 @@ class grive::params {
 	                          'host'     => $::hostname,
 	                          'home_dir' => '/usr/local'
 										      }
-
+  if ($::operatingsystem == "OmniOS"){
+	 $grive_package_name  = "grive-${::operatingsystem}-${::operatingsystemrelease}-${::hardwaremodel}.tar.bz2"
+	}else{
 	$grive_package_name  = "grive-${::operatingsystem}-${::operatingsystemmajrelease}-${::hardwaremodel}.tar.bz2"
+	}
 	$grive_initial_setup = false
 	
 	case $::osfamily {
@@ -42,7 +45,6 @@ class grive::params {
                             }
     }
     'Solaris': {
-			$grive_package_name  = "grive-${::operatingsystem}-${::operatingsystemrelease}-${::hardwaremodel}.tar.bz2"
       $grive_settings_os  = {'pre_pkgs'  => [ 'boost',
                                               'libgcrypt',
                                               'yajl',
