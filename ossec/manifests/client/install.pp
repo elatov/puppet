@@ -26,7 +26,21 @@ class ossec::client::install {
                       })
     }
     'Solaris': {
+			
+			group { 'ossec':
+			 ensure => present,
+			}
+			user { 'ossec':
+				ensure      => 'present',
+				shell       => '/bin/false',
+				home        => $ossec::client::home_dir,
+				allowdupe   => false,
+				managehome  => true,
+				require    => Group['ossec']
+			}
+			
       ensure_resource(file,'/usr/local',{ensure => 'directory'})
+	    
 	    file { $ossec::client::home_dir:
 	      ensure  => 'directory',
 	      require => File['/usr/local'],
