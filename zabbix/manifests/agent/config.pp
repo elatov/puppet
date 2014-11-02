@@ -77,8 +77,8 @@ class zabbix::agent::config () {
 
     # rules for user parameters
     if ($::osfamily == 'Solaris'){
-      file { "${zabbix::agent::custom_conf_dir}/smart-sunos.conf":
-        source  => 'puppet:///modules/zabbix/smart.conf',
+      file { "${zabbix::agent::custom_conf_dir}/smart.conf":
+        source  => 'puppet:///modules/zabbix/smart-sunos.conf',
         require => File[$zabbix::agent::custom_conf_dir],
         mode => '644',
       }
