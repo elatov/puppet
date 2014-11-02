@@ -1,12 +1,12 @@
 {
   "name": "puppetlabs-concat",
-  "version": "1.0.4",
-  "author": "Puppetlabs",
+  "version": "1.1.2",
+  "author": "Puppet Labs",
   "summary": "Concat module",
-  "license": "Apache 2.0",
-  "source": "git://github.com/puppetlabs/puppetlabs-concat.git",
-  "project_page": "http://github.com/puppetlabs/puppetlabs-concat",
-  "issues_url": "https://github.com/puppetlabs/puppetlabs-concat/issues",
+  "license": "Apache-2.0",
+  "source": "https://github.com/puppetlabs/puppetlabs-concat",
+  "project_page": "https://github.com/puppetlabs/puppetlabs-concat",
+  "issues_url": "https://tickets.puppetlabs.com/browse/MODULES",
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
@@ -43,7 +43,9 @@
     {
       "operatingsystem": "SLES",
       "operatingsystemrelease": [
-        "11 SP1"
+        "10 SP4",
+        "11 SP1",
+        "12"
       ]
     },
     {
@@ -69,6 +71,15 @@
       ]
     },
     {
+      "operatingsystem": "Windows",
+      "operatingsystemrelease": [
+        "Server 2003 R2",
+        "Server 2008 R2",
+        "Server 2012",
+        "Server 2012 R2"
+      ]
+    },
+    {
       "operatingsystem": "AIX",
       "operatingsystemrelease": [
         "5.3",
@@ -86,15 +97,14 @@
   "requirements": [
     {
       "name": "pe",
-      "version_requirement": ">= 3.2.0 < 3.4.0"
+      "version_requirement": "3.x"
     },
     {
       "name": "puppet",
       "version_requirement": "3.x"
     }
   ],
-  "description": "Concat module",
   "dependencies": [
-  
+    {"name":"puppetlabs/stdlib","version_requirement":">= 3.2.0 < 5.0.0"}
   ]
 }
