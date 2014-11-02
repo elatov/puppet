@@ -14,6 +14,8 @@ class cronjobs {
   
   case $::osfamily {
     'Debian': {
+     ensure_packages ("ntpdate", {ensure => "present"})
+     
       cron {"ntp":
         command     => '/usr/sbin/ntpdate -s ntp.ubuntu.com',
         user        => 'root',
@@ -21,6 +23,8 @@ class cronjobs {
       }
     }
     'RedHat': {
+      ensure_packages ("ntpdate", {ensure => "present"})
+      
 			cron {"ntp":
 				command   => '/usr/sbin/ntpdate -s 0.north-america.pool.ntp.org',
 				user      => 'root',
@@ -28,8 +32,6 @@ class cronjobs {
 			}
     }
     'FreeBSD': {
-      ensure_packages ("ntpdate", {ensure => "present"})
-      
       cron {"freebsd-update":
         command => '/usr/sbin/freebsd-update cron',
         user    => 'root',
@@ -56,6 +58,4 @@ class cronjobs {
       fail("${::operatingsystem} not supported")
     }
   }
-  
-
 }
