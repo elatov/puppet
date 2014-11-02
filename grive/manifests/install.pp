@@ -15,9 +15,6 @@ class grive::install  {
                    '/usr/local/apps',
                    {'ensure' => 'directory',})
                    
-  file { $grive::settings['home_dir']:
-    ensure => 'directory',
-  }    
 	# let's get the TAR archive from the puppet master
 	file {"get-${grive::package_name}":
 		ensure => 'present',
