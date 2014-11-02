@@ -74,11 +74,13 @@ class zabbix::agent::config () {
 	    file { "${zabbix::agent::custom_scripts_dir}/get_smart_value.bash":
 	      source  => 'puppet:///modules/zabbix/get_smart_value.bash-sunos',
 	      require => File[$zabbix::agent::custom_scripts_dir],
+	      mode    => '0755'
 	    }
 	  }else{
 	    file { "${zabbix::agent::custom_scripts_dir}/get_smart_value.bash":
         source  => 'puppet:///modules/zabbix/get_smart_value.bash',
         require => File[$zabbix::agent::custom_scripts_dir],
+	      mode    => '0755'
       }
 	  }
 
@@ -155,6 +157,7 @@ class zabbix::agent::config () {
 	    file { "${zabbix::agent::custom_scripts_dir}/discover_disk.pl":
 	      source  => 'puppet:///modules/zabbix/discover_disk.pl',
 	      require => File[$zabbix::agent::custom_scripts_dir],
+	      mode    => '0755'
 	    }
 	     
 	    # rules for user parameters
