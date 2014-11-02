@@ -70,10 +70,17 @@ class zabbix::agent::config () {
   }
   if($zabbix::agent::settings['smart']) {
     # Add custom scripts for smart status
-    file { "${zabbix::agent::custom_scripts_dir}/get_smart_value.bash":
-      source  => 'puppet:///modules/zabbix/get_smart_value.bash',
-      require => File[$zabbix::agent::custom_scripts_dir],
-    }
+    if ($::osfamily == 'Solaris'){
+	    file { "${zabbix::agent::custom_scripts_dir}/get_smart_value.bash":
+	      source  => 'puppet:///modules/zabbix/get_smart_value.bash-sunos',
+	      require => File[$zabbix::agent::custom_scripts_dir],
+	    }
+	  }else{
+	    file { "${zabbix::agent::custom_scripts_dir}/get_smart_value.bash":
+        source  => 'puppet:///modules/zabbix/get_smart_value.bash',
+        require => File[$zabbix::agent::custom_scripts_dir],
+      }
+	  }
 
     # rules for user parameters
     if ($::osfamily == 'Solaris'){
