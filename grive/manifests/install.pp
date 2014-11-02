@@ -11,10 +11,14 @@ class grive::install  {
   }
   
   ensure_resource ('user',$grive::settings['user'],{ 'ensure'=> 'present' })  
-	ensure_resource ('file',
+  ensure_resource ('file',
                    '/usr/local/apps',
                    {'ensure' => 'directory',})
                    
+  ensure_resource ('file',
+                   $grive::settings['home_dir'],
+                   {'ensure' => 'directory',})
+
 	# let's get the TAR archive from the puppet master
 	file {"get-${grive::package_name}":
 		ensure => 'present',
