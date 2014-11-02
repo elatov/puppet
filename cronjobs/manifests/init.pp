@@ -12,10 +12,6 @@
 #
 class cronjobs {
   
-  if ($::osfamily != 'FreeBSD'){
-    ensure_packages ("ntpdate", {ensure => "present"})
-  }
-  
   case $::osfamily {
     'Debian': {
       cron {"ntp":
@@ -32,6 +28,8 @@ class cronjobs {
 			}
     }
     'FreeBSD': {
+      ensure_packages ("ntpdate", {ensure => "present"})
+      
       cron {"freebsd-update":
         command => '/usr/sbin/freebsd-update cron',
         user    => 'root',
@@ -46,6 +44,8 @@ class cronjobs {
 
     }
     'Solaris': {
+      ensure_packages ("ntp", {ensure => "present"})
+      
       cron {"ntp":
         command   => '/usr/sbin/ntpdate -s 0.north-america.pool.ntp.org',
         user      => 'root',
