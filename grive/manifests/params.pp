@@ -42,6 +42,7 @@ class grive::params {
                             }
     }
     'Solaris': {
+			$grive_package_name  = "grive-${::operatingsystem}-${::operatingsystemrelease}-${::hardwaremodel}.tar.bz2"
       $grive_settings_os  = {'pre_pkgs'  => [ 'boost',
                                               'libgcrypt',
                                               'yajl',
