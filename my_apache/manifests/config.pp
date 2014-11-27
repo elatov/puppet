@@ -17,9 +17,9 @@ class my_apache::config {
     source  => "puppet:///modules/my_apache/${my_apache::settings['conf_proxy']}",
     notify  => Service['httpd'],
   }->
-  httpauth { 'admin':
+  httpauth { $my_apache::settings['htuser']:
 	  file     => '/etc/apache2/pass/htpasswd',
-	  password => 'password',
+	  password => $my_apache::settings['htpasswd'],
 	  #realm => 'realm',
 	  mechanism => basic,
 	  ensure => present,

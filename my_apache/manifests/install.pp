@@ -12,7 +12,7 @@ class my_apache::install {
   apache::vhost {"${my_apache::settings['hostname']}":
     #vhost_name         => $my_apache::settings['hostname'],
     servername         => $my_apache::settings['hostname'],
-    serveraliases       => ['kerch.moxz.tk',],
+    serveraliases       => ["${my_apache::settings['serveralias']}",],
     ip                  => $::ipaddress,
     port                => '80',
     docroot             => '/var/www',

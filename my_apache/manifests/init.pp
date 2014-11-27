@@ -24,12 +24,20 @@ class my_apache (
 #  $service_file	= $my_apache::params::my_apache_service_file,
   
   ## settings
-  $settings			= $my_apache::params::my_apache_settings,
+  $override_settings    = undef,
+  $default_settings			= $my_apache::params::my_apache_settings,
 ) inherits my_apache::params {
 
   # validate parameters here
-  validate_hash($settings)
+  validate_hash($default_settings)
   validate_string($config_dir)
+  
+  # check to see if override hash is a hash
+  if !($override_settings == undef){
+    validate_hash($override_settings)
+  }
+  # Merge settings with override-hash even if it's empty
+  $settings = deep_merge($default_settings, $override_settings)
 
   class { 'my_apache::install': } ->
   class { 'my_apache::config': } ~>
