@@ -29,6 +29,7 @@ concat/.project
 !my_wp/
 !my_wp/**
 my_wp/.project
+my_wp/templates
 !apache/
 !apache/**
 apache/.project
