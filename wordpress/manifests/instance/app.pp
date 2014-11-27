@@ -57,7 +57,7 @@ define wordpress::instance::app (
   if ! defined(File[$install_dir]) {
     file { $install_dir:
       ensure  => directory,
-      recurse => true,
+      #recurse => true,
     }
   } else {
     notice("Warning: cannot manage the permissions of ${install_dir}, as another resource (perhaps apache::vhost?) is managing it.")
