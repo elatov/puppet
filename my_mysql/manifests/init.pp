@@ -24,15 +24,23 @@ class my_mysql (
 #  $service_file	= $my_mysql::params::my_mysql_service_file,
   
   ## settings
-  $settings			= $my_mysql::params::my_mysql_settings,
+  $override_settings      = undef,
+  $default_settings			  = $my_mysql::params::my_mysql_settings,
 ) inherits my_mysql::params {
 
   # validate parameters here
-  validate_hash($settings)
+  validate_hash($default_settings)
   validate_string($config_dir)
+  
+  # check to see if override hash is a hash
+  if !($override_settings == undef){
+    validate_hash($override_settings)
+  }
+  # Merge settings with override-hash even if it's empty
+  $settings = deep_merge($default_settings, $override_settings)
 
-  class { 'my_mysql::install': } ->
-  class { 'my_mysql::config': } ~>
+  class { 'my_mysql::install': } ~>
+#  class { 'my_mysql::config': } ~>
 #  class { 'my_mysql::service': } ->
   Class['my_mysql']
 }
