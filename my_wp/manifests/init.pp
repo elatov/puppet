@@ -9,33 +9,27 @@
 #
 class my_wp (
   ## Dirs
-  $apache_docroot		= $my_wp::params::my_wp_apache_docroot,
-  $apache_confdir		= $my_wp::params::my_wp_apache_conf_dir,
-  
-  ## Conf Files
-#  $config_file		= $my_wp::params::my_wp_config_file,
-#  $service_file	= $my_wp::params::my_wp_service_file,
+  $apache_docroot		= $my_wp::params::apache_docroot,
+  $apache_confdir		= $my_wp::params::apache_conf_dir,
   
   ## settings
-  $enable_main_wp   = $my_wp::params::my_wp_enable_main_wp,
-  $main_wp_name     = $my_wp::params::my_wp_main_wp_name,
-  $main_wp_db_pass  = $my_wp::params::my_wp_main_db_pass,
-  
-  $enable_cs_wp     = $my_wp::params::my_wp_enable_cs_wp,
-  $cs_wp_name       = $my_wp::params::my_wp_cs_wp_name,
-  $cs_wp_db_pass    = $my_wp::params::my_wp_cs_db_pass,
-  
-  $wp_owner         = $my_wp::params::my_wp_wp_owner,
-  $wp_group         = $my_wp::params::my_wp_wp_group,
-#  $settings			    = $my_wp::params::my_wp_settings,
+  $wp_owner         = $my_wp::params::wp_owner,
+  $wp_group         = $my_wp::params::wp_group,
+  $default_settings	= $my_wp::params::default_settings,
+  $override_settings = undef,
 ) inherits my_wp::params {
 
   # validate parameters here
-#  validate_hash($settings)
+  validate_hash($default_settings)
   validate_string($apache_docroot)
+  
+  if !($override_settings == undef){
+    validate_hash($override_settings)
+  }
+  # Merge settings with override-hash even if it's empty
+  $settings = deep_merge($default_settings, $override_settings)
 
   class { 'my_wp::install': } ->
-  class { 'my_wp::config': } ~>
-#  class { 'my_wp::service': } ->
+  class { 'my_wp::config': } ->
   Class['my_wp']
 }
