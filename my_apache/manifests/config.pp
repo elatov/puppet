@@ -17,14 +17,14 @@ class my_apache::config {
     source  => "puppet:///modules/my_apache/${my_apache::settings['conf_proxy']}",
     notify  => Service['httpd'],
   }->
-#  httpauth { $my_apache::settings['htuser']:
-#	  file     => '/etc/apache2/pass/htpasswd',
-#	  password => $my_apache::settings['htpasswd'],
-#	  #realm => 'realm',
-#	  mechanism => basic,
-#	  ensure => present,
-#	  require  => File['/etc/apache2/pass'],
-#  }->
+  httpauth { $my_apache::settings['htuser']:
+	  file     => '/etc/apache2/pass/htpasswd',
+	  password => $my_apache::settings['htpasswd'],
+	  realm => 'splunk',
+	  mechanism => 'basic',
+	  ensure => present,
+	  require  => File['/etc/apache2/pass'],
+  }->
   file {'/etc/apache2/pass/htpasswd':
     ensure  => 'present',
     mode    => '0640',
