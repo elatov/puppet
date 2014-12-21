@@ -5,21 +5,15 @@
 #
 class my_apache::params {
 
-	$my_apache_settings	=	{
-										'conf_proxy' 	    => 'splunk-proxy.conf',
-										'hostname'	      => $::hostname,
-										'php_pkg'         => 'libapache2-mod-php5',
-                    'proxy_html_pkg'  => 'libapache2-mod-proxy-html',
-										}
+	$my_apache_settings	=	{ 'conf_proxy' 	    => 'splunk-proxy.conf',
+	                        'conf_proxy_sn'   => 'snorby-proxy.conf',
+										      'hostname'	      => $::hostname,
+										      'php_pkg'         => 'libapache2-mod-php5',
+                          'proxy_html_pkg'  => 'libapache2-mod-proxy-html',
+										    }
 	case $::osfamily {
 		'Debian': {
-#			$my_apache_package_name		= 'my_apache'
-#			$my_apache_service_name		= 'my_apache'
 			$my_apache_config_dir			= '/etc/apache2/conf.d'
-			#$my_apache_service_dir			= '/etc/init.d'
-#			$my_apache_home						= '/usr/local/my_apache'
-#			$my_apache_config_file			= 'my_apache.sysconf.init'
-#			$my_apache_service_file		= 'my_apache.init'
 		}
 		'RedHat': {
 			$my_apache_package_name		= 'my_apache'
