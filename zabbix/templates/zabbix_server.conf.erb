@@ -372,6 +372,24 @@ DBSocket=/var/run/mysqld/mysqld.sock
 # Default:
 # ValueCacheSize=8M
 
+### Option: NodeNoEvents
+#	If set to '1' local events won't be sent to master node.
+#	This won't impact ability of this node to propagate events from its child nodes.
+#
+# Mandatory: no
+# Range: 0-1
+# Default:
+# NodeNoEvents=0
+
+### Option: NodeNoHistory
+#	If set to '1' local history won't be sent to master node.
+#	This won't impact ability of this node to propagate history from its child nodes.
+#
+# Mandatory: no
+# Range: 0-1
+# Default:
+# NodeNoHistory=0
+
 ### Option: Timeout
 #	Specifies how long we wait for agent, SNMP device or external check (in seconds).
 #
@@ -513,14 +531,6 @@ Fping6Location=/usr/bin/fping6
 # Mandatory: no
 # Default:
 # AllowRoot=0
-
-### Option: User
-#	Drop privileges to a specific, existing user on the system.
-#	Only has effect if run as 'root' and AllowRoot is disabled.
-#
-# Mandatory: no
-# Default:
-# User=zabbix
 
 ### Option: Include
 #	You may include individual files or all files in a directory in the configuration file.
