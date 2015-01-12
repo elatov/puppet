@@ -47,16 +47,17 @@ class ossec::client::install {
 	    }
 	
       ensure_resource(file,'/usr/local/apps',{ensure => 'directory'})
+      
 	    file { $ossec::client::package_name:
 	      ensure => 'present',
-	      path   => "/root/apps/${ossec::client::package_name}",
+	      path   => "/usr/local/apps/${ossec::client::package_name}",
 	      source => "puppet:///modules/ossec/${ossec::client::package_name}",
 	      require => File['/usr/local/apps'],
 	    }
 	    
 	    exec { "${module_name}-extract-ossec":
 	      path    => ['/usr/bin','/usr/sbin'],
-	      command => "tar xvf /root/apps/${ossec::client::package_name} -C /usr/local",
+	      command => "tar xvf /usr/local/apps/${ossec::client::package_name} -C /usr/local",
 	      creates => "${ossec::client::home_dir}/bin",
 	      require => [File[$ossec::client::home_dir],File[$ossec::client::package_name]],
 	    }
