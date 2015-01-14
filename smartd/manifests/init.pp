@@ -42,6 +42,6 @@ class smartd (
   
   class { 'smartd::install': } ->
   class { 'smartd::config': } ~>
-#  class { 'smartd::service': } ->
+  class { 'smartd::service': } ->
   Class['smartd']
 }
