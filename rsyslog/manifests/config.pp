@@ -63,6 +63,9 @@ class rsyslog::config {
       match => "^\\*\\.err.*/var/adm/messages$",
       line  => "*.err;kern.debug;daemon.notice\t/var/adm/messages",
     }->
+    file { '/var/adm/smartd.log':
+      ensure => 'present',
+    }->
     file_line { "enable_smartd_in_${rsyslog::conf_file}":
       path => $rsyslog::conf_file,
       line => "local3.warning;local3.err;local3.alert;local3.debug;local3.info;local3.notice;local3.debug\t/var/adm/smartd.log",
@@ -77,6 +80,11 @@ class rsyslog::config {
     file_line { "enable_remote_in_${rsyslog::conf_file}":
       path => $rsyslog::conf_file,
       line => "*.emerg;*.alert;*.crit;*.err;*.warning;*.notice;*.info;*.debug\t@${rsyslog::settings['server']}",
-    }
+    }~>
+    exec { "${module_name}-reread-syslog-conf":
+      path        => ["/bin","/usr/bin"],
+      command     => "pkill -1 syslogd",
+      refreshonly => true,
+    } 
   }
 }
