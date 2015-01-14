@@ -142,6 +142,13 @@ class zabbix::agent::config () {
         user => "zabbix",
       }
     }elsif  ($::osfamily == 'Solaris'){
+      
+      file { "${zabbix::agent::custom_scripts_dir}/discover_disk.pl":
+        source  => 'puppet:///modules/zabbix/discover_disk.pl-sunos',
+        require => File[$zabbix::agent::custom_scripts_dir],
+        mode    => '0755'
+      }
+      
       # rules for user parameters
       file { "${zabbix::agent::custom_conf_dir}/disk_perf.conf":
         source  => 'puppet:///modules/zabbix/disk_perf-sunos.conf',
