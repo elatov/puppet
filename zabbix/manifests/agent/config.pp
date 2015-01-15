@@ -149,6 +149,12 @@ class zabbix::agent::config () {
         mode    => '0755'
       }
       
+      file { "${zabbix::agent::custom_scripts_dir}/discover_smart_disk.pl":
+        source  => 'puppet:///modules/zabbix/discover_smart_disk.pl-sunos',
+        require => File[$zabbix::agent::custom_scripts_dir],
+        mode    => '0755'
+      }
+      
       # rules for user parameters
       file { "${zabbix::agent::custom_conf_dir}/disk_perf.conf":
         source  => 'puppet:///modules/zabbix/disk_perf-sunos.conf',

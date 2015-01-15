@@ -1,0 +1,22 @@
+#!/usr/bin/env perl
+# ex : ^(hd[a-z]+|sd[a-z]+|vd[a-z]+|dm-[0-9]+|drbd[0-9]+)$	
+#      ^(loop[0-9]+|sr[0-9]*|fd[0-9]*)$
+$firstline = 1;
+print "{\n";
+print "\t\"data\":[\n\n";
+
+for (`iostat -En | ggrep -B1 ATA`)
+  {
+  ($disk) = m/(c[0-9]t[0-9]d[0-9])/;
+  #print("$major $minor $disk $diskdev $dmname $vmid $vmname \n");
+
+  print "\t,\n" if not $firstline;
+  $firstline = 0;
+
+  print "\t{\n";
+  print "\t\t\"{#DISK}\":\"$disk\"\n";
+  print "\t}\n";
+  }
+
+print "\n\t]\n";
+print "}\n";
