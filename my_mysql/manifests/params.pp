@@ -10,6 +10,7 @@ class my_mysql::params {
 	case $::osfamily {
 		'Debian': {
 			$my_mysql_config_dir			= '/etc/mysql/conf.d'
+			$my_mysql_config_file     = 'mysql_innodb_data.cnf'
 		}
 		'RedHat': {
 			$my_mysql_package_name		= 'my_mysql'

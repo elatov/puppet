@@ -40,7 +40,7 @@ class my_mysql (
   $settings = deep_merge($default_settings, $override_settings)
 
   class { 'my_mysql::install': } ~>
-#  class { 'my_mysql::config': } ~>
+  class { 'my_mysql::config': } ~>
 #  class { 'my_mysql::service': } ->
   Class['my_mysql']
 }

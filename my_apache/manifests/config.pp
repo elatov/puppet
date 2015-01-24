@@ -12,12 +12,12 @@ class my_apache::config {
     require => Group['www-data']  
   }
   
-  file { $my_apache::settings['conf_proxy_sn'] :
-    ensure  => 'present',
-    path    => "${my_apache::config_dir}/${my_apache::settings['conf_proxy_sn']}",
-    source  => "puppet:///modules/my_apache/${my_apache::settings['conf_proxy_sn']}",
-    notify  => Service['httpd'],
-  }
+#  file { $my_apache::settings['conf_proxy_sn'] :
+#    ensure  => 'present',
+#    path    => "${my_apache::config_dir}/${my_apache::settings['conf_proxy_sn']}",
+#    source  => "puppet:///modules/my_apache/${my_apache::settings['conf_proxy_sn']}",
+#    notify  => Service['httpd'],
+#  }
   
   file { $my_apache::settings['conf_proxy'] :
     ensure  => 'present',
