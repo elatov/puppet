@@ -31,7 +31,7 @@ class plexms::params {
 			$plexms_home_dir			  = '/var/lib/plexmediaserver'
 			### Settings
 			$plexms_settings_os     = {'use_rpm'   => true,
-			                           'rpm_name'  => 'plexmediaserver-0.9.11.1.678-c48ffd2.x86_64.rpm'
+			                           'rpm_name'  => 'plexmediaserver-0.9.12.1.1079-b655370.x86_64.rpm'
 			                          }
 			
 			if $::operatingsystemmajrelease >= 7 {
