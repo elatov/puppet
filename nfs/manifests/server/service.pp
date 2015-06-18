@@ -5,25 +5,28 @@
 #
 class nfs::server::service{
 
-  if ($nfs::server::service_pre != undef){
-		service { $nfs::server::service_pre:
-			ensure     => running,
-			enable     => true,
-			hasstatus  => true,
-			hasrestart => true,
-		}->
-		service { $nfs::server::service_name:
-			ensure     => running,
-			enable     => true,
-			hasstatus  => true,
-			hasrestart => true,
+#  if ( Facter["uptime_seconds"].value() > 60 ){
+   if ( $::uptime_seconds > 60 ){
+	  if ($nfs::server::service_pre != undef){
+			service { $nfs::server::service_pre:
+				ensure     => running,
+				enable     => true,
+				hasstatus  => true,
+				hasrestart => true,
+			}->
+			service { $nfs::server::service_name:
+				ensure     => running,
+				enable     => true,
+				hasstatus  => true,
+				hasrestart => true,
+			}
+		}else {
+		  service { $nfs::server::service_name:
+	      ensure     => running,
+	      enable     => true,
+	      hasstatus  => true,
+	      hasrestart => true,
+	    }
 		}
-	}else {
-	  service { $nfs::server::service_name:
-      ensure     => running,
-      enable     => true,
-      hasstatus  => true,
-      hasrestart => true,
-    }
 	}
 }
