@@ -18,7 +18,7 @@ class drive::config {
     
     file { '/usr/local/bin/drive':
       ensure => 'link',
-      target => "$drive::settings['home_dir']}/drive/bin/drive",
+      target => "${drive::settings['home_dir']}/drive/bin/drive",
     }
     
     file { "${drive::user_home_dir}/.gdrive/notes/backup/bin/rsync_backup.bash":
