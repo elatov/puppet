@@ -7,16 +7,16 @@
 # [*sample_parameter*]
 #   Explanation of what this parameter affects and what it defaults to.
 #
-class grive (
+class drive (
   ## Packages
-  $package_name	      = $grive::params::grive_package_name,
+  $package_name	      = $drive::params::drive_package_name,
   
   ## settings
-  $initial_setup      = $grive::params::grive_initial_setup,
-  $default_settings   = $grive::params::grive_default_settings,
+  $initial_setup      = $drive::params::drive_initial_setup,
+  $default_settings   = $drive::params::drive_default_settings,
   $override_settings   = undef,
   
-) inherits grive::params {
+) inherits drive::params {
 
   # validate parameters here
   validate_hash($default_settings)
@@ -32,8 +32,8 @@ class grive (
   $var  = "home_${settings['user']}"
   $user_home_dir = inline_template("<%= scope.lookupvar('::$var') %>")
   
-  class { 'grive::install': } ->
-  class { 'grive::config': } ~>
+  class { 'drive::install': } ->
+  class { 'drive::config': } ~>
 #  class { 'grive::service': } ->
-  Class['grive']
+  Class['drive']
 }

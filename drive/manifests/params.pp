@@ -3,22 +3,22 @@
 # This class is meant to be called from grive
 # It sets variables according to platform
 #
-class grive::params {
-	$grive_settings_all	 =	{ 'user' 	   => 'test',
+class drive::params {
+	$drive_settings_all	 =	{ 'user' 	   => 'test',
 	                          'host'     => $::hostname,
 	                          'home_dir' => '/usr/local'
 										      }
   if ($::operatingsystem == "OmniOS"){
-	 $grive_package_name  = "grive-${::operatingsystem}-${::operatingsystemrelease}-${::hardwaremodel}.tar.bz2"
+	 $drive_package_name  = "drive-${::operatingsystem}-${::operatingsystemrelease}-${::hardwaremodel}.tar.bz2"
 	}else{
-	$grive_package_name  = "grive-${::operatingsystem}-${::operatingsystemmajrelease}-${::hardwaremodel}.tar.bz2"
+	$drive_package_name  = "drive-${::operatingsystem}-${::operatingsystemmajrelease}-${::hardwaremodel}.tar.bz2"
 	}
-	$grive_initial_setup = false
+	$drive_initial_setup = false
 	
 	case $::osfamily {
 		'Debian': {
 			
-			$grive_settings_os  = {'pre_pkgs' => ['libboost-program-options1.49.0',
+			$drive_settings_os  = {'pre_pkgs' => ['libboost-program-options1.49.0',
                                             'libboost-filesystem1.49.0',
                                             'libyajl2',
                                             'libboost-test1.49.0'],
@@ -26,7 +26,7 @@ class grive::params {
 
 		}
 		'RedHat': {
-			$grive_settings_os  = {'pre_pkgs' => ['boost-program-options',
+			$drive_settings_os  = {'pre_pkgs' => ['boost-program-options',
                                             'boost-filesystem',
                                             'yajl',
                                             'boost-test'],
@@ -36,7 +36,7 @@ class grive::params {
 			
 		}
 		'FreeBSD': {
-      $grive_settings_os  = {'pre_pkgs' => ['boost-libs',
+      $drive_settings_os  = {'pre_pkgs' => ['boost-libs',
                                             'yajl',
                                             'curl',
                                             'json-c',
@@ -45,7 +45,7 @@ class grive::params {
                             }
     }
     'Solaris': {
-      $grive_settings_os  = {'pre_pkgs'  => [ 'boost',
+      $drive_settings_os  = {'pre_pkgs'  => [ 'boost',
                                               'libgcrypt',
                                               'yajl',
                                               'json-c',
@@ -59,5 +59,5 @@ class grive::params {
 			fail("${::operatingsystem} not supported")
 		}
 	}
-	$grive_default_settings = merge($grive_settings_all,$grive_settings_os)
+	$drive_default_settings = merge($drive_settings_all,$drive_settings_os)
 }

@@ -2,37 +2,37 @@
 #
 # This class is called from grive
 #
-class grive::config {
+class drive::config {
 
   # create .gdrive dir
-  file{"${grive::user_home_dir}/.gdrive":
+  file{"${drive::user_home_dir}/.gdrive":
     ensure  => 'directory',
-    owner   => $grive::settings['user'],
-    group   => $grive::settings['user'],
+    owner   => $drive::settings['user'],
+    group   => $drive::settings['user'],
   }
  
-  if $grive::initial_setup {
-   notify {"go run grive -a in ${grive::user_home_dir}/.gdrive":}
+  if $drive::initial_setup {
+   notify {"go run drive auth in ${drive::user_home_dir}/.gdrive":}
   } else {
     ensure_resource ('file','/usr/local/bin',{'ensure' => 'directory',})
     
-    file { '/usr/local/bin/grive':
+    file { '/usr/local/bin/drive':
       ensure => 'link',
-      target => "${grive::settings['home_dir']}/grive/bin/grive",
+      target => "$drive::settings['home_dir']}/drive/bin/drive",
     }
     
-    file { "${grive::user_home_dir}/.gdrive/notes/backup/bin/rsync_backup.bash":
+    file { "${drive::user_home_dir}/.gdrive/notes/backup/bin/rsync_backup.bash":
       mode => '0755',
     }->
     file { '/usr/local/backup':
       ensure  => 'link',
-      target  => "${grive::user_home_dir}/.gdrive/notes/backup",
+      target  => "${drive::user_home_dir}/.gdrive/notes/backup",
     }-> 
      file { '/usr/local/bin/rsync_backup':
       ensure  => 'link',
       target  => "${grive::user_home_dir}/.gdrive/notes/backup/bin/rsync_backup.bash",
     }
-    case $grive::settings['host'] {
+    case $drive::settings['host'] {
       m2:{
 				cron {"backup":
 					command => "/usr/local/bin/rsync_backup",
@@ -80,94 +80,94 @@ class grive::config {
       }
     }
     
-		file { "${grive::user_home_dir}/.bashrc":
+		file { "${drive::user_home_dir}/.bashrc":
 			ensure => 'link',
-			target => "${grive::user_home_dir}/.gdrive/notes/.bashrc",
+			target => "${drive::user_home_dir}/.gdrive/notes/.bashrc",
 		}
-		file { "${grive::user_home_dir}/.bash_profile":
+		file { "${drive::user_home_dir}/.bash_profile":
       ensure => 'link',
-      target => "${grive::user_home_dir}/.gdrive/notes/.bash_profile",
+      target => "${drive::user_home_dir}/.gdrive/notes/.bash_profile",
     }
     
-    file { "${grive::user_home_dir}/.bash_aliases":
+    file { "${drive::user_home_dir}/.bash_aliases":
       ensure => 'link',
       target => "${grive::user_home_dir}/.gdrive/notes/.bash_aliases",
     }
     
-    file { "${grive::user_home_dir}/.vimrc":
+    file { "${drive::user_home_dir}/.vimrc":
       ensure => 'link',
       target => "${grive::user_home_dir}/.gdrive/notes/.vimrc",
     }
     
-    file { "${grive::user_home_dir}/.inputrc":
+    file { "${drive::user_home_dir}/.inputrc":
       ensure => 'link',
-      target => "${grive::user_home_dir}/.gdrive/notes/.inputrc",
+      target => "${drive::user_home_dir}/.gdrive/notes/.inputrc",
     }
     
-    file { "${grive::user_home_dir}/.screenrc":
+    file { "${drive::user_home_dir}/.screenrc":
       ensure => 'link',
-      target => "${grive::user_home_dir}/.gdrive/notes/.screenrc",
+      target => "${drive::user_home_dir}/.gdrive/notes/.screenrc",
     }
     
-    file { "${grive::user_home_dir}/.tricks":
+    file { "${drive::user_home_dir}/.tricks":
       ensure => 'link',
       target => "${grive::user_home_dir}/.gdrive/notes/.tricks",
     }
     
-    file {"${grive::user_home_dir}/.ssh":
+    file {"${drive::user_home_dir}/.ssh":
       ensure => 'directory',
       mode   => '0700',
       owner  => $grive::settings['user'],
       group  => $grive::settings['user'],
     }
-    file { "${grive::user_home_dir}/.ssh/config":
+    file { "${drive::user_home_dir}/.ssh/config":
       ensure  => 'link',
       target  => "${grive::user_home_dir}/.gdrive/notes/.ssh/config",
       require => File["${grive::user_home_dir}/.ssh"],
     }
     
-    file { "${grive::user_home_dir}/.gdrive/notes/scripts/bash/vigsync.bash":
+    file { "${drive::user_home_dir}/.gdrive/notes/scripts/bash/vigsync.bash":
       mode => '0755',
     }->
     file { '/usr/local/bin/vigsync':
       ensure  => 'link',
-      target  => "${grive::user_home_dir}/.gdrive/notes/scripts/bash/vigsync.bash",
+      target  => "${drive::user_home_dir}/.gdrive/notes/scripts/bash/vigsync.bash",
     }
     
-    file { "${grive::user_home_dir}/.gdrive/notes/scripts/python/ps_mem.py":
+    file { "${drive::user_home_dir}/.gdrive/notes/scripts/python/ps_mem.py":
       mode => '0755',
     }->
     file { '/usr/local/bin/ps_mem.py':
       ensure  => 'link',
-      target  => "${grive::user_home_dir}/.gdrive/notes/scripts/python/ps_mem.py",
+      target  => "${drive::user_home_dir}/.gdrive/notes/scripts/python/ps_mem.py",
     }
     
     case $::osfamily {
 	    /(?i:RedHat)/: { 
-	        file {"${grive::user_home_dir}/.gdrive/notes/scripts/sh/yumnotifier.sh":
+	        file {"${drive::user_home_dir}/.gdrive/notes/scripts/sh/yumnotifier.sh":
             ensure => 'present',
             mode   => '0755',
           }
 	    }
 	    /(?i:Debian)/: { 
-	       file {"${grive::user_home_dir}/.gdrive/notes/scripts/csh/aptgetcheck.csh":
+	       file {"${drive::user_home_dir}/.gdrive/notes/scripts/csh/aptgetcheck.csh":
             ensure => 'present',
             mode   => '0755',
           }
 	    }
 	    /(?i:FreeBSD)/: { 
-         file {"${grive::user_home_dir}/.gdrive/notes/scripts/bash/pkgng-check.bash":
+         file {"${drive::user_home_dir}/.gdrive/notes/scripts/bash/pkgng-check.bash":
             ensure => 'present',
             mode   => '0755',
           }
       }
       /(?i:Solaris)/: { 
-         file {"${grive::user_home_dir}/.gdrive/notes/scripts/bash/pkgin-check.bash":
+         file {"${drive::user_home_dir}/.gdrive/notes/scripts/bash/pkgin-check.bash":
             ensure => 'present',
             mode   => '0755',
           }
           
-          file {"${grive::user_home_dir}/.gdrive/notes/scripts/bash/pkg-check.bash":
+          file {"${drive::user_home_dir}/.gdrive/notes/scripts/bash/pkg-check.bash":
             ensure => 'present',
             mode   => '0755',
           }
