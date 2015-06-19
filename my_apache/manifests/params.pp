@@ -13,7 +13,7 @@ class my_apache::params {
 										    }
 	case $::osfamily {
 		'Debian': {
-			$my_apache_config_dir			= '/etc/apache2/conf.d'
+			$my_apache_config_dir			= '/etc/apache2/conf-enabled'
 		}
 		'RedHat': {
 			$my_apache_package_name		= 'my_apache'
