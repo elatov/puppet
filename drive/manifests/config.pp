@@ -14,7 +14,7 @@ class drive::config {
   if $drive::initial_setup {
    notify {"go run drive auth in ${drive::user_home_dir}/.gdrive":}
   } else {
-    ensure_resource ('file','/usr/local/bi',{'ensure' => 'directory',})
+    ensure_resource ('file','/usr/local/bin',{'ensure' => 'directory',})
     
     file { '/usr/local/bin/drive':
       ensure => 'link',
