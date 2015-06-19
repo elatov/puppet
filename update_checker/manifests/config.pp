@@ -63,7 +63,7 @@ class update_checker::config {
 		file {"$update_checker::cron_dir/$update_checker::update_script":
       ensure  => "link",
       target  => "${update_checker_target_dir}/${update_checker::update_script}",
-      require => Class['grive']
+      require => Class['drive']
     }
 	}
 
