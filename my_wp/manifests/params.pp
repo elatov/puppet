@@ -18,7 +18,7 @@ class my_wp::params {
 			$apache_docroot	  = '/var/www'
       $wp_owner         = 'www-data'
       $wp_group         = 'www-data'
-      $apache_conf_dir  = '/etc/apache2/conf-enabled'
+      $apache_conf_dir  = '/etc/apache2/conf-enable'
 		}
 		'RedHat': {
 			$apache_docroot    = '/var/www'
