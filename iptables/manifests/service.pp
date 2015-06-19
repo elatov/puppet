@@ -15,18 +15,27 @@ class iptables::service {
 			}
 		}
 		/(?i:Debian|Ubuntu)/: {
-		  service { $iptables::service_name:
-	      ensure     => undef,
-	      enable     => true,
-	      hasstatus  => true,
-	      hasrestart => true,
-      }
-      exec {'restart-iptables':
-        #path        => ["/sbin","/usr/sbin"],
-        provider    => "posix",
-        command     => '/etc/init.d/iptables-persistent restart',
-        refreshonly => true,
-      }
+		  if ($::operatingsystemmajrelease == '8') {
+		    service { $iptables::service_name:
+	        ensure     => running,
+	        enable     => true,
+	        hasstatus  => true,
+	        hasrestart => true,
+        } 
+      } else {
+			  service { $iptables::service_name:
+		      ensure     => undef,
+		      enable     => true,
+		      hasstatus  => true,
+		      hasrestart => true,
+	      }~>
+	      exec {'restart-iptables':
+	        #path        => ["/sbin","/usr/sbin"],
+	        provider    => "posix",
+	        command     => '/etc/init.d/iptables-persistent restart',
+	        refreshonly => true,
+	      }
+	    }
 		}
 		default: {
 		  service { $iptables::service_name:

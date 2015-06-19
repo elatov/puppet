@@ -31,10 +31,16 @@ class iptables::params {
       }
     }
     /(?i:Debian|Ubuntu)/: {
-			$iptables_package_name       = 'iptables-persistent'
+      if ($::operatingsystemmajrelease == '8') {
+			 $iptables_package_name       = 'netfilter-persistent'
+			 $iptables_service_name       = 'netfilter-persistent'
+			} else {
+			 $iptables_package_name       = 'iptables-persistent'
+       $iptables_service_name       = 'iptables-persistent'
+			} 
+			
 			$iptables_config_dir         = '/etc/iptables/'
 			$iptables_config_file        = 'rules.v4'
-			$iptables_service_name       = 'iptables-persistent'
       $iptables_settings_os     =  { }
  
     }
