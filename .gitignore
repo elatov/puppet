@@ -163,4 +163,8 @@ plexms/.project
 !extra_conf/
 !extra_conf/**
 extra_conf/.project
+!drive/
+!drive/**
+drive/.project
+drive/files/
 !.gitignore
