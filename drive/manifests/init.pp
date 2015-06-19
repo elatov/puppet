@@ -1,6 +1,6 @@
-# == Class: grive
+# == Class: drive
 #
-# Full description of class grive::server here.
+# Full description of class drive::server here.
 #
 # === Parameters
 #

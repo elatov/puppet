@@ -1,4 +1,4 @@
-# == Class grive::install
+# == Class drive::install
 #
 class drive::install  {
 
@@ -22,9 +22,9 @@ class drive::install  {
 	# let's get the TAR archive from the puppet master
 	file {"get-${drive::package_name}":
 		ensure => 'present',
-		path   => "/usr/local/apps/${grive::package_name}",
+		path   => "/usr/local/apps/${drive::package_name}",
 		source => "puppet:///modules/drive/${drive::package_name}",
-#    source => "/tmp/vagrant-puppet-3/modules-0/grive/files/${grive::package_name}",
+#    source => "/tmp/vagrant-puppet-3/modules-0/drive/files/${drive::package_name}",
 		require => File ['/usr/local/apps'], 
 	}->
 	# extract the TAR

@@ -1,6 +1,6 @@
-# == Class grive::params
+# == Class drive::params
 #
-# This class is meant to be called from grive
+# This class is meant to be called from drive
 # It sets variables according to platform
 #
 class drive::params {

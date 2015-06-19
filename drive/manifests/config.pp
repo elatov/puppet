@@ -1,6 +1,6 @@
-# == Class grive::config
+# == Class drive::config
 #
-# This class is called from grive
+# This class is called from drive
 #
 class drive::config {
 
@@ -30,7 +30,7 @@ class drive::config {
     }-> 
      file { '/usr/local/bin/rsync_backup':
       ensure  => 'link',
-      target  => "${grive::user_home_dir}/.gdrive/notes/backup/bin/rsync_backup.bash",
+      target  => "${drive::user_home_dir}/.gdrive/notes/backup/bin/rsync_backup.bash",
     }
     case $drive::settings['host'] {
       m2:{
@@ -91,12 +91,12 @@ class drive::config {
     
     file { "${drive::user_home_dir}/.bash_aliases":
       ensure => 'link',
-      target => "${grive::user_home_dir}/.gdrive/notes/.bash_aliases",
+      target => "${drive::user_home_dir}/.gdrive/notes/.bash_aliases",
     }
     
     file { "${drive::user_home_dir}/.vimrc":
       ensure => 'link',
-      target => "${grive::user_home_dir}/.gdrive/notes/.vimrc",
+      target => "${drive::user_home_dir}/.gdrive/notes/.vimrc",
     }
     
     file { "${drive::user_home_dir}/.inputrc":
@@ -111,19 +111,19 @@ class drive::config {
     
     file { "${drive::user_home_dir}/.tricks":
       ensure => 'link',
-      target => "${grive::user_home_dir}/.gdrive/notes/.tricks",
+      target => "${drive::user_home_dir}/.gdrive/notes/.tricks",
     }
     
     file {"${drive::user_home_dir}/.ssh":
       ensure => 'directory',
       mode   => '0700',
-      owner  => $grive::settings['user'],
-      group  => $grive::settings['user'],
+      owner  => $drive::settings['user'],
+      group  => $drive::settings['user'],
     }
     file { "${drive::user_home_dir}/.ssh/config":
       ensure  => 'link',
-      target  => "${grive::user_home_dir}/.gdrive/notes/.ssh/config",
-      require => File["${grive::user_home_dir}/.ssh"],
+      target  => "${drive::user_home_dir}/.gdrive/notes/.ssh/config",
+      require => File["${drive::user_home_dir}/.ssh"],
     }
     
     file { "${drive::user_home_dir}/.gdrive/notes/scripts/bash/vigsync.bash":
