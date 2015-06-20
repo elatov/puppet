@@ -7,6 +7,7 @@ class my_apache::install {
     default_confd_files => false,
     default_vhost       => false,
     purge_configs       => false,
+    confd_dir           => $my_apache::config_dir,
   }
   
   apache::vhost {"${my_apache::settings['hostname']}":
