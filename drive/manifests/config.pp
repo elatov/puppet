@@ -10,7 +10,12 @@ class drive::config {
     owner   => $drive::settings['user'],
     group   => $drive::settings['user'],
   }
- 
+  if ($::operatingsystem == "OmniOS"){
+    file { '/etc/ssl/certs/ca-certificates.crt':
+      ensure  => 'link',
+      target  => "/etc/ssl/cacert.pem",
+    }
+  } 
   if $drive::initial_setup {
 		ensure_resource ('file','/usr/local/bin',{'ensure' => 'directory',})
 		
