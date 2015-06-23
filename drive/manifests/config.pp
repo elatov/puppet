@@ -12,14 +12,15 @@ class drive::config {
   }
  
   if $drive::initial_setup {
-   notify {"go run drive auth in ${drive::user_home_dir}/.gdrive":}
-  } else {
-    ensure_resource ('file','/usr/local/bin',{'ensure' => 'directory',})
-    
-    file { '/usr/local/bin/drive':
-      ensure => 'link',
-      target => "${drive::settings['home_dir']}/drive/bin/drive",
-    }
+		ensure_resource ('file','/usr/local/bin',{'ensure' => 'directory',})
+		
+		file { '/usr/local/bin/drive':
+			ensure => 'link',
+			target => "${drive::settings['home_dir']}/drive/bin/drive",
+		}
+		 
+		notify {"go run /usr/local/bin/drive init in ${drive::user_home_dir}/.gdrive":}
+		} else {
     
     file { "${drive::user_home_dir}/.gdrive/notes/backup/bin/rsync_backup.bash":
       mode => '0755',
