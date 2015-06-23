@@ -24,13 +24,13 @@ class update_checker::config {
 			file {"/usr/local/bin/${update_checker::update_script}":
 				ensure  => "link",
 				target  => "${update_checker::user_home_dir}/.gdrive/notes/scripts/bash/${update_checker::update_script}",
-				require => [Class['grive'],File['/usr/local/bin']],
+				require => [Class['drive'],File['/usr/local/bin']],
 			}
 			
 			file {"/usr/local/bin/pkgin-check.bash":
         ensure  => "link",
         target  => "${update_checker::user_home_dir}/.gdrive/notes/scripts/bash/pkgin-check.bash",
-        require => [Class['grive'],File['/usr/local/bin']],
+        require => [Class['drive'],File['/usr/local/bin']],
       } 
       
 			cron {"pkg-check":
@@ -38,14 +38,14 @@ class update_checker::config {
 				user => "root",
 				minute => "30",
 				hour   => "00",
-				require => Class['grive'],
+				require => Class['drive'],
 			}
 			cron {"pkgin-check":
 				command => "/usr/local/bin/pkgin-check.bash",
 				user => "root",
 				minute => "00",
 				hour   => "01",
-				require => Class['grive'],
+				require => Class['drive'],
 			}
     }
     default: {
