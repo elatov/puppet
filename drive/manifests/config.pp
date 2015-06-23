@@ -24,7 +24,7 @@ class drive::config {
 			target => "${drive::settings['home_dir']}/drive/bin/drive",
 		}
 		 
-		notify {"go run /usr/local/bin/drive init in ${drive::user_home_dir}/.gdrive":}
+		notify {"go run /usr/local/bin/drive init and pull --hidden in ${drive::user_home_dir}/.gdrive":}
 		} else {
     
     file { "${drive::user_home_dir}/.gdrive/notes/backup/bin/rsync_backup.bash":
