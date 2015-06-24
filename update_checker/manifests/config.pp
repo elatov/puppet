@@ -27,11 +27,11 @@ class update_checker::config {
 				require => [Class['drive'],File['/usr/local/bin']],
 			}
 			
-			file {"/usr/local/bin/pkgin-check.bash":
-        ensure  => "link",
-        target  => "${update_checker::user_home_dir}/.gdrive/notes/scripts/bash/pkgin-check.bash",
-        require => [Class['drive'],File['/usr/local/bin']],
-      } 
+#			file {"/usr/local/bin/pkgin-check.bash":
+#        ensure  => "link",
+#        target  => "${update_checker::user_home_dir}/.gdrive/notes/scripts/bash/pkgin-check.bash",
+#        require => [Class['drive'],File['/usr/local/bin']],
+#      } 
       
 			cron {"pkg-check":
 				command => "/usr/local/bin/$update_checker::update_script",
@@ -40,13 +40,13 @@ class update_checker::config {
 				hour   => "00",
 				require => Class['drive'],
 			}
-			cron {"pkgin-check":
-				command => "/usr/local/bin/pkgin-check.bash",
-				user => "root",
-				minute => "00",
-				hour   => "01",
-				require => Class['drive'],
-			}
+#			cron {"pkgin-check":
+#				command => "/usr/local/bin/pkgin-check.bash",
+#				user => "root",
+#				minute => "00",
+#				hour   => "01",
+#				require => Class['drive'],
+#			}
     }
     default: {
         fail("The ${module_name} module is not supported on ${::osfamily}/${::operatingsystem}.")
