@@ -3,6 +3,7 @@
 class my_apache::install {
 
   if ($my_apache::settings['default_mods'] != undef) {
+    notice("Running with first drop $my_apache::settings['default_mods'] test")
     class { 'apache': 
       mpm_module          => 'prefork',
       default_confd_files => false,
@@ -12,6 +13,7 @@ class my_apache::install {
       default_mods        => "${my_apache::settings['default_mods']}"
     }
   }else{
+    notice("Running with second drop $my_apache::settings['default_mods'] test")
 		class { 'apache': 
 			mpm_module          => 'prefork',
 			default_confd_files => false,
