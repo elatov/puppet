@@ -14,13 +14,14 @@ class my_apache::install {
 #    }
 #  }else{
     notice("Running with second drop $my_apache::settings['default_mods'] test")
+    
 		class { 'apache': 
 			mpm_module          => 'prefork',
 			default_confd_files => false,
 			default_vhost       => false,
 			purge_configs       => false,
 			confd_dir           => $my_apache::config_dir,
-			default_mods        => "${my_apache::settings['default_mods']}";
+			default_mods        => $my_apache::settings['default_mods'],
 		}
 #  }
   
