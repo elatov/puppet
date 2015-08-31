@@ -20,7 +20,7 @@ class my_apache::install {
 			default_vhost       => false,
 			purge_configs       => false,
 			confd_dir           => $my_apache::config_dir,
-			default_mods        => true;
+			default_mods        => false;
 		}
 #  }
   
