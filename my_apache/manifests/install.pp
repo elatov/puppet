@@ -2,17 +2,17 @@
 #
 class my_apache::install {
 
-  if ($my_apache::settings['default_mods'] != undef) {
-    notice("Running with first drop $my_apache::settings['default_mods'] test")
-    class { 'apache': 
-      mpm_module          => 'prefork',
-      default_confd_files => false,
-      default_vhost       => false,
-      purge_configs       => false,
-      confd_dir           => $my_apache::config_dir,
-      default_mods        => "${my_apache::settings['default_mods']}"
-    }
-  }else{
+#  if ($my_apache::settings['default_mods'] != undef) {
+#    notice("Running with first drop $my_apache::settings['default_mods'] test")
+#    class { 'apache': 
+#      mpm_module          => 'prefork',
+#      default_confd_files => false,
+#      default_vhost       => false,
+#      purge_configs       => false,
+#      confd_dir           => $my_apache::config_dir,
+#      default_mods        => "${my_apache::settings['default_mods']}"
+#    }
+#  }else{
     notice("Running with second drop $my_apache::settings['default_mods'] test")
 		class { 'apache': 
 			mpm_module          => 'prefork',
@@ -22,7 +22,7 @@ class my_apache::install {
 			confd_dir           => $my_apache::config_dir,
 			default_mods        => true;
 		}
-  }
+#  }
   
   apache::vhost {"${my_apache::settings['hostname']}":
     #vhost_name         => $my_apache::settings['hostname'],
