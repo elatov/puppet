@@ -2,12 +2,24 @@
 #
 class my_apache::install {
 
-  class { 'apache': 
-    mpm_module          => 'prefork',
-    default_confd_files => false,
-    default_vhost       => false,
-    purge_configs       => false,
-    confd_dir           => $my_apache::config_dir,
+  if ($my_apache::settings['default_mods'] != undef) {
+    class { 'apache': 
+      mpm_module          => 'prefork',
+      default_confd_files => false,
+      default_vhost       => false,
+      purge_configs       => false,
+      confd_dir           => $my_apache::config_dir,
+      default_mods        => "${my_apache::settings['default_mods']}"
+    }
+  }else{
+		class { 'apache': 
+			mpm_module          => 'prefork',
+			default_confd_files => false,
+			default_vhost       => false,
+			purge_configs       => false,
+			confd_dir           => $my_apache::config_dir,
+			default_mods        => true;
+		}
   }
   
   apache::vhost {"${my_apache::settings['hostname']}":
