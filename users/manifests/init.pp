@@ -11,7 +11,7 @@ class users {
         gid         => "1000",
         groups      => ["adm"],
         membership  => minimum,
-        shell       => "/bin/bash",
+        shell       => "/bin/zsh",
         allowdupe   => false,
         managehome  => true,
         require    => Group["elatov"]
