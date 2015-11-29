@@ -7,7 +7,7 @@ class zabbix::agent::install () {
 	    /(?i:Debian)/: { 
 	      apt::source { 'zabbix':
 	        location   => "http://repo.zabbix.com/zabbix/${zabbix::agent::settings['version']}/debian/",
-	        release    => 'wheezy',
+	        release    => 'jessie',
 	        repos      => 'main',
 	        key        => '79EA5ED4',
 	        key_source => 'http://repo.zabbix.com/zabbix-official-repo.key',
