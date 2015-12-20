@@ -31,7 +31,7 @@ class users {
 			}
     }
     'FreeBSD': {
-      ensure_packages('bash',{ensure => 'present'})
+      ensure_packages('zsh',{ensure => 'present'})
       
       file {'/bin/bash':
         ensure => link,
@@ -45,7 +45,7 @@ class users {
         gid         => "1000",
         groups      => ["wheel"],
         membership  => minimum,
-        shell       => "/bin/bash",
+        shell       => "/usr/local/bin/zsh",
         allowdupe   => false,
         managehome  => true,
         require     => [Group["elatov"],Package['bash'],File['/bin/bash']]
