@@ -7,7 +7,13 @@ class ossec::server::config {
   if ($ossec::server::settings['add_user'] != undef) {
     User <| title == "${ossec::server::settings['add_user']}" |> { groups +> ["ossec"] }
   }
-      
+  
+  if ("${ossec::server::settings['config']['syslog_enabled']}"){
+    file { "${ossec::server::home_dir}/bin/.process_list":
+      ensure => 'present',
+      content => "CSYSLOG_DAEMON=ossec-csyslogd",
+    }
+  }    
   file { $ossec::server::config_dir:
     ensure  => 'directory',
   }
