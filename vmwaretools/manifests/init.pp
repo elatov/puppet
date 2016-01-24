@@ -329,7 +329,18 @@ class vmwaretools (
           restart    => "/sbin/restart ${service_name_real}",
           require    => Package[$package_real],
         }
-      } else {
+      } elsif ($::osfamily == 'Debian') and ($vmwaretools::params::majdistrelease == '8') {
+        service { $service_name_real :
+          provider   => systemd,
+          ensure     => $service_ensure_real,
+          enable     => $service_enable,
+          hasrestart => $service_hasrestart,
+          hasstatus  => $service_hasstatus_real,
+          pattern    => $service_pattern,
+          require    => Package[$package_real],
+        }
+      }
+      else {
         service { $service_name_real :
           ensure     => $service_ensure_real,
           enable     => $service_enable,
