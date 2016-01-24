@@ -181,6 +181,7 @@
     <log_format>apache</log_format>
     <location>/var/log/httpd-error.log</location>
   </localfile> -->
+
 <% if @settings['config']['syslog_enabled'] -%>
   <syslog_output>
     <server><%= @settings['config']['syslog_server_1'] %></server>

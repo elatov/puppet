@@ -11,7 +11,7 @@ class ossec::server::config {
   if ("${ossec::server::settings['config']['syslog_enabled']}"){
     file { "${ossec::server::home_dir}/bin/.process_list":
       ensure => 'present',
-      content => "CSYSLOG_DAEMON=ossec-csyslogd",
+      content => "CSYSLOG_DAEMON=ossec-csyslogd\n",
     }
   }    
   file { $ossec::server::config_dir:
