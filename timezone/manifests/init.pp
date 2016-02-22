@@ -30,6 +30,10 @@
 #     Only set this, if your platform is not supported or you know, what you're doing.
 #     Default: auto-set, platform specific
 #
+#   [*hwutc*]
+#     Is the hardware clock set to UTC? (true or false)
+#     Default: undefined
+#
 # Actions:
 #   Installs tzdata and configures timezone
 #
@@ -45,6 +49,7 @@
 class timezone (
   $ensure = 'present',
   $timezone = 'UTC',
+  $hwutc = '',
   $autoupgrade = false
 ) inherits timezone::params {
 
@@ -71,20 +76,34 @@ class timezone (
     }
   }
 
-  package { $timezone::params::package:
-    ensure => $package_ensure,
+  if $timezone::params::package {
+    package { $timezone::params::package:
+      ensure => $package_ensure,
+      before => File[$timezone::params::localtime_file],
+    }
   }
-  
+
   if $timezone::params::timezone_file != false {
     file { $timezone::params::timezone_file:
       ensure  => $timezone_ensure,
       content => template($timezone::params::timezone_file_template),
     }
+    if $ensure == 'present' and $timezone::params::timezone_update {
+      $e_command = $::osfamily ? {
+        /(Suse|Archlinux)/ => "${timezone::params::timezone_update} ${timezone}",
+        default            => $timezone::params::timezone_update
+      }
+      exec { 'update_timezone':
+        command     => $e_command,
+        path        => '/usr/bin:/usr/sbin:/bin:/sbin',
+        subscribe   => File[$timezone::params::timezone_file],
+        refreshonly => true,
+      }
+    }
   }
 
   file { $timezone::params::localtime_file:
-    ensure  => $localtime_ensure,
-    target  => "${timezone::params::zoneinfo_dir}${timezone}",
-    require => Package[$timezone::params::package],
+    ensure => $localtime_ensure,
+    target => "${timezone::params::zoneinfo_dir}${timezone}",
   }
 }
