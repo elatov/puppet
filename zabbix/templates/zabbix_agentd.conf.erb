@@ -10,12 +10,11 @@
 # Default:
 # PidFile=/tmp/zabbix_agentd.pid
 
-<% unless scope['zabbix::agent::settings'].has_key?('pidFile') -%>
-PidFile=/var/run/zabbix/zabbix_agentd.pid
+<% if scope['zabbix::agent::settings']['pidFile'] -%>
+PidFile=<%= scope['zabbix::agent::settings']['pidFile'] -%>
 <% else -%>
-PidFile=<%= scope['zabbix::agent::settings']['pidFile'] -%> 
+PidFile=/var/run/zabbix/zabbix_agentd.pid 
 <% end -%>
-
 ### Option: LogFile
 #	Name of log file.
 #	If not set, syslog is used.
@@ -24,7 +23,7 @@ PidFile=<%= scope['zabbix::agent::settings']['pidFile'] -%>
 # Default:
 # LogFile=
 
-<% if scope['zabbix::agent::settings'].has_key?('logFile') -%>
+<% if scope['zabbix::agent::settings']['logFile'] -%>
 LogFile=<%= scope['zabbix::agent::settings']['logFile'] -%>
 <% else -%> 
 LogFile=/var/log/zabbix/zabbix_agentd.log
@@ -39,7 +38,7 @@ LogFile=/var/log/zabbix/zabbix_agentd.log
 # Default:
 # LogFileSize=1
 
-<% if scope['zabbix::agent::settings'].has_key?('logFileSize') -%>
+<% if scope['zabbix::agent::settings']['logFileSize'] -%>
 LogFileSize=<%= scope['zabbix::agent::settings']['logFileSize'] -%>
 <% else %> 
 LogFileSize=0
@@ -282,7 +281,7 @@ AllowRoot=<%= scope['zabbix::agent::settings']['allow_root'] -%>
 # Default:
 # Include=
 
-Include=<%= @custom_conf_dir %>
+Include=<%= scope['zabbix::agent::custom_conf_dir'] %>
 
 # Include=/usr/local/etc/zabbix_agentd.userparams.conf
 # Include=/usr/local/etc/zabbix_agentd.conf.d/
