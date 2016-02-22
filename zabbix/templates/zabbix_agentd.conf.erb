@@ -116,8 +116,8 @@ Server=127.0.0.1
 # Default:
 # ListenIP=0.0.0.0
 
-<% if @settings['listenIp'] -%>
-ListenIP=<%= @settings['listenIp'] -%>
+<% if scope['zabbix::agent::settings']['listenIp'] -%>
+ListenIP=<%= scope['zabbix::agent::settings']['listenIp'] -%>
 <% end %>
 
 ### Option: StartAgents
@@ -129,8 +129,8 @@ ListenIP=<%= @settings['listenIp'] -%>
 # Default:
 # StartAgents=3
 
-<% if @settings['startagents'] %>
-StartAgents=<%= @settings['startagents'] -%>
+<% if scope['zabbix::agent::settings']['startagents'] %>
+StartAgents=<%= scope['zabbix::agent::settings']['startagents'] -%>
 <% end %>
 ##### Active checks related
 
@@ -157,8 +157,8 @@ StartAgents=<%= @settings['startagents'] -%>
 # Default:
 # Hostname=
 
-<% if @settings['hostname'] -%>
-Hostname=<%= @settings['hostname'] -%>
+<% if scope['zabbix::agent::settings']['hostname'] -%>
+Hostname=<%= scope['zabbix::agent::settings']['hostname'] -%>
 <% else %> 
 Hostname=Zabbix Server
 <% end %>
