@@ -262,8 +262,8 @@ Hostname=Zabbix Server
 # Mandatory: no
 # Default:
 # AllowRoot=0
-<% if @settings['allow_root'] -%>
-AllowRoot=<%= @settings['allow_root'] -%>
+<% if scope['zabbix::agent::settings']['allow_root'] -%>
+AllowRoot=<%= scope['zabbix::agent::settings']['allow_root'] -%>
 <% end -%>
 
 ### Option: User
