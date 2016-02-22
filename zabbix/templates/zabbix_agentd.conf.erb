@@ -94,8 +94,8 @@ LogFileSize=0
 # Default:
 # Server=
 
-<% if @settings['server'] -%>
-Server=<%= @settings['server'] -%>
+<% if scope['zabbix::agent::settings']['server'] -%>
+Server=<%= scope['zabbix::agent::settings']['server'] -%>
 <% else %> 
 Server=127.0.0.1
 <% end %>
