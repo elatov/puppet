@@ -23,7 +23,7 @@ class couchpotato::config {
       path     => "${couchpotato::service_dir}/${couchpotato::service_file}",
       content  => template ("couchpotato/${couchpotato::service_file}.erb"),
       mode     => '0644',
-      notify    => Exec ["${module_name}-reload-systemd"]
+      notify    => Exec["${module_name}-reload-systemd"]
     }
     
     exec { "${module_name}-reload-systemd":
