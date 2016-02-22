@@ -24,7 +24,7 @@ PidFile=<%= scope['zabbix::agent::settings']['pidFile'] -%>
 # Default:
 # LogFile=
 
-<% if scope['zabbix::agent::settings'].has_key?['logFile'] -%>
+<% if scope['zabbix::agent::settings'].has_key?('logFile') -%>
 LogFile=<%= @settings['logFile'] -%>
 <% else -%> 
 LogFile=/var/log/zabbix/zabbix_agentd.log
