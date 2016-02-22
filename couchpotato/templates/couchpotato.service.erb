@@ -6,6 +6,8 @@ After=network.target
 ExecStart=<%= scope['couchpotato::install_dir'] %>/CouchPotato.py --daemon
 GuessMainPID=no
 Type=forking
+User=<%= #scope['couchpotato::settings']['user'] %>
+Group=<%= #scope['couchpotato::settings']['user'] %>
 
 [Install]
 WantedBy=multi-user.target
