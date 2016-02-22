@@ -15,6 +15,7 @@ PidFile=<%= scope['zabbix::agent::settings']['pidFile'] -%>
 <% else -%>
 PidFile=/var/run/zabbix/zabbix_agentd.pid 
 <% end -%>
+
 ### Option: LogFile
 #	Name of log file.
 #	If not set, syslog is used.
