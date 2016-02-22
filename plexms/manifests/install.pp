@@ -26,7 +26,7 @@ class plexms::install {
 					ensure => 'present',
 					path   => "/usr/local/apps/${plexms::settings['rpm_name']}",
 					source => "puppet:///modules/plexms/${plexms::settings['rpm_name']}",
-					require => File ['/usr/local/apps'],
+					require => File['/usr/local/apps'],
 				}->
 				package { $plexms::package_name:
 	        provider => 'rpm',
@@ -53,6 +53,6 @@ class plexms::install {
 		ensure => 'directory',
 		owner  => $plexms::settings['conf']['User'],
 		group  => $plexms::settings['conf']['Group'],
-		require => [Package [$plexms::package_name], User[$plexms::settings['conf']['User']]]
+		require => [Package[$plexms::package_name], User[$plexms::settings['conf']['User']]]
 	}
 }
