@@ -33,5 +33,5 @@ class transmission::server(
   class { 'transmission::server::install': } ->
   class { 'transmission::server::config': } ~>
   class { 'transmission::server::service': } ->
-  Class ['transmission::server']
+  Class['transmission::server']
 }
