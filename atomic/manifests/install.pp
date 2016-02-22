@@ -17,7 +17,7 @@ class atomic::install {
     provider => 'rpm',
     source   => "/usr/local/apps/${atomic::package_name}",
     ensure   => "present",
-    require  => File ["/usr/local/apps/${atomic::package_name}"]
+    require  => File["/usr/local/apps/${atomic::package_name}"]
   }
   
 }
