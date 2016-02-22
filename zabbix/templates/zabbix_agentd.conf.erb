@@ -10,7 +10,7 @@
 # Default:
 # PidFile=/tmp/zabbix_agentd.pid
 
-<% if #settings.['pidFile'] -%>
+<% if #settings['pidFile'] -%>
 PidFile=<%= @settings['pidFile'] -%>
 <% else -%> 
 PidFile=/var/run/zabbix/zabbix_agentd.pid
