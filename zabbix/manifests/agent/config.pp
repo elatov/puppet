@@ -186,7 +186,7 @@ class zabbix::agent::config () {
 	    cron {"zabbix-disk-perf":
 	      command => "/usr/bin/iostat -x 1 2 > /tmp/iostat.txt",
 	      user => "zabbix",
-	      require => Package ["sysstat"],
+	      require => Package["sysstat"],
 	    }
     }
   }
