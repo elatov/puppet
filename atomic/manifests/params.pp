@@ -9,7 +9,7 @@ class atomic::params {
 										      }
 	case $::osfamily {
 		'RedHat': {
-		  if ($::operatingsystem == "CentOS" and $::operatingsystemmajrelease >= 7) {
+		  if ($::operatingsystem == "CentOS" and versioncmp($::operatingsystemmajrelease, '7') >= 0 ) {
 			 $atomic_package_name		= 'atomic-release-1.0-19.el7.art.noarch.rpm'
       }
 			$atomic_config_dir			  = '/etc/yum.repos.d'
