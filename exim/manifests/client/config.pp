@@ -26,7 +26,7 @@ class exim::client::config {
     ensure  => 'present',
     path    => "${exim::client::config_dir}/${exim::client::config_file}",
     content => template("exim/exim.conf.${::osfamily}.erb"),
-    require => File [$exim::client::config_dir],
+    require => File[$exim::client::config_dir],
   }
   
   if ($::osfamily == 'FreeBSD'){
