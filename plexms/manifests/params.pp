@@ -34,7 +34,7 @@ class plexms::params {
 			                           'rpm_name'  => 'plexmediaserver-0.9.12.1.1079-b655370.x86_64.rpm'
 			                          }
 			
-			if $::operatingsystemmajrelease >= 7 {
+			if (versioncmp($::operatingsystemmajrelease, '7') >= 0) {
 				$plexms_service_dir  	= '/usr/lib/systemd/system'
 				$plexms_config_file  	= 'plexms.sysconf.systemd'
 				$plexms_service_file 	= 'plexmediaserver.service'
