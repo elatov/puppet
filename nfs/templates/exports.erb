@@ -1,1 +1,1 @@
-<% scope['nfs::settings']['exports'].sort_by {|key, value| key}.each do |key,value| %><%= key %> <%= value %> <% end %>
+<% scope['nfs::server::settings']['exports'].sort_by {|key, value| key}.each do |key,value| %><%= key %> <%= value %> <% end %>
