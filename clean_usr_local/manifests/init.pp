@@ -10,7 +10,18 @@
 #
 # Sample Usage:
 #
+
 class clean_usr_local {
+  define rm_dir ($dir=$title) {
+    exec { "rm_${$dir}":
+      path => "/bin:/usr/bin",
+      provider => "shell",
+      command => "rmdir ${dir}",
+      #onlyif => "[ -d ${dir} -a -z `ls -A ${dir}`]", 
+      onlyif => "test -d ${dir} && test -z \"\$(ls -A ${dir})\"", 
+    }
+    #notify { "removing Directory ${dir}":; }
+  }
     
   $man_dirs = [ "/usr/local/share/man/man1","/usr/local/share/man/man1x",
                 "/usr/local/share/man/man2","/usr/local/share/man/man2x",
@@ -27,10 +38,10 @@ class clean_usr_local {
                  "/usr/local/games","/usr/local/include","/usr/local/libexec","/usr/local/src",
                  "/usr/local/share"]
   
-  rm_dir { $man_dirs:;
+  clean_usr_local::rm_dir { $man_dirs:;
   } ->  
-  rm_dir { $share_dirs:
+  clean_usr_local::rm_dir { $share_dirs:
   }->  
-  rm_dir {$other_dirs:;}
+  clean_usr_local::rm_dir {$other_dirs:;}
   
 }
