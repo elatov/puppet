@@ -59,7 +59,7 @@ class zabbix::server::install () {
   if ($zabbix::server::enable_web){
 		package { $zabbix::server::web_package_name:
 			ensure       => installed,
-			require      => Package [ $zabbix::server::package_name],
+			require      => Package[$zabbix::server::package_name],
 		}
   }
 }
