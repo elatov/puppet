@@ -27,5 +27,5 @@ class transmission::client(
   
   class { 'transmission::client::install': } ->
   class { 'transmission::client::config': } ->
-  Class ['transmission::client']
+  Class['transmission::client']
 }
