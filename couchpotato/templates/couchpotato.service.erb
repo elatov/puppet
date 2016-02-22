@@ -3,11 +3,11 @@ Description=CouchPotato application instance
 After=network.target
 
 [Service]
-ExecStart=<%= @install_dir %>/CouchPotato.py --daemon
+ExecStart=<%= scope['couchpotato::install_dir] %>/CouchPotato.py --daemon
 GuessMainPID=no
 Type=forking
-User=<%= @settings['user'] %>
-Group=<%= @settings['user'] %>
+User=<%= scope['couchpotato::settings']['user'] %>
+Group=<%= scope['couchpotato::settings']['user'] %>
 
 [Install]
 WantedBy=multi-user.target

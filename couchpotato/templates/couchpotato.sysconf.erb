@@ -1,4 +1,4 @@
-CP_USER=<%= @settings['user'] %>
-CP_HOME=<%= @install_dir %>
-CP_DATA=~<%= @settings['user'] %>/.couchpotato
+CP_USER=<%= scope['couchpotato::settings']['user'] %>
+CP_HOME=<%= scope['couchpotato::install_dir'] %>
+CP_DATA=~<%= scope['couchpotato::settings']['user'] %>/.couchpotato
 CP_PIDFILE=/var/run/couchpotato/couchpotato.pid
