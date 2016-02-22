@@ -3,9 +3,9 @@ Description=Transmission BitTorrent Daemon
 After=network.target
 
 [Service]
-User=<%= @settings['user'] %>
+User=<%= scope['transmission::server::settings']['user'] %>
 Type=notify
-ExecStart=/usr/bin/transmission-daemon -f -g <%= @config_dir %> -e <%= @log_dir %>/<%= @log_file %> --log-debug
+ExecStart=/usr/bin/transmission-daemon -f -g <%= scope['transmission::server::config_dir'] %> -e <%= scope['transmission::server::log_dir'] %>/<%= scope['transmission::server::log_file'] %> --log-debug
 ExecReload=/bin/kill -s HUP $MAINPID
 
 [Install]
