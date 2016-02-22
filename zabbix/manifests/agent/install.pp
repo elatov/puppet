@@ -1,6 +1,6 @@
 class zabbix::agent::install () {
   
-  if !(defined(Class ["zabbix::server"])){
+#  if !(defined(Class ["zabbix::server"])){
 	  case $::operatingsystem {
 	    /(?i:CentOS|fedora)/: { 
 	    }
@@ -23,7 +23,7 @@ class zabbix::agent::install () {
 	      fail("Module ${module_name} is not supported on ${::operatingsystem}")
 	    }
 	  }
-  }
+#  }
   if ($::operatingsystem == 'OmniOS'){
     ensure_resource(file,'/usr/local',{ensure => 'directory'})
     
