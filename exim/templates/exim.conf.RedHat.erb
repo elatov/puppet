@@ -89,7 +89,7 @@ smarthost:
   driver = manualroute
   domains = ! +local_domains
   transport = remote_smtp
-  route_data = <%= @settings['smart_relayhost'] %>
+  route_data = <%= scope['exim::client::settings']['smart_relayhost'] %>
   no_more
 
 system_aliases:
