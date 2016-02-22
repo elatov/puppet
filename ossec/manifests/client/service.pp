@@ -11,6 +11,7 @@ class ossec::client::service{
 	    enable     => true,
 	    hasstatus  => true,
 	    hasrestart => true,
+	    provider => systemd,
     }
   }else {
     service { $ossec::client::service_name:
