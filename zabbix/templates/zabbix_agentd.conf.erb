@@ -39,8 +39,8 @@ LogFile=/var/log/zabbix/zabbix_agentd.log
 # Default:
 # LogFileSize=1
 
-<% if @settings['logFileSize'] -%>
-LogFileSize=<%= @settings['logFileSize'] -%>
+<% if scope['zabbix::agent::settings'].has_key?('logFileSize') -%>
+LogFileSize=<%= scope['zabbix::agent::settings']['logFileSize'] -%>
 <% else %> 
 LogFileSize=0
 <% end %>
