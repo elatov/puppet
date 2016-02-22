@@ -25,7 +25,7 @@ class transmission::params {
       ### Settings
       $transmission_server_settings_os           = { 'initial_setup'  => true }
       
-      if $::operatingsystemmajrelease >= 7 {
+      if (versioncmp($::operatingsystemmajrelease, '7') >= 0) {
         $transmission_server_service_dir         = '/usr/lib/systemd/system'
       }else{
         $transmission_server_service_dir         = '/etc/init.d'
