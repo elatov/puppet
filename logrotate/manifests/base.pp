@@ -18,7 +18,7 @@ class logrotate::base {
     '/etc/logrotate.d':
       ensure  => directory,
       mode    => '0755',
-      require => Package ["logrotate"],
+      require => Package["logrotate"],
   }
 
   case $::osfamily {
