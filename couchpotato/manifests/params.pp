@@ -17,7 +17,7 @@ class couchpotato::params {
 		                            }
 		  
   
-		  if $::operatingsystemmajrelease >= 7 {
+		  if (versioncmp($::operatingsystemmajrelease, '7') >= 0) {
 		    $cp_service_file      = 'couchpotato.service'
 		    $cp_service_dir       = '/usr/lib/systemd/system'
 		  }else{
