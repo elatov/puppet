@@ -24,7 +24,7 @@ class rsyslog::config {
     }
 		logrotate::rule { 'iptables-log':
 			path         => '/var/log/iptables.log',
-			rotate       => 5,
+			rotate       => '5',
 			rotate_every => 'week',
 			ifempty => false,
 			compress => true,
