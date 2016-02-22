@@ -13,7 +13,7 @@
 <% unless scope['zabbix::agent::settings'].has_key?('pidFile') -%>
 PidFile=/var/run/zabbix/zabbix_agentd.pid
 <% else -%>
-PidFile=<%= @settings['pidFile'] -%> 
+PidFile=<%= scope['zabbix::agent::settings']['pidFile'] -%> 
 <% end -%>
 
 ### Option: LogFile
