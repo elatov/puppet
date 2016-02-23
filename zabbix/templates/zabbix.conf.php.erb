@@ -3,16 +3,16 @@
 global $DB;
 
 $DB['TYPE']     = 'MYSQL';
-$DB['SERVER']   = '<%= @settings['dBHost'] %>';
+$DB['SERVER']   = '<%= scope['zabbix::server::settings']['dBHost'] %>';
 $DB['PORT']     = '0';
-$DB['DATABASE'] = '<%= @settings['dBName'] %>';
-$DB['USER']     = '<%= @settings['dBUser'] %>';
-$DB['PASSWORD'] = '<%= @settings['dBPassword'] %>';
+$DB['DATABASE'] = '<%= scope['zabbix::server::settings']['dBName'] %>';
+$DB['USER']     = '<%= scope['zabbix::server::settings']['dBUser'] %>';
+$DB['PASSWORD'] = '<%= scope['zabbix::server::settings']['dBPassword'] %>';
 
 // SCHEMA is relevant only for IBM_DB2 database
 $DB['SCHEMA'] = '';
 
-$ZBX_SERVER      = '<%= @settings['listenIp'] %>';
+$ZBX_SERVER      = '<%= scope['zabbix::server::settings']['listenIp'] %>';
 $ZBX_SERVER_PORT = '10051';
 $ZBX_SERVER_NAME = '';
 
