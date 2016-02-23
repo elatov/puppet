@@ -1,2 +1,2 @@
 #!/bin/sh
-/usr/bin/mysql -h <%= @settings['dBHost'] %> -u <%= @settings['dBUser'] %> -p<%= @settings['dBPassword'] %> <%= @settings['dBName'] %> -e "CALL partition_maintenance_all('zabbix');"
+/usr/bin/mysql -h <%= scope['zabbix::server::settings']['dBHost'] %> -u <%= scope['zabbix::server::settings']['dBUser'] %> -p<%= scope['zabbix::server::settings']['dBPassword'] %> <%= scope['zabbix::server::settings']['dBName'] %> -e "CALL partition_maintenance_all('zabbix');"
