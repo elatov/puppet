@@ -28,7 +28,7 @@ class mysudo {
 			}
 			sudo::conf { 'elatov':
 				priority => 20,
-				content  => "Defaults:elatov secure_path = /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin",
+				content  => "Defaults:elatov secure_path = /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:/opt/puppetlabs/bin",
 			}
     }
     'FreeBSD': {
