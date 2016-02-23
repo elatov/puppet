@@ -6,7 +6,7 @@
 class nfs::server::service{
 
 #  if ( Facter["uptime_seconds"].value() > 60 ){
-   if (versioncmp($::uptime_seconds, '60') > 0 ){
+   if ($::uptime_seconds > 60 ){
 	  if ($nfs::server::service_pre != undef){
 			service { $nfs::server::service_pre:
 				ensure     => running,
