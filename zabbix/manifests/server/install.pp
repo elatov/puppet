@@ -28,7 +28,7 @@ class zabbix::server::install () {
 		host      => "${zabbix::server::server_zabbix_default_settings['dBHost']}",
 		grant     => "ALL",
 		sql       => '/usr/share/zabbix-server-mysql/all.sql',
-		require => [Class['mysql::server'],Exec ["${module_name}-concat-sql-files"]]
+		require => [Class['mysql::server'],Exec["${module_name}-concat-sql-files"]]
 	}
     
 	case $::operatingsystem {
