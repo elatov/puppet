@@ -5,14 +5,23 @@
 #
 class ossec::client::service{
 
-  if ($ossec::client::settings['initial_setup'] == false or $ossec::client::settings['initial_setup'] == undef) { 
-    service { $ossec::client::service_name:
-	    ensure     => running,
-	    enable     => true,
-	    hasstatus  => true,
-	    hasrestart => true,
-#	    provider => init,
-    }
+  if ($ossec::client::settings['initial_setup'] == false or $ossec::client::settings['initial_setup'] == undef) {
+      if ($::osfamily == 'Debian') { 
+		    service { $ossec::client::service_name:
+			    ensure     => running,
+			    enable     => true,
+			    hasstatus  => true,
+			    hasrestart => true,
+        }
+      } elsif ($::osfamily == 'RedHat') {
+        service { $ossec::client::service_name:
+          ensure     => running,
+          enable     => true,
+          hasstatus  => true,
+          hasrestart => true,
+          provider => init,
+        }
+      } 
   }else {
     service { $ossec::client::service_name:
       ensure     => stopped,
