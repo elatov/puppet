@@ -15,6 +15,6 @@ class my_mysql::config {
     mode    => '0644',
     path    => "${my_mysql::config_dir}/${my_mysql::config_file}",
     source => "puppet:///modules/my_mysql/${my_mysql::config_file}",
-    require => File [$my_mysql::config_dir],
+    require => File[$my_mysql::config_dir],
   }
 }
