@@ -11,7 +11,7 @@ class ossec::client::service{
 	    enable     => true,
 	    hasstatus  => true,
 	    hasrestart => true,
-	    provider => init,
+#	    provider => init,
     }
   }else {
     service { $ossec::client::service_name:
