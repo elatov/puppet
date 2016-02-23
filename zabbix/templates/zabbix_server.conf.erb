@@ -38,7 +38,7 @@ LogFile=/var/log/zabbix/zabbix_server.log
 # Default:
 # LogFileSize=1
 
-<% if @settings['logFileSize'] %>LogFileSize=<%= @settings['logFileSize'] %><% end %>
+<% if scope['zabbix::server::settings']['logFileSize'] %>LogFileSize=<%= scope['zabbix::server::settings']['logFileSize'] %><% end %>
 
 ### Option: DebugLevel
 #	Specifies debug level
@@ -71,7 +71,7 @@ PidFile=/var/run/zabbix/zabbix_server.pid
 # Default:
 # DBHost=localhost
 
-<% if @settings['dBHost'] %>DBHost=<%= @settings['dBHost'] %><% end %>
+<% if scope['zabbix::server::settings']['dBHost'] %>DBHost=<%= scope['zabbix::server::settings']['dBHost'] %><% end %>
 
 ### Option: DBName
 #	Database name.
@@ -81,7 +81,7 @@ PidFile=/var/run/zabbix/zabbix_server.pid
 # Default:
 # DBName=
 
-<% if @settings['dBName'] %>DBName=<%= @settings['dBName'] %><% end %>
+<% if scope['zabbix::server::settings']['dBName'] %>DBName=<%= scope['zabbix::server::settings']['dBName'] %><% end %>
 
 ### Option: DBSchema
 #	Schema name. Used for IBM DB2 and PostgreSQL.
@@ -97,7 +97,7 @@ PidFile=/var/run/zabbix/zabbix_server.pid
 # Default:
 # DBUser=
 
-<% if @settings['dBUser'] %>DBUser=<%= @settings['dBUser'] %><% end %>
+<% if scope['zabbix::server::settings']['dBUser'] %>DBUser=<%= scope['zabbix::server::settings']['dBUser'] %><% end %>
 
 ### Option: DBPassword
 #	Database password. Ignored for SQLite.
@@ -107,7 +107,7 @@ PidFile=/var/run/zabbix/zabbix_server.pid
 # Default:
 # DBPassword=
 
-<% if @settings['dBPassword'] %>DBPassword=<%= @settings['dBPassword'] %><% end %>
+<% if scope['zabbix::server::settings']['dBPassword'] %>DBPassword=<%= scope['zabbix::server::settings']['dBPassword'] %><% end %>
 
 ### Option: DBSocket
 #	Path to MySQL socket.
@@ -230,7 +230,7 @@ DBSocket=/var/run/mysqld/mysqld.sock
 # Range: 0-250
 # Default:
 # StartVMwareCollectors=0
-<% if @settings['startVMwareCollectors'] %>StartVMwareCollectors=<%= @settings['startVMwareCollectors'] %><% end %>
+<% if scope['zabbix::server::settings']['startVMwareCollectors'] %>StartVMwareCollectors=<%= scope['zabbix::server::settings']['startVMwareCollectors'] %><% end %>
 
 ### Option: VMwareFrequency
 #	How often Zabbix will connect to VMware service to obtain a new data.
@@ -290,7 +290,7 @@ DBSocket=/var/run/mysqld/mysqld.sock
 # Default:
 # ListenIP=0.0.0.0
 
-<% if @settings['listenIp'] %>ListenIP=<%= @settings['listenIp'] %><% end %>
+<% if scope['zabbix::server::settings']['listenIp'] %>ListenIP=<%= scope['zabbix::server::settings']['listenIp'] %><% end %>
 
 ### Option: HousekeepingFrequency
 #	How often Zabbix will perform housekeeping procedure (in hours).
