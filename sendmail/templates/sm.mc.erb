@@ -2,7 +2,7 @@ divert(0)dnl
 VERSIONID(`sendmail.mc (Sun)')
 OSTYPE(`solaris8')dnl
 DOMAIN(`generic')dnl
-define(`SMART_HOST', `smtp:<%= @settings['smart_relayhost'] %>')dnl
+define(`SMART_HOST', `smtp:<%= scope['sendmail::settings']['smart_relayhost'] %>')dnl
 FEATURE(`relay_entire_domain')dnl
 MAILER(`smtp')dnl
 
