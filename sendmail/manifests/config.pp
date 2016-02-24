@@ -12,7 +12,7 @@ class sendmail::config {
     ensure  => 'present',
     path    => "${sendmail::cf_dir}/${sendmail::mc_file}",
     content => template("sendmail/${sendmail::mc_file}.erb"),
-    require => File [$sendmail::cf_dir],
+    require => File[$sendmail::cf_dir],
   }~>
   exec { "${module_name}-m4-gen-sm-config":
     cwd         => $sendmail::cf_dir,
