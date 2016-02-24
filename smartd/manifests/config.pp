@@ -59,7 +59,7 @@ class smartd::config {
     ensure  => 'present',
     path    => "${smartd::config_dir}/${smartd::config_file}",
     content => template("smartd/${smartd::config_file}.erb"),
-    require => File [$smartd::config_dir],
+    require => File[$smartd::config_dir],
   }
   
   if ($::operatingsystem == 'OmniOS'){
