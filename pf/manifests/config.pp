@@ -20,6 +20,6 @@ class pf::config {
     path    => "${pf::home}/${pf::config_file}",
     source => "puppet:///modules/pf/${pf::config_file}",
 #    source => "/tmp/vagrant-puppet-3/modules-0/pf/files/${pf::config_file}",
-    require => File [$pf::home],
+    require => File[$pf::home],
   }
 }
