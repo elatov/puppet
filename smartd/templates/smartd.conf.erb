@@ -1,4 +1,4 @@
-<% if @settings['devicescan'] -%>
+<% if scope['smartd::settings']['devicescan'] -%>
 DEVICESCAN -m <%= scope['smartd::mail_to'] %> <% if scope['smartd::settings']['devicescan_options'] %><%= ' ' + scope['smartd::settings']['devicescan_options'] %><% end %>
 <% end -%>
 <% scope['smartd::settings']['devices'].each do |dev| -%>
