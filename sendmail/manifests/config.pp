@@ -27,7 +27,7 @@ class sendmail::config {
 	}
 	
 	logadm {'/var/adm/mail.log':
-		count => 3,
+		count => '3',
 		post_command => "kill -HUP `cat /var/run/syslog.pid`"
 	}
 	if ($sendmail::settings['aliases']){
