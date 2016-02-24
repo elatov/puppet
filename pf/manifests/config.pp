@@ -6,7 +6,7 @@ class pf::config {
 
   $settings_keys = keys($pf::settings)
   
-  settings {$settings_keys:
+  pf::settings {$settings_keys:
     config_file => "${pf::config_dir}/${pf::rc_conf_file}",
     settings_hash => $pf::settings,
   }
