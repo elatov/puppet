@@ -13,7 +13,7 @@ define sendmail::aliases (
   mailalias {$alias:
     ensure => "present",
     recipient => $alias_recipient,
-    notify  => Exec ["newalias-${alias}"],  
+    notify  => Exec["newalias-${alias}"],  
   }
   
   exec { "newalias-${alias}":
