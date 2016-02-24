@@ -4,7 +4,7 @@ require 'optparse'
 require 'shellwords'
 
 module Puppet
-    newtype(:logadm) do
+    Type.newtype(:logadm) do
         newparam(:name) do
             desc "The name of the logadm entry. If no pattern is defined, this will
                 be used by default.
