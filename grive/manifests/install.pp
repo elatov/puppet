@@ -25,7 +25,7 @@ class grive::install  {
 		path   => "/usr/local/apps/${grive::package_name}",
 		source => "puppet:///modules/grive/${grive::package_name}",
 #    source => "/tmp/vagrant-puppet-3/modules-0/grive/files/${grive::package_name}",
-		require => File ['/usr/local/apps'], 
+		require => File['/usr/local/apps'], 
 	}->
 	# extract the TAR
 	exec {"install-$grive::package_name":
