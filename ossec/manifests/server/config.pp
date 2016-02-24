@@ -22,7 +22,7 @@ class ossec::server::config {
     ensure  => 'present',
     path    => "${ossec::server::config_dir}/${ossec::server::config_file}",
     content => template("ossec/ossec-server.conf.${::operatingsystem}.erb"),
-    require => File [$ossec::server::config_dir],
+    require => File[$ossec::server::config_dir],
   }
   
   file { "${ossec::server::config_dir}/shared":
