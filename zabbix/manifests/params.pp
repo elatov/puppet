@@ -18,7 +18,7 @@ class zabbix::params {
 			                                          'dBPassword'             => 'password',
 			                                          'startVMwareCollectors'  => '2',
 			                                          'listenIp'               => $::ipaddress,
-			                                          'version'                => '2.4',
+			                                          'version'                => '3.0',
 			                                        }
 			### Client/Agent
 			$agent_zabbix_config_dir             = '/etc/zabbix'
@@ -37,7 +37,7 @@ class zabbix::params {
 			                                         'listenIp'               => $::ipaddress,
 			                                         'smart'                  => false,
 			                                         'disk_perf'              => false,
-			                                         'version'                => '2.4',
+			                                         'version'                => '3.0',
 			                                       }
 	 }
 		'FreeBSD': {
