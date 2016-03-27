@@ -94,7 +94,7 @@ class zabbix::params {
 		'Solaris': {
       ### Client/Agent
       ## Package
-      $agent_zabbix_package_name           = 'zabbix_agents_2.4.1.solaris11.amd64.tar.gz'
+      $agent_zabbix_package_name           = 'zabbix_agents_3.0.0.solaris10.amd64.tar.gz'
       ## Service
       $agent_zabbix_service_name           = 'zabbix-agent'
       ## Dirs
@@ -111,7 +111,7 @@ class zabbix::params {
       $agent_zabbix_service_file           = 'zabbix-agent.smf'
       
       ## Settings
-      $agent_zabbix_version                = '2.4'
+      $agent_zabbix_version                = '3.0'
       $agent_zabbix_default_settings       = { 'logFile'                => '/var/adm/zabbix/zabbix_agentd.log',
                                                'logFileSize'            => '1',
                                                'pidFile'                => '/var/run/zabbix_agentd.pid',
