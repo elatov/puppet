@@ -46,13 +46,13 @@ class zabbix::params {
 			$zabbix_server_service_name        = 'zabbix-server'
 			
 			### Client/Agent
-			$agent_zabbix_config_dir             = '/usr/local/etc/zabbix24'
+			$agent_zabbix_config_dir             = '/usr/local/etc/zabbix3'
 			$agent_zabbix_custom_scripts_dir     = "${agent_zabbix_config_dir}/custom-scripts.d"
 			$agent_zabbix_custom_conf_dir        = "${agent_zabbix_config_dir}/zabbix_agentd.conf.d"
 			$agent_zabbix_config_file            = 'zabbix_agentd.conf'
-			$agent_zabbix_package_name           = 'zabbix24-agent'
+			$agent_zabbix_package_name           = 'zabbix3-agent'
 			$agent_zabbix_service_name           = 'zabbix_agentd'
-			$agent_zabbix_version                = '2.4'
+			$agent_zabbix_version                = '3.0'
 			$agent_zabbix_default_settings       = { 'logFile'                => '/var/log/zabbix/zabbix_agentd.log',
 			                                         'logFileSize'            => '1',
 			                                         'pidFile'                => '/var/run/zabbix/zabbix_agentd.pid',
