@@ -1,5 +1,4 @@
-# This is a config file for the Zabbix agent daemon (Unix)
-# To get more information about Zabbix, visit http://www.zabbix.com
+# This is a configuration file for Zabbix agent daemon (Unix)
 
 ############ GENERAL PARAMETERS #################
 
@@ -27,8 +26,7 @@ PidFile=/var/run/zabbix/zabbix_agentd.pid
 # LogType=file
 
 ### Option: LogFile
-#	Name of log file.
-#	If not set, syslog is used.
+#	Log file name for LogType 'file' parameter.
 #
 # Mandatory: no
 # Default:
@@ -342,6 +340,7 @@ Include=<%= scope['zabbix::agent::custom_conf_dir'] %>
 # Mandatory: no
 # Default:
 # LoadModule=
+
 ####### TLS-RELATED PARAMETERS #######
 
 ### Option: TLSConnect
