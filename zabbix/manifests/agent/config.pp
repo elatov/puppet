@@ -184,6 +184,7 @@ class zabbix::agent::config () {
 	    ensure_packages("sysstat", {ensure => "present"})
 	    
 	    cron {"zabbix-disk-perf":
+		  environment => "HOME=/tmp",
 	      command => "/usr/bin/iostat -x 1 2 > /tmp/iostat.txt",
 	      user => "zabbix",
 	      require => Package["sysstat"],
