@@ -6,7 +6,7 @@ class zabbix::agent::install () {
 	      yumrepo { 'zabbix':
 	        name      => "zabbix",
 	        descr     => "Zabbix Official Repository - \$basearch",
-          baseurl   => "http://repo.zabbix.com/zabbix/${zabbix::agent::settings['version']}/rhel/7/\$basearch/",
+          baseurl   => "http://repo.zabbix.com/zabbix/${zabbix::agent::version}/rhel/7/\$basearch/",
           enabled   => "1",
           gpgcheck  => "1",
           gpgkey    => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ZABBIX",
