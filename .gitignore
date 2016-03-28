@@ -168,3 +168,5 @@ extra_conf/.project
 drive/.project
 drive/files/
 !.gitignore
+.DS_Store
+.DS_Store?
