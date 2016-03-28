@@ -34,6 +34,13 @@ class zabbix::server::install () {
 	case $::operatingsystem {
 		/(?i:CentOS|fedora)/: { 
 #		  include zabbix::repo::centos
+      yumrepo { 'zabbix':
+          name      => "Zabbix Official Repository - \$basearch",
+          baseurl   => "http://repo.zabbix.com/zabbix/${zabbix::agent::settings['version']}/rhel/7/\$basearch/",
+          enabled   => "1",
+          gpgcheck  => "1",
+          gpgkey    => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ZABBIX",
+        } 
 		}
 		/(?i:Debian)/: { 
 			apt::source { 'zabbix':
