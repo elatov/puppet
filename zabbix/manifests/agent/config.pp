@@ -207,7 +207,7 @@ class zabbix::agent::config () {
   
   case $::operatingsystem {
     /(?i:CentOS|fedora)/: { 
-      $config_path = "/etc/${zabbix::agent::config_file}"
+      $config_path = "${zabbix::agent::config_dir}/${zabbix::agent::config_file}"
     }
     /(?i:Debian)/: { 
       $config_path = "${zabbix::agent::config_dir}/${zabbix::agent::config_file}"
