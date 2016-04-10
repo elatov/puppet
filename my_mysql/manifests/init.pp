@@ -9,7 +9,7 @@
 #
 class my_mysql (
   ## Packages
-#  $package_name	= $my_mysql::params::my_mysql_package_name,
+  $package_name	= $my_mysql::params::my_mysql_package_name,
   
   ## Services
 #  $service_name	= $my_mysql::params::my_mysql_service_name,

@@ -11,6 +11,7 @@ class my_mysql::params {
 		'Debian': {
 			$my_mysql_config_dir			= '/etc/mysql/conf.d'
 			$my_mysql_config_file     = 'mysql_innodb_data.cnf'
+			$my_mysql_package_name    = 'mariadb-server'
 		}
 		'RedHat': {
 			$my_mysql_package_name		= 'my_mysql'
