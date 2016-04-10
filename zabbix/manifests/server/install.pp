@@ -21,6 +21,7 @@ class zabbix::server::install () {
       path    => ['/bin','usr/bin'],
     }
   }
+  $mysql_class = [ Class [ "{ 'mysql::server': package_name  => 'mariadb-server',}" ] ]
   
 	mysql::db{ "${zabbix::server::server_zabbix_default_settings['dBName']}":
 		user      => "${zabbix::server::server_zabbix_default_settings['dBUser']}",
@@ -28,7 +29,7 @@ class zabbix::server::install () {
 		host      => "${zabbix::server::server_zabbix_default_settings['dBHost']}",
 		grant     => "ALL",
 		sql       => '/usr/share/zabbix-server-mysql/all.sql',
-		require => [Class['mysql::server'],Exec["${module_name}-concat-sql-files"]]
+		require => [$mysql_class,Exec["${module_name}-concat-sql-files"]]
 	}
     
 	case $::operatingsystem {
