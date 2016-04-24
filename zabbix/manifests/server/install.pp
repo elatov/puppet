@@ -21,14 +21,18 @@ class zabbix::server::install () {
       path    => ['/bin','usr/bin'],
     }
   }
-  
+  file { "${zabbix::server::root_home}/.my.cnf":
+      content => template('zabbix/my.cnf.pass.erb'),
+      owner   => 'root',
+      mode    => '0600',
+    }
 	mysql::db{ "${zabbix::server::server_zabbix_default_settings['dBName']}":
 		user      => "${zabbix::server::server_zabbix_default_settings['dBUser']}",
 		password  => "${zabbix::server::server_zabbix_default_settings['dBPassword']}",
 		host      => "${zabbix::server::server_zabbix_default_settings['dBHost']}",
 		grant     => "ALL",
 		sql       => '/usr/share/zabbix-server-mysql/all.sql',
-		require => [Exec["${module_name}-concat-sql-files"]]
+		require => [Class['mysql::client'],Exec["${module_name}-concat-sql-files"]]
 	}
     
 	case $::operatingsystem {

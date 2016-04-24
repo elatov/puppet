@@ -9,6 +9,7 @@ class zabbix::params {
 			$server_zabbix_service_name           = 'zabbix-server'
 			$server_zabbix_enable_partition_mysql = true
 			$server_zabbix_enable_web             = true
+			$server_zabbix_root_home              = '/root'
 			$server_zabbix_default_settings       = { 'logFile'                => '/var/log/zabbix-server/zabbix_server.log',
 			                                          'logFileSize'            => '1',
 			                                          'pidFile'                => '/var/run/zabbix/zabbix_server.pid',
@@ -19,6 +20,8 @@ class zabbix::params {
 			                                          'startVMwareCollectors'  => '2',
 			                                          'listenIp'               => $::ipaddress,
 			                                          'version'                => '3.0',
+			                                          'mysql_root_user'        => 'root',
+                                                'mysql_root_pw'          => 'password',
 			                                        }
 			### Client/Agent
 			$agent_zabbix_config_dir             = '/etc/zabbix'

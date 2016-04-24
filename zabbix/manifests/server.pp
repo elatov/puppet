@@ -8,6 +8,7 @@ class zabbix::server (
   
   ## Dirs
   $config_dir             = $zabbix::params::server_zabbix_config_dir,
+  $root_home              = $zabbix::params::server_zabbix_root_home,
   
   ## Conf Files
   $config_file            = $zabbix::params::server_zabbix_config_file,
