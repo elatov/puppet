@@ -49,6 +49,9 @@ class mysql::params {
             $provider = 'mysql'
           }
         }
+        'FreeBSD':{
+          $provider = 'mariadb'
+        }
         default: {
           $provider = 'mysql'
         }
