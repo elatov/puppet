@@ -17,6 +17,7 @@ class zabbix::params {
 			                                          'dBName'                 => 'zabbix',
 			                                          'dBUser'                 => 'zabbix',
 			                                          'dBPassword'             => 'password',
+			                                          'dBPort'                 => '3306',
 			                                          'startVMwareCollectors'  => '2',
 			                                          'listenIp'               => $::ipaddress,
 			                                          'version'                => '3.0',

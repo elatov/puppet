@@ -116,7 +116,7 @@ PidFile=/var/run/zabbix/zabbix_server.pid
 # Default:
 # DBSocket=/tmp/mysql.sock
 
-DBSocket=/var/run/mysqld/mysqld.sock
+# DBSocket=/var/run/mysqld/mysqld.sock
 
 ### Option: DBPort
 #	Database port when not using local socket. Ignored for SQLite.
@@ -125,7 +125,7 @@ DBSocket=/var/run/mysqld/mysqld.sock
 # Range: 1024-65535
 # Default (for MySQL):
 # DBPort=3306
-
+<% if scope['zabbix::server::settings']['dBPort'] %>DBPort=<%= scope['zabbix::server::settings']['dBPort'] %><% end %>
 ############ ADVANCED PARAMETERS ################
 
 ### Option: StartPollers
