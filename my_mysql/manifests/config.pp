@@ -21,9 +21,9 @@ class my_mysql::config {
 			}
 		}
 		'FreeBSD': {
-			file { $my_mysql::config_dir:
-			 ensure  => 'directory',
-			}
+			#file { $my_mysql::config_dir:
+			# ensure  => 'directory',
+			#}
 			
 			file { $my_mysql::config_file:
 				ensure  => 'present',
