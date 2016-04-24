@@ -26,10 +26,10 @@ class zabbix::server::install () {
       owner   => 'root',
       mode    => '0600',
     }
-	mysql::db{ "${zabbix::server::server_zabbix_default_settings['dBName']}":
-		user      => "${zabbix::server::server_zabbix_default_settings['dBUser']}",
-		password  => "${zabbix::server::server_zabbix_default_settings['dBPassword']}",
-		host      => "${zabbix::server::server_zabbix_default_settings['dBHost']}",
+	mysql::db{ "${zabbix::server::settings['dBName']}":
+		user      => "${zabbix::server::settings['dBUser']}",
+		password  => "${zabbix::server::settings['dBPassword']}",
+		host      => "${zabbix::server::settings['dBHost']}",
 		grant     => "ALL",
 		sql       => '/usr/share/zabbix-server-mysql/all.sql',
 		require => [Exec["${module_name}-concat-sql-files"]]
