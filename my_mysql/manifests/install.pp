@@ -8,6 +8,7 @@ class my_mysql::install {
 		remove_default_accounts => true,
 		package_name            => $my_mysql::package_name,
 		override_options        => $my_mysql::settings['default_override'],
+		includedir              => $my_mysql::config_dir,
 	}
 	class { '::mysql::client':
     package_name            => 'mariadb100-client',
