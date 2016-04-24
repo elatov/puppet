@@ -5,6 +5,8 @@ global $DB;
 $DB['TYPE']     = 'MYSQL';
 $DB['SERVER']   = '<%= scope['zabbix::server::settings']['dBHost'] %>';
 $DB['PORT']     = '<%= scope['zabbix::server::settings']['dBPort'] %>';
+//$DB['SERVER']   = 'localhost';
+//$DB['PORT']     = '0';
 $DB['DATABASE'] = '<%= scope['zabbix::server::settings']['dBName'] %>';
 $DB['USER']     = '<%= scope['zabbix::server::settings']['dBUser'] %>';
 $DB['PASSWORD'] = '<%= scope['zabbix::server::settings']['dBPassword'] %>';
