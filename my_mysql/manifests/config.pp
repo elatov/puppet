@@ -4,9 +4,9 @@
 #
 class my_mysql::config {
   
-#  file { $my_mysql::config_dir:
-#    ensure  => 'directory',
-#  }
+  file { $my_mysql::config_dir:
+    ensure  => 'directory',
+  }
   
   file { $my_mysql::config_file:
     ensure  => 'present',
