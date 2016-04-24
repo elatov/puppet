@@ -16,11 +16,11 @@ class zabbix::server::config () {
       require => Package['anacron'],
     }
     
-    file {'/etc/mysql/conf.d/zab.cnf':
-      ensure  => 'present',
-      content => "[mysqld]\nopen_files_limit = 15000\n",
+#    file {'/etc/mysql/conf.d/zab.cnf':
+#      ensure  => 'present',
+#      content => "[mysqld]\nopen_files_limit = 15000\n",
 #      notify  => Service ['mysqld']
-    }
+#    }
    }
    
    if ($zabbix::server::enable_web){
