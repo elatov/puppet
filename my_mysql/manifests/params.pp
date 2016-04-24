@@ -29,6 +29,11 @@ class my_mysql::params {
 				$my_mysql_service_file	= 'my_mysql.init'
 			}
 		}
+		'FreeBSD': {
+      $my_mysql_config_dir      = '/usr/local/etc/mysql/conf.d'
+      $my_mysql_config_file     = 'mysql_innodb_data.cnf'
+      $my_mysql_package_name    = 'mariadb100-server'
+    }
 		default: {
 			fail("${::operatingsystem} not supported")
 		}
