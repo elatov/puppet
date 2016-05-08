@@ -23,16 +23,18 @@ class transmission::server::config {
   }
 
    logrotate::rule { $transmission::server::service_name:
-            path         => "${transmission::server::log_dir}/${transmission::server::log_file}",
-            rotate       => '5',
-            rotate_every => 'week',
-            ifempty => false,
-            compress => true,
-            missingok => true,
-			create => true,
-			create_mode => '0644',
-			create_owner => $transmission::server::settings['user'],
-			create_group => $transmission::server::settings['user'],
+		path          => "${transmission::server::log_dir}/${transmission::server::log_file}",
+		rotate        => '5',
+		rotate_every  => 'week',
+		ifempty       => false,
+		compress      => true,
+		missingok     => true,
+		create        => true,
+		create_mode   => '0644',
+		create_owner  => $transmission::server::settings['user'],
+		create_group  => $transmission::server::settings['user'],
+		delaycompress => true,
+		copytruncate  => true,
   }
   
   if $transmission::server::service_file =~ /(?i:service)/ {
