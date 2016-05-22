@@ -19,7 +19,7 @@ class ossec::client::service{
           enable     => true,
           hasstatus  => true,
           hasrestart => true,
-          provider => init,
+#          provider => init,
         }
       } 
   }else {
