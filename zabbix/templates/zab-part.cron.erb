@@ -1,2 +1,31 @@
-#!/bin/sh
-/usr/bin/mysql -h <%= scope['zabbix::server::settings']['dBHost'] %> -u <%= scope['zabbix::server::settings']['dBUser'] %> -p<%= scope['zabbix::server::settings']['dBPassword'] %> <%= scope['zabbix::server::settings']['dBName'] %> -e "CALL partition_maintenance_all('zabbix');"
+#!/bin/bash
+# global variables
+CUR_DATE=$(/bin/date +%Z)
+WEEK_DATE=$(/bin/date -d "+7 days" +%Z)
+TWO_WEEK_DATE=$(/bin/date -d "+14 days" +%Z)
+
+function is_dst_next_date(){
+	NEXT_DATE=$1
+	#echo $CUR_DATE
+	#echo $NEXT_DATE
+	if [ "$CUR_DATE" != "$NEXT_DATE" ]; then
+		return 0
+	else
+		return 1
+	fi
+}
+
+function clean_up_partitions(){
+	/usr/bin/mysql -h <%= scope['zabbix::server::settings']['dBHost'] %> -u <%= scope['zabbix::server::settings']['dBUser'] %> -p<%= scope['zabbix::server::settings']['dBPassword'] %> <%= scope['zabbix::server::settings']['dBName'] %> -e "CALL partition_maintenance_all('zabbix');"
+}
+
+if is_dst_next_date $TWO_WEEK_DATE ; then
+	echo "Day Savings is changing next 2 weeks"
+	echo "Not running partition clean up"
+elif is_dst_next_date $WEEK_DATE ; then
+    echo "Day Savings is changing next week"
+    echo "Not running partition clean up"
+else
+	echo "Day Savings is not changing in next couple of weeks";
+	clean_up_partitions
+fi
