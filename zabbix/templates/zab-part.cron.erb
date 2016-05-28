@@ -1,31 +1,18 @@
 #!/bin/bash
 # global variables
-CUR_DATE=$(/bin/date +%Z)
-WEEK_DATE=$(/bin/date -d "+7 days" +%Z)
-TWO_WEEK_DATE=$(/bin/date -d "+14 days" +%Z)
-
-function is_dst_next_date(){
-	NEXT_DATE=$1
-	#echo $CUR_DATE
-	#echo $NEXT_DATE
-	if [ "$CUR_DATE" != "$NEXT_DATE" ]; then
-		return 0
-	else
-		return 1
-	fi
-}
+CUR_DATE=$(/bin/date +%s)
+NEXT_DST_DATE=$(/bin/date +%s -d $(/usr/bin/timedatectl status | /bin/grep Next -A 2 | /usr/bin/tail -1 | /usr/bin/awk '{print $2}'))
+let DAYS_BETW_DATES=($NEXT_DST_DATE-$CUR_DATE)/86400
 
 function clean_up_partitions(){
 	/usr/bin/mysql -h <%= scope['zabbix::server::settings']['dBHost'] %> -u <%= scope['zabbix::server::settings']['dBUser'] %> -p<%= scope['zabbix::server::settings']['dBPassword'] %> <%= scope['zabbix::server::settings']['dBName'] %> -e "CALL partition_maintenance_all('zabbix');"
 }
 
-if is_dst_next_date $TWO_WEEK_DATE ; then
-	echo "Day Savings is changing next 2 weeks"
-	echo "Not running partition clean up"
-elif is_dst_next_date $WEEK_DATE ; then
-	echo "Day Savings is changing next week"
- 	echo "Not running partition clean up"
+if [ $DAYS_BETW_DATES -lt 14 ]; then
+    echo "Day Savings is changing in next couple weeks"
+    echo "Not running partition clean up"
 else
-	echo "Day Savings is not changing in next couple of weeks";
-	clean_up_partitions
+    echo "Day Savings is not changing in next couple of weeks";
+    echo "Running partition clean up"
+    clean_up_partitions
 fi
