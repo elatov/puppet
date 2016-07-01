@@ -1,1 +1,1 @@
-SUBSONIC_ARGS="--host=<%= @settings['conf']['host'] %> --max-memory=<%= @settings['conf']['max_memory'] %>"
+SUBSONIC_ARGS="--host=<%= scope['subsonic::settings']['conf']['host'] %> --max-memory=<%= scope['subsonic::settings']['conf']['max_memory'] %>"
