@@ -3,7 +3,7 @@ Description=Subsonic music server
 After=network.target
 
 [Service]
-EnvironmentFile=<%= @config_dir %>/subsonic
+EnvironmentFile=<%= scope['subsonic::config_dir'] %>/subsonic
 User=<%= scope['subsonic::settings']['conf']['user'] %>
 WorkingDirectory=/usr/share/subsonic
 SyslogIdentifier=subsonic
