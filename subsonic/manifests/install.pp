@@ -23,7 +23,7 @@ class subsonic::install {
       package { 'subsonic':
         provider => 'rpm',
         source   => "/usr/local/apps/${subsonic::package_name}",
-        require  => [File ["get-${subsonic::package_name}"],Package[$subsonic::settings['pkgs_pre']]],
+        require  => [File["get-${subsonic::package_name}"],Package[$subsonic::settings['pkgs_pre']]],
         install_options => '--noscripts',
       }->
       # change ownership of /var/subsonic dir
