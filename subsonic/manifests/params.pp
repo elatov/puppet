@@ -26,7 +26,7 @@ class subsonic::params {
                                         'pgsql_pass'    => 'subsonic',
                                       }
       
-      if $::operatingsystemmajrelease >= 7 {
+      if (versioncmp($::operatingsystemmajrelease, '7') >= 0) {
         $subsonic_config_file       = 'subsonic-sysconf-systemd'
         $subsonic_service_dir       = '/usr/lib/systemd/system'
         $subsonic_service_file      = 'subsonic.service'
