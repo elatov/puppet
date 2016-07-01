@@ -70,9 +70,9 @@ class subsonic::install {
 		  provider  => 'shell',
 		  cwd       => "/usr/local/apps",
 		  command   => "unzip -jo ${subsonic::musiccabinet_zip} subsonic-installer-standalone/subsonic* -d ${subsonic::install_dir}",
-		  require   => [File [$subsonic::musiccabinet_zip],
+		  require   => [File[$subsonic::musiccabinet_zip],
 		                Package[$subsonic::settings['pkgs_pre']],
-		                Package ['subsonic']],
+		                Package['subsonic']],
 		  creates   => "${subsonic::install_dir}/subsonic.bat",
 		}
     
