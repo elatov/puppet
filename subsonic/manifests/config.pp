@@ -25,6 +25,6 @@ class subsonic::config {
     ensure  => 'present',
     path    => "${subsonic::config_dir}/subsonic",
     content => template("subsonic/${subsonic::config_file}.erb"),
-    require => File [$subsonic::config_dir],
+    require => File[$subsonic::config_dir],
   }
 }

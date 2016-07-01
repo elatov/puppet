@@ -16,7 +16,7 @@ class subsonic::install {
         ensure => 'present',
         path   => "/usr/local/apps/${subsonic::package_name}",
         source => "puppet:///modules/subsonic/${subsonic::package_name}",
-        require => File ['/usr/local/apps'],
+        require => File['/usr/local/apps'],
       }
       
       # now install the rpm, also inhibiting the postinstall run scripts, since it automatically starts the service
@@ -62,7 +62,7 @@ class subsonic::install {
 		  ensure => 'present',
 		  path   => "/usr/local/apps/${subsonic::musiccabinet_zip}",
 		  source => "puppet:///modules/subsonic/${subsonic::musiccabinet_zip}",
-		  require => File ['/usr/local/apps'],
+		  require => File['/usr/local/apps'],
 		}
 		
 		# now extract the zip
