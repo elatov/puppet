@@ -56,7 +56,7 @@ class subsonic::install {
     }
   }
   
-	if ($subsonic::settings['enable_muscab'] != undef){
+	if ($subsonic::settings['enable_muscab'] == true){
     # get the zip from puppet master
 		file { $subsonic::musiccabinet_zip:
 		  ensure => 'present',
@@ -82,16 +82,16 @@ class subsonic::install {
       require => Exec["${module_name}-install-musiccabinet"],
     }
 		
-		class { 'postgresql::server':
-		  ip_mask_allow_all_users    => '0.0.0.0/0',
-			listen_addresses           => '127.0.0.1',
-			ipv4acls                   => ['host all all 127.0.0.1/32 md5','local all all md5'],
-			postgres_password          => $subsonic::settings['pgsql_pass'],
-			
-		}
-		
-		class { 'postgresql::server::contrib':
-		  package_name       => 'postgresql-contrib', 
-    }
+#		class { 'postgresql::server':
+#		  ip_mask_allow_all_users    => '0.0.0.0/0',
+#			listen_addresses           => '127.0.0.1',
+#			ipv4acls                   => ['host all all 127.0.0.1/32 md5','local all all md5'],
+#			postgres_password          => $subsonic::settings['pgsql_pass'],
+#			
+#		}
+#		
+#		class { 'postgresql::server::contrib':
+#		  package_name       => 'postgresql-contrib', 
+#    }
 	}
 }
