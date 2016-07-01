@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 EnvironmentFile=<%= @config_dir %>/subsonic
-User=<%= scope ['subsonic::settings']['conf']['user'] %>
+User=<%= scope['subsonic::settings']['conf']['user'] %>
 WorkingDirectory=/usr/share/subsonic
 SyslogIdentifier=subsonic
 ExecStart=/usr/bin/subsonic $SUBSONIC_ARGS
