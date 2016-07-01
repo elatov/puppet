@@ -9,7 +9,6 @@
 #
 class subsonic (
   ## Packages
-  $package_name       = $subsonic::params::subsonic_package_name,
   
   ## Services
   $service_name       = $subsonic::params::subsonic_service_name,
@@ -35,14 +34,21 @@ class subsonic (
 
   # validate parameters here
   validate_hash($default_settings)
-  validate_string($package_name)
   
   if !($override_settings == undef){
     validate_hash($override_settings)
   }
   # Merge settings with override-hash even if it's empty
   $settings = deep_merge($default_settings, $override_settings)
+  
+  if !($settings['conf']['rpm'] == undef) {
+    $package_name       = $settings['conf']['rpm']
+  } else {
+    $package_name       = $subsonic::params::subsonic_package_name
+  }
 
+  validate_string($package_name)
+  
   class { 'subsonic::install': } ->
   class { 'subsonic::config': } ~>
   class { 'subsonic::service': } ->
