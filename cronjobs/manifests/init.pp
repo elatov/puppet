@@ -48,11 +48,11 @@ class cronjobs {
     'Solaris': {
       ensure_packages ("ntp", {ensure => "present"})
       
-      cron {"ntp":
-        command   => '/usr/sbin/ntpdate -s 0.north-america.pool.ntp.org',
-        user      => 'root',
-        minute    => '35',
-      }
+#      cron {"ntp":
+#        command   => '/usr/sbin/ntpdate -s 0.north-america.pool.ntp.org',
+#        user      => 'root',
+#        minute    => '35',
+#      }
     }
     default: {
       fail("${::operatingsystem} not supported")
