@@ -38,11 +38,11 @@ class cronjobs {
         minute  => '00',
         hour    => '03'
       }
-      cron {"ntp":
-        command   => '/usr/sbin/ntpdate -4 -s 0.north-america.pool.ntp.org',
-        user      => 'root',
-        minute    => '02',
-      }
+#      cron {"ntp":
+#        command   => '/usr/sbin/ntpdate -4 -s 0.north-america.pool.ntp.org',
+#        user      => 'root',
+#        minute    => '02',
+#      }
 
     }
     'Solaris': {
