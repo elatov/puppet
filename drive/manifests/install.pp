@@ -26,12 +26,14 @@ class drive::install  {
 		source => "puppet:///modules/drive/${drive::package_name}",
 #    source => "/tmp/vagrant-puppet-3/modules-0/drive/files/${drive::package_name}",
 		require => File['/usr/local/apps'], 
-	}->
+	}
 	# extract the TAR
 	exec {"install-$drive::package_name":
     command     => "tar xjf /usr/local/apps/${drive::package_name} -C ${drive::settings['home_dir']}",
     provider    => "shell",
-    creates     => "${drive::settings['home_dir']}/drive/bin/drive",
+#    creates     => "${drive::settings['home_dir']}/drive/bin/drive",
+    subscribe   => File["get-${drive::package_name}"],
+    refreshonly => true,
     require     => File[$drive::settings['home_dir']],
 	}
 	
