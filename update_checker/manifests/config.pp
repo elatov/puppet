@@ -57,7 +57,7 @@ class update_checker::config {
 		file {"$update_checker::cron_dir/600.pkgng-check":
 			ensure  => "link",
 			target  => "${update_checker_target_dir}/${update_checker::update_script}",
-			require => Class['grive']
+			require => Class['drive']
 		}
 	} elsif ( $::osfamily =~ /(?i:RedHat|Debian)/ ) {
 		file {"$update_checker::cron_dir/$update_checker::update_script":
