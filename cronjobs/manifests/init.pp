@@ -17,7 +17,8 @@ class cronjobs {
      ensure_packages ("ntpdate", {ensure => "present"})
      
       cron {"ntp":
-        command     => '/usr/sbin/ntpdate -s ntp.ubuntu.com',
+#        command     => '/usr/sbin/ntpdate -s ntp.ubuntu.com',
+        command     => '/usr/sbin/ntpdate -s puppet',
         user        => 'root',
         minute      => '01',
       }
@@ -26,7 +27,8 @@ class cronjobs {
       ensure_packages ("ntpdate", {ensure => "present"})
       
 			cron {"ntp":
-				command   => '/usr/sbin/ntpdate -s 0.north-america.pool.ntp.org',
+#				command   => '/usr/sbin/ntpdate -s 0.north-america.pool.ntp.org',
+				command   => '/usr/sbin/ntpdate -s puppet',
 				user      => 'root',
 				minute    => '05',
 			}
