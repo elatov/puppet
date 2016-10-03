@@ -43,7 +43,7 @@ class zabbix::server::install () {
           baseurl   => "http://repo.zabbix.com/zabbix/${zabbix::agent::settings['version']}/rhel/7/\$basearch/",
           enabled   => "1",
           gpgcheck  => "1",
-          gpgkey    => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ZABBIX",
+#          gpgkey    => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ZABBIX",
         } 
 		}
 		/(?i:Debian)/: { 
