@@ -21,7 +21,7 @@ class zabbix::agent (
   ## settings
   $override_settings      = undef,
   $default_settings       = $zabbix::params::agent_zabbix_default_settings,
-  $version                = $zabbix::params::agent_zabbix_version,
+#  $version                = $zabbix::params::agent_zabbix_version,
 ) inherits zabbix::params {
 
   # validate parameters here
