@@ -221,6 +221,9 @@ class zabbix::agent::config () {
     /(?i:Debian)/: { 
       $config_path = "${zabbix::agent::config_dir}/${zabbix::agent::config_file}"
     }
+    /(?i:FreeBSD)/:{
+      $config_path = "${zabbix::agent::freebsd_config_dir}/${zabbix::agent::config_file}"
+    }
     default: {
       $config_path = "${zabbix::agent::config_dir}/${zabbix::agent::config_file}"
     }

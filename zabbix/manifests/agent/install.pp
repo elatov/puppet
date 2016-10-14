@@ -32,30 +32,37 @@ class zabbix::agent::install () {
 	    }
 	  }
   }
-  if ($::operatingsystem == 'OmniOS'){
-    ensure_resource(file,'/usr/local',{ensure => 'directory'})
-    
-    file { [$zabbix::agent::home_dir]:
-      ensure  => 'directory',
-      require => File['/usr/local'],
+  case $::operatingsystem {
+    /(?i:OmniOS)/: {
+	    ensure_resource(file,'/usr/local',{ensure => 'directory'})
+	    
+	    file { [$zabbix::agent::home_dir]:
+	      ensure  => 'directory',
+	      require => File['/usr/local'],
+	    }
+	    
+	    ensure_resource(file,'/usr/local/apps',{ensure => 'directory'})
+	
+	    file { $zabbix::agent::package_name:
+	      ensure => 'present',
+	      path   => "/usr/local/apps/${zabbix::agent::package_name}",
+	      source => "puppet:///modules/zabbix/${zabbix::agent::package_name}",
+	    }
+	    
+	    exec { "${module_name}-extract-zabbix":
+	      path    => ['/usr/bin','/usr/sbin'],
+	      command => "tar xvf /usr/local/apps/${zabbix::agent::package_name} -C ${zabbix::agent::home_dir}",
+	      creates => "${zabbix::agent::home_dir}/bin",
+	      require => [File[$zabbix::agent::home_dir],File[$zabbix::agent::package_name]],
+	    }
+	    
     }
-    
-    ensure_resource(file,'/usr/local/apps',{ensure => 'directory'})
-
-    file { $zabbix::agent::package_name:
-      ensure => 'present',
-      path   => "/usr/local/apps/${zabbix::agent::package_name}",
-      source => "puppet:///modules/zabbix/${zabbix::agent::package_name}",
-    }
-    
-    exec { "${module_name}-extract-zabbix":
-      path    => ['/usr/bin','/usr/sbin'],
-      command => "tar xvf /usr/local/apps/${zabbix::agent::package_name} -C ${zabbix::agent::home_dir}",
-      creates => "${zabbix::agent::home_dir}/bin",
-      require => [File[$zabbix::agent::home_dir],File[$zabbix::agent::package_name]],
-    }
-  }else{
-    ensure_packages($zabbix::agent::package_name,{ ensure  => 'present',})
+	  /(?i:FreeBSD)/:{
+	    ensure_packages($zabbix::agent::freebsd_package_name,{ ensure  => 'present',})
+	  }
+	  default: {
+	    ensure_packages($zabbix::agent::package_name,{ ensure  => 'present',})
+	  }
   }  
   
   if $::operatingsystem =~ /(?i:CentOS|fedora)/ {
