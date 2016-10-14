@@ -56,7 +56,7 @@ class zabbix::params {
 			$agent_zabbix_config_file            = 'zabbix_agentd.conf'
 			$agent_zabbix_package_name           = 'zabbix3-agent'
 			$agent_zabbix_service_name           = 'zabbix_agentd'
-			$agent_zabbix_version                = '3.0'
+#			$agent_zabbix_version                = '3.0'
 			$agent_zabbix_default_settings       = { 'logFile'                => '/var/log/zabbix/zabbix_agentd.log',
 			                                         'logFileSize'            => '1',
 			                                         'pidFile'                => '/var/run/zabbix/zabbix_agentd.pid',
@@ -66,6 +66,7 @@ class zabbix::params {
 			                                         'listenIp'               => $::ipaddress,
 			                                         'smart'                  => false,
 			                                         'disk_perf'              => false,
+			                                         'version'                => '3',
 			                                       }
 				
 		}
