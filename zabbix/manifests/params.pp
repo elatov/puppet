@@ -67,6 +67,7 @@ class zabbix::params {
 			                                       }
       $agent_zabbix_config_dir             = "/usr/local/etc/zabbix${agent_zabbix_default_settings['version']}"
       $agent_zabbix_custom_conf_dir        = "${agent_zabbix_config_dir}/zabbix_agentd.conf.d"
+      $agent_zabbix_custom_scripts_dir     = "${agent_zabbix_config_dir}/custom-scripts.d"
       $agent_zabbix_package_name           = "zabbix${agent_zabbix_default_settings['version']}-agent"
 				
 		}

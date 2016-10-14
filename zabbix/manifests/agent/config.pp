@@ -2,15 +2,30 @@ class zabbix::agent::config () {
   
   ensure_resource (file,$zabbix::agent::config_dir,{ensure => 'directory'})
   
-	file { $zabbix::agent::custom_scripts_dir:
-		ensure  => directory,
-		require => File[$zabbix::agent::config_dir],
-	}
-
-	file { $zabbix::agent::custom_conf_dir:
-		ensure => directory,
-		require => File[$zabbix::agent::config_dir],
-	}
+  case $::operatingsystem {
+    /(?i:FreeBSD)/:{
+      file { $zabbix::agent::freebsd_custom_scripts_dir:
+        ensure  => directory,
+        require => File[$zabbix::agent::freebsd_config_dir],
+      }
+      
+      file { $zabbix::agent::freebsd_custom_conf_dir:
+        ensure => directory,
+        require => File[$zabbix::agent::freebsd_config_dir],
+      }
+    }
+    default: {
+			file { $zabbix::agent::custom_scripts_dir:
+				ensure  => directory,
+				require => File[$zabbix::agent::config_dir],
+			}
+			
+			file { $zabbix::agent::custom_conf_dir:
+				ensure => directory,
+				require => File[$zabbix::agent::config_dir],
+			}
+    }
+  }
   
   if ($::osfamily == 'FreeBSD'){
     file {'/var/log/zabbix':

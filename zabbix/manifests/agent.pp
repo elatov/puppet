@@ -36,8 +36,10 @@ class zabbix::agent (
   $settings = deep_merge($default_settings, $override_settings)
 #  notify {"end hash looks like this ${settings}":}
   if ($::osfamily == 'FreeBSD'){
-    $freebsd_package_name = "zabbix${settings['version']}-agent"
-    $freebsd_config_dir = "/usr/local/etc/zabbix${settings['version']}"
+    $freebsd_package_name           = "zabbix${settings['version']}-agent"
+    $freebsd_config_dir             = "/usr/local/etc/zabbix${settings['version']}"
+    $freebsd_custom_conf_dir        = "${freebsd_config_dir}/zabbix_agentd.conf.d"
+    $freebsd_custom_scripts_dir     = "${freebsd_config_dir}/custom-scripts.d"
   }
   
   class { 'zabbix::agent::install': } ->
