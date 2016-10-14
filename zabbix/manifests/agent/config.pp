@@ -148,9 +148,9 @@ class zabbix::agent::config () {
   if($zabbix::agent::settings['disk_perf']){
     if ($::osfamily == 'FreeBSD'){
       # rules for user parameters
-      file { "${zabbix::agent::custom_conf_dir}/disk_perf.conf":
+      file { "${zabbix::agent::freebsd_custom_conf_dir}/disk_perf.conf":
         source  => 'puppet:///modules/zabbix/disk_perf-freebsd.conf',
-        require => File[$zabbix::agent::custom_conf_dir],
+        require => File[$zabbix::agent::freebsd_custom_conf_dir],
         mode => "644",
       }
       
