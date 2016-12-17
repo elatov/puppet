@@ -2,6 +2,7 @@
 !zabbix/
 !zabbix/**
 zabbix/.project
+zabbix/files/*.tar.gz
 !mysql/
 !mysql/**
 mysql/.project
