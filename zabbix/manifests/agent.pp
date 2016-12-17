@@ -42,6 +42,13 @@ class zabbix::agent (
     $freebsd_custom_scripts_dir     = "${freebsd_config_dir}/custom-scripts.d"
   }
   
+  if ($::osfamily == 'Solaris'){
+    $solaris_package_name           = "zabbix_agents_${settings['version']}.0.solaris10.amd64.tar.gz"
+#    $freebsd_config_dir             = "/usr/local/etc/zabbix${settings['version']}"
+#    $freebsd_custom_conf_dir        = "${freebsd_config_dir}/zabbix_agentd.conf.d"
+#    $freebsd_custom_scripts_dir     = "${freebsd_config_dir}/custom-scripts.d"
+  }
+  
   class { 'zabbix::agent::install': } ->
   class { 'zabbix::agent::config': } ~>
   class { 'zabbix::agent::service': } ->

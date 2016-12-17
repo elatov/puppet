@@ -43,17 +43,17 @@ class zabbix::agent::install () {
 	    
 	    ensure_resource(file,'/usr/local/apps',{ensure => 'directory'})
 	
-	    file { $zabbix::agent::package_name:
+	    file { $zabbix::agent::solaris_package_name:
 	      ensure => 'present',
-	      path   => "/usr/local/apps/${zabbix::agent::package_name}",
-	      source => "puppet:///modules/zabbix/${zabbix::agent::package_name}",
+	      path   => "/usr/local/apps/${zabbix::agent::solaris_package_name}",
+	      source => "puppet:///modules/zabbix/${zabbix::agent::solaris_package_name}",
 	    }
 	    
 	    exec { "${module_name}-extract-zabbix":
 	      path    => ['/usr/bin','/usr/sbin'],
-	      command => "tar xvf /usr/local/apps/${zabbix::agent::package_name} -C ${zabbix::agent::home_dir}",
+	      command => "tar xvf /usr/local/apps/${zabbix::agent::solaris_package_name} -C ${zabbix::agent::home_dir}",
 	      creates => "${zabbix::agent::home_dir}/bin",
-	      require => [File[$zabbix::agent::home_dir],File[$zabbix::agent::package_name]],
+	      require => [File[$zabbix::agent::home_dir],File[$zabbix::agent::solaris_package_name]],
 	    }
 	    
     }

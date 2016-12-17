@@ -99,8 +99,6 @@ class zabbix::params {
 		}
 		'Solaris': {
       ### Client/Agent
-      ## Package
-      $agent_zabbix_package_name           = 'zabbix_agents_3.0.0.solaris10.amd64.tar.gz'
       ## Service
       $agent_zabbix_service_name           = 'zabbix-agent'
       ## Dirs
@@ -117,7 +115,7 @@ class zabbix::params {
       $agent_zabbix_service_file           = 'zabbix-agent.smf'
       
       ## Settings
-      $agent_zabbix_version                = '3.0'
+#      $agent_zabbix_version                = '3.0'
       $agent_zabbix_default_settings       = { 'logFile'                => '/var/adm/zabbix/zabbix_agentd.log',
                                                'logFileSize'            => '1',
                                                'pidFile'                => '/var/run/zabbix_agentd.pid',
@@ -128,7 +126,10 @@ class zabbix::params {
                                                'smart'                  => false,
                                                'disk_perf'              => false,
                                                'allow_root'             => 1,
+                                               'version'                => '3.0'
                                              }
+      ## Package
+      $agent_zabbix_package_name           = "zabbix_agents_${agent_zabbix_default_settings['version']}.0.solaris10.amd64.tar.gz"
         
     }
 		default: {
