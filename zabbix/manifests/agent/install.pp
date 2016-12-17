@@ -54,6 +54,8 @@ class zabbix::agent::install () {
 	      command => "tar xvf /usr/local/apps/${zabbix::agent::solaris_package_name} -C ${zabbix::agent::home_dir}",
 	      creates => "${zabbix::agent::home_dir}/bin",
 	      require => [File[$zabbix::agent::home_dir],File[$zabbix::agent::solaris_package_name]],
+	      subscribe   => File["$zabbix::agent::solaris_package_name"],
+        refreshonly => true,
 	    }
 	    
     }
