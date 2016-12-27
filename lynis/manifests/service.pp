@@ -5,10 +5,10 @@
 #
 class lynis::service {
 
-  service { $::lynis::service_name:
-    ensure     => running,
-    enable     => true,
-    hasstatus  => true,
-    hasrestart => true,
-  }
+#  service { $::lynis::service_name:
+#    ensure     => running,
+#    enable     => true,
+#    hasstatus  => true,
+#    hasrestart => true,
+#  }
 }

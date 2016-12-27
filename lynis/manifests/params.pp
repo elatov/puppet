@@ -4,17 +4,23 @@
 # It sets variables according to platform.
 #
 class lynis::params {
+  $settings_all  =  { 'cron_enabled'  => true,
+                      'cron_email_to' => "root",
+                      'tests'         =>  { 'FIRE-4513' => true}
+                    }
   case $::osfamily {
     'Debian': {
       $package_name = 'lynis'
       $service_name = 'lynis'
     }
-    'RedHat', 'Amazon': {
+    'RedHat': {
+      $settings_os  = {'yum_repo_enabled' =>  true}
       $package_name = 'lynis'
       $service_name = 'lynis'
     }
     default: {
       fail("${::operatingsystem} not supported")
-    }
+    }  
   }
+  $default_settings = merge($settings_all,$settings_os)
 }
