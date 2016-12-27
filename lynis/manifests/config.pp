@@ -7,10 +7,11 @@ class lynis::config {
     ensure_packages('crontabs',{ensure => 'present'})
 
      file {'/etc/cron.weekly/lynis':
-      ensure  => present,
+      ensure  => 'present',
       content => template('lynis/lynis-cron.erb'),
       mode    => '0755',
       require => Package['crontabs'],
+      links   => 'follow',
     }
   }
 }
