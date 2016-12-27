@@ -34,6 +34,12 @@ class lynis::config {
 			    hasstatus  => true,
 			  }
       }
+      if ( $::lynis::settings['tests']['STRG-1840'] == true ){
+        file { "/etc/modprobe.d/usb.conf":
+          source  => 'puppet:///modules/lynis/modprobe-usb.conf',
+          mode    => '0644'
+        }
+      }
     }
     default: {
       fail("${::operatingsystem} not supported")
