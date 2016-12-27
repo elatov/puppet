@@ -171,6 +171,9 @@ drive/files
 !lynis/
 !lynis/**
 lynis/.project
+!arpwatch/
+!arpwatch/**
+arpwatch/.project
 !.gitignore
 .DS_Store
 .DS_Store?
