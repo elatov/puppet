@@ -6,7 +6,9 @@
 class lynis::params {
   $settings_all  =  { 'cron_enabled'  => true,
                       'cron_email_to' => "root",
-                      'tests'         =>  { 'AUTH-9328' => true}
+                      'tests'         =>  { 'AUTH-9328' => true,
+                                            'FILE-6310' =>  true
+                      }
                     }
   case $::osfamily {
     'Debian': {

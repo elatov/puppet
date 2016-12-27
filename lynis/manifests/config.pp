@@ -27,6 +27,13 @@ class lynis::config {
           mode    => '0644'
         }
       }
+      if ( $::lynis::settings['tests']['FILE-6310'] == true ){
+        service { 'tmp.mount':
+			    ensure     => running,
+			    enable     => true,
+			    hasstatus  => true,
+			  }
+      }
     }
     default: {
       fail("${::operatingsystem} not supported")
