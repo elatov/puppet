@@ -8,7 +8,7 @@ class lynis::config {
 
      file {'/etc/cron.weekly/lynis':
       ensure  => present,
-      content => template('lynis/lynis.cron.erb'),
+      content => template('lynis/lynis-cron.erb'),
       mode    => '0755',
       require => Package['anacron'],
     }
