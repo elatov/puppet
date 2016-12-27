@@ -40,6 +40,12 @@ class lynis::config {
           mode    => '0644'
         }
       }
+      if ( $::lynis::settings['tests']['STRG-1846'] == true ){
+        file { "/etc/modprobe.d/firewire.conf":
+          source  => 'puppet:///modules/lynis/modprobe-firewire.conf',
+          mode    => '0644'
+        }
+      }
     }
     default: {
       fail("${::operatingsystem} not supported")

@@ -8,7 +8,8 @@ class lynis::params {
                       'cron_email_to' => "root",
                       'tests'         =>  { 'AUTH-9328' =>  true,
                                             'FILE-6310' =>  true,
-                                            'STRG-1840' =>  true
+                                            'STRG-1840' =>  true,
+                                            'STRG-1846' =>  true
                       }
                     }
   case $::osfamily {
