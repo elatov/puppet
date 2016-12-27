@@ -4,18 +4,31 @@
 #
 class lynis::install {
   
-  if ( $::lynis::settings['yum_repo_enabled'] == true ){
-	  yumrepo  { lynis :
-	               baseurl   => "https://packages.cisofy.com/community/lynis/rpm/",
-	               descr     => "CISOfy Software - Lynis package",
-	               enabled   => 1,
-	               gpgcheck  => 1,
-	               gpgkey    => "https://packages.cisofy.com/keys/cisofy-software-rpms-public.key",
-	           }
-  }
+  case $::osfamily {
+    'Debian': {
+      $package_name = 'lynis'
+      $service_name = 'lynis'
+    }
+    'RedHat': {
+      if ( $::lynis::settings['yum_repo_enabled'] == true ){
+		    yumrepo  { lynis :
+		                 baseurl   => "https://packages.cisofy.com/community/lynis/rpm/",
+		                 descr     => "CISOfy Software - Lynis package",
+		                 enabled   => 1,
+		                 gpgcheck  => 1,
+		                 gpgkey    => "https://packages.cisofy.com/keys/cisofy-software-rpms-public.key",
+		             }
+      }
 
-  ensure_resource ('package',$::lynis::package_name,{ 'ensure'  => 'present',
-                                                      'require' => Yumrepo['lynis'] 
-                                                    }
-                  )
+			ensure_resource ('package',$::lynis::package_name,{ 'ensure'  => 'present',
+			                                                    'require' => Yumrepo['lynis'] 
+			                                                  }
+			                )
+    }
+    default: {
+      fail("${::operatingsystem} not supported")
+    }  
+  }
+  
+  
 }
