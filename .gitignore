@@ -167,7 +167,9 @@ extra_conf/.project
 !drive/
 !drive/**
 drive/.project
-drive/files/
+!lynis/
+!lynis/**
+lynis/.project
 !.gitignore
 .DS_Store
 .DS_Store?
