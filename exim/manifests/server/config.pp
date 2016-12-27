@@ -20,7 +20,7 @@ class exim::server::config {
     settings_hash   => $exim::server::settings['config'],
   }~>
   exec {exim-server-update-config:
-    path        => ['/sbin','/usr/sbin'],
+    path        => ['/sbin','/usr/sbin','/usr/bin'],
     command     => 'update-exim4.conf',
     refreshonly => true,
   }

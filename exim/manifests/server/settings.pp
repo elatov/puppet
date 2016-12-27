@@ -14,7 +14,7 @@ define exim::server::settings (
        incl    => "${config_file}",
        lens    => 'Shellvars.lns',
        context => "/files${config_file}",
-       changes => "set ${key} '${value}'",
+       changes => "set ${key} \"'${value}'\"",
        onlyif  => "match ${key} not_include ${value}",
      }
 }
