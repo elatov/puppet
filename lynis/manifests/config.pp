@@ -58,10 +58,10 @@ class lynis::config {
       
       if ( $::lynis::settings['tests']['SSH-7408'] == true ){
         $::lynis::settings['tests']['SSH-7408_enabled_tests'].each |$value, $key| {
-          notice("${value} = ${key}")
+          notify{"${value} = ${key}":}
         }
       }
-      notice ("$::osfamily")
+      notify {"$::osfamily":}
     }
 
     default: {
