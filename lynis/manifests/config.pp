@@ -65,9 +65,10 @@ class lynis::config {
 					    # track which key was used to logged in
 					    "set ${value} ${key}",
 					  ],
-#					  notify => Service["sshd"],
+					  notify => Service["sshd"],
 					}
-					notify {Service["sshd"]:}
+#					notify {Service["sshd"]:}
+#					notify => Service["sshd"]
         }
       }
 #      notify {"$::osfamily":}
