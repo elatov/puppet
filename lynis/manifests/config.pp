@@ -58,10 +58,18 @@ class lynis::config {
       
       if ( $::lynis::settings['tests']['SSH-7408'] == true ){
         $::lynis::settings['tests']['SSH-7408_enabled_tests'].each |$value, $key| {
-          notify{"${value} = ${key}":}
+          #notify{"${value} = ${key}":}
+          augeas { "sshd_config":
+					  context => "/files/etc/ssh/sshd_config",
+					  changes => [
+					    # track which key was used to logged in
+					    "set ${value} ${key}",
+					  ],
+					  notify => Service["sshd"],
+					}
         }
       }
-      notify {"$::osfamily":}
+#      notify {"$::osfamily":}
     }
 
     default: {
