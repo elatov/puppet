@@ -1,4 +1,4 @@
 # -u <username> : defines with what user id arpwatch should run
 # -e <email>    : the <email> where to send the reports
 # -s <from>     : the <from>-address
-OPTIONS="-u <%= scope['arpwatch::settings']['run_as'] %> -e <%= scope['lynis::settings']['email_to'] %> -s '<%= scope['lynis::settings']['email_from'] %>'"
+OPTIONS="-u <%= scope['arpwatch::settings']['conf']['run_as'] %> -e <%= scope['arpwatch::settings']['conf']['email_to'] %> -s '<%= scope['arpwatch::settings']['conf']['email_from'] %>'"
