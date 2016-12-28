@@ -61,7 +61,9 @@ class lynis::config {
           notice("${value} = ${key}")
         }
       }
+      notice ("$::osfamily")
     }
+
     default: {
       fail("${::operatingsystem} not supported")
     }  
