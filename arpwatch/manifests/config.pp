@@ -9,9 +9,9 @@ class arpwatch::config {
       $service_name = 'arpwatch'
     }
     'RedHat': {
-      file { '${arpwatch::config_file}':
+      file { "${arpwatch::config_file}":
           ensure  => 'present',
-          path    => '${arpwatch::config_dir}/${arpwatch::config_file}',
+          path    => "${arpwatch::config_dir}/${arpwatch::config_file}",
           content => template('arpwatch/arpwatch-sysconf.erb'),
           mode    => '0644',
         }
