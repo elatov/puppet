@@ -101,6 +101,9 @@ class lynis::config {
 #            notify => Service["sshd"],
 #          }
       }
+      if ( $::lynis::settings['tests']['ACCT-9622'] == true ){
+        class {'psacct': }
+      }
     }
 
     default: {

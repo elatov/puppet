@@ -28,6 +28,7 @@ class lynis::params {
                                                                           'UseDNS'
                                                                          ],
                                             'BANN-7126'                =>  true,
+                                            'ACCT-9622'                =>  true,
                       }
                     }
   case $::osfamily {
