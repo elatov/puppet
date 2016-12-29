@@ -15,8 +15,8 @@ class ossec::client::install {
 					location   => "http://ossec.alienvault.com/repos/apt/debian",
 					release    => 'jessie',
 					repos      => 'main',
-					key        => '9A1B1C65',
-					key_source => 'http://ossec.alienvault.com/repos/apt/conf/ossec-key.gpg.key',
+#					key        => '9A1B1C65',
+#					key_source => 'http://ossec.alienvault.com/repos/apt/conf/ossec-key.gpg.key',
 					include_src => false,
 					#        pin        => '510',
 				} 
@@ -25,8 +25,8 @@ class ossec::client::install {
 					location   => "http://ossec.alienvault.com/repos/apt/debian",
 					release    => 'wheezy',
 					repos      => 'main',
-					key        => '9A1B1C65',
-					key_source => 'http://ossec.alienvault.com/repos/apt/conf/ossec-key.gpg.key',
+#					key        => '9A1B1C65',
+#					key_source => 'http://ossec.alienvault.com/repos/apt/conf/ossec-key.gpg.key',
 					include_src => false,
 					#        pin        => '510',
 				}       

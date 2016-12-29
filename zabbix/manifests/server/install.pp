@@ -51,9 +51,9 @@ class zabbix::server::install () {
 				location   => "http://repo.zabbix.com/zabbix/${zabbix::server::settings['version']}/debian",
 				release    => 'jessie',
 				repos      => 'main',
-				key        => '79EA5ED4',
-				key_source => 'http://repo.zabbix.com/zabbix-official-repo.key',
-				pin        => '510',
+#				key        => '79EA5ED4',
+#				key_source => 'http://repo.zabbix.com/zabbix-official-repo.key',
+#				pin        => '510',
 			}
 		}
 		default: {
