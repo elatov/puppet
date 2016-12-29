@@ -9,7 +9,7 @@ class mysql::server::installdb {
     $datadir = $mysql::server::options['mysqld']['datadir']
     $basedir = $mysql::server::options['mysqld']['basedir']
     $config_file = $mysql::server::config_file
-#    $log_error = $mysql::server::options['mysqld']['log-error']
+    $log_error = $mysql::server::options['mysqld']['log-error']
     
     notify {"datadir is ${datadir} and log_error is ${log_error}":}
 
