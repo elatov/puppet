@@ -21,8 +21,6 @@ class mysql::server::installdb {
     
 #    $log_error = "/tmp"
     
-    notify {"datadir is ${datadir} and log_error is ${log_error}":}
-    
   if $options['mysqld']['log-error'] {
     file { $options['mysqld']['log-error']:
       ensure => present,
