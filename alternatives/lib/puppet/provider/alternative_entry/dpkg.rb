@@ -1,24 +1,28 @@
 Puppet::Type.type(:alternative_entry).provide(:dpkg) do
+  confine osfamily: 'Debian'
+  defaultfor operatingsystem: [:debian, :ubuntu]
 
-  confine :osfamily => 'Debian'
-  commands :update  => '/usr/sbin/update-alternatives'
-  
+  commands update: 'update-alternatives'
+
   mk_resource_methods
 
   def create
     update('--install',
-      @resource.value(:altlink),
-      @resource.value(:altname),
-      @resource.value(:name),
-      @resource.value(:priority)
-    )
+           @resource.value(:altlink),
+           @resource.value(:altname),
+           @resource.value(:name),
+           @resource.value(:priority))
   end
 
   def exists?
     # we cannot fetch @resource.value(:altname) if running 'puppet resource alternative_entry'
-    output = update('--list', @resource.value(:altname) || altname)
+    begin
+      output = update('--list', @resource.value(:altname) || altname)
+    rescue
+      return false
+    end
 
-    output.split(/\n/).map(&:strip).any? do |line|
+    output.split(%r{\n}).map(&:strip).any? do |line|
       line == @resource.value(:name)
     end
   end
@@ -33,7 +37,7 @@ Puppet::Type.type(:alternative_entry).provide(:dpkg) do
     entries = []
 
     output.each_line do |line|
-      altname = line.split(/\s+/).first
+      altname = line.split(%r{\s+}).first
       query_alternative(altname).each do |alt|
         entries << new(alt)
       end
@@ -41,24 +45,26 @@ Puppet::Type.type(:alternative_entry).provide(:dpkg) do
 
     entries
   end
-  
+
   def self.prefetch(resources)
     instances.each do |prov|
+      # rubocop:disable Lint/AssignmentInCondition
       if resource = resources[prov.name]
+        # rubocop:enable Lint/AssignmentInCondition
         resource.provider = prov
       end
     end
   end
 
-  ALT_QUERY_REGEX = %r[Alternative: (.*?)$.Priority: (.*?)$]m
+  ALT_QUERY_REGEX = %r{Alternative: (.*?)$.Priority: (.*?)$}m
 
   def self.query_alternative(altname)
     output = update('--query', altname)
 
-    altlink = output.match(/Link: (.*)$/)[1]
+    altlink = output.match(%r{Link: (.*)$})[1]
 
     output.scan(ALT_QUERY_REGEX).map do |(path, priority)|
-      {:altname => altname, :altlink => altlink, :name => path, :priority => priority}
+      { altname: altname, altlink: altlink, name: path, priority: priority }
     end
   end
 
@@ -88,7 +94,7 @@ Puppet::Type.type(:alternative_entry).provide(:dpkg) do
 
   private
 
-  def rebuild(&block)
+  def rebuild(&_block)
     destroy
     yield
     create

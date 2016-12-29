@@ -20,7 +20,11 @@
   </head>
   <body>
     <script type="text/javascript" charset="utf-8">
-      if (window.top.frames.main) {
+      var hasFrames = false;
+      try {
+        hasFrames = window.top.frames.main ? true : false;
+      } catch (e) { }
+      if (hasFrames) {
         document.getElementById('base_target').target = 'main';
         document.body.className = 'frames';
       }
@@ -46,6 +50,30 @@
 
       <ul id="full_list" class="method">
         
+
+  <li class="r1 ">
+    <span class='object_link'><a href="PuppetX/AugeasprovidersGrub/Util.html#grub2_cfg-class_method" title="PuppetX::AugeasprovidersGrub::Util.grub2_cfg (method)">grub2_cfg</a></span>
+    <small>PuppetX::AugeasprovidersGrub::Util</small>
+  </li>
+  
+
+  <li class="r2 ">
+    <span class='object_link'><a href="PuppetX/AugeasprovidersGrub/Util.html#munge_grubby_value-class_method" title="PuppetX::AugeasprovidersGrub::Util.munge_grubby_value (method)">munge_grubby_value</a></span>
+    <small>PuppetX::AugeasprovidersGrub::Util</small>
+  </li>
+  
+
+  <li class="r1 ">
+    <span class='object_link'><a href="PuppetX/AugeasprovidersGrub/Util.html#munge_options-class_method" title="PuppetX::AugeasprovidersGrub::Util.munge_options (method)">munge_options</a></span>
+    <small>PuppetX::AugeasprovidersGrub::Util</small>
+  </li>
+  
+
+  <li class="r2 ">
+    <span class='object_link'><a href="PuppetX/AugeasprovidersGrub/Util.html#munged_options-class_method" title="PuppetX::AugeasprovidersGrub::Util.munged_options (method)">munged_options</a></span>
+    <small>PuppetX::AugeasprovidersGrub::Util</small>
+  </li>
+  
 
       </ul>
     </div>

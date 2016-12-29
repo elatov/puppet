@@ -18,8 +18,18 @@ Puppet::Type.type(:kernel_parameter).provide(:grub2, :parent => Puppet::Type.typ
     which("grub2-mkconfig") or which("grub-mkconfig") or '/usr/sbin/grub-mkconfig'
   end
 
+  defaultfor :osfamily => 'Redhat', :operatingsystemmajrelease => [ '7' ]
+  defaultfor :operatingsystem => 'Debian', :operatingsystemmajrelease => [ '8' ]
+  defaultfor :operatingsystem => 'Ubuntu', :operatingsystemmajrelease => [ '14.04' ]
+
   confine :feature => :augeas
+  defaultfor :augeasprovider_grub_version => 2
   commands :mkconfig => mkconfig_path
+
+  # when both grub* providers match, prefer GRUB 2
+  def self.specificity
+    super + 1
+  end
 
   def self.instances
     augopen do |aug|
@@ -27,7 +37,8 @@ Puppet::Type.type(:kernel_parameter).provide(:grub2, :parent => Puppet::Type.typ
 
       # Params are nicely separated, but no recovery-only setting (hard-coded)
       sections = { 'all'    => "GRUB_CMDLINE_LINUX",
-                   'normal' => "GRUB_CMDLINE_LINUX_DEFAULT" }
+                   'normal' => "GRUB_CMDLINE_LINUX_DEFAULT",
+                   'default' => "GRUB_CMDLINE_LINUX_DEFAULT" }
       sections.keys.sort.each do |bootmode|
         key = sections[bootmode]
         # Get all unique param names
@@ -52,7 +63,7 @@ Puppet::Type.type(:kernel_parameter).provide(:grub2, :parent => Puppet::Type.typ
 
   def self.section(resource)
     case resource[:bootmode].to_s
-    when "normal"
+    when "default", "normal"
       "GRUB_CMDLINE_LINUX_DEFAULT"
     when "all"
       "GRUB_CMDLINE_LINUX"
@@ -73,8 +84,43 @@ Puppet::Type.type(:kernel_parameter).provide(:grub2, :parent => Puppet::Type.typ
     end
   end
 
+  # If GRUB_CMDLINE_LINUX_DEFAULT does not exist, it should be set to the
+  # present contents of GRUB_CMDLINE_LINUX.
+  # If this is not done, you may end up with garbage on your next kernel
+  # upgrade!
+  def munge_grub_cmdline_linux_default(aug)
+    src_path = '$target/GRUB_CMDLINE_LINUX/value'
+    dest_path = '$target/GRUB_CMDLINE_LINUX_DEFAULT'
+
+    if aug.match("#{dest_path}/value").empty?
+      aug.match(src_path).each do |val|
+        src_val = aug.get(val)
+
+       # Need to let the rest of the code work on the actual value properly.
+       unless src_val.split('=').first.strip == resource[:name]
+          val_target = val.split('/').last
+
+          aug.set("#{dest_path}/#{val_target}", src_val)
+        end
+      end
+    end
+  end
+
   def value=(newval)
     augopen! do |aug|
+      # If we don't have the section at all, add it. Otherwise, any
+      # manipulation will result in a parse error.
+      current_section = self.class.section(resource)
+      has_section = aug.match("$target/#{current_section}")
+
+      if !has_section || has_section.empty?
+        aug.set("$target/#{current_section}/quote",'"')
+      end
+
+      if current_section == 'GRUB_CMDLINE_LINUX_DEFAULT'
+       munge_grub_cmdline_linux_default(aug)
+      end
+
       if newval && !newval.empty?
         vals = newval.clone
       else
@@ -100,7 +146,7 @@ Puppet::Type.type(:kernel_parameter).provide(:grub2, :parent => Puppet::Type.typ
       # Add new parameters where there are more values than existing params
       if vals && !vals.empty?
         vals.each do |val|
-          aug.set("$target/#{self.class.section(resource)}/value[last()+1]", "#{resource[:name]}=#{val}")
+          aug.set("$target/#{current_section}/value[last()+1]", "#{resource[:name]}=#{val}")
         end
       end
     end
@@ -108,11 +154,11 @@ Puppet::Type.type(:kernel_parameter).provide(:grub2, :parent => Puppet::Type.typ
 
   def flush
     cfg = nil
-    ["/boot/grub/grub.cfg", "/boot/grub2/grub.cfg"].each {|c|
+    ["/boot/grub/grub.cfg", "/boot/grub2/grub.cfg", "/boot/efi/EFI/fedora/grub.cfg", "/etc/grub2-efi.cfg"].each {|c|
       cfg = c if FileTest.file? c
     }
     fail("Cannot find grub.cfg location to use with grub-mkconfig") unless cfg
-    
+
     super
     mkconfig "-o", cfg
   end

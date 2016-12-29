@@ -1,30 +1,30 @@
-/*
-
-== Definition: kmod::install
-
-Set a kernel module as installed.
-
-Parameters:
-- *ensure*: present/absent;
-- *command*: optionally, set the command associated with the kernel module;
-- *file*: optionally, set the file where the stanza is written.
-
-Example usage:
-
-  kmod::install { 'pcspkr': }
-
-*/
-
+#
+# == Definition: kmod::install
+#
+# Set a kernel module as installed.
+#
+# Parameters:
+# - *ensure*: present/absent;
+# - *command*: optionally, set the command associated with the kernel module;
+# - *file*: optionally, set the file where the stanza is written.
+#
+# Example usage:
+#
+#   kmod::install { 'pcspkr': }
+#
 define kmod::install(
   $ensure=present,
   $command='/bin/true',
-  $file='/etc/modprobe.d/modprobe.conf'
+  $file="/etc/modprobe.d/${name}.conf",
 ) {
-  kmod::generic {"install ${name}":
+
+  kmod::setting { "kmod::install ${title}":
     ensure   => $ensure,
-    type     => 'install',
     module   => $name,
-    command  => $command,
     file     => $file,
+    category => 'install',
+    option   => 'command',
+    value    => $command,
   }
+
 }

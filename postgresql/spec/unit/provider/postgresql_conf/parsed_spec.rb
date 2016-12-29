@@ -57,13 +57,13 @@ describe provider_class do
       )
     end
 
-    it "should allow numbers thorugh without quotes" do
+    it "should allow numbers through without quotes" do
       expect(provider.parse_line("wal_keep_segments = 32")).to eq(
         { :name=>"wal_keep_segments", :value=>"32", :comment=>nil, :record_type=>:parsed }
       )
     end
 
-    it "should allow blanks thorugh " do
+    it "should allow blanks through " do
       expect(provider.parse_line("")).to eq(
         { :line=>"", :record_type=>:blank }
       )
@@ -122,6 +122,24 @@ describe provider_class do
     it 'shouldn\'t quote numbers' do
       expect(provider.to_line( {:name=>"wal_segments", :value=>"32", :comment=>nil, :record_type=>:parsed })).to eq(
         "wal_segments = 32"
+      )
+    end
+
+    it "should allow numbers" do
+      expect(provider.to_line( {:name=>"integer", :value=>42, :comment=>nil, :record_type=>:parsed })).to eq(
+        "integer = 42"
+      )
+    end
+
+    it "should allow floats" do
+      expect(provider.to_line( {:name=>"float", :value=>2.71828182845, :comment=>nil, :record_type=>:parsed })).to eq(
+        "float = 2.71828182845"
+      )
+    end
+
+    it "quotes addresses" do
+      expect(provider.to_line( {:name=>"listen_addresses", :value=>"0.0.0.0", :comment=>nil, :record_type=>:parsed })).to eq(
+        "listen_addresses = '0.0.0.0'"
       )
     end
   end

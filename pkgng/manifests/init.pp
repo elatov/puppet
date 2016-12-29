@@ -2,27 +2,39 @@
 # support for managing packages with Puppet.  This will eventually be in
 # mainline FreeBSD, but for now, we are leaving the installation up to the
 # adminstrator, since there is no going back.
+#
+# If you have purge_repos_d as true - then you'll have no repositories
+# defined unless you define one. You want to do this as you'll want this
+# module to control repos anyway.
+#
 # To install PkgNG, one can simply run the following:
 # make -C /usr/ports/ports-mgmg/pkg install clean
-
+#
+# @example
+#   include pkgng
+#
+# @param pkg_dbdir Full path to database directory for pkg(8)
+# @param pkg_cachedir Full path to cache directory for pkg(8)
+# @param portsdir Full path to ports directory
+# @param options Array of options to write to pkg.conf(5)
+# @param purge_repos_d Boolean when true removes unmanaged repos
+# @param repos Hash of resources to pass to create_resources()
+#
 class pkgng (
-  $pkg_dbdir     = $pkgng::params::pkg_dbdir,
-  $pkg_cachedir  = $pkgng::params::pkg_cachedir,
-  $portsdir      = $pkgng::params::portsdir,
-  $purge_repos_d = false,
-  $repos         = {},
+  Pattern[/^\/.*/] $pkg_dbdir     = $pkgng::params::pkg_dbdir,
+  Pattern[/^\/.*/] $pkg_cachedir  = $pkgng::params::pkg_cachedir,
+  Pattern[/^\/.*/] $portsdir      = $pkgng::params::portsdir,
+  Array            $options       = [],
+  Boolean          $purge_repos_d = true,
+  Hash             $repos         = {},
 ) inherits pkgng::params {
 
-  # PkgNG versions before 1.1.4 use another method of defining repositories
-  if ! $::pkgng_supported or versioncmp($::pkgng_version, '1.1.4') < 0 {
-    fail('PKGng is either not supported on your system or it is too old')
+  unless $::kernel == 'FreeBSD' {
+    fail("pkg() is not supported on ${::kernel}")
   }
 
-  # Validate $purge_repos_d boolean
-  validate_bool($purge_repos_d)
-
   file { '/usr/local/etc/pkg.conf':
-    content => "PKG_DBDIR: ${pkg_dbdir}\nPKG_CACHEDIR: ${pkg_cachedir}\nPORTSDIR: ${portsdir}\n",
+    content => template('pkgng/pkg.conf'),
     notify  => Exec['pkg update'],
   }
 
@@ -35,6 +47,13 @@ class pkgng (
     File['/usr/local/etc/pkg/repos'] {
       recurse => true,
       purge   => true,
+    }
+
+    file { '/etc/pkg':
+      ensure  => directory,
+      purge   => true,
+      recurse => true,
+      before  => Exec['pkg update']
     }
   }
 
@@ -56,7 +75,7 @@ class pkgng (
   exec { 'pkg update':
     path        => '/usr/local/sbin',
     refreshonly => true,
-    command     => 'pkg -q update -f',
+    command     => 'pkg update -q -f',
   }
 
   # This exec should really on ever be run once, and only upon converting to

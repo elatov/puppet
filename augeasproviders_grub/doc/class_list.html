@@ -20,7 +20,11 @@
   </head>
   <body>
     <script type="text/javascript" charset="utf-8">
-      if (window.top.frames.main) {
+      var hasFrames = false;
+      try {
+        hasFrames = window.top.frames.main ? true : false;
+      } catch (e) { }
+      if (hasFrames) {
         document.getElementById('base_target').target = 'main';
         document.body.className = 'frames';
       }
@@ -46,7 +50,7 @@
 
       <ul id="full_list" class="class">
         <li><span class='object_link'><a href="top-level-namespace.html" title="Top Level Namespace (root)">Top Level Namespace</a></span></li>
-
+<li><a class='toggle'></a> <span class='object_link'><a href="PuppetX.html" title="PuppetX (module)">PuppetX</a></span><small class='search_info'>Top Level Namespace</small></li><ul><li><a class='toggle'></a> <span class='object_link'><a href="PuppetX/AugeasprovidersGrub.html" title="PuppetX::AugeasprovidersGrub (module)">AugeasprovidersGrub</a></span><small class='search_info'>PuppetX</small></li><ul><li><span class='object_link'><a href="PuppetX/AugeasprovidersGrub/Util.html" title="PuppetX::AugeasprovidersGrub::Util (module)">Util</a></span><small class='search_info'>PuppetX::AugeasprovidersGrub</small></li></ul></ul>
 
       </ul>
     </div>

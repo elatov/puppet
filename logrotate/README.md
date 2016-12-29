@@ -139,7 +139,7 @@ Further details about these options can be found by reading `man 8 logrotate`.
 ## logrotate
 
 You may, optionally, declare the main `::logrotate` class to adjust some of the
-defaults that are used when intalling the logrotate package and creating the
+defaults that are used when installing the logrotate package and creating the
 main `/etc/logrotate.conf` configuration file.
 
 This example will ensure that the logrotate package is latest and that the `dateext` and `compress` options are added to the defaults for a node.

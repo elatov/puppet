@@ -1170,5 +1170,40 @@ describe 'logrotate::rule' do
         }.to raise_error(Puppet::Error, /namevar must be alphanumeric/)
       end
     end
+    
+    ###########################################################################
+    # CUSTOM BTMP - Make sure btmp from logrotate::defaults is not being used
+    context 'with a custom btmp' do
+      let(:title) { 'btmp' }
+      let(:params) { 
+        {
+          :path         => '/var/log/btmp',
+          :rotate       => '10',
+          :rotate_every => 'day',
+        }
+      }
+      it do
+        should contain_file('/etc/logrotate.d/btmp') \
+          .with_content(%r{^/var/log/btmp \{\n  daily\n  rotate 10\n\}\n})
+      end
+    end
+
+    ###########################################################################
+    # CUSTOM WTMP - Make sure wtmp from logrotate::defaults is not being used
+    context 'with a custom wtmp' do
+      let(:title) { 'wtmp' }
+      let(:params) { 
+        {
+          :path         => '/var/log/wtmp',
+          :rotate       => '10',
+          :rotate_every => 'day',
+        }
+      }
+      it do
+        should contain_file('/etc/logrotate.d/wtmp') \
+          .with_content(%r{^/var/log/wtmp \{\n  daily\n  rotate 10\n\}\n})
+      end
+    end
+
   end
 end
