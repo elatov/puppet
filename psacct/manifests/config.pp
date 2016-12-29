@@ -14,7 +14,7 @@ class psacct::config {
 	        file { "/etc/cron.monthly/psacct":
 	          ensure  => 'present',
 	          source  => 'puppet:///modules/psacct/psacct-cron.sh',
-	          mode    => '0755',
+	          mode    => '0750',
             require => Package['crontabs'],
 	          links   => 'follow',
           }
