@@ -19,7 +19,7 @@ class mysql::server::installdb {
       $_config_file=undef
     }
     
-    $log_error = "/tmp"
+#    $log_error = "/tmp"
     
     notify {"datadir is ${datadir} and log_error is ${log_error}":}
     
