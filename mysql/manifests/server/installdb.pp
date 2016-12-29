@@ -11,7 +11,7 @@ class mysql::server::installdb {
     $config_file = $mysql::server::config_file
     $log_error = $mysql::server::options['mysqld']['log-error']
     
-    notify {"datadijr is ${datadir} and log_error is ${log_error}":}
+    
 
     if $mysql::server::manage_config_file and $config_file != $mysql::params::config_file {
       $_config_file=$config_file
@@ -30,7 +30,8 @@ class mysql::server::installdb {
       before => Mysql_datadir[ $datadir ],
     }
   }
-
+    
+    notify {"datadijr is ${datadir} and log_error is ${log_error}":}
     mysql_datadir { $datadir:
       ensure              => 'present',
       datadir             => $datadir,
