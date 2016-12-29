@@ -1,9 +1,7 @@
 require 'spec_helper'
 
 describe 'apache::mod::ssl', :type => :class do
-  let :pre_condition do
-    'include apache'
-  end
+  it_behaves_like "a mod class, without including apache"
   context 'on an unsupported OS' do
     let :facts do
       {
@@ -100,6 +98,22 @@ describe 'apache::mod::ssl', :type => :class do
     it { is_expected.to contain_apache__mod('ssl') }
   end
 
+  context 'on a Suse OS' do
+    let :facts do
+      {
+        :osfamily               => 'Suse',
+        :operatingsystem        => 'SLES',
+        :operatingsystemrelease => '12',
+        :concat_basedir         => '/dne',
+        :id                     => 'root',
+        :kernel                 => 'Linux',
+        :path                   => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin',
+        :is_pe                  => false,
+      }
+    end
+    it { is_expected.to contain_class('apache::params') }
+    it { is_expected.to contain_apache__mod('ssl') }
+  end
   # Template config doesn't vary by distro
   context "on all distros" do
     let :facts do
@@ -117,6 +131,72 @@ describe 'apache::mod::ssl', :type => :class do
 
     context 'not setting ssl_pass_phrase_dialog' do
       it { is_expected.to contain_file('ssl.conf').with_content(/^  SSLPassPhraseDialog builtin$/)}
+    end
+
+    context "with Apache version < 2.4" do
+      let :params do
+        {
+          :apache_version => '2.2',
+        }
+      end
+      context 'ssl_compression with default value' do
+        it { is_expected.not_to contain_file('ssl.conf').with_content(/^  SSLCompression Off$/)}
+      end
+
+      context 'setting ssl_compression to true' do
+        let :params do
+          {
+            :ssl_compression => true,
+          }
+        end
+        it { is_expected.not_to contain_file('ssl.conf').with_content(/^  SSLCompression On$/)}
+      end
+      context 'setting ssl_stapling to true' do
+        let :params do
+          {
+            :ssl_stapling => true,
+          }
+        end
+        it { is_expected.not_to contain_file('ssl.conf').with_content(/^  SSLUseStapling/)}
+      end
+    end
+    context "with Apache version >= 2.4" do
+      let :params do
+        {
+          :apache_version => '2.4',
+        }
+      end
+      context 'ssl_compression with default value' do
+        it { is_expected.not_to contain_file('ssl.conf').with_content(/^  SSLCompression Off$/)}
+      end
+
+      context 'setting ssl_compression to true' do
+        let :params do
+          {
+            :apache_version => '2.4',
+            :ssl_compression => true,
+          }
+        end
+        it { is_expected.to contain_file('ssl.conf').with_content(/^  SSLCompression On$/)}
+      end
+      context 'setting ssl_stapling to true' do
+        let :params do
+          {
+            :apache_version => '2.4',
+            :ssl_stapling => true,
+          }
+        end
+        it { is_expected.to contain_file('ssl.conf').with_content(/^  SSLUseStapling On$/)}
+      end
+      context 'setting ssl_stapling_return_errors to true' do
+        let :params do
+          {
+            :apache_version => '2.4',
+            :ssl_stapling_return_errors => true,
+          }
+        end
+        it { is_expected.to contain_file('ssl.conf').with_content(/^  SSLStaplingReturnResponderErrors On$/)}
+      end
     end
 
     context 'setting ssl_pass_phrase_dialog' do
@@ -144,6 +224,15 @@ describe 'apache::mod::ssl', :type => :class do
         }
       end
       it { is_expected.to contain_file('ssl.conf').with_content(/^\s+SSLOpenSSLConfCmd DHParameters "foo.pem"$/)}
+    end
+
+    context 'setting ssl_mutex' do
+      let :params do
+        {
+          :ssl_mutex => 'posixsem',
+        }
+      end
+      it { is_expected.to contain_file('ssl.conf').with_content(%r{^  SSLMutex posixsem$})}
     end
   end
 end
