@@ -9,6 +9,7 @@ class my_mysql::install {
 		package_name            => $my_mysql::package_name,
 		override_options        => $my_mysql::settings['default_override'],
 		includedir              => $my_mysql::config_dir,
+		service_name            => $my_mysql::service_name,
 	}
 	class { '::mysql::client':
     package_name            => 'mariadb100-client',

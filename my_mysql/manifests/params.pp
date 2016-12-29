@@ -33,6 +33,7 @@ class my_mysql::params {
       $my_mysql_config_dir      = '/usr/local/etc/mysql/conf.d'
       $my_mysql_config_file     = 'mysql_innodb_data.cnf'
       $my_mysql_package_name    = 'mariadb100-server'
+      $my_mysql_service_name    = 'mysql-server'
     }
 		default: {
 			fail("${::operatingsystem} not supported")

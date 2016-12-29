@@ -12,7 +12,7 @@ class my_mysql (
   $package_name	= $my_mysql::params::my_mysql_package_name,
   
   ## Services
-#  $service_name	= $my_mysql::params::my_mysql_service_name,
+  $service_name	= $my_mysql::params::my_mysql_service_name,
   
   ## Dirs
   $config_dir		= $my_mysql::params::my_mysql_config_dir,
