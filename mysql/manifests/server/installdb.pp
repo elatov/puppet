@@ -18,7 +18,9 @@ class mysql::server::installdb {
     } else {
       $_config_file=undef
     }
-
+    
+    $log_error = "/tmp"
+    
   if $options['mysqld']['log-error'] {
     file { $options['mysqld']['log-error']:
       ensure => present,
