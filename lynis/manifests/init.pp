@@ -11,10 +11,12 @@
 #   e.g. "Specify one or more upstream ntp servers as an array."
 #
 class lynis (
-  $package_name         = $::lynis::params::package_name,
-  $service_name         = $::lynis::params::service_name,
-  $default_settings     = $::lynis::params::default_settings,
-  $override_settings     = undef,
+  $package_name           = $::lynis::params::package_name,
+  $service_name           = $::lynis::params::service_name,
+  $conf_dir               = $::lynis::params::conf_dir,
+  $conf_file              = $::lynis::params::conf_file,
+  $default_settings       = $::lynis::params::default_settings,
+  $override_settings      = undef,
 ) inherits ::lynis::params {
 
   # validate parameters here

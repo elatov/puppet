@@ -70,6 +70,15 @@ class lynis::config {
 #					notify {Service["sshd"]:}
 #					notify => Service["sshd"]
         }
+        if !empty($::lynis::settings['tests']['SSH-7408_disabled_tests']) {
+          $lower_case_disabled_tests = downcase($::lynis::settings['tests']['SSH-7408_disabled_tests'])
+          $lower_case_disabled_tests.each |$item| {
+						file_line{"skip-test-${item}":
+							path => "${::lynis::conf_dir}/${::lynis::conf_file}",
+							line => "skip-test=SSH-7408:${item}",
+						}
+          }
+        }
       }
 #      notify {"$::osfamily":}
     }

@@ -36,6 +36,8 @@ class lynis::params {
     }
     'RedHat': {
       $settings_os  = {'yum_repo_enabled' =>  true}
+      $conf_dir     = '/etc/lynis'
+      $conf_file    = 'default.prf'
       $package_name = 'lynis'
       $service_name = 'lynis'
     }
