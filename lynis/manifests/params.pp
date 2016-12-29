@@ -27,6 +27,7 @@ class lynis::params {
                                                                           'TCPKeepAlive',
                                                                           'UseDNS'
                                                                          ],
+                                            'BANN-7126'                =>  true,
                       }
                     }
   case $::osfamily {

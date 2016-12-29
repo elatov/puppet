@@ -57,13 +57,13 @@ class lynis::config {
       }
       
       if ( $::lynis::settings['tests']['SSH-7408'] == true ){
-        $::lynis::settings['tests']['SSH-7408_enabled_tests'].each |$value, $key| {
+        $::lynis::settings['tests']['SSH-7408_enabled_tests'].each |$key, $value| {
           #notify{"${value} = ${key}":}
-          augeas { "sshd_config-${value}":
+          augeas { "sshd_config-${key}":
 					  context => "/files/etc/ssh/sshd_config",
 					  changes => [
 					    # track which key was used to logged in
-					    "set ${value} ${key}",
+					    "set ${key} ${value}",
 					  ],
 					  notify => Service["sshd"],
 					}
@@ -81,6 +81,26 @@ class lynis::config {
         }
       }
 #      notify {"$::osfamily":}
+      if ( $::lynis::settings['tests']['BANN-7126'] == true ){
+        file { "/etc/issue":
+          source  => 'puppet:///modules/lynis/issue.txt',
+          mode    => '0644'
+        }
+        
+        file { "/etc/issue.net":
+          source  => 'puppet:///modules/lynis/issue.txt',
+          mode    => '0644'
+        }
+        
+#        augeas { "sshd_config-banner":
+#            context => "/files/etc/ssh/sshd_config",
+#            changes => [
+#              # track which key was used to logged in
+#              "set Banner /etc/issue.net",
+#            ],
+#            notify => Service["sshd"],
+#          }
+      }
     }
 
     default: {
