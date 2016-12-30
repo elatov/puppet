@@ -242,7 +242,7 @@ class dis_ipv6 {
     name    => $operatingsystem ? {
 			/(?i:Debian|Ubuntu)/ => "ssh",
 			default => "sshd",},
-    require => Class["augeasproviders::instances"],
+#    require => Class["augeasproviders::instances"],
     enable  => true,
 		ensure  => running,
 	}
