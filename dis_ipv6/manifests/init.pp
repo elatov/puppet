@@ -40,6 +40,7 @@ class dis_ipv6 {
 #           },
 #	        }
 					augeas { "sysctl_conf-net.ipv6.conf.all.disable_ipv6":
+					  incl    => "/etc/sysctl.d/90-dis_ipv6.conf",
 						context => "/files/etc/sysctl.d/90-dis_ipv6.conf",
             lens    => "Simplevars.lns",
 						onlyif  => "get net.ipv6.conf.all.disable_ipv6 != '1'",
@@ -48,6 +49,7 @@ class dis_ipv6 {
 					}
 					
 					augeas { "sysctl_conf-net.ipv6.conf.default.disable_ipv6":
+					  incl    => "/etc/sysctl.d/90-dis_ipv6.conf",
             context => "/files/etc/sysctl.d/90-dis_ipv6.conf",
             lens    => "Simplevars.lns",
             onlyif  => "get net.ipv6.conf.default.disable_ipv6 != '1'",
@@ -56,6 +58,7 @@ class dis_ipv6 {
           }
           
           augeas { "sysctl_conf-net.core.rmem_max":
+            incl    => "/etc/sysctl.d/91-perf.conf",
             context => "/files/etc/sysctl.d/91-perf.conf",
             lens    => "Simplevars.lns",
             onlyif  => "get net.core.rmem_max != '4194304'",
@@ -64,6 +67,7 @@ class dis_ipv6 {
           }
           
           augeas { "sysctl_conf-net.core.wmem_max":
+            incl    => "/etc/sysctl.d/91-perf.conf",
             context => "/files/etc/sysctl.d/91-perf.conf",
             lens    => "Simplevars.lns",
             onlyif  => "get net.core.wmem_max != '1048576'",
