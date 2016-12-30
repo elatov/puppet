@@ -14,31 +14,75 @@ class dis_ipv6 {
 	case $::operatingsystem {
 	    /(?i:CentOS)/: { 
 	      if ($::operatingsystemmajrelease == '7') { 
-	        class { 'augeasproviders::instances':
-	          sysctl_hash => { 'net.ipv6.conf.all.disable_ipv6' => { 
-	                            'value' => '1',
-	                             'target' => "/etc/sysctl.d/90-dis_ipv6.conf",
-	                         },
-	                         'net.ipv6.conf.default.disable_ipv6' => { 
-	                            'value' => '1',
-	                             'target' => "/etc/sysctl.d/90-dis_ipv6.conf",  
-	                         },
-	                         'net.core.rmem_max' => { 
-                              'value' => '4194304',
-                               'target' => "/etc/sysctl.d/91-perf.conf",  
-                           },
-                           'net.core.wmem_max' => { 
-                              'value' => '1048576',
-                               'target' => "/etc/sysctl.d/91-perf.conf",  
-                           },
-	         },
-	         sshd_config_hash => { 'AddressFamily' => { 
-                              'ensure' => 'present',
-                               'value' => "inet",
-                               notify => Service["sshd"],
-                               },
-           },
-	        }
+#	        class { 'augeasproviders::instances':
+#	          sysctl_hash => { 'net.ipv6.conf.all.disable_ipv6' => { 
+#	                            'value' => '1',
+#	                             'target' => "/etc/sysctl.d/90-dis_ipv6.conf",
+#	                         },
+#	                         'net.ipv6.conf.default.disable_ipv6' => { 
+#	                            'value' => '1',
+#	                             'target' => "/etc/sysctl.d/90-dis_ipv6.conf",  
+#	                         },
+#	                         'net.core.rmem_max' => { 
+#                              'value' => '4194304',
+#                               'target' => "/etc/sysctl.d/91-perf.conf",  
+#                           },
+#                           'net.core.wmem_max' => { 
+#                              'value' => '1048576',
+#                               'target' => "/etc/sysctl.d/91-perf.conf",  
+#                           },
+#	         },
+#	         sshd_config_hash => { 'AddressFamily' => { 
+#                              'ensure' => 'present',
+#                               'value' => "inet",
+#                               notify => Service["sshd"],
+#                               },
+#           },
+#	        }
+					augeas { "sysctl_conf-net.ipv6.conf.all.disable_ipv6":
+						context => "/files/etc/sysctl.d/90-dis_ipv6.conf",
+            lens    => "Simplevars.lns",
+						onlyif  => "get net.ipv6.conf.all.disable_ipv6 != '1'",
+						changes => "set net.ipv6.conf.all.disable_ipv6 '1'",
+						notify  => Exec["sysctl"],
+					}
+					
+					augeas { "sysctl_conf-net.ipv6.conf.default.disable_ipv6":
+            context => "/files/etc/sysctl.d/90-dis_ipv6.conf",
+            lens    => "Simplevars.lns",
+            onlyif  => "get net.ipv6.conf.default.disable_ipv6 != '1'",
+            changes => "set net.ipv6.conf.default.disable_ipv6 '1'",
+            notify  => Exec["sysctl"],
+          }
+          
+          augeas { "sysctl_conf-net.core.rmem_max":
+            context => "/files/etc/sysctl.d/91-perf.conf",
+            lens    => "Simplevars.lns",
+            onlyif  => "get net.core.rmem_max != '4194304'",
+            changes => "set net.core.rmem_max '4194304'",
+            notify  => Exec["sysctl"],
+          }
+          
+          augeas { "sysctl_conf-net.core.wmem_max":
+            context => "/files/etc/sysctl.d/91-perf.conf",
+            lens    => "Simplevars.lns",
+            onlyif  => "get net.core.wmem_max != '1048576'",
+            changes => "set net.core.wmem_max '1048576'",
+            notify  => Exec["sysctl"],
+          }
+          
+					exec { "sysctl -p":
+						alias       => "sysctl",
+						refreshonly => true,
+					}
+					
+					augeas { "sshd_config-ipv6":
+						context => "/files/etc/ssh/sshd_config",
+						changes =>  [
+						            "set AddressFamily inet",
+						            ],
+						notify => Service["sshd"],
+					}
 #	        augeas { "main_cf_config":
 #            context => "/files/etc/postfix/main.cf",
 #            changes => ["set inet_protocols ipv4",],
