@@ -78,6 +78,7 @@ class dis_ipv6 {
 					exec { "sysctl -p":
 						alias       => "sysctl",
 						refreshonly => true,
+						path    => ['/usr/bin', '/usr/sbin',],
 					}
 					
 					augeas { "sshd_config-ipv6":
