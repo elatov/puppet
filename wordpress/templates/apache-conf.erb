@@ -1,29 +1,29 @@
-<Directory /var/www/<%= scope['wordpress::install_dir'] %>/>
+<Directory /var/www/<%= scope['install_dir'] %>/>
   Options -Indexes
   <Files wp-login.php>
      Order Deny,Allow
      Deny from all
-     Allow from <%= scope['wordpress::settings']['wp_web_settings']['apache_allow_from'] %>
+     Allow from <%= scope['settings']['wp_web_settings']['apache_allow_from'] %>
    </Files>
 
    <Files readme.html>
      Order Deny,Allow
      Deny from all
-     Allow from <%= scope['wordpress::settings']['wp_web_settings']['apache_allow_from'] %>
+     Allow from <%= scope['settings']['wp_web_settings']['apache_allow_from'] %>
    </Files>
 
    <IfModule mod_rewrite.c>
      RewriteEngine On
-     RewriteBase /<%= scope['wordpress::install_dir'] %>/
+     RewriteBase /<%= scope['install_dir'] %>/
      RewriteRule ^index\.php$ - [L]
      RewriteCond %{REQUEST_FILENAME} !-f
      RewriteCond %{REQUEST_FILENAME} !-d
-     RewriteRule . /<%= scope['wordpress::install_dir'] %>/index.php [L]
+     RewriteRule . /<%= scope['install_dir'] %>/index.php [L]
    </IfModule>
 </Directory>
 
-<Directory /var/www/<%= scope['wordpress::install_dir'] %>/wp-admin/>
+<Directory /var/www/<%= scope['install_dir'] %>/wp-admin/>
   Order Deny,Allow
   Deny from all
-  Allow from <%= scope['wordpress::settings']['wp_web_settings']['apache_allow_from'] %>
+  Allow from <%= scope['settings']['wp_web_settings']['apache_allow_from'] %>
 </Directory>
