@@ -24,6 +24,12 @@ class extra_conf {
       }
     }
     'RedHat': {
+			augeas { "grub-conf-rhgb":
+								context => "/files/etc/grub.conf",
+								lens    => "grub.lns",
+								incl    => "/etc/grub.conf",
+								changes => "rm title/kernel/rhgb";
+							}
      
     }
     'FreeBSD': {
