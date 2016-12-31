@@ -19,7 +19,7 @@ class wordpress::params {
                                             'create_db_user'  => true,
                                           },
                     'wp_app_settings' =>  {
-                                            'wp_table_prefix'       => '_wp',
+                                            'wp_table_prefix'       => 'wp_',
                                             'wp_additional_config'  => undef,
                                           },
                     'wp_web_settings' =>  {
