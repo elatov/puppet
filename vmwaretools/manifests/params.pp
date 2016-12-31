@@ -18,7 +18,7 @@ class vmwaretools::params {
     }
     'FreeBSD': {
       $package_name = 'open-vm-tools-nox11'
-      $service_name = 'vmware_guestd'
+      $service_name = 'vmware-guestd'
       $settings_os  = { 'version'  => '1'}
     }
     default: {
