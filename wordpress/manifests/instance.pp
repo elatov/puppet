@@ -65,7 +65,7 @@ define wordpress::instance (
     ensure  => present,
     content => template('wordpress/wp-keysalts.php.erb'),
     replace => false,
-    require => Exec["extract_wordpress_${doc_root}/${install_dir}"],
+    require => Exec["extract_wordpress_${install_dir}"],
   }
   concat::fragment { "${doc_root}/${install_dir}/wp-config.php keysalts":
     target  => "${doc_root}/${install_dir}/wp-config.php",
