@@ -1,25 +1,63 @@
 require 'rubygems'
+require 'bundler/setup'
+
 require 'puppetlabs_spec_helper/rake_tasks'
-
-desc "Run visual spec tests on an existing fixtures directory"
-RSpec::Core::RakeTask.new(:spec_standalonev) do |t|
-  t.rspec_opts = ['--color', '--format documentation']
-  t.pattern = 'spec/{classes,defines,unit}/**/*_spec.rb'
-end
-
-# https://github.com/stahnma/puppet-modules/blob/master/common/Rakefile
-desc "Check puppet and ERB for syntax errors."
-task :validate do
-  Dir['manifests/**/*.pp'].each do |path|
-    sh "puppet parser validate --noop #{path}"
-  end
-  Dir['templates/**/*.erb'].each do |path|
-    sh "erb -P -x -T '-' #{path} | ruby -c"
-  end
-end
-
-# Enable puppet-lint for all manifests: rake lint
+require 'puppet/version'
+require 'puppet/vendor/semantic/lib/semantic' unless Puppet.version.to_f < 3.6
 require 'puppet-lint/tasks/puppet-lint'
-#PuppetLint.configuration.send("disable_80chars") # no warnings on lines over 80 chars.
-PuppetLint.configuration.ignore_paths = ["spec/fixtures/**/*.pp", "pkg/**/*"]
+require 'puppet-syntax/tasks/puppet-syntax'
+require 'metadata-json-lint/rake_task'
+require 'rubocop/rake_task'
 
+# These gems aren't always present, for instance
+# on Travis with --without development
+begin
+  require 'puppet_blacksmith/rake_tasks'
+rescue LoadError # rubocop:disable Lint/HandleExceptions
+end
+
+RuboCop::RakeTask.new
+
+exclude_paths = [
+  "bundle/**/*",
+  "pkg/**/*",
+  "vendor/**/*",
+  "spec/**/*",
+]
+
+# Coverage from puppetlabs-spec-helper requires rcov which
+# doesn't work in anything since 1.8.7
+Rake::Task[:coverage].clear
+
+Rake::Task[:lint].clear
+
+PuppetLint.configuration.relative = true
+PuppetLint.configuration.disable_80chars
+PuppetLint.configuration.disable_class_inherits_from_params_class
+PuppetLint.configuration.disable_class_parameter_defaults
+PuppetLint.configuration.fail_on_warnings = true
+
+PuppetLint::RakeTask.new :lint do |config|
+  config.ignore_paths = exclude_paths
+end
+
+PuppetSyntax.exclude_paths = exclude_paths
+
+desc "Run acceptance tests"
+RSpec::Core::RakeTask.new(:acceptance) do |t|
+  t.pattern = 'spec/acceptance'
+end
+
+desc "Populate CONTRIBUTORS file"
+task :contributors do
+  system("git log --format='%aN' | sort -u > CONTRIBUTORS")
+end
+
+desc "Run syntax, lint, and spec tests."
+task :test => [
+  :metadata_lint,
+  :syntax,
+  :lint,
+  :rubocop,
+  :spec,
+]
