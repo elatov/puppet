@@ -10,7 +10,7 @@ define wordpress::instance (
   validate_string($install_dir, $download_url, $version, $wp_owner,
                   $wp_group, $doc_root
                   )
-  validate_absolute_path('${doc_root}/${install_dir}')
+  validate_absolute_path("${doc_root}/${install_dir}")
   validate_hash($settings)
   
   ## Resource defaults
