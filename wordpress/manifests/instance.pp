@@ -91,25 +91,25 @@ define wordpress::instance (
   ### Configure the DB
   ## Set up DB using puppetlabs-mysql defined type
   if $settings['wp_db_settings']['create_db'] {
-    mysql_database { "$settings['wp_db_settings']['db_host']/$settings['wp_db_settings']['db_name']":
-      name => $settings['wp_db_settings']['db_name'],
+    mysql_database { "${settings['wp_db_settings']['db_host']}/${settings['wp_db_settings']['db_name']}":
+      name    => "${settings['wp_db_settings']['db_name']}",
       charset => 'utf8',
     }
   }
   if $settings['wp_db_settings']['create_db_user'] {
-    mysql_user { "$settings['wp_db_settings']['db_user']@$settings['wp_db_settings']['db_host']":
-      password_hash => mysql_password($settings['wp_db_settings']['db_password']),
+    mysql_user { "${settings['wp_db_settings']['db_user']}@${settings['wp_db_settings']['db_host']}":
+      password_hash => mysql_password("${settings['wp_db_settings']['db_password']}"),
     }
-    mysql_grant { "$settings['wp_db_settings']['db_user']@$$settings['wp_db_settings']['db_host']/$settings['wp_db_settings']['db_name'].*":
-      table      => "$settings['wp_db_settings']['db_name'].*",
-      user       => "$settings['wp_db_settings']['db_user']@$settings['wp_db_settings']['db_host']",
+    mysql_grant { "${settings['wp_db_settings']['db_user']}@${settings['wp_db_settings']['db_host']}/${settings['wp_db_settings']['db_name']}.*":
+      table      => "${settings['wp_db_settings']['db_name']}.*",
+      user       => "${settings['wp_db_settings']['db_user']}@${settings['wp_db_settings']['db_host']}",
       privileges => ['ALL'],
     }
   }
   
   ### Configure Apache config
   if $settings['wp_web_settings']['apache_conf_enabled'] {
-	  file { "$settings['wp_web_settings']['apache_config_dir']/$settings['wp_web_settings']['apache_config_file']":
+	  file { "${settings['wp_web_settings']['apache_config_dir']}/${settings['wp_web_settings']['apache_config_file']}":
 	      ensure  => 'present',
 	      content  => template("wordpress/apache-conf.erb"),
 	    }
