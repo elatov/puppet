@@ -180,6 +180,9 @@ psacct/.project
 !wordpress_app/
 !wordpress_app/**
 wordpress_app/.project
+!app_modeling/
+!app_modeling/**
+app_modeling/.project
 !.gitignore
 .DS_Store
 .DS_Store?
