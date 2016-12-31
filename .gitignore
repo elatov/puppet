@@ -177,6 +177,9 @@ arpwatch/.project
 !psacct/
 !psacct/**
 psacct/.project
+!wordpress_app/
+!wordpress_app/**
+wordpress_app/.project
 !.gitignore
 .DS_Store
 .DS_Store?
