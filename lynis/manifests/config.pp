@@ -106,6 +106,11 @@ class lynis::config {
                 override_settings => { 'cron_enabled' => true,}
         }
       }
+      if ( $::lynis::settings['tests']['ACCT-9630'] == true ){
+        class {'psacct': 
+                override_settings => { 'cron_enabled' => true,}
+        }
+      }
     }
 
     default: {
