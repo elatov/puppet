@@ -15,7 +15,7 @@ class sophos::params {
                     'update_period_minutes'   =>  '1440',
                     'setup_weekly_job'        =>  true,
                     'weekly_job_settings'     =>  {
-                                                    'sophos_jobs_dir'     => "${::sophos::install_dir}/etc/jobs",
+                                                    'sophos_jobs_dir'     => "${install_dir}/etc/jobs",
                                                     'sophos_weekly_file'  => 'weekly'
                                                   },
                     'enable_email_always'     => true
