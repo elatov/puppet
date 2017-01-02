@@ -13,7 +13,7 @@ class sophos::config {
 					exec { "${module_name}-enable_livep":
 					        cwd    =>  "${::sophos::install_dir}/bin",
 									command => './savconfig set LiveProtection true',
-									unless  => './savconfig query LiveProtection | /bin/grep true' 
+									unless  => "${::sophos::install_dir}/bin/savconfig query LiveProtection | /bin/grep true"
 								} 
 	      }
 	
