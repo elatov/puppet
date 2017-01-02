@@ -14,7 +14,7 @@ class sophos::install {
   file {"get-${package_name}":
     ensure => 'present',
     path   => "/usr/local/apps/${package_name}",
-    source => "puppet:///modules/${package_name}",
+    source => "puppet:///modules/sophos/${package_name}",
     require => File['/usr/local/apps'], 
   }
   
