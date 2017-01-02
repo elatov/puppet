@@ -4,11 +4,13 @@
 # It ensure the service is running.
 #
 class sophos::service {
-
-  service { $::sophos::service_name:
-    ensure     => running,
-    enable     => true,
-    hasstatus  => true,
-    hasrestart => true,
+  if !$sophos::initial_setup {
+	  service { $::sophos::service_name:
+	    ensure     => running,
+	    enable     => true,
+	    hasstatus  => true,
+	    hasrestart => true,
+	  }
+	  
   }
 }
