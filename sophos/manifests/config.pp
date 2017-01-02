@@ -20,23 +20,23 @@ class sophos::config {
 	      if ( $::sophos::settings['enable_onstart'] == true ){
 	        exec { "${module_name}-enable_onstart":
 	                cwd    =>  "${::sophos::install_dir}/bin",
-	                command => './savconfig set EnableOnStart true',
-	                unless  => './savconfig query EnableOnStart | /bin/grep true' 
+	                command => "${::sophos::install_dir}/bin/savconfig set EnableOnStart true",
+	                unless  => "${::sophos::install_dir}/bin/savconfig query EnableOnStart | /bin/grep true"
 	              } 
 	      }
 	      
 	      if ( $::sophos::settings['enable_notifyonupdate'] == true ){
 	        exec { "${module_name}-enable_notifyonupdate":
 	                cwd    =>  "${::sophos::install_dir}/bin",
-	                command => './savconfig set NotifyOnUpdate true',
-	                unless  => './savconfig query NotifyOnUpdate | /bin/grep true' 
+	                command => "${::sophos::install_dir}/bin/savconfig set NotifyOnUpdate true",
+	                unless  => "${::sophos::install_dir}/bin/savconfig query NotifyOnUpdate | /bin/grep true"
 	              } 
 	      }
 	      
 	      exec { "${module_name}-update_period_minutes":
 	                cwd    =>  "${::sophos::install_dir}/bin",
-	                command => "./savconfig set UpdatePeriodMinutes ${sophos::settings['enable_liveprotection']}",
-	                unless  => "./savconfig query UpdatePeriodMinutes | /bin/grep ${sophos::settings['enable_liveprotection']}" 
+	                command => "${::sophos::install_dir}/bin/savconfig set UpdatePeriodMinutes ${sophos::settings['enable_liveprotection']}",
+	                unless  => "${::sophos::install_dir}/bin/savconfig query UpdatePeriodMinutes | /bin/grep ${sophos::settings['enable_liveprotection']}" 
 	           }
 	           
 	     if ( $::sophos::settings['setup_weekly_job'] == true ){
@@ -56,8 +56,8 @@ class sophos::config {
 	        
 	        exec { "${module_name}-setup_weekly_job":
 	                cwd    =>  "${::sophos::install_dir}/bin",
-	                command => "./savconfig add NamedScans weekly ${so_weekjob_file}",
-	                unless  => './savconfig query NamedScans | /bin/grep weekly',
+	                command => "${::sophos::install_dir}/bin/savconfig add NamedScans weekly ${so_weekjob_file}",
+	                unless  => "${::sophos::install_dir}/bin/savconfig query NamedScans | /bin/grep weekly",
 	                require => File["$so_weekjob_file"]
 	              } 
 	      }
@@ -65,8 +65,8 @@ class sophos::config {
 	      if ( $::sophos::settings['enable_email_always'] == true ){
 	        exec { "${module_name}-enable_email_always":
 	                cwd    =>  "${::sophos::install_dir}/bin",
-	                command => './savconfig set EmailDemandSummaryAlways true',
-	                unless  => './savconfig query EmailDemandSummaryAlways | /bin/grep true' 
+	                command => "${::sophos::install_dir}/bin/savconfig set EmailDemandSummaryAlways true",
+	                unless  => "${::sophos::install_dir}/bin/savconfig query EmailDemandSummaryAlways | /bin/grep true" 
 	              } 
 	      }
 	    }
