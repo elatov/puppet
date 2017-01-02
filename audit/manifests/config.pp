@@ -12,7 +12,7 @@ class audit::config {
           source  => 'puppet:///modules/lynis/audit_rules.conf',
           mode    => '0640'
         }
-        if ( $::audit::settings['enable_lynis'] == true ){
+        if ( $::audit::settings['enable_lynis_cron'] == true ){
 	        ensure_packages('crontabs',{ensure => 'present'})
   
           file { "/etc/cron.daily/aureports":
