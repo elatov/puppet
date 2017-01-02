@@ -12,8 +12,8 @@ class sophos::config {
 	      if ( $::sophos::settings['enable_liveprotection'] == true ){
 					exec { "${module_name}-enable_livep":
 					        cwd    =>  "${::sophos::install_dir}/bin",
-									command => "${::sophos::install_dir}/bin/savconfig set LiveProtection true",
-									unless  => "${::sophos::install_dir}/bin/savconfig query LiveProtection | /bin/grep true"
+									command => "${::sophos::install_dir}/bin/savconfig set LiveProtection enabled",
+									unless  => "${::sophos::install_dir}/bin/savconfig query LiveProtection | /bin/grep enabled"
 								} 
 	      }
 	
