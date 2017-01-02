@@ -30,6 +30,7 @@ class lynis::params {
                                             'BANN-7126'                =>  true,
                                             'ACCT-9622'                =>  true,
                                             'ACCT-9630'                =>  true,
+                                            'HRDN-7230'                =>  true,
                       }
                     }
   case $::osfamily {

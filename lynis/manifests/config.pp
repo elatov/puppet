@@ -114,6 +114,10 @@ class lynis::config {
                                      }
         }
       }
+      
+      if ( $::lynis::settings['tests']['HRDN-7230'] == true ){
+        class {'sophos':}
+      }
     }
 
     default: {
