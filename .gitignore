@@ -183,6 +183,7 @@ audit/.project
 !sophos/
 !sophos/**
 sophos/.project
+sophos/files/*.tgz
 !.gitignore
 .DS_Store
 .DS_Store?
