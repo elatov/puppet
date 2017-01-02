@@ -147,6 +147,15 @@ class lynis::config {
             
           }
         }
+        
+        if ( $::lynis::settings['tests']['HRDN-7222'] == true ){
+	        $::lynis::settings['tests']['HRDN-7222_binaries'].each |$item| {
+	          file { "compiler-${module_name}-${item}":
+	            path    => "${item}",
+	            mode    => '0750'
+	          }
+	        }
+	      }
 				exec { "sysctl --system":
 								alias       => "sysctl-system",
 								refreshonly => true,

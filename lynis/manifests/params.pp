@@ -43,7 +43,9 @@ class lynis::params {
                                                                             'net.ipv6.conf.all.accept_redirects'      => '0',
                                                                             'net.ipv6.conf.default.accept_redirects'  => '0'
                                                                            },
-                                            'KRNL-6000_disabled_options'=> ['net.ipv4.tcp_timestamps']
+                                            'KRNL-6000_disabled_options'=> ['net.ipv4.tcp_timestamps'],
+                                            'HRDN-7222'                 =>  true,
+                                            'HRDN-7222_binaries'        => ['/usr/bin/gcc','/usr/bin/as']
                       }
                     }
   case $::osfamily {
