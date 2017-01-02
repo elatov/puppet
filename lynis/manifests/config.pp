@@ -148,7 +148,7 @@ class lynis::config {
           }
         }
 				exec { "sysctl --system":
-								alias       => "sysctl-systemc",
+								alias       => "sysctl-system",
 								refreshonly => true,
 								path        => ['/usr/bin', '/usr/sbin',],
 							}
