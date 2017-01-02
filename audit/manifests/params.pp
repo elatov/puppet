@@ -14,8 +14,8 @@ class audit::params {
       $service_name = 'audit'
     }
     'RedHat': {
-      $package_name = 'auditd'
-      $service_name = 'audit'
+      $package_name = 'audit'
+      $service_name = 'auditd'
       $conf_dir     = '/etc/audit'
       $conf_file    = 'auditd.conf'
       $rules_dir    = '/etc/audit/rules.d'
