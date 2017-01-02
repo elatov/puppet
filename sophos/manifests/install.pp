@@ -6,16 +6,16 @@ class sophos::install {
 
   $package_name = "sav-linux-free-${::sophos::version}.tgz"
 	ensure_resource (  'file',
-	                   '/usr/local/apps/sophos',
+	                   '/usr/local/apps',
 	                   {'ensure' => 'directory',}
 	                 )
 	
 	# let's get the TAR archive from the puppet master
   file {"get-${package_name}":
     ensure => 'present',
-    path   => "/usr/local/apps/sophos/${sophos::package_name}",
-    source => "puppet:///modules/sophos/${sophos::package_name}",
-    require => File['/usr/local/apps/sophos'], 
+    path   => "/usr/local/apps/${package_name}",
+    source => "puppet:///modules/${package_name}",
+    require => File['/usr/local/apps'], 
   }
   
   # extract the TAR
