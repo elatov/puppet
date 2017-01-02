@@ -180,6 +180,9 @@ psacct/.project
 !audit/
 !audit/**
 audit/.project
+!sophos/
+!sophos/**
+sophos/.project
 !.gitignore
 .DS_Store
 .DS_Store?
