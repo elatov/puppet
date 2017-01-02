@@ -31,6 +31,19 @@ class lynis::params {
                                             'ACCT-9622'                =>  true,
                                             'ACCT-9630'                =>  true,
                                             'HRDN-7230'                =>  true,
+                                            'KRNL-6000'                =>  true,
+                                            'KRNL-6000_enabled_options'=>  {
+                                                                            'kernel.kptr_restrict'                    => '2',
+                                                                            'kernel.sysrq'                            => '0',
+                                                                            'net.ipv4.conf.all.accept_redirects'      => '0',
+                                                                            'net.ipv4.conf.all.log_martians'          => '1',
+                                                                            'net.ipv4.conf.all.send_redirects'        => '0',
+                                                                            'net.ipv4.conf.default.accept_redirects'  => '0',
+                                                                            'net.ipv4.conf.default.log_martians'      => '1',
+                                                                            'net.ipv6.conf.all.accept_redirects'      => '0',
+                                                                            'net.ipv6.conf.default.accept_redirects'  => '0'
+                                                                           },
+                                            'KRNL-6000_disabled_options'=> ['net.ipv4.tcp_timestamps']
                       }
                     }
   case $::osfamily {
