@@ -35,8 +35,8 @@ class sophos::config {
 	      
 	      exec { "${module_name}-update_period_minutes":
 	                cwd    =>  "${::sophos::install_dir}/bin",
-	                command => "${::sophos::install_dir}/bin/savconfig set UpdatePeriodMinutes ${sophos::settings['enable_liveprotection']}",
-	                unless  => "${::sophos::install_dir}/bin/savconfig query UpdatePeriodMinutes | /bin/grep ${sophos::settings['enable_liveprotection']}" 
+	                command => "${::sophos::install_dir}/bin/savconfig set UpdatePeriodMinutes ${sophos::settings['update_period_minutes']}",
+	                unless  => "${::sophos::install_dir}/bin/savconfig query UpdatePeriodMinutes | /bin/grep ${sophos::settings['update_period_minutes']}" 
 	           }
 	           
 	     if ( $::sophos::settings['setup_weekly_job'] == true ){
