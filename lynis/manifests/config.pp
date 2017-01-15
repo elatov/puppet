@@ -54,6 +54,9 @@ class lynis::config {
 #                  notify => Exec["update-grub"],
 #	             }
 	   }
+	   if ( $::lynis::settings['tests']['AUTH-9262'] == true ){
+        ensure_packages('libpam-cracklib',{ensure => 'present'})
+      }
     }
     'RedHat': {
       
