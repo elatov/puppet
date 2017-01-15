@@ -30,11 +30,11 @@ class lynis::config {
           notify  => Exec["update-grub"],
         }
         
-        file_line {"grub-conf-export":
-          path    => "/etc/grub.d/40_custom",
-          line    => "export superusers",
-          notify  => Exec["update-grub"],
-        } 
+#        file_line {"grub-conf-export":
+#          path    => "/etc/grub.d/40_custom",
+#          line    => "export superusers",
+#          notify  => Exec["update-grub"],
+#        } 
         
         exec { "update-grub2":
           alias       => "update-grub",
