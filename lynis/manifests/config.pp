@@ -20,7 +20,7 @@ class lynis::config {
       if ( $::lynis::settings['tests']['BOOT-5122'] == true ){
         file_line {"grub-conf-user":
           path    => "/etc/grub.d/40_custom",
-          line    => "set setsuperusers=\"${::lynis::settings['tests']['BOOT-5122_user']}\"",
+          line    => "set superusers=\"${::lynis::settings['tests']['BOOT-5122_user']}\"",
           notify  => Exec["update-grub"],
         }
         
