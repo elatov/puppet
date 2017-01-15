@@ -7,7 +7,7 @@ class lynis::config {
   case $::osfamily {
     'Debian': {
       if ( $::lynis::settings['cron_enabled'] == true ){
-        ensure_packages('crontabs',{ensure => 'present'})
+        ensure_packages('anacron',{ensure => 'present'})
 
         file {'/etc/cron.weekly/lynis':
           ensure  => 'present',
@@ -29,7 +29,7 @@ class lynis::config {
         exec { "update-grub2":
           alias       => "update-grub",
           refreshonly => true,
-          path        => ['/usr/bin', '/usr/sbin',],
+          path        => ['/usr/bin', '/usr/sbin','bin',],
         }
         
 #	      augeas { "grub-conf-user-pw":
