@@ -6,8 +6,17 @@ class lynis::config {
   
   case $::osfamily {
     'Debian': {
-      $package_name = 'lynis'
-      $service_name = 'lynis'
+      if ( $::lynis::settings['cron_enabled'] == true ){
+        ensure_packages('crontabs',{ensure => 'present'})
+
+        file {'/etc/cron.weekly/lynis':
+          ensure  => 'present',
+          content => template('lynis/lynis-cron.erb'),
+          mode    => '0755',
+          require => Package['crontabs'],
+          links   => 'follow',
+        }
+      }
     }
     'RedHat': {
       

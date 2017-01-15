@@ -6,8 +6,22 @@ class lynis::install {
   
   case $::osfamily {
     'Debian': {
-      $package_name = 'lynis'
-      $service_name = 'lynis'
+      if ( $::lynis::settings['apt_repo_enabled'] == true ){
+				apt::source { 'lynis':
+					location   => "https://packages.cisofy.com/community/lynis/deb/",
+					release    => 'jessie',
+					repos      => 'main',
+					key        => {
+					               'id'      => 'C80E383C3DE9F082E01391A0366C67DE91CA5D5F',
+					               'server'  => 'keyserver.ubuntu.com',
+					              }
+				}
+      }
+
+      ensure_resource ('package',$::lynis::package_name,{ 'ensure'  => 'present',
+                                                          'require' => Apt::Source['lynis'] 
+                                                        }
+                      )
     }
     'RedHat': {
       if ( $::lynis::settings['yum_repo_enabled'] == true ){

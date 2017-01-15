@@ -52,6 +52,7 @@ class lynis::params {
     'Debian': {
       $package_name = 'lynis'
       $service_name = 'lynis'
+      $settings_os  = {'apt_repo_enabled' =>  true}
     }
     'RedHat': {
       $settings_os  = {'yum_repo_enabled' =>  true}
