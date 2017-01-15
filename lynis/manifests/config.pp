@@ -13,7 +13,7 @@ class lynis::config {
           ensure  => 'present',
           content => template('lynis/lynis-cron.erb'),
           mode    => '0755',
-          require => Package['crontabs'],
+          require => Package['anacron'],
           links   => 'follow',
         }
       }
