@@ -21,19 +21,19 @@ class lynis::config {
         file_line {"grub-conf-user":
           path    => "/etc/grub.d/40_custom",
           line    => "set setsuperusers=\"${::lynis::settings['tests']['BOOT-5122_user']}\"",
-          notify  => "update-grub"
+          notify  => Exec["update-grub"],
         }
         
         file_line {"grub-conf-pw":
           path    => "/etc/grub.d/40_custom",
           line    => "password_pbkdf2 ${::lynis::settings['tests']['BOOT-5122_user']} ${::lynis::settings['tests']['BOOT-5122_pdf12_pw']}",
-          notify  => "update-grub"
+          notify  => Exec["update-grub"],
         }
         
         file_line {"grub-conf-export":
           path    => "/etc/grub.d/40_custom",
           line    => "export superusers",
-          notify  => "update-grub"
+          notify  => Exec["update-grub"],
         } 
         
         exec { "update-grub2":
