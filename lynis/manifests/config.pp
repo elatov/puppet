@@ -5,25 +5,6 @@
 class lynis::config {
   
   case $::osfamily {
-    /^(Debian|RedHat)$/:{
-      if ( $::lynis::settings['tests']['AUTH-9328'] == true ){
-        file { "/etc/profile.d/umask.sh":
-          source  => 'puppet:///modules/lynis/umask.sh',
-          mode    => '0644'
-        }
-        if ($::osfamily == 'Debian'){
-          augeas { "${module_name}-login-defs":
-             incl    => "/etc/login.defs",
-             context => "/files/etc/login.defs",
-             lens    => "Login_defs.lns",
-             onlyif  => "get UMASK != 027",
-             changes => [
-               "set UMASK 027",
-             ],
-            }
-        }  
-      }
-    }
     'Debian': {
       if ( $::lynis::settings['cron_enabled'] == true ){
         ensure_packages('anacron',{ensure => 'present'})
@@ -82,6 +63,27 @@ class lynis::config {
             }
           }
       }
+      if ( $::lynis::settings['tests']['AUTH-9328'] == true ){
+        file { "/etc/profile.d/umask.sh":
+          source  => 'puppet:///modules/lynis/umask.sh',
+          mode    => '0644'
+        }
+				augeas { "${module_name}-login-defs":
+					incl    => "/etc/login.defs",
+					context => "/files/etc/login.defs",
+					lens    => "Login_defs.lns",
+					onlyif  => "get UMASK != 027",
+					changes => [
+					 "set UMASK 027",
+					],
+				}
+				
+				file_line{"${module_name}-initd-rc":
+                path  => "/etc/init.d/rc",
+                line  => "umask 027",
+                match => "umask 02",
+              }
+      }  
     }
     'RedHat': {
       
@@ -95,6 +97,13 @@ class lynis::config {
 					require => Package['crontabs'],
 					links   => 'follow',
 				}
+      }
+      
+      if ( $::lynis::settings['tests']['AUTH-9328'] == true ){
+        file { "/etc/profile.d/umask.sh":
+          source  => 'puppet:///modules/lynis/umask.sh',
+          mode    => '0644'
+        }
       }
       
       if ( $::lynis::settings['tests']['FILE-6310'] == true ){
