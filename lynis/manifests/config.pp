@@ -78,13 +78,6 @@ class lynis::config {
 				}
       }
       
-      if ( $::lynis::settings['tests']['AUTH-9328'] == true ){
-        file { "/etc/profile.d/umask.sh":
-          source  => 'puppet:///modules/lynis/umask.sh',
-          mode    => '0644'
-        }
-      }
-      
       if ( $::lynis::settings['tests']['FILE-6310'] == true ){
         service { 'tmp.mount':
 			    ensure     => running,
@@ -216,6 +209,14 @@ class lynis::config {
 					refreshonly => true,
 					path        => ['/usr/bin', '/usr/sbin',],
 				}
+    }
+    /^(Debian|RedHat)$/:{
+      if ( $::lynis::settings['tests']['AUTH-9328'] == true ){
+        file { "/etc/profile.d/umask.sh":
+          source  => 'puppet:///modules/lynis/umask.sh',
+          mode    => '0644'
+        }
+      }
     }
 
     default: {
