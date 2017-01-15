@@ -42,20 +42,26 @@ class lynis::config {
           path        => ['/bin', '/usr/bin', '/usr/sbin', ],
         }
         
-#	      augeas { "grub-conf-user-pw":
-#	                context => "/files/etc/grub.d/40_custom",
-#	                lens    => "grub.lns",
-#	                incl    => "/etc/grub.d/40_custom",
-#	                onlyif  => "get setsuperusers != '${::lynis::settings['tests']['BOOT-5122_user']}'",
-#                  changes => [
-#                              "set setsuperusers ${::lynis::settings['tests']['BOOT-5122_user']}",
-#                              "set setsuperusers ${::lynis::settings['tests']['BOOT-5122_user']}",
-#                              ],
-#                  notify => Exec["update-grub"],
-#	             }
 	   }
 	   if ( $::lynis::settings['tests']['AUTH-9262'] == true ){
         ensure_packages('libpam-cracklib',{ensure => 'present'})
+     }
+     if !empty($::lynis::settings['tests']['disabled_tests']) {
+          $::lynis::settings['tests']['disabled_tests'].each |$item| {
+            augeas { "${module_name}-conf-${item}":
+	            incl    => "${::lynis::conf_dir}/${::lynis::conf_file}",
+	            context => "/files/${::lynis::conf_dir}/${::lynis::conf_file}",
+	            lens    => "Simplevars.lns",
+	            onlyif  => "get skip-test != '${item}'",
+	            changes => [
+	              "set skip-test ${item}",
+	            ],
+            }
+#            file_line{"skip-test-${item}":
+#              path => "${::lynis::conf_dir}/${::lynis::conf_file}",
+#              line => "skip-test=${item}",
+#            }
+          }
       }
     }
     'RedHat': {

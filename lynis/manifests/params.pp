@@ -52,13 +52,16 @@ class lynis::params {
     'Debian': {
       $package_name = 'lynis'
       $service_name = 'lynis'
+      $conf_dir     = '/etc/lynis'
+      $conf_file    = 'default.prf'
       $settings_os  = { 'apt_repo_enabled'  =>  true,
                         'tests'             => {
                                                 'BOOT-5122'           => true,
                                                 'BOOT-5122_user'      => 'admin',
                                                 'BOOT-5122_pdf12_pw'  => 'grub.pbkdf2.sha512.10000.',
                                                 'AUTH-9262'           => true,
-                                               }
+                                               },
+                        'disabled_tests'    => ['AUTH-9286']
       }
     }
     'RedHat': {
