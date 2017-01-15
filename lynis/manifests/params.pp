@@ -75,5 +75,5 @@ class lynis::params {
       fail("${::operatingsystem} not supported")
     }  
   }
-  $default_settings = merge($settings_all,$settings_os)
+  $default_settings = deep_merge($settings_all,$settings_os)
 }
