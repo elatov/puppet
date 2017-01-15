@@ -46,8 +46,8 @@ class lynis::config {
 	   if ( $::lynis::settings['tests']['AUTH-9262'] == true ){
         ensure_packages('libpam-cracklib',{ensure => 'present'})
      }
-     if !empty($::lynis::settings['tests']['disabled_tests']) {
-          $::lynis::settings['tests']['disabled_tests'].each |$item| {
+     if !empty($::lynis::settings['disabled_tests']) {
+          $::lynis::settings['disabled_tests'].each |$item| {
             augeas { "${module_name}-conf-${item}":
 	            incl    => "${::lynis::conf_dir}/${::lynis::conf_file}",
 	            context => "/files/${::lynis::conf_dir}/${::lynis::conf_file}",
