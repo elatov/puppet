@@ -48,19 +48,19 @@ class lynis::config {
      }
      if !empty($::lynis::settings['disabled_tests']) {
           $::lynis::settings['disabled_tests'].each |$item| {
-            augeas { "${module_name}-conf-${item}":
-	            incl    => "${::lynis::conf_dir}/${::lynis::conf_file}",
-	            context => "/files/${::lynis::conf_dir}/${::lynis::conf_file}",
-	            lens    => "Simplevars.lns",
-	            onlyif  => "get skip-test != '${item}'",
-	            changes => [
-	              "set skip-test ${item}",
-	            ],
-            }
-#            file_line{"skip-test-${item}":
-#              path => "${::lynis::conf_dir}/${::lynis::conf_file}",
-#              line => "skip-test=${item}",
+#            augeas { "${module_name}-conf-${item}":
+#	            incl    => "${::lynis::conf_dir}/${::lynis::conf_file}",
+#	            context => "/files/${::lynis::conf_dir}/${::lynis::conf_file}",
+#	            lens    => "Simplevars.lns",
+#	            onlyif  => "get skip-test != '${item}'",
+#	            changes => [
+#	              "set skip-test ${item}",
+#	            ],
 #            }
+            file_line{"${module_name}-conf-${item}":
+              path => "${::lynis::conf_dir}/${::lynis::conf_file}",
+              line => "skip-test=${item}",
+            }
           }
       }
     }
