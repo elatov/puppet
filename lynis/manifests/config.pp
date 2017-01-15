@@ -19,13 +19,23 @@ class lynis::config {
       }
       if ( $::lynis::settings['tests']['BOOT-5122'] == true ){
         file_line {"grub-conf-user":
-					path => "/etc/grub.d/40_custom",
-					line => "set setsuperusers=\"${::lynis::settings['tests']['BOOT-5122_user']}\"",
-        } ->
+          path    => "/etc/grub.d/40_custom",
+          line    => "set setsuperusers=\"${::lynis::settings['tests']['BOOT-5122_user']}\"",
+          notify  => "update-grub"
+        }
+        
         file_line {"grub-conf-pw":
-          path => "/etc/grub.d/40_custom",
-          line => "password_pbkdf2 ${::lynis::settings['tests']['BOOT-5122_user']} ${::lynis::settings['tests']['BOOT-5122_pdf12_pw']}",
-        } ~>
+          path    => "/etc/grub.d/40_custom",
+          line    => "password_pbkdf2 ${::lynis::settings['tests']['BOOT-5122_user']} ${::lynis::settings['tests']['BOOT-5122_pdf12_pw']}",
+          notify  => "update-grub"
+        }
+        
+        file_line {"grub-conf-export":
+          path    => "/etc/grub.d/40_custom",
+          line    => "export superusers",
+          notify  => "update-grub"
+        } 
+        
         exec { "update-grub2":
           alias       => "update-grub",
           refreshonly => true,
