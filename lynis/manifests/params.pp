@@ -52,7 +52,13 @@ class lynis::params {
     'Debian': {
       $package_name = 'lynis'
       $service_name = 'lynis'
-      $settings_os  = {'apt_repo_enabled' =>  true}
+      $settings_os  = { 'apt_repo_enabled'  =>  true,
+                        'tests'             => {
+                                                'BOOT-5122'           => true,
+                                                'BOOT-5122_user'      => 'admin',
+                                                'BOOT-5122_pdf12_pw'  => 'grub.pbkdf2.sha512.10000.'
+                                               }
+      }
     }
     'RedHat': {
       $settings_os  = {'yum_repo_enabled' =>  true}

@@ -17,6 +17,33 @@ class lynis::config {
           links   => 'follow',
         }
       }
+      if ( $::lynis::settings['tests']['BOOT-5122'] == true ){
+        file_line {"grub-conf-user":
+					path => "/etc/grub.d/40_custom",
+					line => "set setsuperusers=\"${::lynis::settings['tests']['BOOT-5122_user']}\"",
+        } ->
+        file_line {"grub-conf-pw":
+          path => "/etc/grub.d/40_custom",
+          line => "password_pbkdf2 ${::lynis::settings['tests']['BOOT-5122_user']} ${::lynis::settings['tests']['BOOT-5122_pdf12_pw']}",
+        } ~>
+        exec { "update-grub2":
+          alias       => "update-grub",
+          refreshonly => true,
+          path        => ['/usr/bin', '/usr/sbin',],
+        }
+        
+#	      augeas { "grub-conf-user-pw":
+#	                context => "/files/etc/grub.d/40_custom",
+#	                lens    => "grub.lns",
+#	                incl    => "/etc/grub.d/40_custom",
+#	                onlyif  => "get setsuperusers != '${::lynis::settings['tests']['BOOT-5122_user']}'",
+#                  changes => [
+#                              "set setsuperusers ${::lynis::settings['tests']['BOOT-5122_user']}",
+#                              "set setsuperusers ${::lynis::settings['tests']['BOOT-5122_user']}",
+#                              ],
+#                  notify => Exec["update-grub"],
+#	             }
+	   }
     }
     'RedHat': {
       
@@ -117,10 +144,10 @@ class lynis::config {
       }
       if ( $::lynis::settings['tests']['ACCT-9630'] == true ){
         class {'audit': 
-                override_settings => {
-                                      'enable_lynis' => true, 
-                                      'enable_lynis_cron' => true,
-                                     }
+	        override_settings => {
+	                              'enable_lynis' => true, 
+	                              'enable_lynis_cron' => true,
+	                             }
         }
       }
       
@@ -148,10 +175,10 @@ class lynis::config {
           $::lynis::settings['tests']['KRNL-6000_enabled_options'].each |$item| {
             if "${item}" == "net.ipv4.tcp_timestamps"{
               file_line{"disable-sysctl-${item}":
-						              path  => "${::lynis::conf_dir}/${::lynis::conf_file}",
-						              line  => "#config-data=sysctl;${item};0;1;Do not use TCP time stamps;-;category:security;",
-						              match => "config-data=sysctl;${item};0;1;Do not use TCP time stamps;-;category:security;",
-					              }
+	              path  => "${::lynis::conf_dir}/${::lynis::conf_file}",
+	              line  => "#config-data=sysctl;${item};0;1;Do not use TCP time stamps;-;category:security;",
+	              match => "config-data=sysctl;${item};0;1;Do not use TCP time stamps;-;category:security;",
+              }
             }
             
           }
@@ -166,10 +193,10 @@ class lynis::config {
 	        }
 	      }
 				exec { "sysctl --system":
-								alias       => "sysctl-system",
-								refreshonly => true,
-								path        => ['/usr/bin', '/usr/sbin',],
-							}
+					alias       => "sysctl-system",
+					refreshonly => true,
+					path        => ['/usr/bin', '/usr/sbin',],
+				}
     }
 
     default: {
