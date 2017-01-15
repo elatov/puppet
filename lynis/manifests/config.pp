@@ -29,7 +29,7 @@ class lynis::config {
         exec { "update-grub2":
           alias       => "update-grub",
           refreshonly => true,
-          path        => ['bin', '/usr/bin', '/usr/sbin', ],
+          path        => ['/bin', '/usr/bin', '/usr/sbin', ],
         }
         
 #	      augeas { "grub-conf-user-pw":
