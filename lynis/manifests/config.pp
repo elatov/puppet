@@ -11,6 +11,17 @@ class lynis::config {
           source  => 'puppet:///modules/lynis/umask.sh',
           mode    => '0644'
         }
+        if ($::osfamily == 'Debian'){
+          augeas { "${module_name}-login-defs":
+             incl    => "/etc/login.defs",
+             context => "/files/etc/login.defs",
+             lens    => "Login_defs.lns",
+             onlyif  => "get UMASK != 027",
+             changes => [
+               "set UMASK 027",
+             ],
+            }
+        }  
       }
     }
     'Debian': {
@@ -70,18 +81,6 @@ class lynis::config {
               line => "skip-test=${item}",
             }
           }
-      }
-      
-      if ( $::lynis::settings['tests']['AUTH-9328'] == true ){
-        augeas { "${module_name}-login-defs":
-             incl    => "/etc/login.defs",
-             context => "/files/etc/login.defs",
-             lens    => "Login_defs.lns",
-             onlyif  => "get UMASK != 027",
-             changes => [
-               "set UMASK 027",
-             ],
-            }
       }
     }
     'RedHat': {
