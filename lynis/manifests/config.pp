@@ -5,6 +5,14 @@
 class lynis::config {
   
   case $::osfamily {
+    /^(Debian|RedHat)$/:{
+      if ( $::lynis::settings['tests']['AUTH-9328'] == true ){
+        file { "/etc/profile.d/umask.sh":
+          source  => 'puppet:///modules/lynis/umask.sh',
+          mode    => '0644'
+        }
+      }
+    }
     'Debian': {
       if ( $::lynis::settings['cron_enabled'] == true ){
         ensure_packages('anacron',{ensure => 'present'})
@@ -209,14 +217,6 @@ class lynis::config {
 					refreshonly => true,
 					path        => ['/usr/bin', '/usr/sbin',],
 				}
-    }
-    /^(Debian|RedHat)$/:{
-      if ( $::lynis::settings['tests']['AUTH-9328'] == true ){
-        file { "/etc/profile.d/umask.sh":
-          source  => 'puppet:///modules/lynis/umask.sh',
-          mode    => '0644'
-        }
-      }
     }
 
     default: {
