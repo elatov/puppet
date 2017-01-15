@@ -61,7 +61,7 @@ class lynis::params {
                                                 'BOOT-5122_pdf12_pw'  => 'grub.pbkdf2.sha512.10000.',
                                                 'AUTH-9262'           => true,
                                                },
-                        'disabled_tests'    => ['AUTH-9286']
+                        'disabled_tests'    => ['AUTH-9286','FILE-6310']
       }
     }
     'RedHat': {
