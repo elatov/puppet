@@ -578,6 +578,15 @@ fqdn_rotate([1, 2, 3], 'custom seed')
 
 *Type*: rvalue.
 
+#### `fqdn_uuid`
+
+Returns a rfc4122 valid version 5 UUID based on an FQDN string under the DNS namespace
+
+  * fqdn_uuid('puppetlabs.com') returns '9c70320f-6815-5fc5-ab0f-debe68bf764c'
+  * fqdn_uuid('google.com') returns '64ee70a4-8cc1-5d25-abf2-dea6c79a09c8'
+
+*Type*: rvalue.
+
 #### `get_module_path`
 
 Returns the absolute path of the specified module for the current environment.
@@ -935,6 +944,20 @@ For example:
 
 *Type*: rvalue.
 
+#### `pry`
+
+This function invokes a pry debugging session in the current scope object. This is useful for debugging manifest code at specific points during a compilation. Should only be used when running `puppet apply` or running a puppet master in the foreground. This requires the `pry` gem to be installed in puppet's rubygems.
+
+*Examples:*
+```puppet
+pry()
+```
+Once in a pry session, some interesting commands:
+
+* Run `catalog` to see the contents currently compiling catalog
+* Run `cd catalog` and `ls` to see catalog methods and instance variables
+* Run `@resource_table` to see the current catalog resource table
+
 #### `assert_private`
 
 Sets the current class or definition as private. Calling the class or definition from outside the current module will fail.
@@ -1056,7 +1079,7 @@ Returns a new string where runs of the same character that occur in this set are
 
 #### `str2bool`
 
-Converts certain strings to a boolean. This attempts to convert strings that contain the values '1', 't', 'y', or 'yes' to true. Strings that contain values '0', 'f', 'n', or 'no', or that are an empty string or undefined are converted to false. Any other value causes an error. *Type*: rvalue.
+Converts certain strings to a boolean. This attempts to convert strings that contain the values '1', 'true', 't', 'y', or 'yes' to true. Strings that contain values '0', 'false', 'f', 'n', or 'no', or that are an empty string or undefined are converted to false. Any other value causes an error. These checks are case insensitive.  *Type*: rvalue.
 
 #### `str2saltedsha512`
 
