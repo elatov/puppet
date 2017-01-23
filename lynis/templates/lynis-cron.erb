@@ -19,7 +19,7 @@ elif [ ${OS} = 'FreeBSD' ]; then
 fi
 
 # Run Lynis
-${LYNIS} audit system --auditor "${AUDITOR}" --cronjob  --bin-dirs "/bin /usr/bin /usr/sbin /opt/puppetlabs/bin /var/ossec/bin" > ${REPORT}
+${LYNIS} audit system --auditor "${AUDITOR}" --cronjob  --bin-dirs "/bin /sbin /usr/bin /usr/sbin /opt/puppetlabs/bin /var/ossec/bin" > ${REPORT}
 #${LYNIS} audit system --auditor "${AUDITOR}" --cronjob > ${REPORT}
 
 # Optional step: Move report file if it exists
