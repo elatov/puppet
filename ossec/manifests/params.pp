@@ -50,7 +50,7 @@ class ossec::params {
 		'RedHat': {
 			### Client
 			## Package
-			$ossec_client_package_name		= 'ossec-hids-client'
+			$ossec_client_package_name		= 'ossec-hids-agent'
 			## Service
 			$ossec_client_service_name		= 'ossec-hids'
 			## Dirs
