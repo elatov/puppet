@@ -59,7 +59,16 @@ class ossec::params {
 			## Conf Files
       $ossec_client_config_file     = "ossec-agent.conf"
 			## Settings
-			$ossec_client_settings_os     = { 'timezone_file' => '/usr/share/zoneinfo/America/Denver',
+#			$ossec_client_settings_os     = { 'timezone_file' => '/usr/share/zoneinfo/America/Denver',
+#                                        'add_user'      => 'test',
+#                                        'config'        => { 'logs' => { '/var/log/messages'       => 'syslog',
+#                                                                         '/var/log/secure'         => 'syslog',
+#                                                                         '/var/log/maillog'        => 'syslog',
+#                                                                         '/var/log/exim/main.log'  => 'syslog',
+#                                                                        }
+#                                                           }
+#                                      }
+      $ossec_client_settings_os     = { 
                                         'add_user'      => 'test',
                                         'config'        => { 'logs' => { '/var/log/messages'       => 'syslog',
                                                                          '/var/log/secure'         => 'syslog',
