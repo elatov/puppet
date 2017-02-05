@@ -66,7 +66,7 @@ class lynis::params {
                                                 'HTTP-6640_email'     => 'test@localhost',
                                                 'HTTP-6640_logdir'    => '/var/log/apache2/evasive',
                                                },
-                        'disabled_tests'    => ['AUTH-9286','FILE-6310','NETW-3032']
+                        'disabled_tests'    => ['AUTH-9286','FILE-6310','NETW-3032','HTTP-6641']
       }
     }
     'RedHat': {
