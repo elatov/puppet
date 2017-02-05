@@ -62,6 +62,9 @@ class lynis::params {
                                                 'AUTH-9262'           => true,
                                                 'PKGS-7370'           => true,
                                                 'PKGS-7370_cron'      => 'weekly',
+                                                'HTTP-6640'           => true,
+                                                'HTTP-6640_email'     => 'test@localhost',
+                                                'HTTP-6640_logdir'    => '/var/log/apaceh2/evasive',
                                                },
                         'disabled_tests'    => ['AUTH-9286','FILE-6310','NETW-3032']
       }

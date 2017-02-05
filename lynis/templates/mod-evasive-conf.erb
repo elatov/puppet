@@ -1,0 +1,10 @@
+<IfModule  mod_evasive20.c>
+   DOSHashTableSize 3097
+   DOSPageCount 2
+   DOSSiteCount 50
+   DOSPageInterval 1
+   DOSSiteInterval 1
+   DOSBlockingPeriod 60
+   DOSEmailNotify <%= scope['lynis::settings']['tests']['HTTP-6640_email'] %>
+   DOSLogDir "<%= scope['lynis::settings']['tests']['HTTP-6640_logdir']"
+ </IfModule>

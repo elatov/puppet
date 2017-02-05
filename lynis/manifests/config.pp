@@ -111,7 +111,26 @@ class lynis::config {
             ],
           }
         }
-     }  
+     }
+     
+     if ( $::lynis::settings['tests']['HTTP-6640'] == true ){  
+       apache::mod { 'mod_evasive': 
+         package  => 'libapache2-mod-evasive'
+       }->
+       apache::custom_config { 'mod-evasive':
+         verify_config  => true,
+         content        => template('lynis/mod-evasive-conf.erb'),
+         priority       => '10',
+       }
+      }->
+			file { "${::lynis::settings['tests']['HTTP-6640_logdir']}":
+				ensure => 'directory',
+				owner  => 'www-data',
+				group  => 'adm',
+#				mode   => '0750',
+        notify  => Class['my_apache'],
+			}
+        
     }
     'RedHat': {
       
