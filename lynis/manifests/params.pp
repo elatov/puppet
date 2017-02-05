@@ -63,7 +63,7 @@ class lynis::params {
                                                 'PKGS-7370'           => true,
                                                 'PKGS-7370_cron'      => 'weekly',
                                                },
-                        'disabled_tests'    => ['AUTH-9286','FILE-6310']
+                        'disabled_tests'    => ['AUTH-9286','FILE-6310','NETW-3032']
       }
     }
     'RedHat': {
