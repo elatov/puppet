@@ -132,6 +132,9 @@ class lynis::config {
 #				mode   => '0750',
         notify  => Class['my_apache'],
 			}
+			if ( $::lynis::settings['tests']['HTTP-6643'] == true ){  
+       class { 'apache::mod::security': }
+      }
         
     }
     'RedHat': {
