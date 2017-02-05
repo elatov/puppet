@@ -114,10 +114,12 @@ class lynis::config {
      }
      
      if ( $::lynis::settings['tests']['HTTP-6640'] == true ){  
-       apache::mod { 'mod_evasive': 
-         package  => 'libapache2-mod-evasive'
+       apache::mod { 'evasive20': 
+         package        => 'libapache2-mod-evasive',
+         lib            => 'mod_evasive20.so',
+         loadfile_name  => "evasive.load",
        }->
-       apache::custom_config { 'mod-evasive':
+       apache::custom_config { 'evasive':
          verify_config  => true,
          content        => template('lynis/mod-evasive-conf.erb'),
          priority       => '10',
