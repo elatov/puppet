@@ -96,7 +96,22 @@ class lynis::config {
           source  => 'puppet:///modules/lynis/modprobe-firewire.conf',
           mode    => '0644'
         }
-      }  
+      }
+      if ( $::lynis::settings['tests']['PKGS-7370'] == true ){
+        ensure_packages('debsums',{ensure => 'present'})
+        if !empty($::lynis::settings['tests']['PKGS-7370_cron']){
+          augeas { "debsums-${module_name}":
+            incl    => "/etc/default/debsums",
+            context => "/files/etc/default/debsums",
+            lens    => "Simplevars.lns",
+            onlyif  => "get CRON_CHECK != ${::lynis::settings['tests']['PKGS-7370_cron']}",
+            changes => [
+              # track which key was used to logged in
+              "set CRON_CHECK ${::lynis::settings['tests']['PKGS-7370_cron']}",
+            ],
+          }
+        }
+     }  
     }
     'RedHat': {
       

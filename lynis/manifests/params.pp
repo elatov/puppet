@@ -60,6 +60,8 @@ class lynis::params {
                                                 'BOOT-5122_user'      => 'admin',
                                                 'BOOT-5122_pdf12_pw'  => 'grub.pbkdf2.sha512.10000.',
                                                 'AUTH-9262'           => true,
+                                                'PKGS-7370'           => true,
+                                                'PKGS-7370_cron'      => 'weekly',
                                                },
                         'disabled_tests'    => ['AUTH-9286','FILE-6310']
       }
