@@ -83,6 +83,19 @@ class lynis::config {
                 line  => "umask 027",
                 match => "umask 02",
               }
+      }
+      if ( $::lynis::settings['tests']['STRG-1840'] == true ){
+        file { "/etc/modprobe.d/usb.conf":
+          source  => 'puppet:///modules/lynis/modprobe-usb.conf',
+          mode    => '0644'
+        }
+      }
+      
+      if ( $::lynis::settings['tests']['STRG-1846'] == true ){
+        file { "/etc/modprobe.d/firewire.conf":
+          source  => 'puppet:///modules/lynis/modprobe-firewire.conf',
+          mode    => '0644'
+        }
       }  
     }
     'RedHat': {
