@@ -77,7 +77,7 @@ class lynis::params {
                                                                                 'net.ipv4.conf.all.rp_filter'               => '1',
                                                                                 'net.ipv4.conf.default.accept_source_route' => '0',
                                                                               },
-                                                'HRDN-7222_binaries'      => ['/usr/bin/gcc','/usr/bin/as','/usr/bin/g++']
+                                                'HRDN-7222_binaries'      => ['/usr/bin/gcc-4.9','/usr/bin/as','/usr/bin/g++-4.9']
                                                },
                         'disabled_tests'    => ['AUTH-9286','FILE-6310','NETW-3032','HTTP-6641']
       }
