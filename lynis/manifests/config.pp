@@ -194,7 +194,7 @@ class lynis::config {
             onlyif  => "get ENABLED != '\"true\"'",
             changes => [
               # track which key was used to logged in
-              "set ENABLED \"true\"",
+              "set ENABLED '\"true\"'",
             ],
           }
         }
