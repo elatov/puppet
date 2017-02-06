@@ -10,8 +10,13 @@ class audit::params {
                    }
   case $::osfamily {
     'Debian': {
-      $package_name = 'audit'
-      $service_name = 'audit'
+      $package_name = 'auditd'
+      $service_name = 'auditd'
+      $conf_dir     = '/etc/audit'
+      $conf_file    = 'auditd.conf'
+      $rules_dir    = '/etc/audit/rules.d'
+      $rules_file   = 'audit.rules'
+      $settings_os  = {}
     }
     'RedHat': {
       $package_name = 'audit'
