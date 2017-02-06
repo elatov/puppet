@@ -252,7 +252,7 @@ class lynis::config {
       exec { "sysctl --system":
           alias       => "sysctl-system",
           refreshonly => true,
-          path        => ['/usr/bin', '/usr/sbin',],
+          path        => ['/usr/bin', '/sbin',],
         }    
     }
     'RedHat': {
