@@ -230,6 +230,23 @@ class lynis::config {
                                 'enable_lynis_cron' => true,
                                }
         }
+      }
+      
+      if ( $::lynis::settings['tests']['KRNL-6000'] == true ){
+        $::lynis::settings['tests']['KRNL-6000_enabled_options'].each |$key, $value| {
+          #notify{"${value} = ${key}":}
+          augeas { "sysctl-${module_name}-${key}":
+            incl    => "/etc/sysctl.d/80-lynis.conf",
+            context => "/files/etc/sysctl.d/80-lynis.conf",
+            lens    => "Simplevars.lns",
+            onlyif  => "get ${key} != '${value}'",
+            changes => [
+              # track which key was used to logged in
+              "set ${key} ${value}",
+            ],
+            notify => Exec["sysctl-system"],
+          }
+        }
       }    
     }
     'RedHat': {
