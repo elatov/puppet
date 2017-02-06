@@ -23,8 +23,9 @@ class sophos::params {
                    
   case $::osfamily {
     'Debian': {
-      $package_name = 'sophos'
-      $service_name = 'sophos'
+      $service_name = 'sav-protect'
+      $package_preq = ['linux-headers-amd64','linux-source']
+      $settings_os  = {}
     }
     'RedHat': {
 #      $package_name = "sav-linux-free-${settings_all['version']}.tgz"
