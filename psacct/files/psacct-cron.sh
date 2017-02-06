@@ -1,4 +1,5 @@
 #!/bin/sh
+OS=$(uname -s)
 if [ ${OS} = "Linux" ]; then
      if [ -f /etc/redhat-release ]; then
         AC=/bin/ac
