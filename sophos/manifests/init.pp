@@ -12,6 +12,7 @@
 #
 class sophos (
   $package_name       = $::sophos::params::package_name,
+  $package_preq       = $::sophos::params::package_preq,
   $service_name       = $::sophos::params::service_name,
   $install_dir        = $::sophos::params::install_dir,
   $initial_setup      = $::sophos::params::initial_setup,

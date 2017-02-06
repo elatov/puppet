@@ -24,14 +24,14 @@ class sophos::params {
   case $::osfamily {
     'Debian': {
       $service_name = 'sav-protect'
-      $package_preq = ['linux-headers-amd64','linux-source']
+      $package_preq = ["linux-headers-amd64","linux-source"]
       $settings_os  = {}
     }
     'RedHat': {
 #      $package_name = "sav-linux-free-${settings_all['version']}.tgz"
       $service_name = 'sav-protect'
  
-      $package_preq = ['kernel-devel']
+      $package_preq = ["kernel-devel"]
       $settings_os  = {}
     }
     default: {

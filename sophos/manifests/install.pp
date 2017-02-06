@@ -20,7 +20,7 @@ class sophos::install {
   
   # extract the TAR
   if $sophos::initial_setup {
-    ensure_packages("${::sophos::package_preq}",{ 'ensure' => 'present' })
+    ensure_packages($sophos::package_preq,{ 'ensure' => 'present' })
     
 	  exec {"extract-$package_name":
 	    command     => "tar xzf /usr/local/apps/sophos/${package_name} -C ${sophos::setup_dir}",
