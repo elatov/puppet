@@ -186,6 +186,18 @@ class lynis::config {
       }
       if ( $::lynis::settings['tests']['ACCT-9626'] == true ){
         ensure_packages('sysstat',{ensure => 'present'})
+        if ( $::lynis::settings['tests']['ACCT-9626_enable_cron'] == true ){
+          augeas { "sysstat-cron-${module_name}":
+            incl    => "/etc/default/sysstat",
+            context => "/files/etc/default/sysstat",
+            lens    => "Simplevars.lns",
+            onlyif  => "get ENABLED != true",
+            changes => [
+              # track which key was used to logged in
+              "set ENABLED true",
+            ],
+          }
+        }
       }    
     }
     'RedHat': {
