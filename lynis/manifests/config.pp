@@ -147,8 +147,6 @@ class lynis::config {
             ],
             notify => Service["sshd"],
           }
-#         notify {Service["sshd"]:}
-#         notify => Service["sshd"]
         }
         if !empty($::lynis::settings['tests']['SSH-7408_disabled_tests']) {
           $lower_case_disabled_tests = downcase($::lynis::settings['tests']['SSH-7408_disabled_tests'])
@@ -169,6 +167,17 @@ class lynis::config {
 					]
 				}
         
+      }
+      if ( $::lynis::settings['tests']['BANN-7126'] == true ){
+        file { "/etc/issue":
+          source  => 'puppet:///modules/lynis/issue.txt',
+          mode    => '0644'
+        }
+        
+        file { "/etc/issue.net":
+          source  => 'puppet:///modules/lynis/issue.txt',
+          mode    => '0644'
+        }
       }  
     }
     'RedHat': {
