@@ -133,7 +133,31 @@ class lynis::config {
         notify  => Class['my_apache'],
 			}
 			if ( $::lynis::settings['tests']['HTTP-6643'] == true ){  
-       class { 'apache::mod::security': }
+       class { 'apache::mod::security': 
+				 modsec_default_rules => [
+					'base_rules/modsecurity_35_bad_robots.data',
+					'base_rules/modsecurity_35_scanners.data',
+					'base_rules/modsecurity_40_generic_attacks.data',
+					'base_rules/modsecurity_50_outbound.data',
+					'base_rules/modsecurity_50_outbound_malware.data',
+					'base_rules/modsecurity_crs_20_protocol_violations.conf',
+					'base_rules/modsecurity_crs_21_protocol_anomalies.conf',
+					'base_rules/modsecurity_crs_23_request_limits.conf',
+					'base_rules/modsecurity_crs_30_http_policy.conf',
+					'base_rules/modsecurity_crs_35_bad_robots.conf',
+					'base_rules/modsecurity_crs_40_generic_attacks.conf',
+					'base_rules/modsecurity_crs_41_sql_injection_attacks.conf',
+					'base_rules/modsecurity_crs_41_xss_attacks.conf',
+					'base_rules/modsecurity_crs_42_tight_security.conf',
+					'base_rules/modsecurity_crs_45_trojans.conf',
+					'base_rules/modsecurity_crs_47_common_exceptions.conf',
+					'base_rules/modsecurity_crs_49_inbound_blocking.conf',
+					'base_rules/modsecurity_crs_50_outbound.conf',
+					'base_rules/modsecurity_crs_59_outbound_blocking.conf',
+					'base_rules/modsecurity_crs_60_correlation.conf',
+					'base_rules/modsecurity_crs_99_whitelist.conf',
+				]
+       }
       }
       
       if ( $::lynis::settings['tests']['SSH-7408'] == true ){
