@@ -262,9 +262,7 @@ class lynis::config {
 			}
 			
 			if ( $::lynis::settings['tests']['HRDN-7230'] == true ){
-        class {'sophos':
-          initial_setup => true
-        }
+        class {'sophos':}
       }
       
       exec { "sysctl --system":
