@@ -70,6 +70,7 @@ class lynis::params {
                                                                             'UsePrivilegeSeparation'  =>  'sandbox',
                                                                          },
                                                 'PHP-2376'                => true,
+                                                'ACCT-9626'               => true,
                                                },
                         'disabled_tests'    => ['AUTH-9286','FILE-6310','NETW-3032','HTTP-6641']
       }

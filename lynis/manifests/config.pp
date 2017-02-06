@@ -183,7 +183,10 @@ class lynis::config {
         class {'psacct': 
                 override_settings => { 'cron_enabled' => true,}
         }
-      }  
+      }
+      if ( $::lynis::settings['tests']['ACCT-9626'] == true ){
+        ensure_packages('sysstat',{ensure => 'present'})
+      }    
     }
     'RedHat': {
       
