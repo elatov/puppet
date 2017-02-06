@@ -134,7 +134,7 @@ class lynis::config {
 			}
 			if ( $::lynis::settings['tests']['HTTP-6643'] == true ){  
        class { 'apache::mod::security': 
-				 modsec_default_rules => [
+				 activated_rules => [
 					'base_rules/modsecurity_35_bad_robots.data',
 					'base_rules/modsecurity_35_scanners.data',
 					'base_rules/modsecurity_40_generic_attacks.data',
