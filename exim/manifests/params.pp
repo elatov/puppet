@@ -29,7 +29,7 @@ class exim::params {
       $exim_server_template_conf_file  = 'main/02_exim4-config_options'
       $exim_server_settings_os         = { 'config' => { 'dc_eximconfig_configtype' => 'smarthost',
                                                          'dc_other_hostnames'       => "$::fqdn",
-                                                         'dc_local_interfaces'      => "127.0.0.01:$::ipaddress",
+                                                         'dc_local_interfaces'      => "127.0.0.1:$::ipaddress",
                                                          'dc_minimaldns'            => "true",
                                                          'dc_relay_nets'            => '192.168.1.0/24',
                                                          'dc_smarthost'             => 'smtp.gmail.com::587',
