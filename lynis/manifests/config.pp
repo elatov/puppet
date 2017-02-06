@@ -249,8 +249,8 @@ class lynis::config {
         }
       }
       
-			if !empty($::lynis::settings['tests']['KRNL-6000_enabled_options']) {
-				$::lynis::settings['tests']['KRNL-6000_enabled_options'].each |$item| {
+			if !empty($::lynis::settings['tests']['KRNL-6000_disabled_options']) {
+				$::lynis::settings['tests']['KRNL-6000_disabled_options'].each |$item| {
 					if "${item}" == "net.ipv4.tcp_timestamps"{
 						file_line{"disable-sysctl-${item}":
 							path  => "${::lynis::conf_dir}/${::lynis::conf_file}",
@@ -393,8 +393,8 @@ class lynis::config {
           }
         }
       }
-        if !empty($::lynis::settings['tests']['KRNL-6000_enabled_options']) {
-          $::lynis::settings['tests']['KRNL-6000_enabled_options'].each |$item| {
+        if !empty($::lynis::settings['tests']['KRNL-6000_disabled_options']) {
+          $::lynis::settings['tests']['KRNL-6000_disabled_options'].each |$item| {
             if "${item}" == "net.ipv4.tcp_timestamps"{
               file_line{"disable-sysctl-${item}":
 	              path  => "${::lynis::conf_dir}/${::lynis::conf_file}",
