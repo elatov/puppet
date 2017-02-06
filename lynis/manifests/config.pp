@@ -249,6 +249,18 @@ class lynis::config {
         }
       }
       
+			if !empty($::lynis::settings['tests']['KRNL-6000_enabled_options']) {
+				$::lynis::settings['tests']['KRNL-6000_enabled_options'].each |$item| {
+					if "${item}" == "net.ipv4.tcp_timestamps"{
+						file_line{"disable-sysctl-${item}":
+							path  => "${::lynis::conf_dir}/${::lynis::conf_file}",
+							line  => "#config-data=sysctl;${item};0;1;Do not use TCP time stamps;-;category:security;",
+							match => "config-data=sysctl;${item};0;1;Do not use TCP time stamps;-;category:security;",
+						}
+					}
+				}
+			}
+      
       exec { "sysctl --system":
           alias       => "sysctl-system",
           refreshonly => true,
