@@ -56,16 +56,19 @@ class lynis::params {
       $conf_file    = 'default.prf'
       $settings_os  = { 'apt_repo_enabled'  =>  true,
                         'tests'             => {
-                                                'BOOT-5122'           => true,
-                                                'BOOT-5122_user'      => 'admin',
-                                                'BOOT-5122_pdf12_pw'  => 'grub.pbkdf2.sha512.10000.',
-                                                'AUTH-9262'           => true,
-                                                'PKGS-7370'           => true,
-                                                'PKGS-7370_cron'      => 'weekly',
-                                                'HTTP-6640'           => true,
-                                                'HTTP-6640_email'     => 'test@localhost',
-                                                'HTTP-6640_logdir'    => '/var/log/apache2/evasive',
-                                                'HTTP-6643'           => true,
+                                                'BOOT-5122'               => true,
+                                                'BOOT-5122_user'          => 'admin',
+                                                'BOOT-5122_pdf12_pw'      => 'grub.pbkdf2.sha512.10000.',
+                                                'AUTH-9262'               => true,
+                                                'PKGS-7370'               => true,
+                                                'PKGS-7370_cron'          => 'weekly',
+                                                'HTTP-6640'               => true,
+                                                'HTTP-6640_email'         => 'test@localhost',
+                                                'HTTP-6640_logdir'        => '/var/log/apache2/evasive',
+                                                'HTTP-6643'               => true,
+                                                'SSH-7408_enabled_tests'  => { 
+                                                                            'UsePrivilegeSeparation'  =>  'sandbox',
+                                                                         },
                                                },
                         'disabled_tests'    => ['AUTH-9286','FILE-6310','NETW-3032','HTTP-6641']
       }
