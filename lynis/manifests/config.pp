@@ -191,10 +191,10 @@ class lynis::config {
             incl    => "/etc/default/sysstat",
             context => "/files/etc/default/sysstat",
             lens    => "Simplevars.lns",
-            onlyif  => "get ENABLED != true",
+            onlyif  => "get ENABLED != \"true\"",
             changes => [
               # track which key was used to logged in
-              "set ENABLED true",
+              "set ENABLED \"true\"",
             ],
           }
         }
