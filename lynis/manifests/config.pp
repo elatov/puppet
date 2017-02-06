@@ -159,6 +159,16 @@ class lynis::config {
             }
           }
         }
+      }
+      if ( $::lynis::settings['tests']['PHP-2376'] == true ){
+
+				augeas { 'php-allow_url_fopen':
+					context => '/files/etc/php5/apache2/php.ini',
+					changes => [
+					 'set PHP/allow_url_fopen Off',
+					]
+				}
+        
       }  
     }
     'RedHat': {

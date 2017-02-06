@@ -69,6 +69,7 @@ class lynis::params {
                                                 'SSH-7408_enabled_tests'  => { 
                                                                             'UsePrivilegeSeparation'  =>  'sandbox',
                                                                          },
+                                                'PHP-2376'                => true,
                                                },
                         'disabled_tests'    => ['AUTH-9286','FILE-6310','NETW-3032','HTTP-6641']
       }
