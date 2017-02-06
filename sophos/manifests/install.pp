@@ -23,7 +23,7 @@ class sophos::install {
     ensure_packages($sophos::package_preq,{ 'ensure' => 'present' })
     
 	  exec {"extract-$package_name":
-	    command     => "tar xzf /usr/local/apps/sophos/${package_name} -C ${sophos::setup_dir}",
+	    command     => "tar xzf /usr/local/apps/${package_name} -C ${sophos::setup_dir}",
 	    provider    => "shell",
 	#    creates     => "${drive::settings['home_dir']}/drive/bin/drive",
 	    subscribe   => File["get-${package_name}"],
