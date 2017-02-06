@@ -178,6 +178,11 @@ class lynis::config {
           source  => 'puppet:///modules/lynis/issue.txt',
           mode    => '0644'
         }
+      }
+      if ( $::lynis::settings['tests']['ACCT-9622'] == true ){
+        class {'psacct': 
+                override_settings => { 'cron_enabled' => true,}
+        }
       }  
     }
     'RedHat': {

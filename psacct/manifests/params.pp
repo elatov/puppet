@@ -8,8 +8,9 @@ class psacct::params {
   
   case $::osfamily {
     'Debian': {
-      $package_name = 'psacct'
-      $service_name = 'psacct'
+      $package_name = 'acct'
+      $service_name = 'acct'
+      $settings_os  = undef
     }
     'RedHat': {
       $package_name = 'psacct'
