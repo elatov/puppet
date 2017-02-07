@@ -89,6 +89,12 @@ class lynis::params {
       $package_name = 'lynis'
       $service_name = 'lynis'
     }
+    'FreeBSD': {
+      $settings_os  = undef
+      $conf_dir     = '/usr/local/etc/lynis'
+      $conf_file    = 'default.prf'
+      $package_name = 'lynis'
+    }
     default: {
       fail("${::operatingsystem} not supported")
     }  

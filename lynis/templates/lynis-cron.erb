@@ -15,11 +15,16 @@ if [ ${OS} = "Linux" ]; then
         LYNIS=/usr/sbin/lynis
     fi
 elif [ ${OS} = 'FreeBSD' ]; then
-    LYNIS=/usr/sbin/lynis
+    LYNIS=/usr/local/bin/lynis
 fi
 
 # Run Lynis
-${LYNIS} audit system --auditor "${AUDITOR}" --cronjob  --bin-dirs "/bin /sbin /usr/bin /usr/sbin /opt/puppetlabs/bin /var/ossec/bin" > ${REPORT}
+if [ ${OS} = "Linux" ]; then
+	${LYNIS} audit system --auditor "${AUDITOR}" --cronjob  --bin-dirs "/bin /sbin /usr/bin /usr/sbin /opt/puppetlabs/bin /var/ossec/bin" > ${REPORT}
+elif [ ${OS} = 'FreeBSD' ]; then
+    ${LYNIS} audit system --auditor "${AUDITOR}" --cronjob  --bin-dirs "/bin /sbin /usr/bin /usr/sbin /usr/local/bin/ /usr/local/ossec-hids/bin" > ${REPORT}
+fi
+
 #${LYNIS} audit system --auditor "${AUDITOR}" --cronjob > ${REPORT}
 
 # Optional step: Move report file if it exists

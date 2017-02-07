@@ -433,7 +433,17 @@ class lynis::config {
 					path        => ['/usr/bin', '/usr/sbin',],
 				}
     }
+    
+    'FreeBSD': {
+      if ( $::lynis::settings['cron_enabled'] == true ){
 
+        file {'/etc/periodic/weekly/500.lynis':
+          ensure  => 'present',
+          content => template('lynis/lynis-cron.erb'),
+          mode    => '0755',
+        }
+      }
+    }
     default: {
       fail("${::operatingsystem} not supported")
     }  

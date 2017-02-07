@@ -39,6 +39,9 @@ class lynis::install {
 			                                                  }
 			                )
     }
+    'FreeBSD': {
+      ensure_resource ('package',$::lynis::package_name,{ 'ensure'  => 'present',})
+    }
     default: {
       fail("${::operatingsystem} not supported")
     }  
