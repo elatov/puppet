@@ -7,10 +7,12 @@ if [ ${OS} = "Linux" ]; then
      if [ -f /etc/redhat-release ]; then
         /sbin/aureport -x --summary | /usr/bin/head -20 
      elif [ -f /etc/debian_version ]; then
+     	W="nothing"
         # do nothing
         # due to this bug https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=841272
     fi
 elif [ ${OS} = 'FreeBSD' ]; then
+	W="nothing"
     # do nothing
 fi
 
