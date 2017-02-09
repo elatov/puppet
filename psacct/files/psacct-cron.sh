@@ -6,7 +6,6 @@ if [ ${OS} = "Linux" ]; then
         LAST=/bin/last
         LASTCOMM=/bin/lastcomm
         AWK=/bin/awk
-        AWK=/bin/awk
         SORT=/bin/sort
         UNIQ=/bin/uniq
         HEAD=/bin/head
@@ -26,9 +25,13 @@ elif [ ${OS} = 'FreeBSD' ]; then
 fi
 $ECHO -e "User stats\n"
 $AC -p
+$ECHO -e "\n"
 $ECHO -e "elatov commands\n"
 $LASTCOMM elatov | $AWK '{print $1}' | $SORT | $UNIQ -c  | $SORT -nr | $HEAD
+$ECHO -e "\n"
 $ECHO -e "User Logins\n"
-$LAST | $AWK '{print $1}' | $SORT | $UNIQ -c  | $SORT -nr | $HEAD
+$LAST | $HEAD -n -2| $AWK '{print $1}' | $SORT | $UNIQ -c  | $SORT -nr | $HEAD
+$ECHO -e "\n"
 $ECHO -e "Host Logins\n"
-$LAST | $AWK '{print $3}' | $SORT | $UNIQ -c  | $SORT -nr | $HEAD
+$LAST | $HEAD -n -2 | $AWK '{print $3}' | $SORT | $UNIQ -c  | $SORT -nr | $HEAD
+$ECHO -e "\n"
