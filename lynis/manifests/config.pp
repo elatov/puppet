@@ -427,6 +427,14 @@ class lynis::config {
 	          }
 	        }
 	      }
+	      if !empty($::lynis::settings['disabled_tests']) {
+          $::lynis::settings['disabled_tests'].each |$item| {
+            file_line{"${module_name}-conf-${item}":
+              path => "${::lynis::conf_dir}/${::lynis::conf_file}",
+              line => "skip-test=${item}",
+            }
+          }
+      }
 				exec { "sysctl --system":
 					alias       => "sysctl-system",
 					refreshonly => true,
