@@ -23,6 +23,7 @@ class lynis::params {
                                                                           'TCPKeepAlive',
                                                                           'UseDNS'
                                                                          ],
+                                           'AUTH-9328'               =>  true,
                                           }
                       
                     }
@@ -66,7 +67,7 @@ class lynis::params {
     'RedHat': {
       $settings_os  =  { 
                       'yum_repo_enabled' =>  true,
-                      'tests'         =>  { 'AUTH-9328'               =>  true,
+                      'tests'         =>  { 
                                             'FILE-6310'               =>  true,
                                             'STRG-1840'               =>  true,
                                             'STRG-1846'               =>  true,
@@ -115,7 +116,7 @@ class lynis::params {
     }
     'FreeBSD': {
       $settings_os  = {'tests'  => {
-                                    'SHLL-6202' => true
+                                    'SHLL-6202' => true,
                                    }
       }
       $conf_dir     = '/usr/local/etc/lynis'

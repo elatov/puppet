@@ -485,6 +485,20 @@ class lynis::config {
 					}
 				}
 			}
+			
+			if ( $::lynis::settings['tests']['AUTH-9328'] == true ){
+        augeas { "${module_name}-login-defs":
+          incl    => "/etc/login.defs",
+          context => "/files/etc/login.defs",
+          lens    => "Login_defs.lns",
+          onlyif  => "get UMASK != 027",
+          changes => [
+           "set UMASK 027",
+          ],
+        }
+        
+      }
+			
     }
     default: {
       fail("${::operatingsystem} not supported")
