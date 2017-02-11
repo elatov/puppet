@@ -472,7 +472,7 @@ class lynis::config {
 					context => "/files/etc/ttys",
 					lens    => "Hosts.lns",
 					changes => [
-					  "set *[ipaddr = 'console']/alias[3] secure"
+					  "set *[ipaddr = 'console']/alias[3] insecure"
 					],
 				}
       }
