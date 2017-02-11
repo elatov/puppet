@@ -114,7 +114,10 @@ class lynis::params {
       $service_name = 'lynis'
     }
     'FreeBSD': {
-      $settings_os  = undef
+      $settings_os  = {'tests'  => {
+                                    'SHLL-6202' => true
+                                   }
+      }
       $conf_dir     = '/usr/local/etc/lynis'
       $conf_file    = 'default.prf'
       $package_name = 'lynis'

@@ -451,6 +451,31 @@ class lynis::config {
           mode    => '0755',
         }
       }
+      
+      if ( $::lynis::settings['tests']['SHLL-6202'] == true ){
+#          augeas { "sysctl-${module_name}-${key}":
+#            incl    => "/etc/ttys",
+#            context => "/files/etc/ttys",
+#            lens    => "Hosts.lns",
+#            changes => [
+#              # track which key was used to logged in
+#              "set 01/ipaddr console",
+#              "set 01/canonical none",
+#              "set 01/alias[1] unknown",
+#              "set 01/alias[2] off",
+#              "set 01/alias[3] insecure",
+#            ],
+#            onlyif  => "get ${key} != '${value}'",
+#          }
+				augeas { "ttys-${module_name}-insecure":
+					incl    => "/etc/ttys",
+					context => "/files/etc/ttys",
+					lens    => "Hosts.lns",
+					changes => [
+					  "set *[ipaddr = 'console']/alias[3] secure"
+					],
+				}
+      }
     }
     default: {
       fail("${::operatingsystem} not supported")
