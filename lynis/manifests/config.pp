@@ -549,6 +549,15 @@ class lynis::config {
                 override_settings => { 'cron_enabled' => true,}
         }
       }
+      
+			if ( $::lynis::settings['tests']['HRDN-7222'] == true ){
+				$::lynis::settings['tests']['HRDN-7222_binaries'].each |$item| {
+					file { "compiler-${module_name}-${item}":
+						path    => "${item}",
+						mode    => '0750'
+					}
+				}
+			}
 			
     }
     default: {

@@ -118,6 +118,12 @@ class lynis::params {
       $settings_os  = {'tests'  => {
                                     'SHLL-6202' => true,
                                     'ACCT-2754' => true,
+                                    'HRDN-7222'                 =>  true,
+                                    'HRDN-7222_binaries'        => [
+                                                                    '/usr/bin/as',
+                                                                    '/usr/local/bin/as',
+                                                                    '/usr/local/bin/gcc47',
+                                                                   ]
                                    }
       }
       $conf_dir     = '/usr/local/etc/lynis'
