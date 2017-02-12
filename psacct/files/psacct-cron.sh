@@ -41,7 +41,7 @@ if [ ${OS} = "Linux" ]; then
 elif [ ${OS} = 'FreeBSD' ]; then
 # setup variables
 
-	AC=/usr/bin/ac
+	AC=/usr/sbin/ac
 	LAST=/usr/bin/last
 	LASTCOMM=/usr/bin/lastcomm
 	AWK=/usr/bin/awk
@@ -54,15 +54,15 @@ elif [ ${OS} = 'FreeBSD' ]; then
 
 # run the actual commands
 	
-	$ECHO "User stats\n"
+	$ECHO "User stats"
 	$AC -p
-	$ECHO "\n"
-	$ECHO "elatov commands\n"
+	$ECHO ""
+	$ECHO "elatov commands"
 	$LASTCOMM elatov | $AWK '{print $1}' | $SORT | $UNIQ -c  | $SORT -nr | $HEAD
-	$ECHO "\n"
+	$ECHO ""
 	$ECHO "User Logins\n"
-	$LAST | $TAIL -r | $sed '1,2d'|$TAIL -r | $AWK '{print $1}' | $SORT | $UNIQ -c  | $SORT -nr | $HEAD
-	$ECHO "\n"
-	$ECHO "Host Logins\n"
-	$LAST | $TAIL -r | $sed '1,2d'|$TAIL -r | $AWK '{print $3}' | $SORT | $UNIQ -c  | $SORT -nr | $HEAD
+	$LAST | $TAIL -r | $SED '1,2d'|$TAIL -r | $AWK '{print $1}' | $SORT | $UNIQ -c  | $SORT -nr | $HEAD
+	$ECHO ""
+	$ECHO "Host Logins"
+	$LAST | $TAIL -r | $SED '1,2d'|$TAIL -r | $AWK '{print $3}' | $SORT | $UNIQ -c  | $SORT -nr | $HEAD
 fi
