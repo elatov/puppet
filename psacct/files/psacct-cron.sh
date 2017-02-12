@@ -51,6 +51,7 @@ elif [ ${OS} = 'FreeBSD' ]; then
 	ECHO=/bin/echo
 	TAIL=/usr/bin/tail
 	SED=/usr/bin/sed
+	GREP=/usr/bin/grep
 
 # run the actual commands
 	
@@ -60,9 +61,9 @@ elif [ ${OS} = 'FreeBSD' ]; then
 	$ECHO "elatov commands"
 	$LASTCOMM elatov | $AWK '{print $1}' | $SORT | $UNIQ -c  | $SORT -nr | $HEAD
 	$ECHO ""
-	$ECHO "User Logins\n"
+	$ECHO "User Logins"
 	$LAST | $TAIL -r | $SED '1,2d'|$TAIL -r | $AWK '{print $1}' | $SORT | $UNIQ -c  | $SORT -nr | $HEAD
 	$ECHO ""
 	$ECHO "Host Logins"
-	$LAST | $TAIL -r | $SED '1,2d'|$TAIL -r | $AWK '{print $3}' | $SORT | $UNIQ -c  | $SORT -nr | $HEAD
+	$LAST | $TAIL -r | $SED '1,2d'|$TAIL -r |$GREP -vE 'boot|shutdown|tty'| $AWK '{print $3}' | $SORT | $UNIQ -c  | $SORT -nr | $HEAD
 fi
