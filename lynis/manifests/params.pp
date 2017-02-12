@@ -132,7 +132,7 @@ class lynis::params {
                                                                     'net.inet.ip.process_options'             => '0',
                                                                     'net.inet.ip.random_id'                   => '1',
                                                                     'net.inet.ip.redirect '                   => '0',
-                                                                    'net.inet.tcp.always_keepalive'           => '1',
+                                                                    'net.inet.tcp.always_keepalive'           => '0',
                                                                     'net.inet.tcp.blackhole'                  => '2',
                                                                     'net.inet.tcp.drop_synfin'                => '1',
                                                                     'net.inet.tcp.icmp_may_rst'               => '0',
