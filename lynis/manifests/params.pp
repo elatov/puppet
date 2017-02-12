@@ -116,14 +116,39 @@ class lynis::params {
     }
     'FreeBSD': {
       $settings_os  = {'tests'  => {
-                                    'SHLL-6202' => true,
-                                    'ACCT-2754' => true,
-                                    'HRDN-7222'                 =>  true,
-                                    'HRDN-7222_binaries'        => [
-                                                                    '/usr/bin/as',
-                                                                    '/usr/local/bin/as',
-                                                                    '/usr/local/bin/gcc47',
-                                                                   ]
+                                    'SHLL-6202'               => true,
+                                    'ACCT-2754'               => true,
+                                    'HRDN-7222'               => true,
+                                    'HRDN-7222_binaries'      => [
+                                                                  '/usr/bin/as',
+                                                                  '/usr/local/bin/as',
+                                                                  '/usr/local/bin/gcc47',
+                                                                 ],
+                                    'KRNL-6000'                =>  true,
+                                    'KRNL-6000_enabled_options'=>  {
+                                                                    'hw.kbd.keymap_restrict_change'           => '4',
+                                                                    'net.inet.icmp.drop_redirect'             => '1',
+                                                                    'net.inet.ip.check_interface'             => '1',
+                                                                    'net.inet.ip.process_options'             => '0',
+                                                                    'net.inet.ip.random_id'                   => '1',
+                                                                    'net.inet.ip.redirect '                   => '0',
+                                                                    'net.inet.tcp.always_keepalive'           => '1',
+                                                                    'net.inet.tcp.blackhole'                  => '2',
+                                                                    'net.inet.tcp.drop_synfin'                => '1',
+                                                                    'net.inet.tcp.icmp_may_rst'               => '0',
+                                                                    'net.inet.tcp.nolocaltimewait'            => '1',
+                                                                    'net.inet.tcp.path_mtu_discovery'         => '0',
+                                                                    'net.inet.udp.blackhole'                  => '1',
+                                                                    'net.inet6.icmp6.rediraccept'             => '0',
+                                                                    'net.inet6.ip6.redirect'                  => '0',
+                                                                    'security.bsd.hardlink_check_gid'         => '1',
+                                                                    'security.bsd.hardlink_check_uid'         => '1',
+                                                                    'security.bsd.see_other_gids'             => '0',
+                                                                    'security.bsd.see_other_uids'             => '0',
+                                                                    'security.bsd.stack_guard_page'           => '1',
+                                                                    'security.bsd.unprivileged_proc_debug'    => '0',
+                                                                    'security.bsd.unprivileged_read_msgbuf'   => '0',
+                                                                    },
                                    }
       }
       $conf_dir     = '/usr/local/etc/lynis'
