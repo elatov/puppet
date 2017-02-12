@@ -505,7 +505,7 @@ class lynis::config {
           context => "/files/etc/fstab",
           lens    => "Fstab.lns",
           changes => [
-           "ins 01 after *[last()]",
+#           "ins 01 after *[last()]",
            "set 01/spec tmpfs",
            "set 01/file /tmp",
            "set 01/vfstype tmpfs",
