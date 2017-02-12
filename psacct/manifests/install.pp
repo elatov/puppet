@@ -17,6 +17,7 @@ class psacct::install {
 			} ->
 			exec { "${module_name}-accton":
 			 command => "/usr/sbin/accton /var/account/acct",
+			 unless  => "/bin/test -s /var/account/acct"
 			}
 		}
 		default: {
