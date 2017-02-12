@@ -11,7 +11,7 @@ if [ ${OS} = "Linux" ]; then
         HEAD=/bin/head
         ECHO=/bin/echo
      elif [ -f /etc/debian_version ]; then
-        AC=/usr/bin/act
+        AC=/usr/bin/ac
         LAST=/usr/bin/last
         LASTCOMM=/usr/bin/lastcomm
         AWK=/usr/bin/awk
@@ -21,7 +21,14 @@ if [ ${OS} = "Linux" ]; then
         ECHO=/bin/echo
     fi
 elif [ ${OS} = 'FreeBSD' ]; then
-    LYNIS=/usr/sbin/lynis
+	AC=/usr/bin/ac
+	LAST=/usr/bin/last
+	LASTCOMM=/usr/bin/lastcomm
+	AWK=/usr/bin/awk
+	SORT=/usr/bin/sort
+	UNIQ=/usr/bin/uniq
+	HEAD=/usr/bin/head
+	ECHO=/bin/echo
 fi
 $ECHO -e "User stats\n"
 $AC -p

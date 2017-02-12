@@ -3,8 +3,25 @@
 # This class is called from psacct for install.
 #
 class psacct::install {
-
-  package { $::psacct::package_name:
-    ensure => present,
-  }
+  
+	case $::osfamily {
+		/(?i:Debian|Redhat)/:{
+			package { $::psacct::package_name:
+			 ensure => present,
+			}
+		}
+		/(?i:FreeBSD)/:{
+			file {'/var/account/acct':
+				ensure  => 'present',
+				mode    => '0600',
+			} ->
+			exec { "${module_name}-accton":
+			 command => "/usr/sbin/accton /var/account/acct",
+			}
+		}
+		default: {
+		  fail("${::operatingsystem} not supported")
+		}  
+	}
+	
 }

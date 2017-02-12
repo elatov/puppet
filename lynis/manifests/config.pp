@@ -543,6 +543,12 @@ class lynis::config {
           }
         }
       }
+      
+      if ( $::lynis::settings['tests']['ACCT-2754'] == true ){
+        class {'psacct': 
+                override_settings => { 'cron_enabled' => true,}
+        }
+      }
 			
     }
     default: {

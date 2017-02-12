@@ -17,6 +17,11 @@ class psacct::params {
       $service_name = 'psacct'
       $settings_os  = undef
     }
+    'FreeBSD': {
+      $package_name = 'psacct'
+      $service_name = 'psacct'
+      $settings_os  = undef
+    }
     default: {
       fail("${::operatingsystem} not supported")
     }

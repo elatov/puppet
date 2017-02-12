@@ -117,6 +117,7 @@ class lynis::params {
     'FreeBSD': {
       $settings_os  = {'tests'  => {
                                     'SHLL-6202' => true,
+                                    'ACCT-2754' => true,
                                    }
       }
       $conf_dir     = '/usr/local/etc/lynis'
