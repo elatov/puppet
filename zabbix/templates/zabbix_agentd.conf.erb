@@ -290,9 +290,11 @@ AllowRoot=<%= scope['zabbix::agent::settings']['allow_root'] -%>
 # Mandatory: no
 # Default:
 # Include=
-
+<%- if scope.lookupvar('::osfamily') == 'FreeBSD' -%>
+Include=<%= scope['zabbix::agent::freebsd_custom_conf_dir'] %>
+<% else -%>
 Include=<%= scope['zabbix::agent::custom_conf_dir'] %>
-
+<% end -%>
 # Include=/usr/local/etc/zabbix_agentd.userparams.conf
 # Include=/usr/local/etc/zabbix_agentd.conf.d/
 # Include=/usr/local/etc/zabbix_agentd.conf.d/*.conf
