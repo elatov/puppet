@@ -37,7 +37,7 @@ class lynis::config {
 #        } 
         
         exec { "update-grub2":
-          alias       => "update-grub",
+          alias       => "update-grub2",
           refreshonly => true,
           path        => ['/bin', '/usr/bin', '/usr/sbin', ],
         }
