@@ -499,6 +499,24 @@ class lynis::config {
         
       }
 			
+			if ( $::lynis::settings['tests']['FILE-6310'] == true ){
+        augeas { "${module_name}-fstab-tmpfs":
+          incl    => "/etc/fstab",
+          context => "/files/etc/fstab",
+          lens    => "Fstab.lns",
+          changes => [
+           "ins opt after *[spec = 'linproc']/opt[last()]",
+           "set *[spec = 'tmpfs'][file = '/tmp'][vfstype = 'tmpfs']/opt[1] rw",
+           "set *[spec = 'tmpfs'][file = '/tmp'][vfstype = 'tmpfs']/opt[2] nosuid",
+           "set *[spec = 'tmpfs'][file = '/tmp'][vfstype = 'tmpfs']/opt[3] noexec",
+           "set *[spec = 'tmpfs'][file = '/tmp'][vfstype = 'tmpfs']/opt[4] mode=01777",
+           "set *[spec = 'tmpfs'][file = '/tmp'][vfstype = 'tmpfs']/dump 0",
+           "set *[spec = 'tmpfs'][file = '/tmp'][vfstype = 'tmpfs']/passno 0",
+          ],
+          onlyif     => "match *[spec = 'tmpfs'][file = '/tmp'][vfstype = 'tmpfs'] size == 0",
+        }
+      }
+			
     }
     default: {
       fail("${::operatingsystem} not supported")

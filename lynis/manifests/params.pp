@@ -24,6 +24,7 @@ class lynis::params {
                                                                           'UseDNS'
                                                                          ],
                                            'AUTH-9328'               =>  true,
+                                           'FILE-6310'               =>  true,
                                           }
                       
                     }
@@ -68,7 +69,6 @@ class lynis::params {
       $settings_os  =  { 
                       'yum_repo_enabled' =>  true,
                       'tests'         =>  { 
-                                            'FILE-6310'               =>  true,
                                             'STRG-1840'               =>  true,
                                             'STRG-1846'               =>  true,
                                             'NETW-3032'               =>  true,
