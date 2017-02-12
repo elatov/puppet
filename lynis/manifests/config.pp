@@ -510,7 +510,7 @@ class lynis::config {
            "set 01/file /tmp",
            "set 01/vfstype tmpfs",
            "set 01/opt[1] rw",
-#           "set 01/opt[2] nosuid",
+           "set 01/opt[2] nosuid",
 #           "set 01/opt[3] noexec",
 #           "set 01/opt[4] mode=01777",
            "set 01/dump 0",
