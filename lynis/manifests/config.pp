@@ -505,7 +505,7 @@ class lynis::config {
           context => "/files/etc/fstab",
           lens    => "Fstab.lns",
           changes => [
-           "ins opt after *[spec = 'linproc']/opt[last()]",
+           "ins 01 after *[last()]",
            "set *[spec = 'tmpfs'][file = '/tmp'][vfstype = 'tmpfs']/opt[1] rw",
            "set *[spec = 'tmpfs'][file = '/tmp'][vfstype = 'tmpfs']/opt[2] nosuid",
            "set *[spec = 'tmpfs'][file = '/tmp'][vfstype = 'tmpfs']/opt[3] noexec",
