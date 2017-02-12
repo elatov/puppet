@@ -516,7 +516,7 @@ class lynis::config {
            "set 01/dump 0",
            "set 01/passno 0",
           ],
-          onlyif  => "match *[file = /tmp] size == 0",
+          onlyif  => "match *[file = '/tmp'] size == 0",
         }
       }
 			
