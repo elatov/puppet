@@ -34,7 +34,7 @@ class psacct::config {
     'FreeBSD': {
       if ( $::psacct::settings['cron_enabled'] == true ){
 
-        file { "/etc/periodic.monthly/400.psacct":
+        file { "/etc/periodic/monthly/400.psacct":
           ensure  => 'present',
           source  => 'puppet:///modules/psacct/psacct-cron.sh',
           mode    => '0750',
