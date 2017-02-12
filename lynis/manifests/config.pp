@@ -520,6 +520,29 @@ class lynis::config {
           onlyif  => "match *[file = '/tmp'] size == 0",
         }
       }
+      
+      if ( $::lynis::settings['tests']['SSH-7408'] == true ){
+        $::lynis::settings['tests']['SSH-7408_enabled_tests'].each |$key, $value| {
+          #notify{"${value} = ${key}":}
+          augeas { "sshd_config-${key}":
+            context => "/files/etc/ssh/sshd_config",
+            changes => [
+              # track which key was used to logged in
+              "set ${key} ${value}",
+            ],
+            notify => Service["sshd"],
+          }
+        }
+        if !empty($::lynis::settings['tests']['SSH-7408_disabled_tests']) {
+          $lower_case_disabled_tests = downcase($::lynis::settings['tests']['SSH-7408_disabled_tests'])
+          $lower_case_disabled_tests.each |$item| {
+            file_line{"skip-test-${item}":
+              path => "${::lynis::conf_dir}/${::lynis::conf_file}",
+              line => "skip-test=SSH-7408:${item}",
+            }
+          }
+        }
+      }
 			
     }
     default: {
