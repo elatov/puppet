@@ -50,6 +50,7 @@ class lynis::params {
                                                                               'UsePrivilegeSeparation'  =>  'sandbox',
                                                                              },
                                                 'PHP-2376'                => true,
+                                                'ACCT-9622'               => true,
                                                 'ACCT-9626'               => true,
                                                 'ACCT-9626_enable_cron'   => true,
                                               'KRNL-6000_enabled_options' =>  {
