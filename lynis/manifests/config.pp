@@ -505,7 +505,7 @@ class lynis::config {
           context => "/files/etc/fstab",
           lens    => "Fstab.lns",
           changes => [
-           "ins 01 after /files/etc/fstab/*[last()]",
+           "ins 01 after *[last()]",
            "set 01/spec tmpfs",
            "set 01/file /tmp",
            "set 01/vfstype tmpfs",
@@ -516,7 +516,7 @@ class lynis::config {
            "set 01/dump 0",
            "set 01/passno 0",
           ],
-          onlyif  => "match *[file = '/tmp'] size == 0",
+#          onlyif  => "match *[file = /tmp] size == 0",
         }
       }
 			
