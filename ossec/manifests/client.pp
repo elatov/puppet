@@ -39,10 +39,9 @@ inherits ossec::params {
   if !($override_settings == undef){
     validate_hash($override_settings)
   }
-  # Merge settings with override-hash even if it's empty
-  $settings = deep_merge($default_settings, $override_settings)
+
   
-  if ($settings['enable_sophos'] == true){
+  if ($override_settings['enable_sophos'] == true){
     $sophos_logs = {
                     'config'        => { 'logs' => { '/var/log/sophos-av/savd.log'        => 'syslog',
                                                      '/var/log/sophos-av/sav-protect.log' => 'syslog',
@@ -50,8 +49,12 @@ inherits ossec::params {
                                                     }
                                        }
                    }
-    $more_settings = deep_merge($settings,$sophos_logs)
-    $settings = $more_settings
+    $more_settings = deep_merge($override_settings,$sophos_logs)
+    # Merge settings with override-hash even if it's empty
+    $settings = deep_merge($default_settings, $more_settings)
+  }else{
+    # Merge settings with override-hash even if it's empty
+    $settings = deep_merge($default_settings, $override_settings)
   }
   
 #  notify {"end hash looks like this ${settings}":}
