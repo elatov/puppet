@@ -5,9 +5,10 @@
 #
 class ossec::params {
 
-	$ossec_server_settings_all	=	{ 'config'    => { 'email_to'     => "user@${::fqdn}",
-                                                   'smtp_server'  => '127.0.0.1',
-                                                   'email_from'   => "ossecm@${::domain}",}
+	$ossec_server_settings_all	=	{ 'config'        => { 'email_to'     => "user@${::fqdn}",
+                                                       'smtp_server'  => '127.0.0.1',
+                                                       'email_from'   => "ossecm@${::domain}",},
+                                  'enable_sophos' => false,
 										            }
 										
 	$ossec_client_settings_all	=	{ 'server_ip'	    => $::ipaddress,

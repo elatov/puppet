@@ -8,7 +8,6 @@ class ossec::client::config {
     User <| title == "${ossec::client::settings['add_user']}" |> { groups +> ["ossec"] }
   }
   
-  
   file { $ossec::client::config_dir:
     ensure  => 'directory',
   }
