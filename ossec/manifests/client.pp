@@ -50,7 +50,8 @@ inherits ossec::params {
                                                     }
                                        }
                    }
-    $settings = merge($settings,$sophos_logs)
+    $more_settings = deep_merge($settings,$sophos_logs)
+    $settings = $more_settings
   }
   
 #  notify {"end hash looks like this ${settings}":}
