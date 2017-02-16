@@ -2,10 +2,11 @@
 OS=$(uname -s)
 
 /sbin/aureport -au
-/sbin/aureport -l
+/sbin/aureport -x --summary | /usr/bin/head -20
+
 if [ ${OS} = "Linux" ]; then
      if [ -f /etc/redhat-release ]; then
-        /sbin/aureport -x --summary | /usr/bin/head -20
+        /sbin/aureport -l
         /sbin/aureport -f --summary | /usr/bin/head -20 
      elif [ -f /etc/debian_version ]; then
      	W="nothing"
