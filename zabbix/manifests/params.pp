@@ -23,6 +23,7 @@ class zabbix::params {
 			                                          'version'                => '3.0',
 			                                          'mysql_root_user'        => 'root',
                                                 'mysql_root_pw'          => 'password',
+                                                'sshkeylocation'         => '/var/run/.ssh',
 			                                        }
 			### Client/Agent
 			$agent_zabbix_config_dir             = '/etc/zabbix'
