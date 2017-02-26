@@ -387,7 +387,13 @@ class lynis::config {
       }
       
       if ( $::lynis::settings['tests']['HRDN-7230'] == true ){
-        class {'sophos':}
+        if !empty($::lynis::settings['tests']['HRDN-7230_soph_settings']['override_settings']) {
+          class {'sophos':
+            override_settings => $::lynis::settings['tests']['HRDN-7230_soph_settings']['override_settings'],             
+          }
+        }else {
+          class {'sophos':}
+        }
       }
       
       if ( $::lynis::settings['tests']['KRNL-6000'] == true ){

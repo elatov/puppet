@@ -62,7 +62,15 @@ class lynis::params {
                                                 'HRDN-7222_binaries'      => ['/usr/bin/gcc-4.9',
                                                                               '/usr/bin/as',
                                                                               '/usr/bin/g++-4.9'
-                                                                             ]
+                                                                             ],
+                                                'HRDN-7230_soph_settings' => {
+                                                                              'override_settings' => {
+                                                                                                    'weekly_job_parameters' => {
+                                                                                                                                'exclude' => 'tmp',
+                                                                                                    }
+                                                                              }
+                                                }
+                                                                            
                                                },
                         'disabled_tests'    => ['AUTH-9286','FILE-6310','NETW-3032','HTTP-6641']
       }
