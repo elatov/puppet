@@ -63,6 +63,7 @@ class lynis::params {
                                                                               '/usr/bin/as',
                                                                               '/usr/bin/g++-4.9'
                                                                              ],
+                                                'HRDN-7230'               =>  true,                                                                             
                                                 'HRDN-7230_soph_settings' => {
                                                                               'override_settings' => {
                                                                                                     'weekly_job_parameters' => {
