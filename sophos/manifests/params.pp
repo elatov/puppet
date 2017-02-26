@@ -25,14 +25,46 @@ class sophos::params {
     'Debian': {
       $service_name = 'sav-protect'
       $package_preq = ["linux-headers-amd64","linux-source"]
-      $settings_os  = {}
+      $settings_os  = {
+                        'weekly_job_parameters' => {
+                                                    'scanHardDrives'          =>  'yes',
+                                                    'scanOpticalDrives'       =>  'no',
+                                                    'scanRemovableDevices'    =>  'no',
+                                                    'scanNetworkFilesystems'  =>  'no',
+                                                    'include'                 =>  '/',
+                                                    'excludeExtension'        =>  'deb',
+                                                    'scanArchives'            =>  '1',
+                                                    'scanLevel'               =>  'normal',
+                                                    'disinfect'               =>  'disable',
+                                                    'threatAction'            =>  'donothing',
+                                                    'day'                     =>  '7',
+                                                    'time'                    =>  '01:00',
+                                                    'exclude'                 =>  '/tmp',  
+                        }
+      }
     }
     'RedHat': {
 #      $package_name = "sav-linux-free-${settings_all['version']}.tgz"
       $service_name = 'sav-protect'
  
       $package_preq = ["kernel-devel"]
-      $settings_os  = {}
+      $settings_os  = {
+                        'weekly_job_parameters' => {
+                                                    'scanHardDrives'          =>  'yes',
+                                                    'scanOpticalDrives'       =>  'no',
+                                                    'scanRemovableDevices'    =>  'no',
+                                                    'scanNetworkFilesystems'  =>  'no',
+                                                    'include'                 =>  '/',
+                                                    'excludeExtension'        =>  'rpm',
+                                                    'scanArchives'            =>  '1',
+                                                    'scanLevel'               =>  'normal',
+                                                    'disinfect'               =>  'disable',
+                                                    'threatAction'            =>  'donothing',
+                                                    'day'                     =>  '7',
+                                                    'time'                    =>  '01:00',
+                                                    'exclude'                 =>  '/tmp',  
+                        }
+      }
     }
     default: {
       fail("${::operatingsystem} not supported")

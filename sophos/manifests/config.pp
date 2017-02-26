@@ -47,7 +47,7 @@ class sophos::config {
                            )
                            
           file { "${so_weekjob_file}":
-            source  => 'puppet:///modules/sophos/weekly_job_deb.conf',
+            content => template('sophos/weekly_job.erb'),
             mode    => '0600',
             require => File["${so_jobs_dir}"]
           }
@@ -109,7 +109,7 @@ class sophos::config {
 												   )
 												   
 	        file { "${so_weekjob_file}":
-	          source  => 'puppet:///modules/sophos/weekly_job_cent.conf',
+	          content => template('sophos/weekly_job.erb'),
 	          mode    => '0600',
 	          require => File["${so_jobs_dir}"]
 	        }
