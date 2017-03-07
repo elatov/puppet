@@ -35,7 +35,7 @@ day=<%= scope['sophos::settings']['weekly_job_parameters']['day'] %>
 time=<%= scope['sophos::settings']['weekly_job_parameters']['time'] %>
 <% end -%>
 <% if scope['sophos::settings']['weekly_job_parameters']['exclude'] -%>
-	<% scope['sophos::settings']['weekly_job_parameters']['exclude'].each do |exclude| -%>
+<% scope['sophos::settings']['weekly_job_parameters']['exclude'].each do |exclude| -%>
 exclude=<%=exclude %>
-	<% end -%>
+<% end -%>
 <% end -%>
