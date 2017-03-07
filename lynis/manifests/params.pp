@@ -67,7 +67,7 @@ class lynis::params {
                                                 'HRDN-7230_soph_settings' => {
                                                                               'override_settings' => {
                                                                                                     'weekly_job_parameters' => {
-                                                                                                                                'exclude' => 'tmp',
+                                                                                                                                'exclude' => ["/tmp"],
                                                                                                     }
                                                                               }
                                                 }
