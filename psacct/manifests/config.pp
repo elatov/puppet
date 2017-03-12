@@ -9,25 +9,39 @@ class psacct::config {
       if ( $::psacct::settings['cron_enabled'] == true ){
         ensure_packages('anacron',{ensure => 'present'})
 
-        file { "/etc/cron.monthly/psacct":
+        file { "/usr/local/bin/psacct":
           ensure  => 'present',
           source  => 'puppet:///modules/psacct/psacct-cron.sh',
           mode    => '0750',
           require => Package['anacron'],
           links   => 'follow',
-        }
+        } ->
+				cron { 'pssacct':
+					command => '[‘$(date +%d -d tomorrow)’ == ’01’ ] && /usr/local/bin/psacct',
+					user    => 'root',
+					hour    => ['23'],
+					minute  => '20',
+          monthday  => ['28-32'],
+				}
       }
     }
     'RedHat': {
       if ( $::psacct::settings['cron_enabled'] == true ){
         ensure_packages('crontabs',{ensure => 'present'})
 
-        file { "/etc/cron.monthly/psacct":
+        file { "/usr/local/bin/psacct":
           ensure  => 'present',
           source  => 'puppet:///modules/psacct/psacct-cron.sh',
           mode    => '0750',
           require => Package['crontabs'],
           links   => 'follow',
+        }->
+        cron { 'pssacct':
+          command => '[‘$(date +%d -d tomorrow)’ == ’01’ ] && /usr/local/bin/psacct',
+          user    => 'root',
+          hour    => ['23'],
+          minute  => '20',
+          monthday  => ['28-32'],
         }
       }
     }
