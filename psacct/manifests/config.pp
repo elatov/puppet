@@ -21,7 +21,7 @@ class psacct::config {
 					user    => 'root',
 					hour    => ['23'],
 					minute  => '20',
-          monthday  => ['28-32'],
+          monthday  => ['28-31'],
 				}
       }
     }
@@ -41,7 +41,7 @@ class psacct::config {
           user    => 'root',
           hour    => ['23'],
           minute  => '20',
-          monthday  => ['28-32'],
+          monthday  => ['28-31'],
         }
       }
     }
