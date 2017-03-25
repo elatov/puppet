@@ -3,9 +3,7 @@
   <Files wp-login.php>
      Order Deny,Allow
 	<% if scope['wordpress::settings']['wp_web_settings']['apache_deny_from'] -%>
-		<% scope['wordpress::settings']['wp_web_settings']['apache_deny_from'].each do |deny| -%>
-	 Deny from <%= deny %>
-		<% end -%>
+	 Deny from <%= scope['wordpress::settings']['wp_web_settings']['apache_deny_from'] %>
 	<% end -%>
   </Files>
 
