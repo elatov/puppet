@@ -6,7 +6,7 @@
      Deny from <%=deny %>
      <% end -%>
      <% scope['wordpress::settings']['wp_web_settings']['apache_allow_from'].each do |allow| -%>
-     Allow from <=%allow %>
+     Allow from <%=allow %>
      <% end -%>
    </Files>
 
