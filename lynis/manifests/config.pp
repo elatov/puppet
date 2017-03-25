@@ -224,11 +224,20 @@ class lynis::config {
         }
       }
       if ( $::lynis::settings['tests']['ACCT-9630'] == true ){
-        class {'audit': 
-          override_settings => {
-                                'enable_lynis' => true, 
-                                'enable_lynis_cron' => true,
-                               }
+        if ( $::lynis::settings['tests']['ACCT-9630_cron'] == true ){
+          class {'audit': 
+            override_settings => {
+                                  'enable_lynis' => true, 
+                                  'enable_lynis_cron' => true,
+                                 }
+          }
+        }else {
+          class {'audit': 
+            override_settings => {
+                                  'enable_lynis' => true, 
+                                  'enable_lynis_cron' => false,
+                                 }
+          }
         }
       }
       
@@ -384,13 +393,11 @@ class lynis::config {
         }
       }
       if ( $::lynis::settings['tests']['ACCT-9630'] == true ){
-        notify {"Cron look like this ${lynis::settings['tests']['ACCT-9630_cron']}":}
-        if ( $::lynis::settings['tests']['ACCT-9630_cron'] == false ){
-          notify {"Settings look like this ${lynis::settings['tests']['ACCT-9630_cron']}":}
+        if ( $::lynis::settings['tests']['ACCT-9630_cron'] == true ){
 	        class {'audit': 
 		        override_settings => {
 		                              'enable_lynis' => true, 
-		                              'enable_lynis_cron' => false,
+		                              'enable_lynis_cron' => true,
 		                             }
 	        }
 	      }else {
