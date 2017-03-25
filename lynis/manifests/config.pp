@@ -397,7 +397,7 @@ class lynis::config {
 	        class {'audit': 
             override_settings => {
                                   'enable_lynis' => true, 
-                                  'enable_lynis_cron' => true,
+                                  'enable_lynis_cron' => false,
                                  }
           }
 	      }
