@@ -10,7 +10,7 @@
 <% end -%>
   </Files>
 
-   <Files readme.html>
+  <Files readme.html>
      Order Deny,Allow
 <% scope['settings']['wp_web_settings']['apache_deny_from'].each do |deny| -%>
      Deny from <%= deny %>
@@ -18,16 +18,16 @@
 <% scope['settings']['wp_web_settings']['apache_allow_from'].each do |allow| -%>
      Allow from <%= allow %>
 <% end -%>
-   </Files>
+  </Files>
 
-   <IfModule mod_rewrite.c>
-     RewriteEngine On
-     RewriteBase /<%= scope['install_dir'] %>/
-     RewriteRule ^index\.php$ - [L]
-     RewriteCond %{REQUEST_FILENAME} !-f
-     RewriteCond %{REQUEST_FILENAME} !-d
-     RewriteRule . /<%= scope['install_dir'] %>/index.php [L]
-   </IfModule>
+  <IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /<%= scope['install_dir'] %>/
+    RewriteRule ^index\.php$ - [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . /<%= scope['install_dir'] %>/index.php [L]
+  </IfModule>
 </Directory>
 
 <Directory /var/www/<%= scope['install_dir'] %>/wp-admin/>
