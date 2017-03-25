@@ -2,9 +2,6 @@
   Options -Indexes
   <Files wp-login.php>
      Order Deny,Allow
-<% scope['wordpress::settings']['wp_web_settings']['apache_deny_from'].each do |deny| -%>
-     Deny from <%= deny %>
-<% end -%>
 <% scope['wordpress::settings']['wp_web_settings']['apache_allow_from'].each do |allow| -%>
      Allow from <%= allow %>
 <% end -%>
