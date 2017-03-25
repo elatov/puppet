@@ -31,7 +31,7 @@ class audit (
     validate_hash($override_settings)
   }
   # Merge settings with override-hash even if it's empty
-  #  notify {"Settings look like this ${settings}":}
+  notify {"Settings look like this ${settings}":}
   $settings = deep_merge($default_settings, $override_settings)
 
   class { '::audit::install': } ->
