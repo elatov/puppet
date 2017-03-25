@@ -2,14 +2,22 @@
   Options -Indexes
   <Files wp-login.php>
      Order Deny,Allow
-     Deny from all
-     Allow from <%= scope['settings']['wp_web_settings']['apache_allow_from'] %>
+     <%= scope['settings']['wp_web_settings']['apache_deny_from'].each do |deny| -%>
+     Deny from <%deny %>
+     <% end -%>
+     <%= scope['settings']['wp_web_settings']['apache_allow_from'].each do |allow| -%>
+     Allow from <%allow %>
+     <% end -%>
    </Files>
 
    <Files readme.html>
      Order Deny,Allow
-     Deny from all
-     Allow from <%= scope['settings']['wp_web_settings']['apache_allow_from'] %>
+     <%= scope['settings']['wp_web_settings']['apache_deny_from'].each do |deny| -%>
+     Deny from <%deny %>
+     <% end -%>
+     <%= scope['settings']['wp_web_settings']['apache_allow_from'].each do |allow| -%>
+     Allow from <%allow %>
+     <% end -%>
    </Files>
 
    <IfModule mod_rewrite.c>
@@ -24,6 +32,10 @@
 
 <Directory /var/www/<%= scope['install_dir'] %>/wp-admin/>
   Order Deny,Allow
-  Deny from all
-  Allow from <%= scope['settings']['wp_web_settings']['apache_allow_from'] %>
+  <%= scope['settings']['wp_web_settings']['apache_deny_from'].each do |deny| -%>
+  Deny from <%deny %>
+  <% end -%>
+  <%= scope['settings']['wp_web_settings']['apache_allow_from'].each do |allow| -%>
+  Allow from <%allow %>
+  <% end -%>
 </Directory>

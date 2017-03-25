@@ -26,7 +26,12 @@ class wordpress::params {
                                             'apache_conf_enabled'   => true,
                                             'apache_config_file'    => 'wordpress.conf',
                                             'apache_config_dir'     => '/etc/httpd',
-                                            'apache_allow_from'     => '192.168.1.0/255.255.255.0',                    
+                                            'apache_allow_from'     => [
+                                                                        "192.168.1.0/255.255.255.0",
+                                                                       ],
+                                            'apache_deny_from'      => [
+                                                                        "all",
+                                                                       ]                    
                                           }
                       
                    }
