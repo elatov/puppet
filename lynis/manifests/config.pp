@@ -384,18 +384,20 @@ class lynis::config {
         }
       }
       if ( $::lynis::settings['tests']['ACCT-9630'] == true ){
-        if ( $::lynis::settings['tests']['ACCT-9630_cron'] == true ){
+        notify {"Cron look like this ${lynis::settings['tests']['ACCT-9630_cron']}":}
+        if ( $::lynis::settings['tests']['ACCT-9630_cron'] == false ){
+          notify {"Settings look like this ${lynis::settings['tests']['ACCT-9630_cron']}":}
 	        class {'audit': 
 		        override_settings => {
 		                              'enable_lynis' => true, 
-		                              'enable_lynis_cron' => true,
+		                              'enable_lynis_cron' => false,
 		                             }
 	        }
 	      }else {
 	        class {'audit': 
             override_settings => {
                                   'enable_lynis' => true, 
-                                  'enable_lynis_cron' => false,
+                                  'enable_lynis_cron' => true,
                                  }
           }
 	      }
