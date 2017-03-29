@@ -17,7 +17,7 @@ class psacct::config {
           links   => 'follow',
         } ->
 				cron { 'pssacct':
-					command => "['$(date +%d -d tomorrow)' == '01' ] && /usr/local/bin/psacct",
+					command => "[ '$(date +%d -d tomorrow)' == '01' ] && /usr/local/bin/psacct",
 					user    => 'root',
 					hour    => ['23'],
 					minute  => '20',
@@ -37,7 +37,7 @@ class psacct::config {
           links   => 'follow',
         }->
         cron { 'pssacct':
-          command => "['$(date +%d -d tomorrow)' == '01' ] && /usr/local/bin/psacct",
+          command => "[ '$(date +%d -d tomorrow)' == '01' ] && /usr/local/bin/psacct",
           user    => 'root',
           hour    => ['23'],
           minute  => '20',
