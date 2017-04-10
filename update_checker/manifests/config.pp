@@ -59,12 +59,18 @@ class update_checker::config {
 			target  => "${update_checker_target_dir}/${update_checker::update_script}",
 			require => Class['drive']
 		}
-	} elsif ( $::osfamily =~ /(?i:RedHat|Debian)/ ) {
-		file {"$update_checker::cron_dir/$update_checker::update_script":
+	} elsif ( $::osfamily =~ /(?i:Debian)/ ) {
+		file {"$update_checker::cron_dir/aptgetcheck":
       ensure  => "link",
       target  => "${update_checker_target_dir}/${update_checker::update_script}",
       require => Class['drive']
     }
-	}
+	}elsif ( $::osfamily =~ /(?i:RedHat)/ ) {
+	  file {"$update_checker::cron_dir/$update_checker::update_script":
+      ensure  => "link",
+      target  => "${update_checker_target_dir}/${update_checker::update_script}",
+      require => Class['drive']
+    }
+  }
 
 }
