@@ -12,7 +12,7 @@ class ossec::client::install {
     'Debian': {
       if ($::operatingsystemmajrelease == '8') {
 				apt::source { 'alienvault':
-					location   => "http://ossec.alienvault.com/repos/apt/debian",
+					location   => "http://ossec.wazuh.com/repos/apt/debian",
 					release    => 'jessie',
 					repos      => 'main',
 #					key        => '9A1B1C65',
@@ -22,7 +22,7 @@ class ossec::client::install {
 				} 
 			} else {
 				apt::source { 'alienvault':
-					location   => "http://ossec.alienvault.com/repos/apt/debian",
+					location   => "http://ossec.wazuh.com/repos/apt/debian",
 					release    => 'wheezy',
 					repos      => 'main',
 #					key        => '9A1B1C65',
