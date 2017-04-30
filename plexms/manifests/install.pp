@@ -9,7 +9,7 @@ class plexms::install {
 				location    => 'http://shell.ninthgate.se/packages/debian',
 				release     => $::lsbdistcodename,
 				repos       => 'main',
-				include_src => false,
+#				include_src => false,
 			}
       
       ensure_resource ('package',$plexms::package_name,{ 'ensure' => 'present',

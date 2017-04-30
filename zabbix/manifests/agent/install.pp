@@ -18,7 +18,7 @@ class zabbix::agent::install () {
 	        release    => 'jessie',
 	        repos      => 'main',
 	        key        => '79EA5ED4',
-	        key_source => 'http://repo.zabbix.com/zabbix-official-repo.key',
+#	        key_source => 'http://repo.zabbix.com/zabbix-official-repo.key',
 	        pin        => '510',
 	      }
 	    }

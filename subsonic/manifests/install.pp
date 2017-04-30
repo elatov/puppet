@@ -43,7 +43,7 @@ class subsonic::install {
 				release     => "${::lsbdistcodename}-getdeb",
 				repos       => 'apps',
 				key         => '46D7E7CF',
-				key_source  => 'http://archive.getdeb.net/getdeb-archive.key',
+#				key_source  => 'http://archive.getdeb.net/getdeb-archive.key',
 			}
 					
 			package { $subsonic::package_name:
