@@ -226,7 +226,7 @@ describe 'apt::source' do
     let :params do
       {
         :location     => 'hello.there',
-        :include      => {'deb' => false, 'src' => true,},
+        :include      => {'deb' => false, 'src' => true},
         :architecture => 'x86_64',
       }
     end
@@ -234,6 +234,30 @@ describe 'apt::source' do
     it { is_expected.to contain_apt__setting('list-my_source').with({
       :ensure => 'present',
     }).with_content(/# my_source\ndeb-src \[arch=x86_64\] hello.there wheezy main\n/)
+    }
+  end
+
+  context 'with architecture fact and unset architecture parameter' do
+    let :facts do
+      {
+        :architecture    => 'amd64',
+        :os => { :family => 'Debian', :name => 'Debian', :release => { :major => '7', :full => '7.0' }},
+        :lsbdistid       => 'Debian',
+        :lsbdistcodename => 'wheezy',
+        :osfamily        => 'Debian',
+        :puppetversion   => Puppet.version,
+      }
+    end
+    let :params do
+      {
+        :location => 'hello.there',
+        :include  => {'deb' => false, 'src' => true,},
+      }
+    end
+
+    it { is_expected.to contain_apt__setting('list-my_source').with({
+      :ensure => 'present',
+    }).with_content(/# my_source\ndeb-src hello.there wheezy main\n/)
     }
   end
 
@@ -250,7 +274,7 @@ describe 'apt::source' do
     let :params do
       {
         :location    => 'hello.there',
-        :include_src => true,
+        :include     => {'src' => true},
       }
     end
 
@@ -260,7 +284,7 @@ describe 'apt::source' do
     }
   end
 
-  context 'include_deb => false' do
+  context 'include deb => false' do
     let :facts do
       {
         :os => { :family => 'Debian', :name => 'Debian', :release => { :major => '7', :full => '7.0' }},
@@ -272,8 +296,8 @@ describe 'apt::source' do
     end
     let :params do
       {
+        :include => { 'deb' => false },
         :location    => 'hello.there',
-        :include_deb => false,
       }
     end
 
@@ -284,7 +308,7 @@ describe 'apt::source' do
     it { is_expected.to contain_apt__setting('list-my_source').without_content(/deb hello.there wheezy main\n/) }
   end
 
-  context 'include_src => true and include_deb => false' do
+  context 'include src => true and include deb => false' do
     let :facts do
       {
         :os => { :family => 'Debian', :name => 'Debian', :release => { :major => '7', :full => '7.0' }},
@@ -296,35 +320,8 @@ describe 'apt::source' do
     end
     let :params do
       {
+        :include => { 'deb' => false, 'src' => true },
         :location    => 'hello.there',
-        :include_deb => false,
-        :include_src => true,
-      }
-    end
-
-    it { is_expected.to contain_apt__setting('list-my_source').with({
-      :ensure => 'present',
-    }).with_content(/deb-src hello.there wheezy main\n/)
-    }
-    it { is_expected.to contain_apt__setting('list-my_source').without_content(/deb hello.there wheezy main\n/) }
-  end
-
-  context 'include precedence' do
-    let :facts do
-      {
-        :os => { :family => 'Debian', :name => 'Debian', :release => { :major => '7', :full => '7.0' }},
-        :lsbdistid       => 'debian',
-        :lsbdistcodename => 'wheezy',
-        :osfamily        => 'debian',
-        :puppetversion   => Puppet.version,
-      }
-    end
-    let :params do
-      {
-        :location    => 'hello.there',
-        :include_deb => true,
-        :include_src => false,
-        :include     => { 'deb' => false, 'src' => true },
       }
     end
 
