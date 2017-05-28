@@ -1,26 +1,23 @@
 {
-  "name": "yo61-logrotate",
-  "version": "1.4.0",
-  "author": "Robin Bowees <robin.bowes@yo61.com>",
+  "name": "puppet-logrotate",
+  "version": "2.0.0",
+  "author": "Vox Pupuli",
   "summary": "Manage logrotate",
   "license": "MIT",
-  "source": "https://github.com/yo61/puppet-logrotate",
-  "project_page": "https://github.com/yo61/puppet-logrotate",
-  "issues_url": "https://github.com/yo61/puppet-logrotate/issues",
+  "source": "https://github.com/voxpupuli/puppet-logrotate",
+  "project_page": "https://github.com/voxpupuli/puppet-logrotate",
+  "issues_url": "https://github.com/voxpupuli/puppet-logrotate/issues",
   "dependencies": [
-    {"name":"puppetlabs/stdlib","version_requirement":">= 1.0.0 <5.0.0"}
+    {"name":"puppetlabs/stdlib","version_requirement":">= 4.13.1 <5.0.0"}
   ],
+  "data_provider": null,
   "tags": [
     "logrotate"
   ],
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 3.2.0 < 5.0.0"
-    },
-    {
-      "name": "pe",
-      "version_requirement": ">= 3.2.0 < 2015.4.0"
+      "version_requirement": ">= 4.7.0 < 5.0.0"
     }
   ],
   "operatingsystem_support": [
@@ -69,6 +66,12 @@
         "10.04",
         "12.04",
         "14.04"
+      ]
+    },
+    {
+      "operatingsystem": "Gentoo",
+      "operatingsystemrelease": [
+        "1.0"
       ]
     }
   ]

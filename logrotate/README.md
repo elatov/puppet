@@ -1,10 +1,11 @@
 # Logrotate module for Puppet
 
-## Disclaimer
-
-This module is a fork of https://github.com/rodjek/puppet-logrotate merging some of the outstanding pull requests
-
-I have also added the puppetlabs_spec_help functionality as used in [Gareth Rushgrove](https://github.com/garethr)'s [puppet-module-skeleton](https://github.com/garethr/puppet-module-skeleton).
+[![License](https://img.shields.io/github/license/voxpupuli/puppet-logrotate.svg)](https://github.com/voxpupuli/puppet-logrotate/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/voxpupuli/puppet-logrotate.png?branch=master)](https://travis-ci.org/voxpupuli/puppet-logrotate)
+[![Puppet Forge](https://img.shields.io/puppetforge/v/puppet/logrotate.svg)](https://forge.puppetlabs.com/puppet/logrotate)
+[![Puppet Forge - downloads](https://img.shields.io/puppetforge/dt/puppet/logrotate.svg)](https://forge.puppetlabs.com/puppet/logrotate)
+[![Puppet Forge - endorsement](https://img.shields.io/puppetforge/e/puppet/logrotate.svg)](https://forge.puppetlabs.com/puppet/logrotate)
+[![Puppet Forge - scores](https://img.shields.io/puppetforge/f/puppet/logrotate.svg)](https://forge.puppetlabs.com/puppet/logrotate)
 
 ## Description
 
@@ -14,7 +15,7 @@ exceptions:
 
  * Booleans are now used instead of the `<something>`/`no<something>` pattern.
    e.g. `copy` == `copy => true`, `nocopy` == `copy => false`.
- * `create` and it's three optional arguments have been split into seperate
+ * `create` and its three optional arguments have been split into seperate
    parameters documented below.
  * Instead of 'daily', 'weekly', 'monthly' or 'yearly', there is a
    `rotate_every` parameter (see documentation below).
@@ -181,3 +182,10 @@ logrotate::rule { 'apache':
   postrotate    => '/etc/init.d/httpd restart',
 }
 ```
+
+## Authors and Module History
+
+Puppet-logrotate has been maintained by VoxPupuli since version 2.0.0.
+It was migrated from https://forge.puppet.com/yo61/logrotate.
+yo61's version was a fork of https://github.com/rodjek/puppet-logrotate.
+It is licensed under the MIT license.

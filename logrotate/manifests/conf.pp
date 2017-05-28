@@ -28,6 +28,7 @@ define logrotate::conf (
     $mailfirst       = 'UNDEFINED',
     $maillast        = 'UNDEFINED',
     $maxage          = 'UNDEFINED',
+    $maxsize         = 'UNDEFINED',
     $minsize         = 'UNDEFINED',
     $missingok       = 'UNDEFINED',
     $olddir          = 'UNDEFINED',
@@ -175,6 +176,7 @@ define logrotate::conf (
   # Add an arbitrary character to the string to stop puppet-lint complaining
   # Any better ideas greatfully received
   validate_re("X${maxage}", ['^XUNDEFINED$', '^X\d+$'], "Logrotate::Conf[${name}]: maxage must be an integer")
+  validate_re("X${maxsize}", ['^XUNDEFINED$', '^X\d+[kMG]?$'], "Logrotate::Conf[${name}]: maxsize must match /\\d+[kMG]?/")
   validate_re("X${minsize}", ['^XUNDEFINED$', '^X\d+[kMG]?$'], "Logrotate::Conf[${name}]: minsize must match /\\d+[kMG]?/")
   validate_re("X${rotate}", ['^XUNDEFINED$', '^X\d+$'], "Logrotate::Conf[${name}]: rotate must be an integer")
   validate_re("X${size}", ['^XUNDEFINED$', '^X\d+[kMG]?$'], "Logrotate::Conf[${name}]: size must match /\\d+[kMG]?/")
@@ -210,9 +212,9 @@ define logrotate::conf (
 
   if ($su_user != 'UNDEFINED') and ($su_group == 'UNDEFINED') {
     $_su_user  = $_su_user
-    $_su_group = 'root'
+    $_su_group = $logrotate::root_group
   } elsif ($su_user == 'UNDEFINED') and ($su_group != 'UNDEFINED') {
-    $_su_user  = 'root'
+    $_su_user  = $logrotate::root_user
     $_su_group = $su_group
   } else {
     $_su_user  = $su_user
@@ -236,10 +238,12 @@ define logrotate::conf (
 
   include ::logrotate
 
+  $rules_configdir = $::logrotate::rules_configdir
+
   file { $name:
       ensure  => $ensure,
-      owner   => 'root',
-      group   => 'root',
+      owner   => $logrotate::root_user,
+      group   => $logrotate::root_group,
       mode    => '0444',
       content => template('logrotate/etc/logrotate.conf.erb'),
       require => Package['logrotate'],
