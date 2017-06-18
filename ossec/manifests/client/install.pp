@@ -10,10 +10,10 @@ class ossec::client::install {
 		                   })
     }
     'Debian': {
-      if ($::operatingsystemmajrelease == '8') {
+      if ($::operatingsystemmajrelease == '9') {
 				apt::source { 'alienvault':
 					location   => "http://ossec.wazuh.com/repos/apt/debian",
-					release    => 'jessie',
+					release    => 'stretch',
 					repos      => 'main',
 #					key        => '9A1B1C65',
 #					key_source => 'http://ossec.alienvault.com/repos/apt/conf/ossec-key.gpg.key',
