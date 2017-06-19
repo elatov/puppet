@@ -35,6 +35,7 @@ class my_apache::install {
   
   class {'::apache::mod::php':
     package_name => $my_apache::settings['php_pkg'],
+#    path         => '/usr/lib/apache2/modules/libphp5.so',
   }
   
    class {'::apache::mod::proxy': }

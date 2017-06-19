@@ -8,7 +8,7 @@ class my_apache::params {
 	$my_apache_settings	=	{ 'conf_proxy' 	    => 'splunk-proxy.conf',
 	                        'conf_proxy_sn'   => 'snorby-proxy.conf',
 										      'hostname'	      => $::hostname,
-										      'php_pkg'         => 'libapache2-mod-php5',
+										      'php_pkg'         => 'libapache2-mod-php7.0',
                           'proxy_html_pkg'  => 'libapache2-mod-proxy-html',
 										    }
 	case $::osfamily {
