@@ -1,8 +1,9 @@
 #!/bin/bash
 # global variables
 CUR_DATE=$(/bin/date +%s)
-NEXT_DST_DATE=$(/bin/date +%s -d $(/usr/bin/timedatectl status | /bin/grep Next -A 2 | /usr/bin/tail -1 | /usr/bin/awk '{print $2}'))
-LAST_DST_DATE=$(/bin/date +%s -d $(/usr/bin/timedatectl status | /bin/grep Last -A 2 | /usr/bin/tail -1 | /usr/bin/awk '{print $2}'))
+CUR_YEAR=$(/bin/date +%Y)
+NEXT_DST_DATE=$(/bin/date +%s -d $(/usr/bin/zdump -v /etc/localtime | /bin/grep -o "Sun .* $(echo $CUR_YEAR)\ U" | /usr/bin/awk '{print $1","$2"-"$3"-"$5}' | /usr/bin/tail -1))
+LAST_DST_DATE=$(/bin/date +%s -d $(/usr/bin/zdump -v /etc/localtime | /bin/grep -o "Sun .* $(echo $CUR_YEAR)\ U" | /usr/bin/awk '{print $1","$2"-"$3"-"$5}' | /usr/bin/head -1))
 
 # Calculate days
 let DAYS_BETW_DATES=($NEXT_DST_DATE-$CUR_DATE)/86400
