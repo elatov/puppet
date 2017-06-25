@@ -92,4 +92,7 @@ root	ALL=(ALL) 	ALL
 
 ## Allows members of the users group to shutdown this system
 # %users  localhost=/sbin/shutdown -h now
-#includedir /etc/sudoers.d
+#includedir <%= @config_dir %>
+<% @extra_include_dirs.each do |include_dir| -%>
+#includedir <%= include_dir %>
+<% end if @extra_include_dirs -%>
