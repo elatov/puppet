@@ -10,6 +10,7 @@ class my_apache::install {
       purge_configs       => false,
       confd_dir           => $my_apache::config_dir,
       default_mods        => $my_apache::settings['default_mods'],
+      servername          => $my_apache::settings['hostname'],
     }
   }else{
 		class { 'apache': 
@@ -22,9 +23,9 @@ class my_apache::install {
 		}
   }
   
-  apache::vhost {"${my_apache::settings['hostname']}":
+  apache::vhost {"kerch":
     #vhost_name         => $my_apache::settings['hostname'],
-    servername         => $my_apache::settings['hostname'],
+#    servername         => 'kerch.kar.int',
     serveraliases       => ["${my_apache::settings['serveralias']}",],
     ip                  => $::ipaddress,
     port                => '80',
