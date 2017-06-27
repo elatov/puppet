@@ -1,5 +1,8 @@
 <Directory /var/www/<%= scope['install_dir'] %>/>
   Options -Indexes
+  RewriteRule wp-content/plugins/(.*)$ - [R=404,L]
+  RewriteRule wp-content/themes/(.*)$ - [R=404,L]
+  
   <Files wp-login.php>
      Order Deny,Allow
 <% scope['settings']['wp_web_settings']['apache_deny_from'].each do |deny| -%>
