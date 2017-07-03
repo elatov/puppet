@@ -1,4 +1,5 @@
 require 'pathname'
+require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:vcsrepo) do
   desc "A local version control repository"
@@ -226,9 +227,9 @@ Puppet::Type.newtype(:vcsrepo) do
     end
   end
 
-  newparam :force do
+  
+  newparam(:force, :boolean => true, :parent => Puppet::Parameter::Boolean) do
     desc "Force repository creation, destroying any files on the path in the process."
-    newvalues(:true, :false)
     defaultto false
   end
 
@@ -299,6 +300,6 @@ Puppet::Type.newtype(:vcsrepo) do
   end
 
   autorequire(:package) do
-    ['git', 'git-core', 'mercurial']
+    ['git', 'git-core', 'mercurial', 'subversion']
   end
 end

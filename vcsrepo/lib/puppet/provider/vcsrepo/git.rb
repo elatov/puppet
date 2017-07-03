@@ -132,7 +132,7 @@ Puppet::Type.type(:vcsrepo).provide(:git, :parent => Puppet::Provider::Vcsrepo) 
     at_path do
       if @resource.value(:source)
         begin
-          git('config', '--get', "remote.#{@resource.value(:remote)}.url").chomp == default_url
+          return git('config', '--get', "remote.#{@resource.value(:remote)}.url").chomp == default_url
         rescue Puppet::ExecutionFailure
           return false
         end
@@ -568,7 +568,8 @@ Puppet::Type.type(:vcsrepo).provide(:git, :parent => Puppet::Provider::Vcsrepo) 
     if @resource.value(:identity)
       Tempfile.open('git-helper', Puppet[:statedir]) do |f|
         f.puts '#!/bin/sh'
-        f.puts 'export SSH_AUTH_SOCKET='
+        f.puts 'SSH_AUTH_SOCKET='
+        f.puts 'export SSH_AUTH_SOCKET'
         f.puts "exec ssh -oStrictHostKeyChecking=no -oPasswordAuthentication=no -oKbdInteractiveAuthentication=no -oChallengeResponseAuthentication=no -oConnectTimeout=120 -i #{@resource.value(:identity)} $*"
         f.close
 
