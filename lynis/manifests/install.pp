@@ -9,7 +9,7 @@ class lynis::install {
       if ( $::lynis::settings['apt_repo_enabled'] == true ){
 				apt::source { 'lynis':
 					location   => "https://packages.cisofy.com/community/lynis/deb/",
-					release    => 'jessie',
+					release    => 'stretch',
 					repos      => 'main',
 #					key        => {
 #					               'id'      => 'C80E383C3DE9F082E01391A0366C67DE91CA5D5F',
