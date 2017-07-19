@@ -26,12 +26,12 @@ class cronjobs {
     'RedHat': {
       ensure_packages ("ntpdate", {ensure => "present"})
       
-			cron {"ntp":
+#			cron {"ntp":
 #				command   => '/usr/sbin/ntpdate -s 0.north-america.pool.ntp.org',
-				command   => '/usr/sbin/ntpdate -s puppet',
-				user      => 'root',
-				minute    => '05',
-			}
+#				command   => '/usr/sbin/ntpdate -s puppet',
+#				user      => 'root',
+#				minute    => '05',
+#			}
     }
     'FreeBSD': {
       cron {"freebsd-update":
