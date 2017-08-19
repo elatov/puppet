@@ -115,7 +115,8 @@ class lynis::params {
                                                                             'net.ipv4.conf.default.accept_redirects'  => '0',
                                                                             'net.ipv4.conf.default.log_martians'      => '1',
                                                                             'net.ipv6.conf.all.accept_redirects'      => '0',
-                                                                            'net.ipv6.conf.default.accept_redirects'  => '0'
+                                                                            'net.ipv6.conf.default.accept_redirects'  => '0',
+                                                                            'kernel.dmesg_restrict'                   => '1'
                                                                            },
                                             'KRNL-6000_disabled_options'=> ['net.ipv4.tcp_timestamps'],
                                             'HRDN-7222'                 =>  true,
