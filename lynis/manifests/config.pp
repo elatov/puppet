@@ -184,12 +184,30 @@ class lynis::config {
       }
       if ( $::lynis::settings['tests']['PHP-2376'] == true ){
 
-				augeas { 'php-allow_url_fopen':
+				augeas { 'php-apache2-allow_url_fopen':
 					context => '/files/etc/php/7.0/apache2/php.ini',
 					changes => [
 					 'set PHP/allow_url_fopen Off',
 					]
 				}
+				
+				augeas { 'php-cli-allow_url_fopen':
+          context => '/files/etc/php/7.0/cli/php.ini',
+          changes => [
+           'set PHP/allow_url_fopen Off',
+          ]
+        }
+        
+      }
+      
+      if ( $::lynis::settings['tests']['PHP-2372'] == true ){
+
+        augeas { 'php-expose_php':
+          context => '/files/etc/php/7.0/cli/php.ini',
+          changes => [
+           'set PHP/expose_php Off',
+          ]
+        }
         
       }
       if ( $::lynis::settings['tests']['BANN-7126'] == true ){
