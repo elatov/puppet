@@ -1,7 +1,7 @@
 <Directory /var/www/<%= scope['install_dir'] %>/>
   Options -Indexes
   RewriteRule wp-content/plugins/(.*)$ - [R=404,L]
-  RewriteRule wp-content/themes/(.*)$ - [R=404,L]
+#  RewriteRule wp-content/themes/(.*)$ - [R=404,L]
   
   <Files wp-login.php>
      Order Deny,Allow
