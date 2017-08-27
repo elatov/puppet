@@ -54,13 +54,13 @@ LogFileSize=0
 <% end %>
 
 ### Option: DebugLevel
-#	Specifies debug level
-#	0 - basic information about starting and stopping of Zabbix processes
-#	1 - critical information
-#	2 - error information
-#	3 - warnings
-#	4 - for debugging (produces lots of information)
-#	5 - extended debugging (produces even more information)
+#       Specifies debug level:
+#       0 - basic information about starting and stopping of Zabbix processes
+#       1 - critical information
+#       2 - error information
+#       3 - warnings
+#       4 - for debugging (produces lots of information)
+#       5 - extended debugging (produces even more information)
 #
 # Mandatory: no
 # Range: 0-5
@@ -95,9 +95,11 @@ LogFileSize=0
 ##### Passive checks related
 
 ### Option: Server
-#	List of comma delimited IP addresses (or hostnames) of Zabbix servers.
-#	Incoming connections will be accepted only from the hosts listed here.
-#	If IPv6 support is enabled then '127.0.0.1', '::127.0.0.1', '::ffff:127.0.0.1' are treated equally.
+#       List of comma delimited IP addresses, optionally in CIDR notation, or hostnames of Zabbix servers.
+#       Incoming connections will be accepted only from the hosts listed here.
+#       If IPv6 support is enabled then '127.0.0.1', '::127.0.0.1', '::ffff:127.0.0.1' are treated equally and '::/0' will allow any IPv4 or IPv6 address.
+#       '0.0.0.0/0' can be used to allow any IPv4 address.
+#       Example: Server=127.0.0.1,192.168.1.0/24,::1,2001:db8::/32,zabbix.domain
 #
 # Mandatory: no
 # Default:
@@ -137,7 +139,6 @@ ListenIP=<%= scope['zabbix::agent::settings']['listenIp'] -%>
 # Range: 0-100
 # Default:
 # StartAgents=3
-
 <% if scope['zabbix::agent::settings']['startagents'] %>
 StartAgents=<%= scope['zabbix::agent::settings']['startagents'] -%>
 <% end %>

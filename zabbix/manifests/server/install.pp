@@ -49,7 +49,7 @@ class zabbix::server::install () {
 		/(?i:Debian)/: { 
 			apt::source { 'zabbix':
 				location   => "http://repo.zabbix.com/zabbix/${zabbix::server::settings['version']}/debian",
-				release    => 'jessie',
+				release    => 'stretch',
 				repos      => 'main',
 #				key        => '79EA5ED4',
 #				key_source => 'http://repo.zabbix.com/zabbix-official-repo.key',
