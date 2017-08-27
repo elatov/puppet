@@ -1,6 +1,6 @@
 class zabbix::server::service () {
   service { $zabbix::server::service_name:
-    ensure     => running,
+    ensure     => stopped,
     hasstatus  => true,
     hasrestart => true,
     enable     => true,
