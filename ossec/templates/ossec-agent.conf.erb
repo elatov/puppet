@@ -8,10 +8,20 @@
   <syscheck>
     <!-- Frequency that syscheck is executed -- default every 2 hours -->
     <frequency>7200</frequency>
+    <skip_nfs>yes</skip_nfs>
+    <alert_new_files>yes</alert_new_files>
     
-    <!-- Directories to check  (perform all possible verifications) 
-    <directories check_all="yes">/etc,/usr/bin,/usr/sbin</directories>
-    <directories check_all="yes">/bin,/sbin</directories> -->
+    <!-- Directories to check  (perform all possible verifications)
+    <directories realtime="yes" check_all="yes" report_changes="yes">/boot</directories>
+    <directories realtime="yes" check_all="yes" report_changes="yes">/etc</directories>
+    <directories realtime="yes" check_all="yes">/bin</directories>
+    <directories realtime="yes" check_all="yes">/usr/bin</directories>
+    <directories realtime="yes" check_all="yes">/sbin</directories>
+    <directories realtime="yes" check_all="yes">/usr/sbin</directories>
+    <directories realtime="yes" check_all="yes">/lib,/lib64,/usr/lib,/usr/lib64</directories>
+    <directories realtime="yes" check_all="yes">/usr/local</directories>
+ <!--   <directories check_all="yes">/etc,/usr/bin,/usr/sbin</directories>
+    <directories check_all="yes">/bin,/sbin</directories> --> -->
 
     <!-- Files/directories to ignore -->
     <ignore>/etc/mtab</ignore>
@@ -32,6 +42,7 @@
     <rootkit_files><%= scope['ossec::client::home_dir'] %>/etc/shared/rootkit_files.txt</rootkit_files>
     <rootkit_trojans><%= scope['ossec::client::home_dir'] %>/etc/shared/rootkit_trojans.txt</rootkit_trojans>
     <system_audit><%= scope['ossec::client::home_dir'] %>/etc/shared/system_audit_rcl.txt</system_audit>
+    <system_audit><%= scope['ossec::client::home_dir'] %>/etc/shared/system_audit_ssh.txt</system_audit>
     <system_audit><%= scope['ossec::client::home_dir'] %>/etc/shared/cis_debian_linux_rcl.txt</system_audit>
     <system_audit><%= scope['ossec::client::home_dir'] %>/etc/shared/cis_rhel_linux_rcl.txt</system_audit>
     <system_audit><%= scope['ossec::client::home_dir'] %>/etc/shared/cis_rhel5_linux_rcl.txt</system_audit>
