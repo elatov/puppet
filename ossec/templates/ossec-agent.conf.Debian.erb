@@ -1,0 +1,55 @@
+<!-- OSSEC example config -->
+
+<ossec_config>
+  <client>
+    <server-ip><%= scope['ossec::client::settings']['server_ip'] %></server-ip>
+  </client>
+
+  <syscheck>
+    <!-- Frequency that syscheck is executed -- default every 2 hours -->
+    <frequency>7200</frequency>
+    
+    <!-- Directories to check  (perform all possible verifications)
+    <directories check_all="yes">/etc,/usr/bin,/usr/sbin</directories>
+    <directories check_all="yes">/bin,/sbin</directories> -->
+
+    <!-- Files/directories to ignore -->
+    <ignore>/etc/mtab</ignore>
+    <ignore>/etc/mnttab</ignore>
+    <ignore>/etc/hosts.deny</ignore>
+    <ignore>/etc/mail/statistics</ignore>
+    <ignore>/etc/random-seed</ignore>
+    <ignore>/etc/adjtime</ignore>
+    <ignore>/etc/httpd/logs</ignore>
+    <ignore>/etc/utmpx</ignore>
+    <ignore>/etc/wtmpx</ignore>
+    <ignore>/etc/cups/certs</ignore>
+    <ignore>/etc/dumpdates</ignore>
+    <ignore>/etc/svc/volatile</ignore>
+  </syscheck>
+
+  <rootcheck>
+    <rootkit_files><%= scope['ossec::client::home_dir'] %>/etc/shared/rootkit_files.txt</rootkit_files>
+    <rootkit_trojans><%= scope['ossec::client::home_dir'] %>/etc/shared/rootkit_trojans.txt</rootkit_trojans>
+    <system_audit><%= scope['ossec::client::home_dir'] %>/etc/shared/system_audit_rcl.txt</system_audit>
+    <system_audit><%= scope['ossec::client::home_dir'] %>/etc/shared/system_audit_ssh.txt</system_audit>
+    <system_audit><%= scope['ossec::client::home_dir'] %>/etc/shared/cis_debian_linux_rcl.txt</system_audit>
+    <system_audit><%= scope['ossec::client::home_dir'] %>/etc/shared/cis_rhel_linux_rcl.txt</system_audit>
+    <system_audit><%= scope['ossec::client::home_dir'] %>/etc/shared/cis_rhel5_linux_rcl.txt</system_audit>
+  </rootcheck>
+
+<% scope['ossec::client::settings']['config']['logs'].each_pair do |action,type| -%>
+<% if type == "command" or type == "full_command" -%> 
+  <localfile>
+    <log_format><%= type -%></log_format>
+    <command><%= action -%></command>
+  </localfile>
+<% else -%>
+  <localfile>
+    <log_format><%= type -%></log_format>
+    <location><%= action -%></location>
+  </localfile>
+  
+<% end -%>
+<% end -%>
+</ossec_config>
