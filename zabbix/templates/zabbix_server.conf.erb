@@ -30,8 +30,7 @@
 # LogType=file
 
 ### Option: LogFile
-#	Name of log file.
-#	If not set, syslog is used.
+#       Log file name for LogType 'file' parameter.
 #
 # Mandatory: no
 # Default:
@@ -365,7 +364,7 @@ PidFile=/var/run/zabbix/zabbix_server.pid
 # Mandatory: no
 # Range: 0-1000000
 # Default:
-# MaxHousekeeperDelete=500
+# MaxHousekeeperDelete=5000
 
 ### Option: CacheSize
 #	Size of configuration cache, in bytes.
@@ -436,6 +435,8 @@ PidFile=/var/run/zabbix/zabbix_server.pid
 # Range: 1-30
 # Default:
 # Timeout=3
+
+#Timeout=4
 
 ### Option: TrapperTimeout
 #	Specifies how many seconds trapper may spend processing new data.
