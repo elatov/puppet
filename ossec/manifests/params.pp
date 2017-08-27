@@ -71,8 +71,7 @@ class ossec::params {
 #                                      }
       $ossec_client_settings_os     = { 
                                         'add_user'      => 'test',
-                                        'config'        => { 'logs' => { '/var/log/messages'       => 'syslog',
-                                                                         '/var/log/secure'         => 'syslog',
+                                        'config'        => { 'logs' => { '/var/log/secure'         => 'syslog',
                                                                          '/var/log/maillog'        => 'syslog',
                                                                          '/var/log/exim/main.log'  => 'syslog',
                                                                         }
