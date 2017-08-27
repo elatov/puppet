@@ -16,7 +16,7 @@ class ossec::client::config {
 	  file { $ossec::client::config_file:
 	    ensure  => 'present',
 	    path    => "${ossec::client::config_dir}/${ossec::client::config_file}",
-	    content => template('ossec/ossec-agent.conf.${osfamily}.erb'),
+	    content => template("ossec/ossec-agent.conf.${::osfamily}.erb"),
 	    require => File[$ossec::client::config_dir],
 	  }
 	}elsif ($::osfamily == 'RedHat'){
