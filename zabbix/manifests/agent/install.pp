@@ -37,7 +37,7 @@ class zabbix::agent::install () {
 	    ensure_resource(file,'/usr/local',{ensure => 'directory'})
 	    
 	    file { [$zabbix::agent::home_dir]:
-	      ensure  => 'directory',
+	      ensure  => 'link',
 	      require => File['/usr/local'],
 	    }
 	    
