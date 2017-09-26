@@ -33,9 +33,9 @@ class plexms::install {
 	        source   => "/usr/local/apps/${plexms::settings['rpm_name']}",
         }
       } else {
-				yumrepo { PlexRepo :
+				yumrepo { 'PlexRepo' :
 					baseurl   => "https://downloads.plex.tv/repo/rpm/$basearch/",
-					descr     => "PlexRepo",
+					descr     => "Plex Repo for RH/CentOS/Fedora",
 					enabled   => 1,
 					gpgcheck  => 1,
 					gpgkey    => "https://downloads.plex.tv/plex-keys/PlexSign.key",
