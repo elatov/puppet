@@ -34,11 +34,11 @@ class plexms::install {
         }
       } else {
 				yumrepo { PlexRepo :
-					baseurl   => "http://plex.r.worldssl.net/PlexMediaServer/fedora-repo/release/\$basearch/",
-					descr     => "Plex Repository for Fedora",
+					baseurl   => "https://downloads.plex.tv/repo/rpm/$basearch/",
+					descr     => "PlexRepo",
 					enabled   => 1,
 					gpgcheck  => 1,
-					gpgkey    => "https://plex.tv/plex_pub_key.pub",
+					gpgkey    => "﻿https://downloads.plex.tv/plex-keys/PlexSign.key",
 				}
 				ensure_resource ('package',$plexms::package_name,{ 'ensure'=> 'present',require => Yumrepo['PlexRepo'] })
       }
