@@ -1,7 +1,6 @@
 <Directory /var/www/<%= scope['install_dir'] %>/>
   Options -Indexes
-  <% @ips = split(@ipaddress, '\.') -%>
-  RewriteCond %{REMOTE_ADDR} !^<% @ipaddress.[0] -%>\.<% @ipaddress.[1] -%>\.<% @ipaddress.[2] -%>\.<% @ipaddress.[3] -%>
+  RewriteCond %{REMOTE_ADDR} !^<%= @ipaddress.to_s.split(".")[0] -%>\.<%= @ipaddress.to_s.split(".")[1] -%>\.<%= @ipaddress.split(".")[2] -%>\.<%= @ipaddress.split(".")[3] %>
   RewriteRule wp-content/plugins/(.*)$ - [R=404,L]
 #  RewriteRule wp-content/themes/(.*)$ - [R=404,L]
   
