@@ -34,7 +34,7 @@ class plexms::install {
         }
       } else {
 				yumrepo { 'PlexRepo' :
-					baseurl   => "https://downloads.plex.tv/repo/rpm/$basearch/",
+					baseurl   => "https://downloads.plex.tv/repo/rpm/\$basearch/",
 					descr     => "Plex Repo for RH/CentOS/Fedora",
 					enabled   => 1,
 					gpgcheck  => 1,
