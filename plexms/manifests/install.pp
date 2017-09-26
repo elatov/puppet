@@ -38,7 +38,7 @@ class plexms::install {
 					descr     => "PlexRepo",
 					enabled   => 1,
 					gpgcheck  => 1,
-					gpgkey    => "﻿https://downloads.plex.tv/plex-keys/PlexSign.key",
+					gpgkey    => "https://downloads.plex.tv/plex-keys/PlexSign.key",
 				}
 				ensure_resource ('package',$plexms::package_name,{ 'ensure'=> 'present',require => Yumrepo['PlexRepo'] })
       }
