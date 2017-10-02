@@ -2,7 +2,7 @@ apt_package_updates = nil
 Facter.add("apt_has_updates") do
   confine :osfamily => 'Debian'
   if File.executable?("/usr/bin/apt-get")
-    apt_get_result = Facter::Util::Resolution.exec('/usr/bin/apt-get -s upgrade 2>&1')
+    apt_get_result = Facter::Util::Resolution.exec('/usr/bin/apt-get -s -o Debug::NoLocking=true upgrade 2>&1')
     if not apt_get_result.nil?
       apt_package_updates = [[], []]
       apt_get_result.each_line do |line|
@@ -38,6 +38,17 @@ Facter.add("apt_package_updates") do
       apt_package_updates[0].join(',')
     else
       apt_package_updates[0]
+    end
+  end
+end
+
+Facter.add("apt_package_security_updates") do
+  confine :apt_has_updates => true
+  setcode do
+    if Facter.version < '2.0.0'
+      apt_package_updates[1].join(',')
+    else
+      apt_package_updates[1]
     end
   end
 end

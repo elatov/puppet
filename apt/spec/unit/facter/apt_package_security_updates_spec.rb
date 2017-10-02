@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe 'apt_package_updates fact' do
-  subject { Facter.fact(:apt_package_updates).value }
+describe 'apt_package_security_updates fact' do
+  subject { Facter.fact(:apt_package_security_updates).value }
   after(:each) { Facter.clear }
 
   describe 'when apt has no updates' do
@@ -25,9 +25,9 @@ describe 'apt_package_updates fact' do
     }
     it {
       if Facter.version < '2.0.0'
-        is_expected.to eq('tzdata,unhide.rb')
+        is_expected.to eq('tzdata')
       else
-        is_expected.to eq(['tzdata','unhide.rb'])
+        is_expected.to eq(['tzdata'])
       end
     }
   end

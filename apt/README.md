@@ -91,6 +91,16 @@ class { 'apt':
   },
 }
 ```
+When `Exec['apt_update']` is triggered, it generates a `Notice` message. Because the default [logging level for agents](https://docs.puppet.com/puppet/latest/configuration.html#loglevel) is `notice`, this causes the repository update to appear in logs and agent reports. Some tools, such as [The Foreman](https://www.theforeman.org), report the update notice as a significant change. To eliminate these updates from reports, set the [loglevel](https://docs.puppet.com/puppet/latest/metaparameter.html#loglevel) metaparameter for `Exec['apt_update']` above the agent logging level:
+
+```puppet
+class { 'apt':
+  update => {
+    frequency => 'daily',
+    loglevel  => 'debug',
+  },
+}
+```
 
 ### Pin a specific release
 
@@ -270,7 +280,7 @@ Main class, includes all other classes.
 
   * 'host': Specifies a proxy host to be stored in `/etc/apt/apt.conf.d/01proxy`. Valid options: a string containing a hostname. Default: undef.
 
-  * 'port': Specifies a proxy port to be stored in `/etc/apt/apt.conf.d/01proxy`. Valid options: a string containing a port number. Default: '8080'.
+  * 'port': Specifies a proxy port to be stored in `/etc/apt/apt.conf.d/01proxy`. Valid options: an integer containing a port number. Default: 8080.
 
   * 'https': Specifies whether to enable https proxies. Valid options: 'true' and 'false'. Default: 'false'.
 
@@ -313,8 +323,7 @@ Manages backports.
 
 * `location`: Specifies an Apt repository containing the backports to manage. Valid options: a string containing a URL. Defaults:
 
-  * Debian (squeeze): 'http://httpredir.debian.org/debian-backports'
-  * Debian (other): 'http://httpredir.debian.org/debian'
+  * Debian: 'http://deb.debian.org/debian'
   * Ubuntu: 'http://archive.ubuntu.com/ubuntu'
 
 * `pin`: *Optional.* Specifies a pin priority for the backports. Valid options: a number or string to be passed to the `id` parameter of the `apt::pin` defined type, or a hash of `parameter => value` pairs to be passed to `apt::pin`'s corresponding parameters. Default: '200'.
@@ -359,16 +368,6 @@ The `apt::key` defined type makes use of the `apt_key` type, but includes extra 
 * `source`: Specifies the location of an existing GPG key file to copy. Valid options: a string containing a URL (ftp://, http://, or https://) or an absolute path. Default: undef.
 
 * `server`: Specifies a keyserver to provide the GPG key. Valid options: a string containing a domain name or a full URL (http://, https://, or hkp://). Default: 'keyserver.ubuntu.com'.
-
-* `key`: Specifies a GPG key to authenticate Apt package signatures. Valid options: a string containing a key ID (8 or 16 hexadecimal characters, optionally prefixed with "0x") or a full key fingerprint (40 hexadecimal characters). Default: undef. **Note** This parameter is deprecated and will be removed in a future release.
-
-* `key_content`: Supplies the entire GPG key. Useful in case the key can't be fetched from a remote location and using a file resource is inconvenient. Valid options: a string. Default: undef. **Note** This parameter is deprecated and will be removed in a future release.
-
-* `key_source`: Specifies the location of an existing GPG key file to copy. Valid options: a string containing a URL (ftp://, http://, or https://) or an absolute path. Default: undef. **Note** This parameter is deprecated and will be removed in a future release.
-
-* `key_server`: Specifies a keyserver to provide the GPG key. Valid options: a string containing a domain name or a full URL (http://, https://, or hkp://). Default: 'keyserver.ubuntu.com'. **Note** This parameter is deprecated and will be removed in a future release.
-
-* `key_options`: Passes additional options to `apt-key adv --keyserver-options`. Valid options: a string. Default: undef. **Note** This parameter is deprecated and will be removed in a future release.
 
 #### Defined Type: `apt::pin`
 
@@ -472,20 +471,6 @@ Manages the Apt sources in `/etc/apt/sources.list.d/`.
 * `release`: Specifies a distribution of the Apt repository. Valid options: a string. Default: "$lsbdistcodename".
 
   * `repos`: Specifies a component of the Apt repository. Valid options: a string. Default: 'main'.
-
-* `include_deb`: Specify whether to request the distrubution's compiled binaries. Valid options: 'true' and 'false'. Default: undef. **Note**: This parameter is deprecated and will be removed in future versions of the module.
-
-* `include_src`: Specifies whether to request the distribution's uncompiled source code. Valid options: 'true' and 'false'. Default: undef. **Note**: This parameter is deprecated and will be removed in future versions of the module.
-
-* `required_packages`: Installs packages required for this Apt source via an exec. Default: 'false'. **Note**: This parameter is deprecated and will be removed in future versions of the module.
-
-* `key_content`: Specifies the content to be passed to `apt::key`. Default: undef. **Note**: This parameter is deprecated and will be removed in future versions of the module.
-
-* `key_server`: Specifies the server to be passed to `apt::key`. Default: undef. **Note**: This parameter is deprecated and will be removed in future versions of the module.
-
-* `key_source`: Specifies the source to be passed to `apt::key`. Default: undef. **Note**: This parameter is deprecated and will be removed in future versions of the module.
-
-* `trusted_source`: Specifies whether to authenticate packages from this release, even if the Release file is not signed or the signature can't be checked. Valid options: 'true' and 'false'. Default: undef. This parameter is **deprecated** and will be removed in a future version of the module.
 
 * `notify_update`: *Optional.* Specifies whether to trigger an `apt-get update` run. Valid options: 'true' and 'false'. Default: 'true'.
 
