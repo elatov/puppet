@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-mysql",
-  "version": "4.0.1",
+  "version": "5.0.0",
   "author": "Puppet Labs",
   "summary": "Installs, configures, and manages the MySQL service.",
   "license": "Apache-2.0",
@@ -8,6 +8,10 @@
   "project_page": "http://github.com/puppetlabs/puppetlabs-mysql",
   "issues_url": "https://tickets.puppetlabs.com/browse/MODULES",
   "dependencies": [
+    {
+      "name": "puppetlabs/translate",
+      "version_requirement": ">= 1.0.0 < 2.0.0"
+    },
     {
       "name": "puppetlabs/stdlib",
       "version_requirement": ">= 3.2.0 < 5.0.0"
@@ -62,7 +66,8 @@
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
         "7",
-        "8"
+        "8",
+        "9"
       ]
     },
     {

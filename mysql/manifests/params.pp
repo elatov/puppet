@@ -121,7 +121,7 @@ class mysql::params {
           }
         }
         default: {
-          fail("Unsupported platform: puppetlabs-${module_name} currently doesn't support ${::operatingsystem}")
+          fail(translate('Unsupported platform: puppetlabs-%{module_name} currently doesn\'t support %{os}.', {'module_name' => $module_name, 'os' => $::operatingsystem }))
         }
       }
       $config_file         = '/etc/my.cnf'
@@ -203,9 +203,11 @@ class mysql::params {
       # mysql::bindings
       $java_package_name   = 'libmysql-java'
       $perl_package_name   = 'libdbd-mysql-perl'
-      $php_package_name    = $::lsbdistcodename ? {
-        'xenial'           => 'php-mysql',
-        default            => 'php5-mysql',
+      if  ($::operatingsystem == 'Ubuntu' and versioncmp($::operatingsystemrelease, '16.04') >= 0) or
+          ($::operatingsystem == 'Debian' and versioncmp($::operatingsystemrelease, '9') >= 0) {
+        $php_package_name = 'php-mysql'
+      } else {
+        $php_package_name = 'php5-mysql'
       }
       $python_package_name = 'python-mysqldb'
       $ruby_package_name   = $::lsbdistcodename ? {
@@ -378,7 +380,7 @@ class mysql::params {
         }
 
         default: {
-          fail("Unsupported platform: puppetlabs-${module_name} currently doesn't support ${::osfamily} or ${::operatingsystem}")
+          fail(translate('Unsupported platform: puppetlabs-%{module_name} currently doesn\'t support %{osfamily} or %{os}.', {'module_name' => $module_name, 'os' => $::operatingsystem, 'osfamily' => $::osfamily}))
         }
       }
     }
@@ -462,6 +464,6 @@ class mysql::params {
 
   ## Additional graceful failures
   if $::osfamily == 'RedHat' and $::operatingsystemmajrelease == '4' and $::operatingsystem != 'Amazon' {
-    fail("Unsupported platform: puppetlabs-${module_name} only supports RedHat 5.0 and beyond")
+    fail(translate('Unsupported platform: puppetlabs-%{module_name} only supports RedHat 5.0 and beyond.', {'module_name' => $module_name}))
   }
 }

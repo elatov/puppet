@@ -392,6 +392,7 @@ describe 'apache::vhost', :type => :define do
           'use_optional_includes'       => true,
           'suexec_user_group'           => 'root root',
           'allow_encoded_slashes'       => 'nodecode',
+          'passenger_spawn_method'      => 'direct',
           'passenger_app_root'          => '/usr/share/myapp',
           'passenger_app_env'           => 'test',
           'passenger_ruby'              => '/usr/bin/ruby1.9.1',
@@ -990,6 +991,96 @@ describe 'apache::vhost', :type => :define do
       it { is_expected.to_not contain_concat__fragment('rspec.example.com-charsets') }
       it { is_expected.to_not contain_concat__fragment('rspec.example.com-limits') }
       it { is_expected.to contain_concat__fragment('rspec.example.com-file_footer') }
+    end
+    context 'wsgi_application_group should set apache::mod::wsgi' do
+      let :params do
+        {
+            'docroot'                    => '/rspec/docroot',
+            'wsgi_application_group'     => '%{GLOBAL}',
+        }
+      end
+      it { is_expected.to contain_class("apache::mod::wsgi") }
+    end
+    context 'wsgi_daemon_process should set apache::mod::wsgi' do
+      let :params do
+        {
+           'docroot'                    => '/rspec/docroot',
+           'wsgi_daemon_process'        => 'wsgi',
+        }
+      end
+      it { is_expected.to contain_class("apache::mod::wsgi") }
+    end
+    context 'wsgi_import_script on its own should not set apache::mod::wsgi' do
+      let :params do
+        {
+            'docroot'                    => '/rspec/docroot',
+            'wsgi_import_script'         => '/var/www/demo.wsgi',
+        }
+      end
+      it { is_expected.not_to contain_class("apache::mod::wsgi") }
+    end
+    context 'wsgi_import_script_options on its own should not set apache::mod::wsgi' do
+      let :params do
+        {
+            'docroot'                     => '/rspec/docroot',
+            'wsgi_import_script_options'  => {
+                'process-group'           => 'wsgi',
+                'application-group'       => '%{GLOBAL}'
+            },
+        }
+      end
+      it { is_expected.not_to contain_class("apache::mod::wsgi") }
+    end
+    context 'wsgi_import_script and wsgi_import_script_options should set apache::mod::wsgi' do
+      let :params do
+        {
+            'docroot'                     => '/rspec/docroot',
+            'wsgi_import_script'          => '/var/www/demo.wsgi',
+            'wsgi_import_script_options'  => {
+                'process-group'           => 'wsgi',
+                'application-group'       => '%{GLOBAL}'
+            },
+        }
+      end
+      it { is_expected.to contain_class("apache::mod::wsgi") }
+    end
+    context 'wsgi_process_group should set apache::mod::wsgi' do
+      let :params do
+        {
+            'docroot'                    => '/rspec/docroot',
+            'wsgi_daemon_process'        => 'wsgi',
+        }
+      end
+      it { is_expected.to contain_class("apache::mod::wsgi") }
+    end
+    context 'wsgi_script_aliases with non-empty aliases should set apache::mod::wsgi' do
+      let :params do
+        {
+            'docroot'                    => '/rspec/docroot',
+            'wsgi_script_aliases'        => {
+                '/' => '/var/www/demo.wsgi'
+            },
+        }
+      end
+      it { is_expected.to contain_class("apache::mod::wsgi") }
+    end
+    context 'wsgi_script_aliases with empty aliases should set apache::mod::wsgi' do
+      let :params do
+        {
+            'docroot'                    => '/rspec/docroot',
+            'wsgi_script_aliases'        => { },
+        }
+      end
+      it { is_expected.not_to contain_class("apache::mod::wsgi") }
+    end
+    context 'wsgi_pass_authorization should set apache::mod::wsgi' do
+      let :params do
+        {
+            'docroot'                    => '/rspec/docroot',
+            'wsgi_pass_authorization'    => 'On',
+        }
+      end
+      it { is_expected.to contain_class("apache::mod::wsgi") }
     end
     context 'when not setting nor managing the docroot' do
       let :params do
