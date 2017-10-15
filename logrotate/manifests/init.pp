@@ -1,21 +1,22 @@
 #
 class logrotate (
-  $ensure             = present,
-  $hieramerge         = false,
-  $manage_cron_daily  = true,
-  $package            = 'logrotate',
-  $rules              = {},
-  $config             = undef,
-  $cron_daily_hour    = $logrotate::params::cron_daily_hour,
-  $cron_daily_minute  = $logrotate::params::cron_daily_minute,
-  $cron_hourly_minute = $logrotate::params::cron_hourly_minute,
-  $configdir          = $logrotate::params::configdir,
-  $logrotate_bin      = $logrotate::params::logrotate_bin,
-  $logrotate_conf     = $logrotate::params::logrotate_conf,
-  $rules_configdir    = $logrotate::params::rules_configdir,
-  $root_user          = $logrotate::params::root_user,
-  $root_group         = $logrotate::params::root_group,
-) inherits ::logrotate::params {
+  Logrotate::Ensurable $ensure       = present,
+  Boolean $hieramerge                = false,
+  Boolean $manage_cron_daily         = true,
+  String $package                    = 'logrotate',
+  Hash $rules                        = {},
+  Optional[Hash] $config             = undef,
+  Integer[0,23] $cron_daily_hour     = $logrotate::params::cron_daily_hour,
+  Integer[0,59] $cron_daily_minute   = $logrotate::params::cron_daily_minute,
+  Integer[0,59] $cron_hourly_minute  = $logrotate::params::cron_hourly_minute,
+  String $cron_hourly_file           = $logrotate::params::cron_hourly_file,
+  String $configdir                  = $logrotate::params::configdir,
+  String $logrotate_bin              = $logrotate::params::logrotate_bin,
+  String $logrotate_conf             = $logrotate::params::logrotate_conf,
+  String $rules_configdir            = $logrotate::params::rules_configdir,
+  Logrotate::UserOrGroup $root_user  = $logrotate::params::root_user,
+  Logrotate::UserOrGroup $root_group = $logrotate::params::root_group,
+) inherits logrotate::params {
 
   contain ::logrotate::install
   contain ::logrotate::config
@@ -26,5 +27,4 @@ class logrotate (
   -> Class['::logrotate::config']
   -> Class['::logrotate::rules']
   -> Class['::logrotate::defaults']
-
 }

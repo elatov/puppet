@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'shared_examples'
 
 describe 'logrotate::hourly' do
   context 'supported operating systems' do
@@ -12,17 +13,21 @@ describe 'logrotate::hourly' do
 
         context 'with default values' do
           it do
-            is_expected.to contain_file('/etc/logrotate.d/hourly').with('ensure' => 'directory',
-                                                                        'owner'  => 'root',
-                                                                        'group'  => 'root',
-                                                                        'mode'   => '0755')
+            is_expected.to contain_file('/etc/logrotate.d/hourly').with(
+              'ensure' => 'directory',
+              'owner'  => 'root',
+              'group'  => 'root',
+              'mode'   => '0755'
+            )
           end
 
           it do
-            is_expected.to contain_file('/etc/cron.hourly/logrotate').with('ensure' => 'present',
-                                                                           'owner'   => 'root',
-                                                                           'group'   => 'root',
-                                                                           'mode'    => '0555')
+            is_expected.to contain_file('/etc/cron.hourly/logrotate').with(
+              'ensure' => 'present',
+              'owner'   => 'root',
+              'group'   => 'root',
+              'mode'    => '0555'
+            )
           end
         end
 
@@ -36,11 +41,10 @@ describe 'logrotate::hourly' do
         context 'with ensure => foo' do
           let(:params) { { ensure: 'foo' } }
 
-          it do
-            expect do
-              is_expected.to contain_file('/etc/logrotate.d/hourly')
-            end.to raise_error(Puppet::Error, %r{Invalid ensure value 'foo'})
+          include_context 'config file' do
+            let(:config_file) { '/etc/cron.hourly/logrotate' }
           end
+          it_behaves_like 'error match', 'ensure', 'Enum'
         end
       end
     end

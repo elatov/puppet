@@ -24,7 +24,7 @@ class transmission::server::config {
 
    logrotate::rule { $transmission::server::service_name:
 		path          => "${transmission::server::log_dir}/${transmission::server::log_file}",
-		rotate        => '5',
+		rotate        => 5,
 		rotate_every  => 'week',
 		ifempty       => false,
 		compress      => true,
