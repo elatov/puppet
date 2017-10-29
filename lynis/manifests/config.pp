@@ -211,14 +211,12 @@ class lynis::config {
         
       }
       if ( $::lynis::settings['tests']['BANN-7126'] == true ){
-        file { "/etc/issue":
-          source  => 'puppet:///modules/lynis/issue.txt',
-          mode    => '0644'
+        class { 'motd':
+          issue_template => 'lynis/issue.erb',
         }
-        
-        file { "/etc/issue.net":
-          source  => 'puppet:///modules/lynis/issue.txt',
-          mode    => '0644'
+
+        class { 'motd':
+          issue_net_template => 'lynis/issue.erb',
         }
       }
       if ( $::lynis::settings['tests']['ACCT-9622'] == true ){
