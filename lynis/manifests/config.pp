@@ -329,14 +329,6 @@ class lynis::config {
           mode    => '0644'
         }
       }
-
-      if ( $::lynis::settings['tests']['BANN-7126'] == true ){
-        class { 'motd':
-          issue_template => 'lynis/issue.erb',
-          issue_net_template => 'lynis/issue_net.erb',
-          template => 'lynis/motd.erb',
-        }
-      }
       
       if ( $::lynis::settings['tests']['FILE-6310'] == true ){
         service { 'tmp.mount':
@@ -389,16 +381,24 @@ class lynis::config {
         }
       }
 #      notify {"$::osfamily":}
+#       if ( $::lynis::settings['tests']['BANN-7126'] == true ){
+#         file { "/etc/issue":
+#           source  => 'puppet:///modules/lynis/issue.txt',
+#           mode    => '0644'
+#         }
+#
+#         file { "/etc/issue.net":
+#           source  => 'puppet:///modules/lynis/issue.txt',
+#           mode    => '0644'
+#         }
+
       if ( $::lynis::settings['tests']['BANN-7126'] == true ){
-        file { "/etc/issue":
-          source  => 'puppet:///modules/lynis/issue.txt',
-          mode    => '0644'
+        class { 'motd':
+          issue_template => 'lynis/issue.erb',
+          issue_net_template => 'lynis/issue_net.erb',
+          template => 'lynis/motd.erb',
         }
-        
-        file { "/etc/issue.net":
-          source  => 'puppet:///modules/lynis/issue.txt',
-          mode    => '0644'
-        }
+      }
         
 #        augeas { "sshd_config-banner":
 #            context => "/files/etc/ssh/sshd_config",
