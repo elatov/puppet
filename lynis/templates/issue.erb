@@ -1,0 +1,9 @@
+<% if @osfamily == 'Debian' -%>
+Debian GNU/Linux <%= @os['release']['major'] %> \n \l
+<% elsif @osfamily == 'RedHat' -%>
+\S
+Kernel \r on an \m
+<% end -%>
+
+Unauthorized access to this machine is prohibited
+Press <Ctrl-D> if you are not an authorized user to disconnect
