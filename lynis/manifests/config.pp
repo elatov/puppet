@@ -214,6 +214,7 @@ class lynis::config {
         class { 'motd':
           issue_template => 'lynis/issue.erb',
           issue_net_template => 'lynis/issue_net.erb',
+          template => 'lynis/motd.erb',
         }
       }
       if ( $::lynis::settings['tests']['ACCT-9622'] == true ){
