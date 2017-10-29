@@ -25,6 +25,7 @@ class lynis::params {
                                                                          ],
                                            'AUTH-9328'               =>  true,
                                            'FILE-6310'               =>  true,
+                                           'BANN-7126'               =>  true,
                                           }
                       
                     }
@@ -101,7 +102,6 @@ class lynis::params {
                                                                           'TCPKeepAlive',
                                                                           'UseDNS'
                                                                          ],
-                                            'BANN-7126'                =>  true,
                                             'ACCT-9622'                =>  true,
                                             'ACCT-9630'                =>  true,
                                             'HRDN-7230'                =>  true,
