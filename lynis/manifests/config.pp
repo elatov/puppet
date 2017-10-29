@@ -213,7 +213,7 @@ class lynis::config {
       if ( $::lynis::settings['tests']['BANN-7126'] == true ){
         class { 'motd':
           issue_template => 'lynis/issue.erb',
-          issue_net_template => 'lynis/issue.erb',
+          issue_net_template => 'lynis/issue_net.erb',
         }
       }
       if ( $::lynis::settings['tests']['ACCT-9622'] == true ){
