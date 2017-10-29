@@ -329,6 +329,14 @@ class lynis::config {
           mode    => '0644'
         }
       }
+
+      if ( $::lynis::settings['tests']['BANN-7126'] == true ){
+        class { 'motd':
+          issue_template => 'lynis/issue.erb',
+          issue_net_template => 'lynis/issue_net.erb',
+          template => 'lynis/motd.erb',
+        }
+      }
       
       if ( $::lynis::settings['tests']['FILE-6310'] == true ){
         service { 'tmp.mount':
