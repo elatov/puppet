@@ -4,7 +4,7 @@ class smartd::install {
 
   if ($::operatingsystem == 'OmniOS') {
 		pkg_publisher { 'cs.umd.edu':
-			origin  => 'http://pkg.cs.umd.edu/',
+			origin  => 'http://pkg.cs.umd.edu',
 			enable  => true,
 			ensure  => 'present',
 		}
