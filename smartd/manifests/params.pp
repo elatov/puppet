@@ -43,7 +43,7 @@ class smartd::params {
       $smartd_service_name         = 'smartd'
      
       #### Dir
-      $smartd_config_dir           = '/opt/omni/etc/'
+      $smartd_config_dir           = '/opt/csd/etc'
       $smartd_service_dir          = '/lib/svc/method'
       $smartd_manifest_dir         = '/var/svc/manifest/application/'
 
