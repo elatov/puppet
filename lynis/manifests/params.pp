@@ -104,6 +104,7 @@ class lynis::params {
                                                                          ],
                                             'ACCT-9622'                =>  true,
                                             'ACCT-9630'                =>  true,
+                                            'ACCT-9630_cron'           =>  true,
                                             'HRDN-7230'                =>  true,
                                             'KRNL-6000'                =>  true,
                                             'KRNL-6000_enabled_options'=>  {
