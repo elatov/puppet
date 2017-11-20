@@ -1,6 +1,6 @@
 {
   "name": "puppet-alternatives",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "author": "Vox Pupuli",
   "summary": "Maintain symbolic links determining default commands",
   "license": "Apache-2.0",
@@ -15,7 +15,6 @@
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "5",
         "6",
         "7"
       ]
@@ -23,7 +22,6 @@
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "5",
         "6",
         "7"
       ]
@@ -38,7 +36,6 @@
     {
       "operatingsystem": "Scientific",
       "operatingsystemrelease": [
-        "5",
         "6",
         "7"
       ]
@@ -53,8 +50,6 @@
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "10.04",
-        "12.04",
         "14.04"
       ]
     }
@@ -62,7 +57,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 3.8.7 < 5.0.0"
+      "version_requirement": ">= 4.6.1 < 5.0.0"
     }
   ]
 }

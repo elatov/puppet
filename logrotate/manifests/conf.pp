@@ -22,6 +22,7 @@ define logrotate::conf (
   Optional[String] $create_group                     = undef,
   Optional[Boolean] $dateext                         = undef,
   Optional[String] $dateformat                       = undef,
+  Optional[Boolean] $dateyesterday                   = undef,
   Optional[Boolean] $delaycompress                   = undef,
   Optional[String] $extension                        = undef,
   Optional[Boolean] $ifempty                         = undef,

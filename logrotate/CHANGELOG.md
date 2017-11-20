@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v3.1.0](https://github.com/voxpupuli/puppet-logrotate/tree/v3.1.0) (2017-11-13)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-logrotate/compare/v3.0.1...v3.1.0)
+
+**Implemented enhancements:**
+
+- Allow dateyesterday at the global level [\#83](https://github.com/voxpupuli/puppet-logrotate/pull/83) ([cliff-wakefield](https://github.com/cliff-wakefield))
+
+**Fixed bugs:**
+
+- Fix "Puppet Unknown variable: 'default\_su\_group'" [\#82](https://github.com/voxpupuli/puppet-logrotate/pull/82) ([mookie-](https://github.com/mookie-))
+
+**Closed issues:**
+
+- Config is not a string but a hash [\#77](https://github.com/voxpupuli/puppet-logrotate/issues/77)
+- Support Ubuntu 16.04 [\#59](https://github.com/voxpupuli/puppet-logrotate/issues/59)
+- Does this module attempt to apply the defaults for the GNU distribution? [\#48](https://github.com/voxpupuli/puppet-logrotate/issues/48)
+
 ## [v3.0.1](https://github.com/voxpupuli/puppet-logrotate/tree/v3.0.1) (2017-10-14)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-logrotate/compare/v3.0.0...v3.0.1)
@@ -11,6 +29,10 @@ These should not affect the functionality of the module.
 **Fixed bugs:**
 
 - wrong datatype for $config, s/String/Hash [\#78](https://github.com/voxpupuli/puppet-logrotate/pull/78) ([bastelfreak](https://github.com/bastelfreak))
+
+**Merged pull requests:**
+
+- release 3.0.1 [\#79](https://github.com/voxpupuli/puppet-logrotate/pull/79) ([bastelfreak](https://github.com/bastelfreak))
 
 ## [v3.0.0](https://github.com/voxpupuli/puppet-logrotate/tree/v3.0.0) (2017-10-10)
 

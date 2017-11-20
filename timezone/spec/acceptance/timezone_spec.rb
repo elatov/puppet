@@ -3,13 +3,13 @@ require 'spec_helper_acceptance'
 describe 'timezone class' do
   describe 'running puppet code' do
     it 'works with no errors' do
-      pp = <<-EOS
+      pp = <<-PUPPET
         class { '::timezone': }
-      EOS
+      PUPPET
 
       # Run it twice and test for idempotency
-      apply_manifest(pp, catch_failures: true)
-      apply_manifest(pp, catch_changes: true)
+      apply_manifest(pp, :catch_failures => true)
+      apply_manifest(pp, :catch_changes => true)
     end
   end
 end
