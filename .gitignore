@@ -27,6 +27,7 @@ wordpress/.project
 !concat/
 !concat/**
 concat/.project
+concat/Gemfile
 !my_wp/
 !my_wp/**
 my_wp/.project
