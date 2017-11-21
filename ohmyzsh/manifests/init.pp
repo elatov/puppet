@@ -19,6 +19,6 @@ class ohmyzsh (
 
   class { '::ohmyzsh::install': } ->
   class { '::ohmyzsh::config': } ~>
-  class { '::ohmyzsh::service': } ->
+  # class { '::ohmyzsh::service': } ->
   Class['::ohmyzsh']
 }
