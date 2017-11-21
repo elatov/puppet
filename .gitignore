@@ -61,6 +61,8 @@ clean_usr_local/.project
 !ossec/**
 ossec/files/ossec-2.8.1-omnios.tar.bz2
 ossec/.project
+!ohmyzsh/
+!ohmyzsh/**
 !vmwaretools/
 !vmwaretools/**
 vmwaretools/.project
