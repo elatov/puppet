@@ -4,7 +4,50 @@
 #
 class ohmyzsh::install {
 
-  package { $::ohmyzsh::package_name:
-    ensure => present,
+  ensure_resource ('user',$ohmyzsh::settings['user'],{ 'ensure'=> 'present' })
+
+  ensure_resource ('file',
+                   $ohmyzsh::user_home_dir,
+                   {'ensure' => 'directory',})
+
+  ensure_packages($ohmyzsh::settings['pre_pkgs'],{ 'ensure'=> 'present' })
+
+  vcsrepo { "${ohmyzsh::user_home_dir}/.oh-my-zsh" :
+    ensure   => present,
+    provider => git,
+    source   => $ohmyzsh::settings['repo_url'],
   }
+
+  if ($ohmyzsh::settings['install_percol']){
+    case $::osfamily {
+      'Debian': {
+        ensure_packages(['percol'], {
+          ensure   => present,
+          provider => 'pip',
+          require  => [ Package['python-pip'], ],
+        })
+      }
+      'RedHat': {
+        ensure_packages(['percol'], {
+          ensure   => present,
+          provider => 'pip',
+          require  => [ Package['python2-pip'], ],
+        })
+      }
+      'FreeBSD': {
+        ensure_packages(['percol'], {
+          ensure   => present,
+          provider => 'pip',
+          require  => [ Package['py27-pip'], ],
+        })
+      }
+      'Solaris': {
+        ensure_packages(['percol'], {
+          ensure   => present,
+          provider => 'pip',
+        })
+      }
+    }
+  }
+
 }
