@@ -21,7 +21,7 @@ class ohmyzsh::install {
   if ($ohmyzsh::settings['install_percol']){
     case $::osfamily {
       'Debian': {
-        ensure_packages(package['python-pip'],{ 'ensure'=> 'present' })
+        ensure_packages(['python-pip'],{ 'ensure'=> 'present' })
         ensure_packages(['percol'], {
           ensure   => present,
           provider => 'pip',
@@ -29,7 +29,7 @@ class ohmyzsh::install {
         })
       }
       'RedHat': {
-        ensure_packages(package['python2-pip'],{ 'ensure'=> 'present' })
+        ensure_packages(['python2-pip'],{ 'ensure'=> 'present' })
         ensure_packages(['percol'], {
           ensure   => present,
           provider => 'pip',
@@ -37,7 +37,7 @@ class ohmyzsh::install {
         })
       }
       'FreeBSD': {
-        ensure_packages(package['py27-pip'],{ 'ensure'=> 'present' })
+        ensure_packages(['py27-pip'],{ 'ensure'=> 'present' })
         ensure_packages(['percol'], {
           ensure   => present,
           provider => 'pip',
