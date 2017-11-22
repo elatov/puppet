@@ -17,12 +17,19 @@ class drive::params {
 	
 	case $::osfamily {
 		'Debian': {
-			
-			$drive_settings_os  = {'pre_pkgs' => ['libboost-program-options1.49.0',
+
+      case $::operatingsystem {
+          'ubuntu': {
+            $drive_settings_os  = {}
+          }
+          'debian': {
+            $drive_settings_os  = {'pre_pkgs' => ['libboost-program-options1.49.0',
                                             'libboost-filesystem1.49.0',
                                             'libyajl2',
                                             'libboost-test1.49.0'],
                             }
+          }
+        }
 
 		}
 		'RedHat': {
