@@ -5,6 +5,10 @@
 class ohmyzsh::config {
 
   if ($ohmyzsh::settings['install_theme']){
+    ensure_resource ( 'file',
+                      "${ohmyzsh::user_home_dir}/.oh-my-zsh/custom/themes/",
+                      {'ensure' => 'directory',}
+                    )
     exec { "ohmyzsh copy theme for ${ohmyzsh::settings['user']}":
       path  => ['/bin','/usr/bin/'],
       onlyif  => "test -d ${ohmyzsh::user_home_dir}/
