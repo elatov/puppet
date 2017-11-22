@@ -11,11 +11,8 @@ class ohmyzsh::config {
                     )
     exec { "ohmyzsh copy theme for ${ohmyzsh::settings['user']}":
       path  => ['/bin','/usr/bin/'],
-      onlyif  => "test -d ${ohmyzsh::user_home_dir}/
-      .oh-my-zsh/custom/themes/${ohmyzsh::settings['install_theme']}",
-      command => "cp -rp ${ohmyzsh::user_home_dir}/
-      .oh-my-zsh/themes/${ohmyzsh::settings['install_theme']} ${ohmyzsh::user_home_dir}/
-      .oh-my-zsh/custom/themes/${ohmyzsh::settings['install_theme']}",
+      onlyif  => "test -d ${ohmyzsh::user_home_dir}/.oh-my-zsh/custom/themes/${ohmyzsh::settings['install_theme']}",
+      command => "cp -rp ${ohmyzsh::user_home_dir}/.oh-my-zsh/themes/${ohmyzsh::settings['install_theme']} ${ohmyzsh::user_home_dir}/.oh-my-zsh/custom/themes/${ohmyzsh::settings['install_theme']}",
       require => Vcsrepo["${ohmyzsh::user_home_dir}/.oh-my-zsh"]
     }
   }
