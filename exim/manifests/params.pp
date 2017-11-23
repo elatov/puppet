@@ -38,14 +38,25 @@ class exim::params {
                                          }
 			
 			### Client
-			$exim_client_package_name		= 'exim'
-			$exim_client_service_name		= 'exim'
-			$exim_client_config_dir			= '/etc/default'
-			$exim_client_service_dir		= '/etc/init.d'
-			$exim_client_config_file		= 'exim.config'
-			$exim_client_service_file		= 'exim.init'
-			$exim_client_absent_packages  = ['postfix','sendmail']
-      $exim_client_stopped_services = ['postfix','sendmail' ]
+			$exim_client_package_name		    = 'exim4'
+			$exim_client_service_name		    = 'exim4'
+			$exim_client_config_dir			    = '/etc/exim4'
+			$exim_client_service_dir		    = '/etc/init.d'
+			$exim_client_config_file		    = 'exim4.conf.template'
+      $exim_client_template_conf_file = 'update-exim4.conf.conf'
+			$exim_client_settings_os        = { 'stopped_services'  => ['postfix','sendmail'],
+			                                    'absent_packages'   => ['postfix','sendmail'],
+                                          'config'            => {
+                                                                  'dc_eximconfig_configtype' => 'satellite',
+                                                                  'dc_other_hostnames'       => "email.com",
+                                                                  'dc_local_interfaces'      => "127.0.0.1",
+                                                                  'dc_readhost'              => "${::fqdn}",
+                                                                  'dc_minimaldns'            => "false",
+                                                                  'dc_smarthost'             => 'email.com',
+                                                                  'dc_use_split_config'      => "true",
+                                                                  'dc_hide_mailname'         => "false",}
+			                                  }
+
 		}
 		'RedHat': {
 			### Client

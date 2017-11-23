@@ -3,9 +3,9 @@
 # This class is called from exim::server:config
 #
 define exim::client::settings (
-    $key               = $title,
-    $settings_hash,
-    $config_file,
+    $key               	= $title,
+    $settings_hash			= $exim::client::settings,
+    $config_file				= $exim::client::config_file,
 ) {
 
   $value = $settings_hash[$key]
