@@ -9,7 +9,8 @@ class exim::client::config {
       User <| title == "${exim::client::settings['add_user']}" |> { groups +> [
         'mail'] }
     }elsif ($::osfamily == 'Debian'){
-      User <| title == "${exim::server::settings['add_user']}" |> { groups +> ['adm'] }
+      User <| title == "${exim::client::settings['add_user']}" |> { groups +>
+        ['adm'] }
 		}else{
 		  User <| title == "${exim::client::settings['add_user']}" |> { groups +> ['mail','exim'] }
 		}
