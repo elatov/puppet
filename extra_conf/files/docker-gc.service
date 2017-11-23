@@ -1,0 +1,7 @@
+[Unit]
+Description=Run Docker-GC
+
+[Service]
+User=root
+Type=oneshot
+ExecStart=/usr/local/bin/docker-gc.sh
