@@ -120,7 +120,7 @@ class exim::client::config {
       $keys = keys($exim::client::settings['config'])
 
       exim::client::settings { $keys:
-        config_file     => "${exim::client::config_dir}/${exim::client::update-exim4.conf.conf}",
+        config_file     => "${exim::client::config_dir}/${exim::client::exim_client_template_conf_file}",
         settings_hash   => $exim::client::settings['config'],
       }~>
       exec {exim-client-update-config:
