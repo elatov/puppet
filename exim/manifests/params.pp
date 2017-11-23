@@ -53,7 +53,7 @@ class exim::params {
                                                                   'dc_readhost'              => "${::fqdn}",
                                                                   'dc_minimaldns'            => "false",
                                                                   'dc_smarthost'             => 'email.com',
-                                                                  'dc_use_split_config'      => "true",
+                                                                  'dc_use_split_config'      => "false",
                                                                   'dc_hide_mailname'         => "false",}
 			                                  }
 
