@@ -32,6 +32,10 @@ class extra_conf {
       }
       case $::operatingsystem {
         'ubuntu': {
+          sudo::conf { 'elatov':
+            priority => 20,
+            content  => "Defaults:elatov secure_path = /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:/opt/puppetlabs/bin",
+          }
           file {"/etc/systemd/system/wpscan.service":
             ensure  => "present",
             source  => "puppet:///modules/extra_conf/wpscan.service",
