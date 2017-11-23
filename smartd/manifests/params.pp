@@ -7,7 +7,7 @@ class smartd::params {
 
 	$smartd_default_settings_all	=	{ 'devicescan' 	        => true,
 										                'devicescan_options'	=> '-H -n standby,10,q -W 1' ,
-										                'mailto'              => 'root',
+										                'mail_to'              => 'root',
 										              }
 	case $::osfamily {
 		'Debian': {
