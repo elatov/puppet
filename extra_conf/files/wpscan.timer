@@ -1,0 +1,9 @@
+[Unit]
+Description=Run wp-scan weekly
+
+[Timer]
+OnCalendar=Sat *-*-* 06:30:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

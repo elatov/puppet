@@ -30,6 +30,27 @@ class extra_conf {
         priority => 10,
         content  => "%adm ALL=(ALL) ALL",
       }
+      case $::operatingsystem {
+        'ubuntu': {
+          file {"/etc/systemd/system/wpscan.service":
+            ensure  => "present",
+            source  => "puppet:///modules/extra_conf/wpscan.service",
+            mode    => '0644',
+          } ->
+          file {"/etc/systemd/system/wpscan.timer":
+            ensure  => "present",
+            source  => "puppet:///modules/extra_conf/wpscan.timer",
+            mode    => '0644',
+          } ~>
+          service { "wpscan.timer":
+            ensure      => running,
+            hasstatus   => true,
+            hasrestart  => true,
+            enable      => true,
+            # require     => File["/etc/systemd/system/wpscan.timer"]
+          }
+        }
+      }
     }
     'RedHat': {
 			augeas { "grub-conf-rhgb":

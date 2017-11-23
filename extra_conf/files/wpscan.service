@@ -1,0 +1,7 @@
+[Unit]
+Description=Run WP-Scan
+
+[Service]
+User=root
+Type=oneshot
+ExecStart=/usr/local/bin/wp-scan.sh
