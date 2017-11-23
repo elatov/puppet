@@ -11,12 +11,12 @@ class smartd::params {
 										              }
 	case $::osfamily {
 		'Debian': {
-			$smartd_package_name		     = 'smartd'
+			$smartd_package_name		     = 'smartmontools'
 			$smartd_service_name		     = 'smartd'
-			$smartd_config_dir			     = '/etc/default'
-			$smartd_service_dir			     = '/etc/init.d'
-			$smartd_config_file			     = 'smartd.sysconf.init'
-			$smartd_service_file		     = 'smartd.init'
+			$smartd_config_dir			     = '/etc/'
+			# $smartd_service_dir			     = '/etc/init.d'
+			$smartd_config_file			     = 'smartd.conf'
+			# $smartd_service_file		     = 'smartd.service'
 			$smartd_default_settings_os  = {}
 		}
 		'RedHat': {
