@@ -1,6 +1,8 @@
 <% if scope['smartd::settings']['devicescan'] -%>
 DEVICESCAN -m <%= scope['smartd::mail_to'] %> <% if scope['smartd::settings']['devicescan_options'] %><%= ' ' + scope['smartd::settings']['devicescan_options'] %><% end %>
 <% end -%>
+<% if scope['smartd::settings']['devices'] -%>
 <% scope['smartd::settings']['devices'].each do |dev| -%>
 <%= dev['device'] %><% if dev.has_key?('options') -%><%= ' ' + dev['options'] %><% end %>
+<% end -%>
 <% end -%>
