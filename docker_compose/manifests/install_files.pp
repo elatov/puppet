@@ -4,12 +4,12 @@
 # It ensure the service is running.
 #
 define docker_compose::install_files (
-  $file                 = $title,
+  $file = $title,
 ) {
 
-  $full_file = split($file, '_')
-  $dir = $full_file[0]
-  $compose_file = $full_file[1]
+  [$dir,$compose_file] = split($file, '_')
+  # $dir = $file_parts[0]
+  # $compose_file = $file_parts[1]
   file { $dir:
     ensure  => "directory",
     path    => "/data/docker/${dir}"
@@ -20,4 +20,25 @@ define docker_compose::install_files (
     source => "puppet:///modules/docker_compose/${file}",
     require => File[$key]
   }
+  /* Old Day
+  define docker_compose::install_files (
+  $key               	= $title,
+  $settings_hash
+) {
+
+  $value = $settings_hash[$key]
+
+  file { $key:
+    ensure  => "directory",
+    path    => "/data/docker/${key}"
+  } ->
+  file { $value:
+    ensure  => 'present',
+    target  => "/data/docker/${key}/docker-compose.yml",
+    source => "puppet:///modules/${::module_name}/${value}",
+    require => File[$key]
+  }
+
+
+}*/
 }
