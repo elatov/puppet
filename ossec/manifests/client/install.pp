@@ -10,32 +10,46 @@ class ossec::client::install {
 		                   })
     }
     'Debian': {
-      if ($::operatingsystemmajrelease == '9') {
-				apt::source { 'alienvault':
-					location   => "http://ossec.wazuh.com/repos/apt/debian",
-					release    => 'stretch',
-					repos      => 'main',
-#					key        => '9A1B1C65',
-#					key_source => 'http://ossec.alienvault.com/repos/apt/conf/ossec-key.gpg.key',
-#					include_src => false,
-					#        pin        => '510',
-				} 
-			} else {
-				apt::source { 'alienvault':
-					location   => "http://ossec.wazuh.com/repos/apt/debian",
-					release    => 'wheezy',
-					repos      => 'main',
-#					key        => '9A1B1C65',
-#					key_source => 'http://ossec.alienvault.com/repos/apt/conf/ossec-key.gpg.key',
-#					include_src => false,
-					#        pin        => '510',
-				}       
+      case $::operatingsystem {
+        'debian': {
+          if ($::operatingsystemmajrelease == '9') {
+            apt::source { 'alienvault':
+              location => "http://ossec.wazuh.com/repos/apt/debian",
+              release  => 'stretch',
+              repos    => 'main',
+              #					key        => '9A1B1C65',
+              #					key_source => 'http://ossec.alienvault.com/repos/apt/conf/ossec-key.gpg.key',
+              #					include_src => false,
+              #        pin        => '510',
+            }
+          } else {
+            apt::source { 'alienvault':
+              location => "http://ossec.wazuh.com/repos/apt/debian",
+              release  => 'wheezy',
+              repos    => 'main',
+              #					key        => '9A1B1C65',
+              #					key_source => 'http://ossec.alienvault.com/repos/apt/conf/ossec-key.gpg.key',
+              #					include_src => false,
+              #        pin        => '510',
+            }
+          }
+        }
+        'ubuntu': {
+          apt::source { 'alienvault':
+              location => "http://ossec.wazuh.com/repos/apt/ubuntu",
+              release  => 'xenial',
+              repos    => 'main',
+              key        => '9A1B1C65',
+              key_source => 'http://ossec.alienvault.com/repos/apt/conf/ossec-key.gpg.key',
+              include_src => false,
+              #        pin        => '510',
+            }
+        }
       }
-            
       ensure_packages($ossec::client::package_name,
-                      {ensure => 'present',
-                       require  => Apt::Source['alienvault'],
-                      })
+          { ensure  => 'present',
+            require => Apt::Source['alienvault'],
+          })
     }
     'Solaris': {
 			
