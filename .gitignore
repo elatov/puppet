@@ -191,8 +191,8 @@ sophos/files/*.tgz
 !motd/**
 !docker/
 !docker/**
-!docker_compose/
-!docker_compose/**
+!dock_compose/
+!dock_compose/**
 !.gitignore
 .DS_Store
 .DS_Store?
