@@ -5,6 +5,6 @@
 class docker_compose::install {
 
   $dirs = generate ("ls")
-  notify {"Result of ls is ${dirs}"}
+  notify {"Result of ls is ${dirs}":}
 
 }
