@@ -18,8 +18,8 @@ class ossec::client::install {
               release  => 'stretch',
               repos    => 'main',
               key      => {
-                'id'      => '292EB92EF0E077E419C6DAFF32A951145EBD2744',
-                'source'  => "https://www.atomicorp.com/RPM-GPG-KEY.art.txt"
+                'id'      => '181866DF9DACA40E5B429B08FFBD5D0A4520AFA9',
+                'source'  => "https://www.atomicorp.com/RPM-GPG-KEY.atomicorp.txt"
               }
             }
           } else {
@@ -28,8 +28,8 @@ class ossec::client::install {
               release  => 'wheezy',
               repos    => 'main',
               key      => {
-                'id'      => '292EB92EF0E077E419C6DAFF32A951145EBD2744',
-                'source'  => "https://www.atomicorp.com/RPM-GPG-KEY.art.txt"
+                'id'      => '181866DF9DACA40E5B429B08FFBD5D0A4520AFA9',
+                'source'  => "hhttps://www.atomicorp.com/RPM-GPG-KEY.atomicorp.txt"
               }
             }
           }
@@ -40,8 +40,8 @@ class ossec::client::install {
               release  => 'xenial',
               repos    => 'main',
               key      => {
-                'id'      => '292EB92EF0E077E419C6DAFF32A951145EBD2744',
-                'source'  => "https://www.atomicorp.com/RPM-GPG-KEY.art.txt"
+                'id'      => '181866DF9DACA40E5B429B08FFBD5D0A4520AFA9',
+                'source'  => "https://www.atomicorp.com/RPM-GPG-KEY.atomicorp.txt"
               }
 
             }
