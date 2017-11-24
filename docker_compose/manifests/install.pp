@@ -4,11 +4,26 @@
 #
 class docker_compose::install {
 
-  $files = generate ("/bin/ls", "/opt/docker-compose-files/")
-  $files_array = split($files,"\n")
-  docker_compose::install_files {
-   $files_array :
+  if ($::docker_compose::settings["docker_compose_files_list"] != undef){
+    $::docker_compose::settings["docker_compose_files_list"].each | $file | {
+      file { $file:
+        ensure  => "directory",
+        path    => "/data/docker/${file}"
+      } ->
+      file { $file:
+        ensure  => 'present',
+        path  => "/data/docker/${file}/docker-compose.yml",
+        source => "puppet:///modules/docker_compose/${file}_docker-compose.yml",
+        require => File[$file]
+      }
+    }
+  } elsif ($::docker_compose::settings["docker_compose_files"] != undef) {
+    docker_compose::install_files {
+      $::docker_compose::settings["docker_compose_files"] :
+    }
   }
+
+
   /* Messing around with hashes and map function
   $f = type($files)
   notify { "Type is ${f}" : }

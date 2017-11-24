@@ -18,7 +18,7 @@ define docker_compose::install_files (
     ensure  => 'present',
     path  => "/data/docker/${dir}/docker-compose.yml",
     source => "puppet:///modules/docker_compose/${file}",
-    require => File[$key]
+    require => File[$dir]
   }
   /* Old Day
   define docker_compose::install_files (

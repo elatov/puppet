@@ -4,10 +4,15 @@
 # It sets variables according to platform.
 #
 class docker_compose::params {
+  $settings_all = {
+    "docker_compose_files_directory"  => "/opt/docker-compose-files/",
+    "docker_compose_files_list" => undef
+  }
   case $::osfamily {
     'Debian': {
       $package_name = 'docker_compose'
       $service_name = 'docker_compose'
+      $settings_os = {}
     }
     'RedHat', 'Amazon': {
       $package_name = 'docker_compose'
@@ -17,4 +22,5 @@ class docker_compose::params {
       fail("${::operatingsystem} not supported")
     }
   }
+  $default_settings = merge($settings_all,$settings_os)
 }
