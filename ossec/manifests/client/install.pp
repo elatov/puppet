@@ -14,34 +14,34 @@ class ossec::client::install {
         'debian': {
           if ($::operatingsystemmajrelease == '9') {
             apt::source { 'alienvault':
-              location => "http://ossec.wazuh.com/repos/apt/debian",
+              location => "https://updates.atomicorp.com/channels/atomic/debian",
               release  => 'stretch',
               repos    => 'main',
-              #					key        => '9A1B1C65',
-              #					key_source => 'http://ossec.alienvault.com/repos/apt/conf/ossec-key.gpg.key',
-              #					include_src => false,
-              #        pin        => '510',
+              key      => {
+                'id'      => 'B50FB1947A0AE31145D05FADEE1B0E6B2D8387B7',
+                'source'  => "https://www.atomicorp.com/RPM-GPG-KEY.art.txt"
+              }
             }
           } else {
             apt::source { 'alienvault':
-              location => "http://ossec.wazuh.com/repos/apt/debian",
+              location => "https://updates.atomicorp.com/channels/atomic/debian",
               release  => 'wheezy',
               repos    => 'main',
-              #					key        => '9A1B1C65',
-              #					key_source => 'http://ossec.alienvault.com/repos/apt/conf/ossec-key.gpg.key',
-              #					include_src => false,
-              #        pin        => '510',
+              key      => {
+                'id'      => 'B50FB1947A0AE31145D05FADEE1B0E6B2D8387B7',
+                'source'  => "https://www.atomicorp.com/RPM-GPG-KEY.art.txt"
+              }
             }
           }
         }
         'ubuntu': {
           apt::source { 'alienvault':
-              location => "http://ossec.wazuh.com/repos/apt/ubuntu",
+              location => "https://updates.atomicorp.com/channels/atomic/ubuntu",
               release  => 'xenial',
               repos    => 'main',
               key      => {
-                'id'      => '9A1B1C65',
-                'source'  => "http://ossec.wazuh.com/repos/apt/conf/ossec-key.gpg.key"
+                'id'      => 'B50FB1947A0AE31145D05FADEE1B0E6B2D8387B7',
+                'source'  => "https://www.atomicorp.com/RPM-GPG-KEY.art.txt"
               }
 
             }
