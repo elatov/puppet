@@ -17,9 +17,9 @@ class docker_compose::install {
         require => File[$file]
       }
     }
-  } elsif ($::docker_compose::settings["docker_compose_files"] != undef) {
+  } elsif ($::docker_compose::docker_compose_files != undef) {
     docker_compose::install_files {
-      $::docker_compose::settings["docker_compose_files"] :
+      $::docker_compose::docker_compose_files :
     }
   }
 

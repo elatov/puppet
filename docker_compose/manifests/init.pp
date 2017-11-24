@@ -30,11 +30,7 @@ class docker_compose (
   if ($settings['docker_compose_files_list'] == undef){
     if ($settings['docker_compose_files_directory'] != undef) {
       $files = generate("/bin/ls", $::docker_compose::settings["docker_compose_files_directory"])
-      $files_array = split($files, "\n")
-      $my_temp_hash = {
-        "docker_compose_files" => $files_array
-      }
-      $settings = merge($settings,$my_temp_hash)
+      $docker_compose_files = split($files, "\n")
     }
   }
 

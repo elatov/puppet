@@ -9,9 +9,9 @@ class docker_compose::config {
         ensure => present,
       }
     }
-  } elsif ($::docker_compose::settings["docker_compose_files"] != undef) {
+  } elsif ($::docker_compose::docker_compose_files != undef) {
     docker_compose::run_files {
-      $::docker_compose::settings["docker_compose_files"] :
+      $::docker_compose::docker_compose_files :
     }
   }
 }
