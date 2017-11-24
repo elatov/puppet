@@ -40,9 +40,9 @@ class ossec::client::install {
               release  => 'xenial',
               repos    => 'main',
               key      => {
-                'source'  => "http://ossec.wazuh.com/repos/apt/conf/ossec-key
-                .gpg.key",
-              },
+                'id'      => '9A1B1C65',
+                'source'  => "http://ossec.wazuh.com/repos/apt/conf/ossec-key.gpg.key"
+              }
 
             }
         }
