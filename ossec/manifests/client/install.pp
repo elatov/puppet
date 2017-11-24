@@ -39,10 +39,11 @@ class ossec::client::install {
               location => "http://ossec.wazuh.com/repos/apt/ubuntu",
               release  => 'xenial',
               repos    => 'main',
-              key        => '9A1B1C65',
-              key_source => 'http://ossec.alienvault.com/repos/apt/conf/ossec-key.gpg.key',
-              include_src => false,
-              #        pin        => '510',
+              key      => {
+                'source'  => "http://ossec.wazuh.com/repos/apt/conf/ossec-key
+                .gpg.key",
+              },
+
             }
         }
       }
