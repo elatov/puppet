@@ -1,0 +1,16 @@
+version: '2'
+services:
+
+    mariadb:
+       image: mariadb:latest
+       container_name: mariadb
+       hostname: mariadb
+       restart: always
+       volumes:
+        - "/data/shared/maria/data:/var/lib/mysql"
+        - "/data/shared/maria/conf:/etc/mysql/conf.d"
+       ports:
+        - "3306:3306"
+       network_mode: bridge
+#       environment:
+#         - MYSQL_ROOT_PASSWORD="testing"

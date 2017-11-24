@@ -4,7 +4,7 @@
 #
 class docker_compose::install {
 
-  package { $::docker_compose::package_name:
-    ensure => present,
-  }
+  $dirs = generate ("ls")
+  notify {"Result of ls is ${dirs}"}
+
 }

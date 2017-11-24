@@ -19,6 +19,6 @@ class docker_compose (
 
   class { '::docker_compose::install': } ->
   class { '::docker_compose::config': } ~>
-  class { '::docker_compose::service': } ->
+  # class { '::docker_compose::service': } ->
   Class['::docker_compose']
 }
