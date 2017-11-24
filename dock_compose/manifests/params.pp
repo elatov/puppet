@@ -1,9 +1,9 @@
-# == Class docker_compose::params
+# == Class dock_compose::params
 #
-# This class is meant to be called from docker_compose.
+# This class is meant to be called from dock_compose.
 # It sets variables according to platform.
 #
-class docker_compose::params {
+class dock_compose::params {
   $settings_all = {
     "docker_compose_files_directory"  => "/opt/docker-compose-files/",
     "docker_compose_files_list" => undef

@@ -1,9 +1,9 @@
-# == Class docker_compose::service
+# == Class dock_compose::service
 #
-# This class is meant to be called from docker_compose.
+# This class is meant to be called from dock_compose.
 # It ensure the service is running.
 #
-define docker_compose::run_files (
+define dock_compose::run_files (
   $file = $title,
 ) {
 

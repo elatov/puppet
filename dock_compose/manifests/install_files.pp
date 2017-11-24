@@ -1,9 +1,9 @@
-# == Class docker_compose::service
+# == Class dock_compose::service
 #
-# This class is meant to be called from docker_compose.
+# This class is meant to be called from dock_compose.
 # It ensure the service is running.
 #
-define docker_compose::install_files (
+define dock_compose::install_files (
   $file = $title,
 ) {
 
@@ -17,11 +17,11 @@ define docker_compose::install_files (
   file { $file:
     ensure  => 'present',
     path  => "/data/docker/${dir}/docker-compose.yml",
-    source => "puppet:///modules/docker_compose/${file}",
+    source => "puppet:///modules/dock_compose/${file}",
     require => File[$dir]
   }
   /* Old Day
-  define docker_compose::install_files (
+  define dock_compose::install_files (
   $key               	= $title,
   $settings_hash
 ) {

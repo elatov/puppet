@@ -1,11 +1,11 @@
-# == Class docker_compose::install
+# == Class dock_compose::install
 #
-# This class is called from docker_compose for install.
+# This class is called from dock_compose for install.
 #
-class docker_compose::install {
+class dock_compose::install {
 
-  if ($::docker_compose::settings["docker_compose_files_list"] != undef){
-    $::docker_compose::settings["docker_compose_files_list"].each | $file | {
+  if ($::dock_compose::settings["docker_compose_files_list"] != undef){
+    $::dock_compose::settings["docker_compose_files_list"].each | $file | {
       file { $file:
         ensure  => "directory",
         path    => "/data/docker/${file}"
@@ -13,13 +13,13 @@ class docker_compose::install {
       file { $file:
         ensure  => 'present',
         path  => "/data/docker/${file}/docker-compose.yml",
-        source => "puppet:///modules/docker_compose/${file}_docker-compose.yml",
+        source => "puppet:///modules/dock_compose/${file}_docker-compose.yml",
         require => File[$file]
       }
     }
-  } elsif ($::docker_compose::docker_compose_files != undef) {
-    docker_compose::install_files {
-      $::docker_compose::docker_compose_files :
+  } elsif ($::dock_compose::docker_compose_files != undef) {
+    dock_compose::install_files {
+      $::dock_compose::docker_compose_files :
     }
   }
 

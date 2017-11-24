@@ -1,11 +1,11 @@
-# == Class docker_compose::service
+# == Class dock_compose::service
 #
-# This class is meant to be called from docker_compose.
+# This class is meant to be called from dock_compose.
 # It ensure the service is running.
 #
-class docker_compose::service {
+class dock_compose::service {
 
-  service { $::docker_compose::service_name:
+  service { $::dock_compose::service_name:
     ensure     => running,
     enable     => true,
     hasstatus  => true,
