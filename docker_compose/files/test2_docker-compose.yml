@@ -14,3 +14,4 @@ services:
        network_mode: bridge
 #       environment:
 #         - MYSQL_ROOT_PASSWORD="testing"
+

@@ -4,10 +4,20 @@
 # It ensure the service is running.
 #
 define docker_compose::install_files (
-  $key               	= $title,
-  $settings_hash			= $exim::client::settings,
-  $config_file				= $exim::client::config_file,
+  $file                 = $title,
 ) {
 
-  $value = $settings_hash[$key]
+  $full_file = split($file, '_')
+  $dir = $full_file[0]
+  $compose_file = $full_file[1]
+  file { $dir:
+    ensure  => "directory",
+    path    => "/data/docker/${dir}"
+  } ->
+  file { $file:
+    ensure  => 'present',
+    path  => "/data/docker/${dir}/docker-compose.yml",
+    source => "puppet:///modules/docker_compose/${file}",
+    require => File[$key]
+  }
 }
