@@ -1,0 +1,17 @@
+version: '2'
+services:
+
+    docker-gc:
+       image: spotify/docker-gc
+       container_name: docker-gc
+       privileged: true
+       hostname: docker-gc
+       tty: true
+       restart: false
+       volumes:
+        - "/data/share/docker-gc/data:/etc:ro"
+        - "/var/run/docker.sock:/var/run/docker.sock"
+       network_mode: "bridge"
+       environment:
+         - DRY_RUN=1
+         - MINIMUM_IMAGES_TO_SAVE=1
