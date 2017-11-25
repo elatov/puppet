@@ -7,7 +7,7 @@ services:
        privileged: true
        hostname: docker-gc
        tty: true
-       restart: false
+       restart: "false"
        volumes:
         - "/data/share/docker-gc/data:/etc:ro"
         - "/var/run/docker.sock:/var/run/docker.sock"
