@@ -7,6 +7,8 @@ class dock_compose::params {
   $settings_all = {
     "docker_compose_files_directory"  => "/opt/docker-compose-files/",
     "docker_compose_home_dir"         => "/data/docker",
+    "user"                            => 'elatov',
+    "group"                           => 'elatov',
     "docker_compose_files_list"       => undef
   }
   case $::osfamily {

@@ -8,12 +8,16 @@ class dock_compose::install {
     $::dock_compose::settings["docker_compose_files_list"].each | $file | {
       file { $file:
         ensure  => "directory",
-        path    => "/data/docker/${file}"
+        path    => "/data/docker/${file}",
+        owner   => $::dock_compose::settings["user"],
+        group   => $::dock_compose::settings["user"],
       } ->
       file { $file:
         ensure  => 'present',
         path  => "/data/docker/${file}/docker-compose.yml",
         source => "puppet:///modules/dock_compose/${file}_docker-compose.yml",
+        owner   => $::dock_compose::settings["user"],
+        group   => $::dock_compose::settings["user"],
         require => File[$file]
       }
     }
