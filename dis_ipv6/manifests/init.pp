@@ -118,7 +118,7 @@ class dis_ipv6 {
             notify => Service["sshd"],
           }
 	    }
-	    /(?i:Debian|Ubuntu)/: { 
+	    /(?i:Debian)/: {
 #	      class { 'augeasproviders::instances':
 #	         sysctl_hash       => { 'net.ipv6.conf.all.disable_ipv6' => { 
 #	                                'value'   => '1',
@@ -177,6 +177,54 @@ class dis_ipv6 {
         }
         
 	    }
+      /(?i:Ubuntu)/: {
+        augeas { "sysctl_conf-net.ipv6.conf.all.disable_ipv6":
+            incl    => "/etc/sysctl.d/90-dis_ipv6.conf",
+            context => "/files/etc/sysctl.d/90-dis_ipv6.conf",
+            lens    => "Simplevars.lns",
+            onlyif  => "get net.ipv6.conf.all.disable_ipv6 != '1'",
+            changes => "set net.ipv6.conf.all.disable_ipv6 '1'",
+        } ->
+
+        augeas { "sysctl_conf-net.ipv6.conf.default.disable_ipv6":
+            incl    => "/etc/sysctl.d/90-dis_ipv6.conf",
+            context => "/files/etc/sysctl.d/90-dis_ipv6.conf",
+            lens    => "Simplevars.lns",
+            onlyif  => "get net.ipv6.conf.default.disable_ipv6 != '1'",
+            changes => "set net.ipv6.conf.default.disable_ipv6 '1'",
+        } ->
+
+        augeas { "sysctl_conf-net.ipv6.conf.lo.disable_ipv6":
+            incl    => "/etc/sysctl.d/90-dis_ipv6.conf",
+            context => "/files/etc/sysctl.d/90-dis_ipv6.conf",
+            lens    => "Simplevars.lns",
+            onlyif  => "get net.ipv6.conf.lo.disable_ipv6 != '1'",
+            changes => "set net.ipv6.conf.lo.disable_ipv6 '1'",
+            notify  => Exec["sysctl-system"],
+        }
+
+        augeas { "sshd_config-ipv6":
+            context => "/files/etc/ssh/sshd_config",
+            changes =>  [
+                        "set AddressFamily inet",
+                        ],
+            notify => Service["sshd"],
+          }
+        $hosts_to_remove = ['ip6-allnodes','ip6-allrouters']
+        ensure_resource ('host',$hosts_to_remove,{ 'ensure' => "absent"})
+
+        augeas {'disable_ipv6_host_entry':
+          incl    => "/etc/hosts",
+          lens    => "Hosts.lns",
+          context => "/files/etc/hosts",
+          changes => "rm *[ipaddr = '::1']",
+          onlyif  => "match *[ipaddr = '::1'] size >= 1"
+        }
+        file_line { "apt-99force-ipv4":
+          path => '/etc/apt/apt.conf.d/99force-ipv4',
+          line => "Acquire::ForceIPv4 \"true\";",
+        }
+      }
 	    /(?i:FreeBSD)/: {
 	      augeas {'disable_ipv6_host_entry':
           incl    => "/etc/hosts",
@@ -237,4 +285,9 @@ class dis_ipv6 {
 		refreshonly => true,
 		path    => ['/usr/bin', '/usr/sbin',],
 	}
+  exec { "sysctl --system":
+    alias       => "sysctl-system",
+    refreshonly => true,
+    path        => ['/usr/bin', '/usr/sbin',],
+  }
 }
