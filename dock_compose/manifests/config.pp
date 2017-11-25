@@ -5,7 +5,7 @@
 class dock_compose::config {
   if ($::dock_compose::settings["docker_compose_files_list"] != undef){
     $::dock_compose::settings["docker_compose_files_list"].each | $file | {
-      docker_compose { "$::dock_compose::settings["docker_compose_home_dir"]/${file}/docker-compose.yml":
+      docker_compose { "${::dock_compose::settings["docker_compose_home_dir"]}/${file}/docker-compose.yml":
         ensure => present,
       }
     }
