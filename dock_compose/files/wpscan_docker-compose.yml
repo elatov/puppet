@@ -1,0 +1,11 @@
+version: '2'
+services:
+
+    wpscan:
+       image: wpscanteam/wpscan:latest
+       container_name: wpscan
+       hostname: wpscan
+       restart: "false"
+       command: --update -u https://www.moxz.tk/wordpress --disable-tls-checks
+       network_mode: "bridge"
+#       entrypoint: /bin/sh
