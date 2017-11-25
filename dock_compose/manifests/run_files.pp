@@ -5,11 +5,15 @@
 #
 define dock_compose::run_files (
   $file = $title,
-  $docker_compose_home_dir
+  $docker_compose_home_dir,
+  $docker_compose_files_dir
 ) {
 
-  [$dir,$compose_file] = split($file, '_')
-  docker_compose { "${docker_compose_home_dir}/${dir}/docker-compose.yml":
-    ensure  => present,
+  [$dir, $compose_file] = split($file, '_')
+  $result = generate("/usr/bin/grep", "restart", "${$docker_compose_files_dir}/${file}")
+  if ($result =~ /always/) {
+    docker_compose { "${docker_compose_home_dir}/${dir}/docker-compose.yml":
+      ensure => present,
+    }
   }
 }

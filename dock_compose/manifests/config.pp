@@ -17,7 +17,8 @@ class dock_compose::config {
     #   }
     # }
     dock_compose::run_files { $::dock_compose::docker_compose_files :
-      docker_compose_home_dir => '/data/docker'
+      docker_compose_home_dir   => $::dock_compose::settings["docker_compose_home_dir"],
+      docker_compose_files_dir  => $::dock_compose::settings["docker_compose_files_directory"]
     }
   }
 }
