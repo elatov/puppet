@@ -5,10 +5,11 @@
 #
 define dock_compose::run_files (
   $file = $title,
+  $docker_compose_home_dir
 ) {
 
   [$dir,$compose_file] = split($file, '_')
-  docker_compose { '/data/docker/${dir}/docker-compose.yml':
+  docker_compose { "${docker_compose_home_dir}/${dir}/docker-compose.yml":
     ensure  => present,
   }
 }

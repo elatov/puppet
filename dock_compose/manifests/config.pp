@@ -16,8 +16,8 @@ class dock_compose::config {
     #     ensure => present,
     #   }
     # }
-    dock_compose::run_files {
-      $::dock_compose::docker_compose_files :
+    dock_compose::run_files { $::dock_compose::docker_compose_files :
+      docker_compose_home_dir => '/data/docker'
     }
   }
 }
