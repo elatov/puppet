@@ -8,7 +8,7 @@ define dock_compose::run_files (
 ) {
 
   [$dir,$compose_file] = split($file, '_')
-  docker_compose { '/data/docker/${dir}/docker-compose.yml':
-    ensure  => present,
-  }
+  # docker_compose { '/data/docker/${dir}/docker-compose.yml':
+  #   ensure  => present,
+  # }
 }
