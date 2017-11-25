@@ -220,9 +220,14 @@ class dis_ipv6 {
           changes => "rm *[ipaddr = '::1']",
           onlyif  => "match *[ipaddr = '::1'] size >= 1"
         }
+        file { "file-99force-ipv4":
+          path    => '/etc/apt/apt.conf.d/99force-ipv4',
+          ensure  => 'file'
+        }
         file_line { "apt-99force-ipv4":
-          path => '/etc/apt/apt.conf.d/99force-ipv4',
-          line => "Acquire::ForceIPv4 \"true\";",
+          path    => '/etc/apt/apt.conf.d/99force-ipv4',
+          line    => "Acquire::ForceIPv4 \"true\";",
+          require => File['file-99force-ipv4']
         }
       }
 	    /(?i:FreeBSD)/: {
