@@ -1,11 +1,15 @@
 version: '2'
 services:
 
-    wpscan:
-       image: wpscanteam/wpscan:latest
-       container_name: wpscan
-       hostname: wpscan
-       restart: "false"
-       command: --update -u https://www.moxz.tk/wordpress --disable-tls-checks
+    jenkins:
+       image: jenkins/jenkins:lts
+       container_name: jenkins2
+       hostname: jenkins2.kar.int
+       restart: always
+       expose:
+        - "8082"
+        - "50002"
+       ports:
+        - "8082:8080"
+        - "50002:50000"
        network_mode: "bridge"
-#       entrypoint: /bin/sh
