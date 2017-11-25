@@ -200,7 +200,7 @@ class dis_ipv6 {
             lens    => "Simplevars.lns",
             onlyif  => "get net.ipv6.conf.lo.disable_ipv6 != '1'",
             changes => "set net.ipv6.conf.lo.disable_ipv6 '1'",
-            notify  => Exec["sysctl-system"],
+            notify  => Exec["ipv6-sysctl-system"],
         }
 
         augeas { "sshd_config-ipv6":
@@ -291,7 +291,7 @@ class dis_ipv6 {
 		path    => ['/usr/bin', '/usr/sbin',],
 	}
   exec { "ipv6-sysctl --system":
-    alias       => "sysctl-system",
+    alias       => "ipv6-sysctl-system",
     refreshonly => true,
     path        => ['/usr/bin', '/usr/sbin','/sbin'],
   }
