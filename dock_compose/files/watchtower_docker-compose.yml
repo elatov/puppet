@@ -1,0 +1,11 @@
+version: '2'
+services:
+    watchtower:
+       image: v2tec/watchtower:latest
+       hostname: watchtower
+       container_name: watchtower
+       command: -i 86400 --cleanup
+       volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+       restart: always
+       network_mode: "bridge"
