@@ -10,14 +10,14 @@ class dock_compose::config {
       }
     }
   } elsif ($::dock_compose::docker_compose_files != undef) {
-    $::dock_compose::docker_compose_files.each | $dfile | {
-      [$dir, $compose_file] = split($dfile, '_')
-      docker_compose { '/data/docker/${dir}/docker-compose.yml':
-        ensure => present,
-      }
-    }
-    # dock_compose::run_files {
-    #   $::dock_compose::docker_compose_files :
+    # $::dock_compose::docker_compose_files.each | $dfile | {
+    #   [$dir, $compose_file] = split($dfile, '_')
+    #   docker_compose { '/data/docker/${dir}/docker-compose.yml':
+    #     ensure => present,
+    #   }
     # }
+    dock_compose::run_files {
+      $::dock_compose::docker_compose_files :
+    }
   }
 }
