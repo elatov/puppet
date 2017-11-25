@@ -8,13 +8,13 @@ class dock_compose::install {
     $::dock_compose::settings["docker_compose_files_list"].each | $file | {
       file { $file:
         ensure  => "directory",
-        path    => "/data/docker/${file}",
+        path    => "${::dock_compose::settings['docker_compose_home_dir']}/${file}",
         owner   => $::dock_compose::settings["user"],
         group   => $::dock_compose::settings["user"],
       } ->
       file { $file:
         ensure  => 'present',
-        path  => "/data/docker/${file}/docker-compose.yml",
+        path  => "${::dock_compose::settings['docker_compose_home_dir']}/${file}/docker-compose.yml",
         source => "puppet:///modules/dock_compose/${file}_docker-compose.yml",
         owner   => $::dock_compose::settings["user"],
         group   => $::dock_compose::settings["user"],
@@ -22,8 +22,8 @@ class dock_compose::install {
       }
     }
   } elsif ($::dock_compose::docker_compose_files != undef) {
-    dock_compose::install_files {
-      $::dock_compose::docker_compose_files :
+    dock_compose::install_files { $::dock_compose::docker_compose_files :
+      docker_compose_files_dir => $::dock_compose::settings['docker_compose_home_dir']
     }
   }
 

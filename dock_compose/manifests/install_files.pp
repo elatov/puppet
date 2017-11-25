@@ -5,18 +5,17 @@
 #
 define dock_compose::install_files (
   $file = $title,
+  $docker_compose_files_dir
 ) {
 
   [$dir,$compose_file] = split($file, '_')
-  # $dir = $file_parts[0]
-  # $compose_file = $file_parts[1]
   file { $dir:
     ensure  => "directory",
-    path    => "/data/docker/${dir}"
+    path    => "${docker_compose_files_dir}/${dir}"
   } ->
   file { $file:
     ensure  => 'present',
-    path  => "/data/docker/${dir}/docker-compose.yml",
+    path  => "${docker_compose_files_dir}/${dir}/docker-compose.yml",
     source => "puppet:///modules/dock_compose/${file}",
     require => File[$dir]
   }
