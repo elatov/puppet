@@ -290,7 +290,7 @@ class dis_ipv6 {
 		refreshonly => true,
 		path    => ['/usr/bin', '/usr/sbin',],
 	}
-  exec { "${module_name}-sysctl --system":
+  exec { "ipv6-sysctl --system":
     alias       => "sysctl-system",
     refreshonly => true,
     path        => ['/usr/bin', '/usr/sbin','/sbin'],
