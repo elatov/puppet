@@ -25,6 +25,7 @@ class zabbix::params {
 			                                          'mysql_root_user'        => 'root',
                                                 'mysql_root_pw'          => 'password',
                                                 'sshkeylocation'         => '/run/zabbix/.ssh',
+                                                'serverIp'              => $::ipaddress,
 			                                        }
 			### Client/Agent
 			$agent_zabbix_config_dir             = '/etc/zabbix'
