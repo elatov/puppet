@@ -9,6 +9,7 @@ class zabbix::params {
 			$server_zabbix_service_name           = 'zabbix-server'
 			$server_zabbix_enable_partition_mysql = true
 			$server_zabbix_enable_web             = true
+			$server_zabbix_enable_server          = true
 			$server_zabbix_root_home              = '/root'
 			$server_zabbix_default_settings       = { 'logFile'                => '/var/log/zabbix-server/zabbix_server.log',
 			                                          'logFileSize'            => '1',

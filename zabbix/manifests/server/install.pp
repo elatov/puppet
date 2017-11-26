@@ -61,16 +61,18 @@ class zabbix::server::install () {
 		}
 	}
 
-  package { $zabbix::server::package_name:
-    ensure       => installed,
-#    responsefile => '/root/preseed/zabbix-server.preseed',
-#    require      => Mysql::Db['zabbix'],
+  if ($zabbix::server::enable_server) {
+    package { $zabbix::server::package_name:
+      ensure => installed,
+      #    responsefile => '/root/preseed/zabbix-server.preseed',
+      #    require      => Mysql::Db['zabbix'],
+    }
   }
   
   if ($zabbix::server::enable_web){
 		package { $zabbix::server::web_package_name:
 			ensure       => installed,
-			require      => Package[$zabbix::server::package_name],
+			# require      => Package[$zabbix::server::package_name],
 		}
   }
 }

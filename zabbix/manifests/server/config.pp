@@ -1,20 +1,22 @@
 class zabbix::server::config () {
-  
-  file { "${zabbix::server::config_dir}/${zabbix::server::config_file}":
-    ensure => 'present',
-    content => template('zabbix/zabbix_server.conf.erb'),
+
+  if ($zabbix::server::enable_server) {
+    file { "${zabbix::server::config_dir}/${zabbix::server::config_file}":
+      ensure  => 'present',
+      content => template('zabbix/zabbix_server.conf.erb'),
+    }
   }
 
-   if ($zabbix::server::enable_partition_mysql){
-     
-     ensure_packages('anacron',{ensure => 'present'})
+  if ($zabbix::server::enable_partition_mysql){
 
-     file {'/etc/cron.weekly/zab-part':
-      ensure  => present,
-      content => template('zabbix/zab-part.cron.erb'),
-      mode    => '0755',
-      require => Package['anacron'],
-    }
+   ensure_packages('anacron',{ensure => 'present'})
+
+   file {'/etc/cron.weekly/zab-part':
+    ensure  => present,
+    content => template('zabbix/zab-part.cron.erb'),
+    mode    => '0755',
+    require => Package['anacron'],
+  }
     
 #    file {'/etc/mysql/conf.d/zab.cnf':
 #      ensure  => 'present',
@@ -23,7 +25,7 @@ class zabbix::server::config () {
 #    }
    }
    
-   if ($zabbix::server::enable_web){
+  if ($zabbix::server::enable_web){
     augeas { "${module_name}-modify-php-timezone":
       lens       => 'Httpd.lns',
       incl       => '/etc/zabbix/apache.conf',
@@ -35,12 +37,12 @@ class zabbix::server::config () {
       require => Package["$zabbix::server::web_package_name"],
       notify     => Service['httpd']
     }
-    
+
     file {'/etc/zabbix/web/zabbix.conf.php':
       ensure  => present,
       content => template('zabbix/zabbix.conf.php.erb'),
       require => Package["$zabbix::server::web_package_name"],
-#      notify     => Service['httpd']
+    #      notify     => Service['httpd']
     }
   }
 #  file { '/var/log/zabbix-server':

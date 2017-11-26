@@ -14,10 +14,11 @@ class zabbix::server (
   $config_file            = $zabbix::params::server_zabbix_config_file,
   
   ## settings
-  $override_settings      = undef,
-  $default_settings       = $zabbix::params::server_zabbix_default_settings,
   $enable_partition_mysql = $zabbix::params::server_zabbix_enable_partition_mysql,
-  $enable_web             = $zabbix::params::server_zabbix_enable_partition_mysql,
+  $enable_web             = $zabbix::params::server_zabbix_enable_web,
+  $enable_server          = $zabbix::params::server_zabbix_enable_server,
+  $default_settings       = $zabbix::params::server_zabbix_default_settings,
+  $override_settings      = undef,
     
 ) inherits zabbix::params {
 
