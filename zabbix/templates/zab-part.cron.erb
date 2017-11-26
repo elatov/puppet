@@ -15,14 +15,12 @@ else
     LAST_DST_DATE=$(/bin/date +%s -d $(/usr/bin/zdump -v /etc/localtime | /bin/grep -o "Sun .* $(echo $CUR_YEAR)\ U" | /usr/bin/awk '{print $1","$2"-"$3"-"$5}' | /usr/bin/head -1))
 fi
 
-
-
 # Calculate days
 let DAYS_BETW_DATES=($NEXT_DST_DATE-$CUR_DATE)/86400
 echo $DAYS_BETW_DATES
 let TOT_DAY_BET_DT=($NEXT_DST_DATE-$LAST_DST_DATE)/86400
 echo $TOT_DAY_BET_DT
-let WEEK_LESS_DIFF_DT=($TOT_DAY_BET_DT-8)
+let WEEK_LESS_DIFF_DT=($TOT_DAY_BET_DT-2)
 echo $WEEK_LESS_DIFF_DT
 
 function clean_up_partitions(){
@@ -30,7 +28,7 @@ function clean_up_partitions(){
 }
 
 if [ $DAYS_BETW_DATES -lt 8 -o $DAYS_BETW_DATES -gt $WEEK_LESS_DIFF_DT ]; then
-    echo "Day Savings is changing in next couple weeks"
+    echo "Day Savings is coming up in the couple weeks"
     echo "Not running partition clean up"
 else
     echo "Day Savings is not changing in next couple of weeks";
