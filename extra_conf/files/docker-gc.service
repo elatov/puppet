@@ -3,5 +3,5 @@ Description=Run Docker-GC
 
 [Service]
 User=elatov
-Type=oneshot
+Type=forking
 ExecStart=/usr/local/bin/docker-gc.sh

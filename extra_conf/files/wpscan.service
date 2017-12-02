@@ -3,5 +3,5 @@ Description=Run WP-Scan
 
 [Service]
 User=elatov
-Type=oneshot
-ExecStart="/bin/bash /usr/local/bin/wp-scan.sh"
+Type=forking
+ExecStart=/usr/local/bin/wp-scan.sh
