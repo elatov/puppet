@@ -72,7 +72,7 @@ class drive::config {
           user => "root",
           minute => "30",
           hour   => "03",
-          monthday => ["10","24"],
+          monthday => ["10"],
         }
       }
       puppet:{
