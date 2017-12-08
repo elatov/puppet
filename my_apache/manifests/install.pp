@@ -33,7 +33,7 @@ class my_apache::install {
     rewrites            => [
       { rewrite_rule => ['^(/)?$ /wordpress/ [R=301,L]'] },
       { rewrite_rule => ['^/zab$ /zab/ [R=301,L]'] },
-      { rewrite_rule => ['^/guacamole$ /guagamole/ [R=301,L]'] },
+      { rewrite_rule => ['^/guacamole$ /guacamole/ [R=301,L]'] },
     ],
     
   }
