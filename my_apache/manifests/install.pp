@@ -30,11 +30,11 @@ class my_apache::install {
     ip                  => $::ipaddress,
     port                => '80',
     docroot             => '/var/www',
-    rewrites            => [ {
-      rewrite_rule => ['^(/)?$ /wordpress/ [R=301,L]'],
-      rewrite_rule => ['^/zab$ /zab/ [R=301,L]'],
-      rewrite_rule => ['^/guacamole$ /guagamole/ [R=301,L]'],
-    }],
+    rewrites            => [
+      { rewrite_rule => ['^(/)?$ /wordpress/ [R=301,L]'] },
+      { rewrite_rule => ['^/zab$ /zab/ [R=301,L]'] },
+      { rewrite_rule => ['^/guacamole$ /guagamole/ [R=301,L]'] },
+    ],
     
   }
   
