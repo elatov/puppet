@@ -4,7 +4,7 @@ require 'tempfile'
 # validate_augaes.rb
 #
 module Puppet::Parser::Functions
-  newfunction(:validate_augeas, doc: <<-'ENDHEREDOC') do |args|
+  newfunction(:validate_augeas, :doc => <<-'DOC') do |args|
     Perform validation of a string using an Augeas lens
     The first argument of this function should be a string to
     test, and the second argument should be the name of the Augeas lens to use.
@@ -32,7 +32,7 @@ module Puppet::Parser::Functions
 
         validate_augeas($sudoerscontent, 'Sudoers.lns', [], 'Failed to validate sudoers content with Augeas')
 
-    ENDHEREDOC
+    DOC
     unless Puppet.features.augeas?
       raise Puppet::ParseError, 'validate_augeas(): this function requires the augeas feature. See http://docs.puppetlabs.com/guides/augeas.html#pre-requisites for how to activate it.'
     end
@@ -59,9 +59,9 @@ module Puppet::Parser::Functions
       # Check for syntax
       lens = args[1]
       aug.transform(
-        lens: lens,
-        name: 'Validate_augeas',
-        incl: tmpfile.path,
+        :lens => lens,
+        :name => 'Validate_augeas',
+        :incl => tmpfile.path,
       )
       aug.load!
 

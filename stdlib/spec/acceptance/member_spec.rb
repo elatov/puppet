@@ -4,13 +4,13 @@ require 'spec_helper_acceptance'
 describe 'member function' do
   shared_examples 'item found' do
     it 'outputs correctly' do
-      apply_manifest(pp, catch_failures: true) do |r|
+      apply_manifest(pp, :catch_failures => true) do |r|
         expect(r.stdout).to match(%r{Notice: output correct})
       end
     end
   end
   describe 'success' do
-    pp1 = <<-EOS
+    pp1 = <<-DOC
       $a = ['aaa','bbb','ccc']
       $b = 'ccc'
       $c = true
@@ -18,32 +18,32 @@ describe 'member function' do
       if $o == $c {
         notify { 'output correct': }
       }
-    EOS
+    DOC
     it 'members arrays' do
-      apply_manifest(pp1, catch_failures: true) do |r|
+      apply_manifest(pp1, :catch_failures => true) do |r|
         expect(r.stdout).to match(%r{Notice: output correct})
       end
     end
 
     describe 'members array of integers' do
       it_behaves_like 'item found' do
-        let(:pp) do # rubocop:disable RSpec/LetBeforeExamples : 'let' required to be inside example for it to work
-          <<-EOS
+        let(:pp) do
+          <<-DOC
             if member( [1,2,3,4], 4 ){
               notify { 'output correct': }
             }
-          EOS
+          DOC
         end
       end
     end
     describe 'members of mixed array' do
       it_behaves_like 'item found' do
-        let(:pp) do # rubocop:disable RSpec/LetBeforeExamples : 'let' required to be inside example for it to work
-          <<-EOS
+        let(:pp) do
+          <<-DOC
             if member( ['a','4',3], 'a' ){
               notify { 'output correct': }
             }
-          EOS
+          DOC
         end
       end
     end

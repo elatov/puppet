@@ -2,7 +2,7 @@
 # is_absolute_path.rb
 #
 module Puppet::Parser::Functions
-  newfunction(:is_absolute_path, type: :rvalue, arity: 1, doc: <<-'ENDHEREDOC') do |args|
+  newfunction(:is_absolute_path, :type => :rvalue, :arity => 1, :doc => <<-'DOC') do |args|
     Returns boolean true if the string represents an absolute path in the filesystem.  This function works
     for windows and unix style paths.
 
@@ -25,7 +25,7 @@ module Puppet::Parser::Functions
         $undefined = undef
         is_absolute_path($undefined)
 
-  ENDHEREDOC
+  DOC
     function_deprecation([:is_absolute_path, 'This method is deprecated, please use the stdlib validate_legacy function,
                            with Stdlib::Compat::Absolute_path. There is further documentation for validate_legacy function in the README.'])
     require 'puppet/util'
@@ -44,8 +44,8 @@ module Puppet::Parser::Functions
       slash = '[\\\\/]'
       name = '[^\\\\/]+'
       regexes = {
-        windows: %r{^(([A-Z]:#{slash})|(#{slash}#{slash}#{name}#{slash}#{name})|(#{slash}#{slash}\?#{slash}#{name}))}i,
-        posix: %r{^/},
+        :windows => %r{^(([A-Z]:#{slash})|(#{slash}#{slash}#{name}#{slash}#{name})|(#{slash}#{slash}\?#{slash}#{name}))}i,
+        :posix => %r{^/},
       }
       value = !!(path =~ regexes[:posix]) || !!(path =~ regexes[:windows]) # rubocop:disable Style/DoubleNegation : No alternative known
     end

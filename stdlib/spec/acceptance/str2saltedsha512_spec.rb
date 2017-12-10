@@ -3,12 +3,12 @@ require 'spec_helper_acceptance'
 
 describe 'str2saltedsha512 function' do
   describe 'success' do
-    pp = <<-EOS
+    pp = <<-DOC
       $o = str2saltedsha512('password')
       notice(inline_template('str2saltedsha512 is <%= @o.inspect %>'))
-    EOS
+    DOC
     it 'works with "y"' do
-      apply_manifest(pp, catch_failures: true) do |r|
+      apply_manifest(pp, :catch_failures => true) do |r|
         expect(r.stdout).to match(%r{str2saltedsha512 is "[a-f0-9]{136}"})
       end
     end

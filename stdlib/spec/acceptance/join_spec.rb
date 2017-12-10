@@ -3,7 +3,7 @@ require 'spec_helper_acceptance'
 
 describe 'join function' do
   describe 'success' do
-    pp = <<-EOS
+    pp = <<-DOC
       $a = ['aaa','bbb','ccc']
       $b = ':'
       $c = 'aaa:bbb:ccc'
@@ -11,9 +11,9 @@ describe 'join function' do
       if $o == $c {
         notify { 'output correct': }
       }
-    EOS
+    DOC
     it 'joins arrays' do
-      apply_manifest(pp, catch_failures: true) do |r|
+      apply_manifest(pp, :catch_failures => true) do |r|
         expect(r.stdout).to match(%r{Notice: output correct})
       end
     end
