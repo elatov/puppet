@@ -26,7 +26,8 @@ class zabbix::agent::install () {
 	    }
 	    /(?i:OmniOS)/:{
       }
-	    
+	    /(?i:Archlinux)/:{
+      }
 	    default: {
 	      fail("Module ${module_name} is not supported on ${::operatingsystem}")
 	    }
@@ -67,7 +68,7 @@ class zabbix::agent::install () {
 	  }
   }  
   
-  if $::operatingsystem =~ /(?i:CentOS|fedora)/ {
+  if $::operatingsystem =~ /(?i:CentOS|fedora|Archlinux)/ {
     exec {"${module_name}-systemd-tmpfiles":
         command => "/bin/systemd-tmpfiles --create zabbix.conf",
         require => Package[$zabbix::agent::package_name],
