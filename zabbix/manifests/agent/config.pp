@@ -28,7 +28,15 @@ class zabbix::agent::config () {
 			}
     }
   }
-  
+
+  if ($::osfamily == 'Archlinux') {
+    file { '/var/log/zabbix':
+      ensure => 'directory',
+      owner  => $zabbix::agent::user,
+      group  => $zabbix::agent::user,
+    }
+  }
+
   if ($::osfamily == 'FreeBSD'){
     file {'/var/log/zabbix':
       ensure => 'directory',
