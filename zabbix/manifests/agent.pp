@@ -19,6 +19,7 @@ class zabbix::agent (
   $service_file           = $zabbix::params::agent_zabbix_service_file,
   
   ## settings
+  $user                   = $zabbix::params::agent_zabbix_user,
   $override_settings      = undef,
   $default_settings       = $zabbix::params::agent_zabbix_default_settings,
 #  $version                = $zabbix::params::agent_zabbix_version,

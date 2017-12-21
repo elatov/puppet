@@ -2,6 +2,7 @@ class zabbix::params {
 	case $::osfamily {
 		'Archlinux': {
 			### Client/Agent
+			$agent_zabbix_user									 = 'zabbix-agent'
 			$agent_zabbix_config_dir             = '/etc/zabbix'
 			$agent_zabbix_custom_scripts_dir     = "${agent_zabbix_config_dir}/custom-scripts.d"
 			$agent_zabbix_custom_conf_dir        = "${agent_zabbix_config_dir}/zabbix_agentd.d"
@@ -49,6 +50,7 @@ class zabbix::params {
                                                 'serverIp'              => $::ipaddress,
 			                                        }
 			### Client/Agent
+			$agent_zabbix_user									 = 'zabbix'
 			$agent_zabbix_config_dir             = '/etc/zabbix'
 			$agent_zabbix_custom_scripts_dir     = "${agent_zabbix_config_dir}/custom-scripts.d"
 			$agent_zabbix_custom_conf_dir        = "${agent_zabbix_config_dir}/zabbix_agentd.d"
@@ -74,7 +76,7 @@ class zabbix::params {
 			$zabbix_server_service_name        = 'zabbix-server'
 			
 			### Client/Agent
-
+			$agent_zabbix_user									 = 'zabbix'
 			$agent_zabbix_config_file            = 'zabbix_agentd.conf'
 			$agent_zabbix_service_name           = 'zabbix_agentd'
 #			$agent_zabbix_version                = '3.0'
@@ -97,6 +99,7 @@ class zabbix::params {
 		}
 		'Redhat': {
 			### Client/Agent
+			$agent_zabbix_user									 = 'zabbix'
 			## Package
 			$agent_zabbix_package_name           = 'zabbix-agent'
 			## Service

@@ -32,17 +32,17 @@ class zabbix::agent::config () {
   if ($::osfamily == 'FreeBSD'){
     file {'/var/log/zabbix':
       ensure => 'directory',
-      owner  => 'zabbix',
+      owner  => $zabbix::agent::user,
       group  => 'zabbix',
     }
 
     file {'/var/run/zabbix':
       ensure => 'directory',
-      owner  => 'zabbix',
+      owner  => $zabbix::agent::user,
       group  => 'zabbix',
     }
     newsyslog {'/var/log/zabbix/zabbix_agentd.log':
-      owner   => 'zabbix',
+      owner   => $zabbix::agent::user,
       group   => 'zabbix',
       mode    => '644',
       keep    => '5',
@@ -204,13 +204,13 @@ class zabbix::agent::config () {
 	    	cron {"zabbix-disk-perf":
 		  		environment => "HOME=/tmp",
 	      		command => "/usr/bin/iostat -x 1 2 > /tmp/iostat.txt",
-	      		user => "zabbix",
+	      		user => $zabbix::agent::user,
 	      		require => Package["sysstat"],
 	    	}
 		} else {
 			cron {"zabbix-disk-perf":
                 command => "/usr/bin/iostat -x 1 2 > /tmp/iostat.txt",
-                user => "zabbix",
+                user => $zabbix::agent::user,
                 require => Package["sysstat"],
             }
 		}
