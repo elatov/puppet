@@ -67,12 +67,21 @@ class zabbix::agent::install () {
 	    ensure_packages($zabbix::agent::package_name,{ ensure  => 'present',})
 	  }
   }  
-  
-  if $::operatingsystem =~ /(?i:CentOS|fedora|Archlinux)/ {
-    exec {"${module_name}-systemd-tmpfiles":
-        command => "/bin/systemd-tmpfiles --create /usr/lib/tmpfiles.d/zabbix-agent.conf",
-        require => Package[$zabbix::agent::package_name],
-        unless => "/bin/test -d /var/run/zabbix",
-    }  
-  } 
+
+	case $::operatingsystem {
+		/(?i:CentOS|fedora|Archlinux)/: {
+			exec { "${module_name}-systemd-tmpfiles":
+				command => "/bin/systemd-tmpfiles --create /usr/lib/tmpfiles.d/zabbix-agent.conf",
+				require => Package[$zabbix::agent::package_name],
+				unless  => "/bin/test -d /var/run/zabbix",
+			}
+		}
+    /(?i:Archlinux)/: {
+      exec { "${module_name}-systemd-tmpfiles":
+				command => "/bin/systemd-tmpfiles --create /usr/lib/tmpfiles.d/zabbix-agent.conf",
+				require => Package[$zabbix::agent::package_name],
+				unless  => "/bin/test -d /var/lib/zabbix-agent",
+			}
+    }
+	}
 }
