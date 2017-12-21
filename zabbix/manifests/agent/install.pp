@@ -69,7 +69,7 @@ class zabbix::agent::install () {
   }  
 
 	case $::operatingsystem {
-		/(?i:CentOS|fedora|Archlinux)/: {
+		/(?i:CentOS|fedora)/: {
 			exec { "${module_name}-systemd-tmpfiles":
 				command => "/bin/systemd-tmpfiles --create /usr/lib/tmpfiles.d/zabbix-agent.conf",
 				require => Package[$zabbix::agent::package_name],
