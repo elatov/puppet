@@ -9,13 +9,15 @@ class exim::params {
 	$exim_server_settings_all	    =	{ 'add_user'        => 'test',
 										                'host'            => $::hostname,
 										                'aliases'         => ['root'],
-										                'alias_recipient' => 'root'
+										                'alias_recipient' => 'root',
+                                    'aliases_file'		=> '/etc//aliases',
 										              }
 										
 	$exim_client_settings_all    	=	{ 'add_user' 	      => 'test',
 										                'smart_relayhost'	=> $::hostname,
 										                'aliases'         => ['root','test'],
-										                'alias_recipient' => 'root'
+										                'alias_recipient' => 'root',
+                                    'aliases_file'		=> '/etc/aliases',
 										              }
 	case $::osfamily {
     'Archlinux': {

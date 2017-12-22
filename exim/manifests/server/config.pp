@@ -27,7 +27,7 @@ class exim::server::config {
   
   if ($exim::server::settings['aliases']){
     exim::aliases{$exim::server::settings['aliases']:
-      config_file     => '/etc/aliases',
+      config_file     => $exim::server::settings['aliases_file'],
       alias_recipient => $exim::server::settings['alias_recipient'],
     }
   }

@@ -15,20 +15,24 @@ class exim::client::config {
   }
 
    if ($exim::client::settings['aliases']) {
-     case $::osfamily {
-       'Archlinux': {
-         exim::aliases{$exim::client::settings['aliases']:
-           config_file    => '/etc/mail/aliases',
-           alias_recipient => $exim::client::settings['alias_recipient'],
+      exim::aliases{$exim::client::settings['aliases']:
+          config_file     => $exim::client::settings['aliases_file'],
+          alias_recipient => $exim::client::settings['alias_recipient'],
         }
-       }
-       # default: {
-       #  exim::aliases{$exim::client::settings['aliases']:
-       #    config_file     => '/etc/aliases',
-       #    alias_recipient => $exim::client::settings['alias_recipient'],
-       #  }
-       # }
-     }
+     # case $::osfamily {
+     #   'Archlinux': {
+     #     exim::aliases{$exim::client::settings['aliases']:
+     #       config_file    => '/etc/mail/aliases',
+     #       alias_recipient => $exim::client::settings['alias_recipient'],
+     #    }
+     #   }
+     #   # default: {
+     #   #  exim::aliases{$exim::client::settings['aliases']:
+     #   #    config_file     => '/etc/aliases',
+     #   #    alias_recipient => $exim::client::settings['alias_recipient'],
+     #   #  }
+     #   # }
+     # }
 
   }
     
