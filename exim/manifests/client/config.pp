@@ -16,7 +16,7 @@ class exim::client::config {
 
    if ($exim::client::settings['aliases']) {
      case $::osfamily {
-       'ArchLinux': {
+       'Archlinux': {
          exim::aliases{$exim::client::settings['aliases']:
            config_file    => '/etc/mail/aliases',
            alias_recipient => $exim::client::settings['alias_recipient'],

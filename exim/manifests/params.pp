@@ -18,7 +18,7 @@ class exim::params {
 										                'alias_recipient' => 'root'
 										              }
 	case $::osfamily {
-    'ArchLinux': {
+    'Archlinux': {
 			### Client
 			## Package
 			$exim_client_package_name		= 'exim'
