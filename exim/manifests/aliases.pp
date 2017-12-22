@@ -13,6 +13,7 @@ define exim::aliases (
 	mailalias {$alias:
 		ensure => "present",
 		recipient => $alias_recipient,
+    target    => $config_file,
 		notify  => Exec["newalias-${alias}"],  
 	}
 	
