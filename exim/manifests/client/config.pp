@@ -24,6 +24,7 @@ class exim::client::config {
        }
        default: {
         exim::aliases{$exim::client::settings['aliases']:
+          config_file     => '/etc/aliases',
           alias_recipient => $exim::client::settings['alias_recipient'],
         }
        }

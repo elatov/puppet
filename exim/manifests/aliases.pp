@@ -4,7 +4,7 @@
 #
 define exim::aliases (
     $alias           = $title,
-    $config_file     = '/etc/aliases',
+    $config_file,
     $alias_recipient, 
 ) {
 
