@@ -31,6 +31,7 @@ class exim::params {
 			### settings
 			$exim_client_settings_os    = { 'stopped_services'  => ['postfix','sendmail'],
 			                                'absent_packages'   => ['postfix','sendmail'],
+																			'aliases_file'			=> '/etc/mail/aliases',
 			                              }
 		}
 		'Debian': {
