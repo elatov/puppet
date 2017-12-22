@@ -13,6 +13,16 @@ class extra_conf {
    purge               => false,
   }
   case $::osfamily {
+    'Archlinux': {
+     sudo::conf { 'admins':
+        priority => 10,
+        content  => "%wheel ALL=(ALL) ALL",
+      }
+      sudo::conf { 'elatov':
+        priority => 20,
+        content  => "Defaults:elatov secure_path = /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:/opt/puppetlabs/bin",
+      }
+    }
     'Debian': {
 			alternatives { 'editor':
 			 path => '/usr/bin/vim.basic',
