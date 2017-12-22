@@ -6,7 +6,7 @@ class exim::client::config {
 
    if ($exim::client::settings['add_user'] != undef) {
 		if ($::osfamily == 'FreeBSD') {
-      User <| title == "${exim::client::settings['add_user']}" |> { groups +> 'mail'] }
+      User <| title == "${exim::client::settings['add_user']}" |> { groups +> ['mail'] }
     }elsif ($::osfamily == 'Debian'){
       User <| title == "${exim::client::settings['add_user']}" |> { groups +> ['adm'] }
 		}else{
