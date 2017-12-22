@@ -6,20 +6,29 @@ class exim::client::config {
 
    if ($exim::client::settings['add_user'] != undef) {
 		if ($::osfamily == 'FreeBSD') {
-      User <| title == "${exim::client::settings['add_user']}" |> { groups +> [
-        'mail'] }
+      User <| title == "${exim::client::settings['add_user']}" |> { groups +> 'mail'] }
     }elsif ($::osfamily == 'Debian'){
-      User <| title == "${exim::client::settings['add_user']}" |> { groups +>
-        ['adm'] }
+      User <| title == "${exim::client::settings['add_user']}" |> { groups +> ['adm'] }
 		}else{
 		  User <| title == "${exim::client::settings['add_user']}" |> { groups +> ['mail','exim'] }
 		}
   }
-  
-   if ($exim::client::settings['aliases']){
-    exim::aliases{$exim::client::settings['aliases']:
-      alias_recipient => $exim::client::settings['alias_recipient'],
-    }
+
+   if ($exim::client::settings['aliases']) {
+     case $::osfamily {
+       'ArchLinux': {
+         exim::aliases{$exim::client::settings['aliases']:
+           config_file    => '/etc/mail/aliases',
+           alias_recipient => $exim::client::settings['alias_recipient'],
+        }
+       }
+       default: {
+        exim::aliases{$exim::client::settings['aliases']:
+          alias_recipient => $exim::client::settings['alias_recipient'],
+        }
+       }
+     }
+
   }
     
   file { $exim::client::config_dir:

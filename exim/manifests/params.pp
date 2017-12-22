@@ -18,6 +18,21 @@ class exim::params {
 										                'alias_recipient' => 'root'
 										              }
 	case $::osfamily {
+    'ArchLinux': {
+			### Client
+			## Package
+			$exim_client_package_name		= 'exim'
+			## Service
+			$exim_client_service_name		= 'exim'
+			## Directories
+			$exim_client_config_dir			= '/etc/mail'
+			## Config Files
+			$exim_client_config_file  	= 'exim.conf'
+			### settings
+			$exim_client_settings_os    = { 'stopped_services'  => ['postfix','sendmail'],
+			                                'absent_packages'   => ['postfix','sendmail'],
+			                              }
+		}
 		'Debian': {
 			### Server
 			$exim_server_package_name        = 'exim4'
