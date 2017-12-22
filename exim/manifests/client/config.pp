@@ -14,8 +14,8 @@ class exim::client::config {
 		}
   }
 
+  notify {"Running with config_file ${exim::client::settings['aliases_file']}  defined":}
   if ($exim::client::settings['aliases']) {
-    notify {"Running with config_file ${exim::client::settings['aliases_file']}  defined":}
     exim::aliases{ $exim::client::settings['aliases']:
       config_file     => $exim::client::settings['aliases_file'],
       alias_recipient => $exim::client::settings['alias_recipient'],
