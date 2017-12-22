@@ -17,7 +17,6 @@ class exim::params {
 										                'smart_relayhost'	=> $::hostname,
 										                'aliases'         => ['root','test'],
 										                'alias_recipient' => 'root',
-                                    'aliases_file'		=> '/etc/aliases',
 										              }
 	case $::osfamily {
     'Archlinux': {
@@ -65,14 +64,16 @@ class exim::params {
 			$exim_client_settings_os        = { 'stopped_services'  => ['postfix','sendmail'],
 			                                    'absent_packages'   => ['postfix','sendmail'],
                                           'config'            => {
-                                                                  'dc_eximconfig_configtype' => 'satellite',
-                                                                  'dc_other_hostnames'       => "email.com",
-                                                                  'dc_local_interfaces'      => "127.0.0.1",
-                                                                  'dc_readhost'              => "${::fqdn}",
-                                                                  'dc_minimaldns'            => "false",
-                                                                  'dc_smarthost'             => 'email.com',
-                                                                  'dc_use_split_config'      => "false",
-                                                                  'dc_hide_mailname'         => "false",}
+                                            'dc_eximconfig_configtype' => 'satellite',
+                                            'dc_other_hostnames'       => "email.com",
+                                            'dc_local_interfaces'      => "127.0.0.1",
+                                            'dc_readhost'              => "${::fqdn}",
+                                            'dc_minimaldns'            => "false",
+                                            'dc_smarthost'             => 'email.com',
+                                            'dc_use_split_config'      => "false",
+                                            'dc_hide_mailname'         => "false",
+                                          },
+                                          'aliases_file'		=> '/etc/aliases',
 			                                  }
 
 		}
@@ -89,6 +90,7 @@ class exim::params {
 			### settings
 			$exim_client_settings_os    = { 'stopped_services'  => ['postfix','sendmail'],
 			                                'absent_packages'   => ['postfix','sendmail'],
+                                      'aliases_file'		  => '/etc/aliases',
 			                              }
 		}
 		'FreeBSD': {      
@@ -123,6 +125,7 @@ class exim::params {
                                                                 'daily_status_include_submit_mailq'  => 'NO',
                                                                 'daily_submit_queuerun'              => 'NO',
                                                               },
+                                        'aliases_file'		  => '/etc/aliases',
                                         }
       
     }

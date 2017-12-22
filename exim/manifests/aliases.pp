@@ -9,6 +9,7 @@ define exim::aliases (
 ) {
 
   ensure_resource('file',$config_file,{ ensure => "present" })
+  notify {"Running with config_file ${config_file}  defined":}
  
 	mailalias {$alias:
 		ensure => "present",
