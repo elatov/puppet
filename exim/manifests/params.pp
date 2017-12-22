@@ -10,7 +10,7 @@ class exim::params {
 										                'host'            => $::hostname,
 										                'aliases'         => ['root'],
 										                'alias_recipient' => 'root',
-                                    'aliases_file'		=> '/etc//aliases',
+                                    'aliases_file'		=> '/etc/aliases',
 										              }
 										
 	$exim_client_settings_all    	=	{ 'add_user' 	      => 'test',
