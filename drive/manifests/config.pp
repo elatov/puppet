@@ -149,6 +149,12 @@ class drive::config {
     }
     
     case $::osfamily {
+      /(?i:Archlinux)/: {
+	        file {"${drive::user_home_dir}/.gdrive/notes/scripts/bash/pacman-check.bash":
+            ensure => 'present',
+            mode   => '0755',
+          }
+	    }
 	    /(?i:RedHat)/: { 
 	        file {"${drive::user_home_dir}/.gdrive/notes/scripts/sh/yumnotifier.sh":
             ensure => 'present',

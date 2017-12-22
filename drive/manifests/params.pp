@@ -16,6 +16,11 @@ class drive::params {
 	$drive_initial_setup = false
 	
 	case $::osfamily {
+    'Archlinux': {
+			$drive_settings_os  = {'pre_pkgs' => ['go',
+                                           ],
+                            }
+		}
 		'Debian': {
 
       case $::operatingsystem {
