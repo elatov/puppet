@@ -10,6 +10,15 @@ class smartd::params {
 										                'mail_to'              => 'root',
 										              }
 	case $::osfamily {
+    'Archlinux': {
+			$smartd_package_name		     = 'smartmontools'
+			$smartd_service_name		     = 'smartd'
+			$smartd_config_dir			     = '/etc/'
+			# $smartd_service_dir			     = '/etc/init.d'
+			$smartd_config_file			     = 'smartd.conf'
+			$smartd_service_file		     = 'smartd.service'
+			$smartd_default_settings_os  = {}
+		}
 		'Debian': {
 			$smartd_package_name		     = 'smartmontools'
 			$smartd_service_name		     = 'smartd'
