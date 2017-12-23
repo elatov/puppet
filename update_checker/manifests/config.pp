@@ -55,21 +55,21 @@ class update_checker::config {
 
   case $::osfamily {
     /(?i:Archlinux)/: {
-      file {"$update_checker::cron_dir/$update_checker::update_script":
+      file { "$update_checker::cron_dir/pacman-check":
         ensure  => "link",
         target  => "${update_checker_target_dir}/${update_checker::update_script}",
         require => Class['drive']
       }
     }
     /(?i:RedHat)/: {
-      file {"$update_checker::cron_dir/$update_checker::update_script":
+      file { "$update_checker::cron_dir/$update_checker::update_script":
         ensure  => "link",
         target  => "${update_checker_target_dir}/${update_checker::update_script}",
         require => Class['drive']
       }
     }
     /(?i:Debian)/: {
-      file {"$update_checker::cron_dir/aptgetcheck":
+      file { "$update_checker::cron_dir/aptgetcheck":
         ensure  => "link",
         target  => "${update_checker_target_dir}/${update_checker::update_script}",
         require => Class['drive']
@@ -77,7 +77,7 @@ class update_checker::config {
     }
 
     /(?i:FreeBSD)/: {
-      file {"$update_checker::cron_dir/600.pkgng-check":
+      file { "$update_checker::cron_dir/600.pkgng-check":
         ensure  => "link",
         target  => "${update_checker_target_dir}/${update_checker::update_script}",
         require => Class['drive']
