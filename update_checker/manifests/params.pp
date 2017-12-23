@@ -3,6 +3,12 @@ class update_checker::params {
   $update_checker_user  = 'test'
   
   case $::osfamily {
+    /(?i:Archlinux)/: {
+        $update_checker_script      = 'pacman-check.bash'
+        $update_checker_packages    = ['bash','cronie']
+        $update_checker_cron_dir    = '/etc/cron.weekly'
+
+    }
     /(?i:RedHat)/: { 
         $update_checker_script      = 'yumnotifier.sh'
         $update_checker_packages    = ['bash','cronie-anacron']

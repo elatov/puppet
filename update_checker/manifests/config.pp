@@ -15,7 +15,7 @@ class update_checker::config {
     /(?i:Debian)/: { 
         $update_checker_target_dir  = "${update_checker::user_home_dir}/.gdrive/notes/scripts/csh"
     }
-    /(?i:FreeBSD)/: { 
+    /(?i:FreeBSD|Archlinux)/: {
         $update_checker_target_dir  = "${update_checker::user_home_dir}/.gdrive/notes/scripts/bash"
     }
      /(?i:Solaris)/: {
@@ -52,25 +52,37 @@ class update_checker::config {
         fail("The ${module_name} module is not supported on ${::osfamily}/${::operatingsystem}.")
     }
   }
-  
-  if ($::osfamily == 'FreeBSD'){
-		file {"$update_checker::cron_dir/600.pkgng-check":
-			ensure  => "link",
-			target  => "${update_checker_target_dir}/${update_checker::update_script}",
-			require => Class['drive']
-		}
-	} elsif ( $::osfamily =~ /(?i:Debian)/ ) {
-		file {"$update_checker::cron_dir/aptgetcheck":
-      ensure  => "link",
-      target  => "${update_checker_target_dir}/${update_checker::update_script}",
-      require => Class['drive']
-    }
-	}elsif ( $::osfamily =~ /(?i:RedHat)/ ) {
-	  file {"$update_checker::cron_dir/$update_checker::update_script":
-      ensure  => "link",
-      target  => "${update_checker_target_dir}/${update_checker::update_script}",
-      require => Class['drive']
-    }
-  }
 
+  case $::osfamily {
+    /(?i:Archlinux)/: {
+      file {"$update_checker::cron_dir/$update_checker::update_script":
+        ensure  => "link",
+        target  => "${update_checker_target_dir}/${update_checker::update_script}",
+        require => Class['drive']
+      }
+    }
+    /(?i:RedHat)/: {
+      file {"$update_checker::cron_dir/$update_checker::update_script":
+        ensure  => "link",
+        target  => "${update_checker_target_dir}/${update_checker::update_script}",
+        require => Class['drive']
+      }
+    }
+    /(?i:Debian)/: {
+      file {"$update_checker::cron_dir/aptgetcheck":
+        ensure  => "link",
+        target  => "${update_checker_target_dir}/${update_checker::update_script}",
+        require => Class['drive']
+      }
+    }
+
+    /(?i:FreeBSD)/: {
+      file {"$update_checker::cron_dir/600.pkgng-check":
+        ensure  => "link",
+        target  => "${update_checker_target_dir}/${update_checker::update_script}",
+        require => Class['drive']
+		  }
+    }
+
+  }
 }
