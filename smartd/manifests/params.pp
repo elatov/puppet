@@ -16,7 +16,7 @@ class smartd::params {
 			$smartd_config_dir			     = '/etc/'
 			# $smartd_service_dir			     = '/etc/init.d'
 			$smartd_config_file			     = 'smartd.conf'
-			$smartd_service_file		     = 'smartd.service'
+			# $smartd_service_file		     = 'smartd.service'
 			$smartd_default_settings_os  = {}
 		}
 		'Debian': {
