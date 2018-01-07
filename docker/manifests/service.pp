@@ -78,6 +78,7 @@ class docker::service (
   $dm_loopmetadatasize               = $docker::dm_loopmetadatasize,
   $dm_datadev                        = $docker::dm_datadev,
   $dm_metadatadev                    = $docker::dm_metadatadev,
+  $tmp_dir_config                    = $docker::tmp_dir_config,
   $tmp_dir                           = $docker::tmp_dir,
   $nowarn_kernel                     = $docker::nowarn_kernel,
   $dm_thinpooldev                    = $docker::dm_thinpooldev,
@@ -85,6 +86,7 @@ class docker::service (
   $dm_use_deferred_deletion          = $docker::dm_use_deferred_deletion,
   $dm_blkdiscard                     = $docker::dm_blkdiscard,
   $dm_override_udev_sync_check       = $docker::dm_override_udev_sync_check,
+  $overlay2_override_kernel_check    = $docker::overlay2_override_kernel_check,
   $storage_devs                      = $docker::storage_devs,
   $storage_vg                        = $docker::storage_vg,
   $storage_root_size                 = $docker::storage_root_size,
@@ -118,6 +120,7 @@ class docker::service (
 
   $dns_array = any2array($dns)
   $dns_search_array = any2array($dns_search)
+  $labels_array = any2array($labels)
   $extra_parameters_array = any2array($extra_parameters)
   $shell_values_array = any2array($shell_values)
   $tcp_bind_array = any2array($tcp_bind)
