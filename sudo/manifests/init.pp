@@ -69,6 +69,19 @@
 #     Enable ldap support on the package
 #     Default: false
 #
+#   [*delete_on_error*]
+#     True if you want that the configuration is deleted on an error 
+#     during a complete visudo -c run. If false it will just return 
+#     an error and will add a comment to the sudoers configuration so
+#     that the resource will be checked at the following run.
+#     Default: true
+#
+#   [*validate_single*]
+#     Do a validate on the "single" file in the sudoers.d directory.
+#     If the validate fail the file will not be saved or changed 
+#     if a file already exist.
+#     Default: false
+#
 # Actions:
 #   Installs sudo package and checks the state of sudoers file and
 #   sudoers.d directory.
@@ -81,24 +94,28 @@
 #
 # [Remember: No empty lines between comments and class definition]
 class sudo(
-  $enable              = true,
-  $package             = $sudo::params::package,
-  $package_ldap        = $sudo::params::package_ldap,
-  $package_ensure      = $sudo::params::package_ensure,
-  $package_source      = $sudo::params::package_source,
-  $package_admin_file  = $sudo::params::package_admin_file,
-  $purge               = true,
-  $purge_ignore        = undef,
-  $config_file         = $sudo::params::config_file,
-  $config_file_replace = true,
-  $config_dir          = $sudo::params::config_dir,
-  $extra_include_dirs  = undef,
-  $content             = $sudo::params::content,
-  $ldap_enable         = false,
+  Boolean                  $enable              = true,
+  String                   $package             = $sudo::params::package,
+  Optional[String]         $package_ldap        = $sudo::params::package_ldap,
+  String                   $package_ensure      = $sudo::params::package_ensure,
+  Optional[String]         $package_source      = $sudo::params::package_source,
+  Optional[String]         $package_admin_file  = $sudo::params::package_admin_file,
+  Boolean                  $purge               = true,
+  Optional[String]         $purge_ignore        = undef,
+  String                   $config_file         = $sudo::params::config_file,
+  Boolean                  $config_file_replace = true,
+  String                   $config_file_mode    = $sudo::params::config_file_mode,
+  String                   $config_dir          = $sudo::params::config_dir,
+  String                   $config_dir_mode     = $sudo::params::config_dir_mode,
+  Optional[Array[String]]  $extra_include_dirs  = undef,
+  String                   $content             = $sudo::params::content,
+  Boolean                  $ldap_enable         = false,
+  Boolean                  $delete_on_error     = true,
+  Boolean                  $validate_single     = false,
+  Boolean                  $config_dir_keepme   = $sudo::params::config_dir_keepme,
 ) inherits sudo::params {
 
 
-  validate_bool($enable)
   case $enable {
     true: {
       $dir_ensure  = 'directory'
@@ -111,7 +128,6 @@ class sudo(
     default: { fail('no $enable is set') }
   }
 
-  validate_bool($ldap_enable)
   case $ldap_enable {
     true: {
       if $package_ldap == undef {
@@ -125,7 +141,6 @@ class sudo(
     default: { fail('no $ldap_enable is set') }
   }
 
-
   class { '::sudo::package':
     package            => $package_real,
     package_ensure     => $package_ensure,
@@ -138,7 +153,7 @@ class sudo(
     ensure  => $file_ensure,
     owner   => 'root',
     group   => $sudo::params::config_file_group,
-    mode    => '0440',
+    mode    => $config_file_mode,
     replace => $config_file_replace,
     content => template($content),
     require => Class['sudo::package'],
@@ -148,11 +163,19 @@ class sudo(
     ensure  => $dir_ensure,
     owner   => 'root',
     group   => $sudo::params::config_file_group,
-    mode    => '0550',
+    mode    => $config_dir_mode,
     recurse => $purge,
     purge   => $purge,
     ignore  => $purge_ignore,
     require => Class['sudo::package'],
+  }
+
+  if $config_dir_keepme {
+    file { "${config_dir}/.keep-me":
+      ensure => file,
+      owner  => 'root',
+      group  => $sudo::params::config_file_group,
+    }
   }
 
   # Load the Hiera based sudoer configuration (if enabled and present)

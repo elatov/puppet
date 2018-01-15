@@ -1,7 +1,9 @@
 #class sudo::params
 #Set the paramters for the sudo module
 class sudo::params {
-  $content_base = "${module_name}/"
+  $content_base     = "${module_name}/"
+  $config_file_mode = '0440'
+  $config_dir_mode  = '0550'
 
   case $::osfamily {
     'Debian': {
@@ -27,6 +29,7 @@ class sudo::params {
       $config_file       = '/etc/sudoers'
       $config_dir        = '/etc/sudoers.d'
       $config_file_group = 'root'
+      $config_dir_keepme = false
     }
     'RedHat': {
       $package = 'sudo'
@@ -51,6 +54,7 @@ class sudo::params {
         default => "${content_base}sudoers.rhel6.erb",
         }
       $config_file_group = 'root'
+      $config_dir_keepme = false
     }
     'Suse': {
       $package = 'sudo'
@@ -62,6 +66,7 @@ class sudo::params {
       $config_dir = '/etc/sudoers.d'
       $content = "${content_base}sudoers.suse.erb"
       $config_file_group = 'root'
+      $config_dir_keepme = false
     }
     'Solaris': {
       case $::operatingsystem {
@@ -75,6 +80,7 @@ class sudo::params {
           $config_dir = '/etc/sudoers.d'
           $content = "${content_base}sudoers.omnios.erb"
           $config_file_group = 'root'
+          $config_dir_keepme = false
         }
         'SmartOS': {
           $package = 'sudo'
@@ -86,6 +92,7 @@ class sudo::params {
           $config_dir = '/opt/local/etc/sudoers.d'
           $content = "${content_base}sudoers.smartos.erb"
           $config_file_group = 'root'
+          $config_dir_keepme = false
         }
         default: {
           case $::kernelrelease {
@@ -99,6 +106,7 @@ class sudo::params {
               $config_dir = '/etc/sudoers.d'
               $content = "${content_base}sudoers.solaris.erb"
               $config_file_group = 'root'
+              $config_dir_keepme = false
             }
             '5.10': {
               $package = 'TCMsudo'
@@ -110,6 +118,7 @@ class sudo::params {
               $config_dir = '/etc/sudoers.d'
               $content = "${content_base}sudoers.solaris.erb"
               $config_file_group = 'root'
+              $config_dir_keepme = false
             }
             default: {
               fail("Unsupported platform: ${::osfamily}/${::operatingsystem}/${::kernelrelease}")
@@ -128,6 +137,7 @@ class sudo::params {
       $config_dir = '/usr/local/etc/sudoers.d'
       $content = "${content_base}sudoers.freebsd.erb"
       $config_file_group = 'wheel'
+      $config_dir_keepme = true
     }
     'OpenBSD': {
       if (versioncmp($::kernelversion, '5.8') < 0) {
@@ -143,6 +153,7 @@ class sudo::params {
       $config_dir = '/etc/sudoers.d'
       $content = "${content_base}sudoers.openbsd.erb"
       $config_file_group = 'wheel'
+      $config_dir_keepme = false
     }
     'AIX': {
       $package = 'sudo'
@@ -154,6 +165,7 @@ class sudo::params {
       $config_dir = '/etc/sudoers.d'
       $content = "${content_base}sudoers.aix.erb"
       $config_file_group = 'system'
+      $config_dir_keepme = false
     }
     'Darwin': {
       $package = undef
@@ -165,6 +177,7 @@ class sudo::params {
       $config_dir = '/etc/sudoers.d'
       $content = "${content_base}sudoers.darwin.erb"
       $config_file_group = 'wheel'
+      $config_dir_keepme = false
     }
     default: {
       case $::operatingsystem {
@@ -176,6 +189,7 @@ class sudo::params {
           $config_dir = '/etc/sudoers.d'
           $content = "${content_base}sudoers.gentoo.erb"
           $config_file_group = 'root'
+          $config_dir_keepme = false
         }
         'Archlinux': {
           $package = 'sudo'
@@ -185,6 +199,7 @@ class sudo::params {
           $config_dir = '/etc/sudoers.d'
           $content = "${content_base}sudoers.archlinux.erb"
           $config_file_group = 'root'
+          $config_dir_keepme = false
         }
         'Amazon': {
           $package = 'sudo'
@@ -198,6 +213,7 @@ class sudo::params {
             default => "${content_base}sudoers.rhel6.erb",
           }
           $config_file_group = 'root'
+          $config_dir_keepme = false
         }
         default: {
           fail("Unsupported platform: ${::osfamily}/${::operatingsystem}")
