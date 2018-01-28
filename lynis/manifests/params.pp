@@ -64,7 +64,7 @@ class lynis::params {
             'net.ipv4.conf.all.rp_filter'               => '1',
             'net.ipv4.conf.default.accept_source_route' => '0',
             'net.ipv6.conf.all.send_redirects'          => '0',
-            'kernel.yama.ptrace_scope'                  => '2',
+            'kernel.yama.ptrace_scope'                  => '1',
           },
           'HRDN-7222'                 =>  true,
           'HRDN-7222_binaries'      => ['/usr/bin/gcc-4.9',
