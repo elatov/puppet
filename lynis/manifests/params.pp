@@ -58,6 +58,7 @@ class lynis::params {
           'ACCT-9622'               => true,
           'ACCT-9626'               => true,
           'ACCT-9626_enable_cron'   => true,
+          'KRNL-6000'               => true,
           'KRNL-6000_enabled_options' =>  {
             'kernel.core_uses_pid'                      => '1',
             'net.ipv4.conf.all.rp_filter'               => '1',
