@@ -1,14 +1,13 @@
-version: '2'
+version: "2.0"
 services:
-
     logspout:
-       image: gliderlabs/logspout
-       container_name: logspout
-       hostname: logspout
-       privileged: true
-       restart: always
-       stdin_open: true
-       tty: true
+       image: "gliderlabs/logspout"
+       container_name: "logspout"
+       hostname: "logspout"
+       privileged: "true"
+       restart: "always"
+       stdin_open: "true"
+       tty: "true"
        command: "syslog+tcp://puppet.kar.int:5003"
        volumes:
         - "/var/run/docker.sock:/var/run/docker.sock"
