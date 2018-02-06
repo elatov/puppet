@@ -1,5 +1,7 @@
 require 'shellwords'
-
+#
+# docker_service_flags.rb
+#
 module Puppet::Parser::Functions
   # Transforms a hash into a string of docker swarm init flags
   newfunction(:docker_service_flags, :type => :rvalue) do |args|
@@ -60,6 +62,10 @@ module Puppet::Parser::Functions
       flags << "-H '#{opts['host_socket']}'"
     end
 
-    flags.flatten.join(" ")
+    if opts['registry_mirror'].to_s != 'undef'
+      flags << "--registry-mirror='#{opts['registry_mirror']}'"
+    end
+
+    flags.flatten.join(' ')
   end
 end

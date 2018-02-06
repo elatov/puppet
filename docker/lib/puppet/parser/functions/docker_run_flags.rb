@@ -1,5 +1,7 @@
 require 'shellwords'
-
+#
+# docker_run_flags.rb
+#
 module Puppet::Parser::Functions
   # Transforms a hash into a string of docker flags
   newfunction(:docker_run_flags, :type => :rvalue) do |args|
@@ -60,12 +62,12 @@ module Puppet::Parser::Functions
       ['--link %s',         'links'],
       ['--lxc-conf="%s"',   'lxc_conf'],
       ['--volumes-from %s', 'volumes_from'],
-      ['-e %s',             'env'],
+      ['-e "%s"',           'env'],
       ['--env-file %s',     'env_file'],
       ['-p %s',             'ports'],
       ['-l %s',             'labels'],
       ['--add-host %s',     'hostentries'],
-      ['-v %s',             'volumes']
+      ['-v %s',             'volumes'],
     ].each do |(format, key)|
       values    = opts[key]
       new_flags = multi_flags.call(values, format)
@@ -76,6 +78,6 @@ module Puppet::Parser::Functions
       flags << param
     end
 
-    flags.flatten.join(" ")
+    flags.flatten.join(' ')
   end
 end

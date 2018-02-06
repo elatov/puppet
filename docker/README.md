@@ -38,14 +38,6 @@ To create the Docker hosted repository and install the Docker package, add a sin
 include 'docker'
 ```
 
-If you are using Ubuntu, all the required Kernel extensions are installed. To disable this feature, add the following code to the manifest file:
-
-```puppet
-class { 'docker':
-  manage_kernel => false,
-}
-```
-
 To configure package sources independently and disable automatically including sources, add the following code to the manifest file:
 
 ```puppet
@@ -403,6 +395,42 @@ docker::networks::networks:
 
 A defined network can be used on a `docker::run` resource with the `net` parameter.
 
+### Volumes
+
+Docker 1.9.x added support for Volumes. These are *NOT* to be confused with the legacy volumes, now known as `bind mounts`. To expose the `docker_volume` type, which is used to manage volumes, add the following code to the manifest file:
+
+```puppet
+docker_volume { 'my-volume':
+  ensure => present,
+}
+```
+
+The name value and the `ensure` parameter are required. If you do not include the `driver` value, the default `local` is used.
+
+Some of the key advantages for using `volumes` over `bind mounts` are:
+* Easier to back up or migrate than `bind mounts` (legacy volumes).
+* Managed with Docker CLI or API (Puppet type uses the CLI commands).
+* Work on both Windows and Linux.
+* More easily shared between containers.
+* Allows for the store volumes on remote hosts or cloud providers.
+* Encrypt contents of volumes.
+* Add other functionality
+* New volume's contents can be pre-populated by a container.
+
+When using the `volumes` array with `docker::run`, the command on the backend will know if it needs to use `bind mounts` or `volumes` based off the data passed to the `-v` option.
+
+Running `docker::run` with native volumes:
+
+```puppet
+docker::run { 'helloworld':
+  image   => 'ubuntu:precise',
+  command => '/bin/sh -c "while true; do echo hello world; sleep 1; done"',
+  volumes => ['my-volume:/var/log'],
+}
+```
+
+For more information on volumes see the [Docker Volumes](https://docs.docker.com/engine/admin/volumes/volumes) documentation
+
 ### Compose
 
 Docker Compose describes a set of containers in YAML format and runs a command to build and run those containers. Included in the docker module is the `docker_compose` type. This enables Puppet to run Compose and remediate any issues to ensure reality matches the model in your Compose file.
@@ -608,28 +636,35 @@ docker::registry_auth::registries:
 
 If using Docker V1.11 or later the docker login e-mail flag has been deprecated [docker_change_log](https://docs.docker.com/release-notes/docker-engine/#1110-2016-04-13). Add the following code to the manifest file:
 
-'''puppet
+```puppet
 docker::registry { 'example.docker.io:5000'}
   username => 'user',
   password => 'secret',
 }
-''
+```
 
 If using hiera, configure the 'docker::registry_auth' class:
 
-'''yaml
+```yaml
 docker::registry_auth::registries:
   'example.docker.io:5000':
     username: 'user1'
     password: 'secret'
   }
-'''
+```
 
 To log out of a registry, add the following code to the manifest file:
 
 ```puppet
 docker::registry { 'example.docker.io:5000':
   ensure => 'absent',
+}
+```
+
+To set a preferred registry mirror, add the following code to the manifest file:
+```puppet
+class { 'docker':
+  registry_mirror => 'http://testmirror.io'
 }
 ```
 
@@ -665,14 +700,6 @@ Defaults to `present`.
 #### `prerequired_packages`
 
 An array of packages that are required to support Docker.
-
-#### `docker_cs`
-
-Specifies whether to use the Commercial Support (CS) Docker packages.
-
-Values `'true','false'`.
-
-Defaults to `false`.
 
 #### `tcp_bind`
 
@@ -891,14 +918,6 @@ Defaults to `true'.
 The custom root directory for the containers.
 
 Defaults to `undefined`.
-
-#### `manage_kernel`
-
-Specifies whether to install the Kernel required by Docker.
-
-Valid values are `true`, `false`.
-
-Defaults to `true`.
 
 #### `dns`
 

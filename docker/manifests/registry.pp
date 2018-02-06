@@ -33,19 +33,17 @@
 #   Required to be true for idempotency
 #
 define docker::registry(
-  $server      = $title,
-  $ensure      = 'present',
-  $username    = undef,
-  $password    = undef,
-  $pass_hash   = undef,
-  $email       = undef,
-  $local_user  = 'root',
-  $version     = $docker::version,
-  $receipt     = true,
+  Optional[String] $server                             = $title,
+  Optional[Pattern[/^present$|^absent$/]] $ensure      = 'present',
+  Optional[String] $username                           = undef,
+  Optional[String] $password                           = undef,
+  Optional[String] $pass_hash                          = undef,
+  Optional[String] $email                              = undef,
+  Optional[String] $local_user                         = 'root',
+  Optional[String] $version                            = $docker::version,
+  Optional[Boolean] $receipt                           = true,
 ) {
   include docker::params
-
-  validate_re($ensure, '^(present|absent)$')
 
   $docker_command = $docker::params::docker_command
 
@@ -73,11 +71,14 @@ define docker::registry(
     $local_user_strip = regsubst($local_user, '-', '', 'G')
 
     $_pass_hash = $pass_hash ? {
-      'Undef'   => pw_hash("${title}${auth_environment}${auth_cmd}${local_user}", 'SHA-512', $local_user_strip),
+      Undef   => pw_hash("${title}${auth_environment}${auth_cmd}${local_user}", 'SHA-512', $local_user_strip),
       default => $pass_hash
     }
 
-    file { "/root/registry-auth-puppet_receipt_${server}_${local_user}":
+    # server may be an URI, which can contain /
+    $server_strip = regsubst($server, '/', '_', 'G')
+
+    file { "/root/registry-auth-puppet_receipt_${server_strip}_${local_user}":
       ensure  => $ensure,
       content => $_pass_hash,
       notify  => Exec["${title} auth"],
