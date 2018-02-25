@@ -1,4 +1,5 @@
 require 'spec_helper_acceptance'
+require_relative '../mysql_helper.rb'
 
 describe 'mysql_user' do
   describe 'setup' do
@@ -43,6 +44,40 @@ describe 'mysql_user' do
         end
       end
     end
+
+    pre_run
+    describe 'changing authentication plugin', if: version_is_greater_than('5.5.0') do
+      it 'works without errors' do
+        pp = <<-EOS
+          mysql_user { 'ashp@localhost':
+            plugin => 'auth_socket',
+          }
+        EOS
+
+        apply_manifest(pp, catch_failures: true)
+      end
+
+      it 'has the correct plugin' do
+        shell("mysql -NBe \"select plugin from mysql.user where CONCAT(user, '@', host) = 'ashp@localhost'\"") do |r|
+          expect(r.stdout.rstrip).to eq('auth_socket')
+          expect(r.stderr).to be_empty
+        end
+      end
+
+      it 'does not have a password' do
+        pre_run
+        table = if version_is_greater_than('5.7.0')
+                  'authentication_string'
+                else
+                  'password'
+                end
+        shell("mysql -NBe \"select #{table} from mysql.user where CONCAT(user, '@', host) = 'ashp@localhost'\"") do |r|
+          expect(r.stdout.rstrip).to be_empty
+          expect(r.stderr).to be_empty
+        end
+      end
+    end
+    # rubocop:enable RSpec/ExampleLength, RSpec/MultipleExpectations
   end
 
   context 'using ashp-dash@localhost' do

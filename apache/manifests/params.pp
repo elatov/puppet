@@ -302,7 +302,7 @@ class apache::params inherits ::apache::version {
     }
     $conf_template          = 'apache/httpd.conf.erb'
     $http_protocol_options  = undef
-    $keepalive              = 'Off'
+    $keepalive              = 'On'
     $keepalive_timeout      = 15
     $max_keepalive_requests = 100
     $fastcgi_lib_path       = '/var/lib/apache2/fastcgi'
@@ -427,7 +427,7 @@ class apache::params inherits ::apache::version {
     }
     $conf_template        = 'apache/httpd.conf.erb'
     $http_protocol_options = undef
-    $keepalive            = 'Off'
+    $keepalive            = 'On'
     $keepalive_timeout    = 15
     $max_keepalive_requests = 100
     $fastcgi_lib_path     = undef # TODO: revisit
@@ -494,7 +494,7 @@ class apache::params inherits ::apache::version {
     }
     $conf_template        = 'apache/httpd.conf.erb'
     $http_protocol_options = undef
-    $keepalive            = 'Off'
+    $keepalive            = 'On'
     $keepalive_timeout    = 15
     $max_keepalive_requests = 100
     $fastcgi_lib_path     = undef # TODO: revisit
@@ -539,6 +539,7 @@ class apache::params inherits ::apache::version {
     if $::operatingsystemrelease < '11' or $::operatingsystemrelease >= '12' {
       $mod_packages      = {
         'auth_kerb'   => 'apache2-mod_auth_kerb',
+        'dav_svn'     => 'subversion-server',
         'perl'        => 'apache2-mod_perl',
         'php5'        => 'apache2-mod_php5',
         'python'      => 'apache2-mod_python',
@@ -548,6 +549,7 @@ class apache::params inherits ::apache::version {
     } else {
       $mod_packages        = {
         'auth_kerb'   => 'apache2-mod_auth_kerb',
+        'dav_svn'     => 'subversion-server',
         'perl'        => 'apache2-mod_perl',
         'php5'        => 'apache2-mod_php53',
         'python'      => 'apache2-mod_python',
@@ -560,7 +562,7 @@ class apache::params inherits ::apache::version {
     }
     $conf_template          = 'apache/httpd.conf.erb'
     $http_protocol_options  = undef
-    $keepalive              = 'Off'
+    $keepalive              = 'On'
     $keepalive_timeout      = 15
     $max_keepalive_requests = 100
     $fastcgi_lib_path       = '/var/lib/apache2/fastcgi'
