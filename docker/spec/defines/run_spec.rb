@@ -234,17 +234,17 @@ require 'spec_helper'
 
       context 'when passing a cpuset' do
         let(:params) { {'command' => 'command', 'image' => 'base', 'cpuset' => '3'} }
-        it { should contain_file(initscript).with_content(/--cpuset=3/) }
+        it { should contain_file(initscript).with_content(/--cpuset-cpus=3/) }
       end
 
       context 'when passing a multiple cpu cpuset' do
         let(:params) { {'command' => 'command', 'image' => 'base', 'cpuset' => ['0', '3']} }
-        it { should contain_file(initscript).with_content(/--cpuset=0,3/) }
+        it { should contain_file(initscript).with_content(/--cpuset-cpus=0,3/) }
       end
 
       context 'when not passing a cpuset' do
         let(:params) { {'command' => 'command', 'image' => 'base'} }
-        it { should contain_file(initscript).without_content(/--cpuset=/) }
+        it { should contain_file(initscript).without_content(/--cpuset-cpus=/) }
       end
 
       context 'when passing a links option' do
@@ -395,6 +395,11 @@ require 'spec_helper'
       context 'when running with a tty' do
         let(:params) { {'command' => 'command', 'image' => 'base', 'tty' => true} }
         it { should contain_file(initscript).with_content(/-t/) }
+      end
+
+      context 'when running with read-only image' do
+        let(:params) { {'command' => 'command', 'image' => 'base', 'read_only' => true} }
+        it { should contain_file(initscript).with_content(/--read-only=true/) }
       end
 
       context 'when passing serveral extra parameters' do

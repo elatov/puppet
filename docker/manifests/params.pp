@@ -25,6 +25,9 @@ class docker::params {
   $tls_key                           = '/etc/docker/tls/key.pem'
   $ip_forward                        = true
   $iptables                          = true
+  $ipv6                              = false
+  $ipv6_cidr                         = undef
+  $default_gateway_ipv6              = undef
   $icc                               = undef
   $ip_masq                           = true
   $bip                               = undef
@@ -147,7 +150,7 @@ class docker::params {
       $package_ee_package_name = $docker_ee_package_name
 
 
-      if ($::operatingsystem == 'Ubuntu' and versioncmp($::operatingsystemrelease, '15.04') >= 0) {
+      if ($service_provider == 'systemd') {
         $detach_service_in_init = false
       } else {
         $detach_service_in_init = true
@@ -186,12 +189,18 @@ class docker::params {
       $apt_source_pin_level = undef
       $service_name = $service_name_default
       $detach_service_in_init = false
-      $docker_group = $docker_group_default
-      $socket_group = $socket_group_default
+
+      if $use_upstream_package_source {
+        $docker_group = $docker_group_default
+        $socket_group = $socket_group_default
+      } else {
+        $docker_group = 'dockerroot'
+        $socket_group = 'dockerroot'
+      }
 
       # repo_opt to specify install_options for docker package
       if $::operatingsystem == 'RedHat' {
-        $repo_opt = '--enablerepo=rhel7-extras'
+        $repo_opt = '--enablerepo=rhel-7-server-extras-rpms'
       } elsif $::operatingsystem == 'CentOS' {
         $repo_opt = '--enablerepo=extras'
       } else {
