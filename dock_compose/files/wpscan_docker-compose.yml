@@ -8,4 +8,6 @@ services:
        restart: "false"
        command: --update -u https://www.moxz.tk/wordpress --disable-tls-checks
        network_mode: "bridge"
+       labels:
+        - com.centurylinklabs.watchtower.enable=true
 #       entrypoint: /bin/sh

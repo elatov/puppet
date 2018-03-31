@@ -15,3 +15,5 @@ services:
        environment:
          - DRY_RUN=1
          - MINIMUM_IMAGES_TO_SAVE=1
+       labels:
+         - com.centurylinklabs.watchtower.enable=true
