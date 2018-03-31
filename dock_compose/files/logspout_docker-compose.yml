@@ -4,10 +4,10 @@ services:
        image: "gliderlabs/logspout"
        container_name: "logspout"
        hostname: "logspout"
-       privileged: "true"
+       privileged: true
        restart: "always"
-       stdin_open: "true"
-       tty: "true"
+       stdin_open: true
+       tty: true
        command: "syslog+tcp://puppet.kar.int:5003"
        volumes:
         - "/var/run/docker.sock:/var/run/docker.sock"

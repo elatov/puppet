@@ -5,7 +5,7 @@ services:
        image: wpscanteam/wpscan:latest
        container_name: wpscan
        hostname: wpscan
-       restart: "false"
+       restart: false
        command: --update -u https://www.moxz.tk/wordpress --disable-tls-checks
        network_mode: "bridge"
        labels:
