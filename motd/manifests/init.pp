@@ -9,7 +9,9 @@
 # @param issue_content [String] String to be used for /etc/issue, priority given to template
 # @param issue_net_template [String] Allows for custom template location for /etc/issue.net
 # @param issue_net_content [String] String to be used for /etc/issue.net, priority given to template
-#
+# @param windows_motd_title [String] String to be used for
+# 'HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\policies\system\legalnoticecaption'
+# as the large text above the legalnoticetext
 # @example
 #  include motd
 #
@@ -21,6 +23,7 @@ class motd (
   $issue_content = undef,
   $issue_net_template = undef,
   $issue_net_content = undef,
+  $windows_motd_title = 'Message of the day',
 ) {
 
   if $template {
@@ -56,11 +59,28 @@ class motd (
     $_issue_net_content = false
   }
 
-  File {
-    mode => '0644',
+  $owner = $::kernel ? {
+    'AIX'   => 'bin',
+    default => 'root',
   }
 
-  if ($::kernel == 'Linux') or ($::kernel == 'SunOS') or ($::kernel == 'FreeBSD') {
+  $group = $::kernel ? {
+    'AIX'   => 'bin',
+    default => 'root',
+  }
+
+  $mode = $::kernel ? {
+    'AIX'   => '0444',
+    default => '0644',
+  }
+
+  File {
+    owner => $owner,
+    group => $group,
+    mode  => $mode,
+  }
+
+  if $::kernel in ['Linux', 'SunOS', 'FreeBSD', 'AIX']  {
     file { '/etc/motd':
       ensure  => file,
       backup  => false,
@@ -104,7 +124,7 @@ class motd (
     registry_value { 'HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\policies\system\legalnoticecaption':
       ensure => present,
       type   => string,
-      data   => 'Message of the day',
+      data   => $windows_motd_title,
     }
     registry_value { 'HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\policies\system\legalnoticetext':
       ensure => present,
