@@ -14,7 +14,7 @@ class sendmail::params {
 		  ### Package
 			$sendmail_package_name		= 'sendmail'
 			### Service
-			$sendmail_service_name		= 'sendmail'
+			$sendmail_service_name		= 'sendmail-client'
 			### Dirs
 			$sendmail_config_dir			= '/etc/mail'
 			$sendmail_cf_dir          = "${sendmail_config_dir}/cf/cf"
