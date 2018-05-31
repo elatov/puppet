@@ -30,7 +30,8 @@ class zabbix::server::install () {
 		user      => "${zabbix::server::settings['dBUser']}",
 		password  => "${zabbix::server::settings['dBPassword']}",
 		host      => "${zabbix::server::settings['dBHost']}",
-		grant     => "ALL",
+		#grant     => "ALL",
+		grant     => ['ALTER', 'ALTER ROUTINE', 'CREATE', 'CREATE ROUTINE', 'CREATE TEMPORARY TABLES', 'CREATE VIEW', 'DELETE', 'DROP', 'EVENT', 'EXECUTE', 'INDEX', 'INSERT', 'LOCK TABLES', 'REFERENCES', 'SELECT', 'SHOW VIEW', 'TRIGGER', 'UPDATE'],
 		sql       => '/usr/share/zabbix-server-mysql/all.sql',
 		require => [Exec["${module_name}-concat-sql-files"]]
 	}

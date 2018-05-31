@@ -103,7 +103,8 @@ define wordpress::instance (
     mysql_grant { "${settings['wp_db_settings']['db_user']}@${settings['wp_db_settings']['db_host']}/${settings['wp_db_settings']['db_name']}.*":
       table      => "${settings['wp_db_settings']['db_name']}.*",
       user       => "${settings['wp_db_settings']['db_user']}@${settings['wp_db_settings']['db_host']}",
-      privileges => ['ALL'],
+      #privileges => ['ALL'],
+      privileges => ['ALTER', 'ALTER ROUTINE', 'CREATE', 'CREATE ROUTINE', 'CREATE TEMPORARY TABLES', 'CREATE VIEW', 'DELETE', 'DROP', 'EVENT', 'EXECUTE', 'INDEX', 'INSERT', 'LOCK TABLES', 'REFERENCES', 'SELECT', 'SHOW VIEW', 'TRIGGER', 'UPDATE'],
     }
   }
   
