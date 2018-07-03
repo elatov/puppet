@@ -70,7 +70,8 @@ class timezone (
   }
 
   if $package {
-    if $package_ensure == 'present' and $facts['os']['family'] == 'Debian' {
+    $use_debconf = lookup('timezone::use_debconf', Boolean, 'first', false)
+    if $package_ensure == 'present' and $use_debconf {
       $_tz = split($timezone, '/')
       $area = $_tz[0]
       $zone = $_tz[1]
@@ -102,16 +103,41 @@ class timezone (
       content => template($timezone_file_template),
       notify  => $notify_services,
     }
+
     if $ensure == 'present' and $timezone_update {
-      $e_command = $facts['os']['family'] ? {
-        /(Suse|Archlinux)/ => "${timezone_update} ${timezone}",
-        default            => $timezone_update,
-      }
       exec { 'update_timezone':
-        command     => $e_command,
-        path        => '/usr/bin:/usr/sbin:/bin:/sbin',
+        command     => sprintf($timezone_update, $timezone),
         subscribe   => File[$timezone_file],
         refreshonly => true,
+        path        => '/usr/bin:/usr/sbin:/bin:/sbin',
+      }
+    }
+  } else {
+    if $ensure == 'present' and $timezone_update {
+      $unless_cmd = lookup('timezone::timezone_update_check_cmd', String, 'first')
+      exec { 'update_timezone':
+        command => sprintf($timezone_update, $timezone),
+        unless  => sprintf($unless_cmd, $timezone),
+        path    => '/usr/bin:/usr/sbin:/bin:/sbin',
+      }
+    }
+  }
+
+  if $ensure == 'present' and $hwutc != undef {
+    $hwclock_cmd = lookup('timezone::hwclock_cmd', Optional[String], 'first', undef)
+    $hwclock_check_enabled_cmd = lookup('timezone::check_hwclock_enabled_cmd', Optional[String], 'first', undef)
+    $hwclock_check_disabled_cmd = lookup('timezone::check_hwclock_disabled_cmd', Optional[String], 'first', undef)
+
+    if $hwclock_cmd != '' and $hwclock_cmd != undef {
+      if ! $hwutc {
+        $hwclock_unless = $hwclock_check_enabled_cmd
+      } else {
+        $hwclock_unless = $hwclock_check_disabled_cmd
+      }
+      exec { 'set_hwclock':
+        command => sprintf($hwclock_cmd, (! $hwutc)),
+        unless  => $hwclock_unless,
+        path    => '/usr/bin:/usr/sbin:/bin:/sbin',
       }
     }
   }
@@ -122,5 +148,4 @@ class timezone (
     links  => follow,
     notify => $notify_services,
   }
-
 }

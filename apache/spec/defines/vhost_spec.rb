@@ -38,9 +38,9 @@ describe 'apache::vhost', type: :define do
       let :default_facts do
         {
           osfamily: 'Debian',
-          operatingsystemrelease: '6',
+          operatingsystemrelease: '8',
           concat_basedir: '/dne',
-          lsbdistcodename: 'squeeze',
+          lsbdistcodename: 'jessie',
           operatingsystem: 'Debian',
           id: 'root',
           kernel: 'Linux',
@@ -246,7 +246,7 @@ describe 'apache::vhost', type: :define do
             },
             { 'path'              => '/var/www/files/indexed_directory',
               'directoryindex'    => 'disabled',
-              'options'           => %w[Indexes FollowSymLinks MultiViews],
+              'options'           => ['Indexes', 'FollowSymLinks', 'MultiViews'],
               'index_options'     => ['FancyIndexing'],
               'index_style_sheet' => '/styles/style.css' },
             { 'path'              => '/var/www/files/output_filtered',
@@ -289,7 +289,7 @@ describe 'apache::vhost', type: :define do
             {
               'path'            => '/a',
               'url'             => 'http://backend-a/',
-              'keywords'        => %w[noquery interpolate],
+              'keywords'        => ['noquery', 'interpolate'],
               'no_proxy_uris'       => ['/a/foo', '/a/bar'],
               'no_proxy_uris_match' => ['/a/foomatch'],
               'reverse_cookies' => [
@@ -313,7 +313,7 @@ describe 'apache::vhost', type: :define do
             {
               'path'     => '/a',
               'url'      => 'http://backend-a/',
-              'keywords' => %w[noquery interpolate],
+              'keywords' => ['noquery', 'interpolate'],
               'no_proxy_uris'       => ['/a/foo', '/a/bar'],
               'no_proxy_uris_match' => ['/a/foomatch'],
               'params' => {
@@ -326,8 +326,8 @@ describe 'apache::vhost', type: :define do
           'suphp_addhandler'            => 'foo',
           'suphp_engine'                => 'on',
           'suphp_configpath'            => '/var/www/html',
-          'php_admin_flags'             => %w[foo bar],
-          'php_admin_values'            => %w[true false],
+          'php_admin_flags'             => ['foo', 'bar'],
+          'php_admin_values'            => ['true', 'false'],
           'no_proxy_uris'               => '/foo',
           'no_proxy_uris_match'         => '/foomatch',
           'proxy_preserve_host'         => true,
@@ -412,6 +412,7 @@ describe 'apache::vhost', type: :define do
           'passenger_pre_start'         => 'http://localhost/myapp',
           'passenger_high_performance'  => true,
           'passenger_user'              => 'sandbox',
+          'passenger_group'             => 'sandbox',
           'passenger_nodejs'            => '/usr/bin/node',
           'passenger_sticky_sessions'   => true,
           'passenger_startup_file'      => 'bin/www',
@@ -851,6 +852,76 @@ describe 'apache::vhost', type: :define do
           content: %r{^\s+MaxKeepAliveRequests\s1000$},
         )
       }
+      it {
+        is_expected.to contain_concat__fragment('rspec.example.com-passenger').with(
+          content: %r{^\s+PassengerSpawnMethod\sdirect$},
+        )
+      }
+      it {
+        is_expected.to contain_concat__fragment('rspec.example.com-passenger').with(
+          content: %r{^\s+PassengerAppRoot\s/usr/share/myapp$},
+        )
+      }
+      it {
+        is_expected.to contain_concat__fragment('rspec.example.com-passenger').with(
+          content: %r{^\s+PassengerAppEnv\stest$},
+        )
+      }
+      it {
+        is_expected.to contain_concat__fragment('rspec.example.com-passenger').with(
+          content: %r{^\s+PassengerRuby\s/usr/bin/ruby1\.9\.1$},
+        )
+      }
+      it {
+        is_expected.to contain_concat__fragment('rspec.example.com-passenger').with(
+          content: %r{^\s+PassengerMinInstances\s1$},
+        )
+      }
+      it {
+        is_expected.to contain_concat__fragment('rspec.example.com-passenger').with(
+          content: %r{^\s+PassengerMaxRequests\s1000$},
+        )
+      }
+      it {
+        is_expected.to contain_concat__fragment('rspec.example.com-passenger').with(
+          content: %r{^\s+PassengerStartTimeout\s600$},
+        )
+      }
+      it {
+        is_expected.to contain_concat__fragment('rspec.example.com-file_footer').with(
+          content: %r{^PassengerPreStart\shttp://localhost/myapp$},
+        )
+      }
+      it {
+        is_expected.to contain_concat__fragment('rspec.example.com-passenger').with(
+          content: %r{^\s+PassengerHighPerformance\sOn$},
+        )
+      }
+      it {
+        is_expected.to contain_concat__fragment('rspec.example.com-passenger').with(
+          content: %r{^\s+PassengerUser\ssandbox$},
+        )
+      }
+      it {
+        is_expected.to contain_concat__fragment('rspec.example.com-passenger').with(
+          content: %r{^\s+PassengerGroup\ssandbox$},
+        )
+      }
+      it {
+        is_expected.to contain_concat__fragment('rspec.example.com-passenger').with(
+          content: %r{^\s+PassengerNodejs\s/usr/bin/node$},
+        )
+      }
+      it {
+        is_expected.to contain_concat__fragment('rspec.example.com-passenger').with(
+          content: %r{^\s+PassengerStickySessions\sOn$},
+        )
+      }
+      it {
+        is_expected.to contain_concat__fragment('rspec.example.com-passenger').with(
+          content: %r{^\s+PassengerStartupFile\sbin/www$},
+        )
+      }
     end
     context 'vhost with multiple ip addresses' do
       let :params do
@@ -893,7 +964,7 @@ describe 'apache::vhost', type: :define do
     context 'vhost with multiple ports' do
       let :params do
         {
-          'port'                        => %w[80 8080],
+          'port'                        => ['80', '8080'],
           'ip'                          => '127.0.0.1',
           'ip_based'                    => true,
           'servername'                  => 'example.com',
@@ -931,7 +1002,7 @@ describe 'apache::vhost', type: :define do
     context 'vhost with multiple ip addresses, multiple ports' do
       let :params do
         {
-          'port'                        => %w[80 8080],
+          'port'                        => ['80', '8080'],
           'ip'                          => ['127.0.0.1', '::1'],
           'ip_based'                    => true,
           'servername'                  => 'example.com',

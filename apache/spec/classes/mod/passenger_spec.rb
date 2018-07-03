@@ -6,10 +6,10 @@ describe 'apache::mod::passenger', type: :class do
     let :facts do
       {
         osfamily: 'Debian',
-        operatingsystemrelease: '6',
+        operatingsystemrelease: '8',
         kernel: 'Linux',
         concat_basedir: '/dne',
-        lsbdistcodename: 'squeeze',
+        lsbdistcodename: 'jessie',
         operatingsystem: 'Debian',
         id: 'root',
         path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
@@ -36,7 +36,7 @@ describe 'apache::mod::passenger', type: :class do
       'passenger_base_uri' => { type: 'URI', pass_opt: :PassengerBaseURI },
       'passenger_buffer_response' => { type: 'OnOff', pass_opt: :PassengerBufferResponse },
       'passenger_buffer_upload' => { type: 'OnOff', pass_opt: :PassengerBufferUpload },
-      'passenger_concurrency_model' => { type: %w[process thread], pass_opt: :PassengerConcurrencyModel },
+      'passenger_concurrency_model' => { type: ['process', 'thread'], pass_opt: :PassengerConcurrencyModel },
       'passenger_data_buffer_dir' => { type: 'FullPath', pass_opt: :PassengerDataBufferDir },
       'passenger_debug_log_file' => { type: 'String', pass_opt: :PassengerDebugLogFile },
       'passenger_debugger' => { type: 'OnOff', pass_opt: :PassengerDebugger },
@@ -81,7 +81,7 @@ describe 'apache::mod::passenger', type: :class do
       'passenger_security_update_check_proxy' => { type: 'URI', pass_opt: :PassengerSecurityUpdateCheckProxy },
       'passenger_show_version_in_header' => { type: 'OnOff', pass_opt: :PassengerShowVersionInHeader },
       'passenger_socket_backlog' => { type: 'Integer', pass_opt: :PassengerSocketBacklog },
-      'passenger_spawn_method' => { type: %w[smart direct], pass_opt: :PassengerSpawnMethod },
+      'passenger_spawn_method' => { type: ['smart', 'direct'], pass_opt: :PassengerSpawnMethod },
       'passenger_start_timeout' => { type: 'Integer', pass_opt: :PassengerStartTimeout },
       'passenger_startup_file' => { type: 'RelPath', pass_opt: :PassengerStartupFile },
       'passenger_stat_throttle_rate' => { type: 'Integer', pass_opt: :PassengerStatThrottleRate },
@@ -146,7 +146,7 @@ describe 'apache::mod::passenger', type: :class do
           end
         end
       when 'OnOff'
-        valid_config_values = %w[on off]
+        valid_config_values = ['on', 'off']
         valid_config_values.each do |valid_value|
           describe "with #{puppetized_config_option} => '#{valid_value}'" do
             let :params do
@@ -177,7 +177,7 @@ describe 'apache::mod::passenger', type: :class do
         operatingsystemrelease: '6',
         kernel: 'Linux',
         concat_basedir: '/dne',
-        lsbdistcodename: 'squeeze',
+        lsbdistcodename: 'jessie',
         operatingsystem: 'Debian',
         id: 'root',
         path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
@@ -350,34 +350,14 @@ describe 'apache::mod::passenger', type: :class do
       it { is_expected.to contain_file('zpassenger.load').with_content(%r{^LoadModule mod_foo \/usr\/lib\/apache2\/modules\/mod_passenger\.so$}) }
     end
 
-    context 'with Ubuntu 12.04 defaults' do
+    context 'with Ubuntu 16.04 defaults' do
       let :facts do
         {
           osfamily: 'Debian',
-          operatingsystemrelease: '12.04',
-          kernel: 'Linux',
-          operatingsystem: 'Ubuntu',
-          lsbdistrelease: '12.04',
-          concat_basedir: '/dne',
-          id: 'root',
-          path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-          is_pe: false,
-        }
-      end
-
-      it { is_expected.to contain_file('passenger.conf').with_content(%r{PassengerRoot "/usr"}) }
-      it { is_expected.to contain_file('passenger.conf').with_content(%r{PassengerRuby "/usr/bin/ruby"}) }
-      it { is_expected.to contain_file('passenger.conf').without_content(%r{PassengerDefaultRuby}) }
-    end
-
-    context 'with Ubuntu 14.04 defaults' do
-      let :facts do
-        {
-          osfamily: 'Debian',
-          operatingsystemrelease: '14.04',
+          operatingsystemrelease: '16.04',
           operatingsystem: 'Ubuntu',
           kernel: 'Linux',
-          lsbdistrelease: '14.04',
+          lsbdistrelease: '16.04',
           concat_basedir: '/dne',
           id: 'root',
           path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
@@ -388,26 +368,6 @@ describe 'apache::mod::passenger', type: :class do
       it { is_expected.to contain_file('passenger.conf').with_content(%r{PassengerRoot "/usr/lib/ruby/vendor_ruby/phusion_passenger/locations.ini"}) }
       it { is_expected.to contain_file('passenger.conf').without_content(%r{PassengerRuby}) }
       it { is_expected.to contain_file('passenger.conf').with_content(%r{PassengerDefaultRuby "/usr/bin/ruby"}) }
-    end
-
-    context 'with Debian 7 defaults' do
-      let :facts do
-        {
-          osfamily: 'Debian',
-          operatingsystemrelease: '7.3',
-          operatingsystem: 'Debian',
-          kernel: 'Linux',
-          lsbdistcodename: 'wheezy',
-          concat_basedir: '/dne',
-          id: 'root',
-          path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-          is_pe: false,
-        }
-      end
-
-      it { is_expected.to contain_file('passenger.conf').with_content(%r{PassengerRoot "/usr"}) }
-      it { is_expected.to contain_file('passenger.conf').with_content(%r{PassengerRuby "/usr/bin/ruby"}) }
-      it { is_expected.to contain_file('passenger.conf').without_content(%r{PassengerDefaultRuby}) }
     end
 
     context 'with Debian 8 defaults' do

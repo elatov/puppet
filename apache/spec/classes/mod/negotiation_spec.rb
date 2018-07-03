@@ -8,8 +8,8 @@ describe 'apache::mod::negotiation', type: :class do
         osfamily: 'Debian',
         operatingsystem: 'Debian',
         kernel: 'Linux',
-        lsbdistcodename: 'squeeze',
-        operatingsystemrelease: '6',
+        lsbdistcodename: 'jessie',
+        operatingsystemrelease: '8',
         concat_basedir: '/dne',
         id: 'root',
         path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
@@ -40,7 +40,7 @@ ForceLanguagePriority Prefer Fallback
 
     context 'with language_priority parameter' do
       let :params do
-        { language_priority: %w[en es] }
+        { language_priority: ['en', 'es'] }
       end
 
       it do
