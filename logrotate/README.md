@@ -26,6 +26,7 @@ You may, optionally, define logrotate defaults using this defined type.
 Parameters are the same as those for logrotate::rule.
 Using this type will automatically include a private class that will install
 and configure logrotate for you.
+You must not also declare the `logrotate` class if using this defined type as you will encounter a Puppet error if you attempt to do so.
 
 ## logrotate::rule
 
@@ -148,13 +149,28 @@ This example will ensure that the logrotate package is latest and that the `date
 class { '::logrotate':
   ensure => 'latest',
   config => {
-    dateext  => true,
-    compress => true,
+    dateext      => true,
+    compress     => true,
+    rotate       => 10,
+    rotate_every => 'week',
+    ifempty      => true,
   }
 }
 ```
 
+### Additional startup arguments
 
+With parameter `logrotate_args` you can specify additional startup arguments for logrotate. Configuration file is always added as the last argument for logrotate.
+
+This example tells logrotate to use an alternate state file and which command to use when mailing logs.
+
+```puppet
+class { '::logrotate':
+  ensure         => 'latest',
+  logrotate_args => ['-s /var/lib/logrotate/logrotate.status', '-m /usr/local/bin/mailer']
+  }
+}
+```
 ## Examples
 
 ```puppet

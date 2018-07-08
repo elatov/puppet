@@ -11,16 +11,7 @@ class logrotate::params {
       $conf_params = {
         su_group => undef,
       }
-      $base_rules = {
-        'wtmp' => {
-          path        => '/var/log/wtmp',
-          create_mode => '0664',
-        },
-        'btmp' => {
-          path        => '/var/log/btmp',
-          create_mode => '0600',
-        },
-      }
+      $base_rules = {}
       $rule_default = {
         missingok    => true,
         rotate_every => 'monthly',
@@ -188,4 +179,11 @@ class logrotate::params {
   $manage_package     = true
   $root_user          = 'root'
   $rules_configdir    = "${configdir}/logrotate.d"
+
+  # File modes (permissions)
+  # - These may need to be moved to the osfamily case statement
+  # - These are currently matching the RedHat RPM permissions
+  $cron_file_mode = '0700'
+  $logrotate_conf_mode = '0644'
+  $rules_configdir_mode = '0755'
 }
