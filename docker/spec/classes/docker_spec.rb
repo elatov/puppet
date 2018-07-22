@@ -422,8 +422,7 @@ describe 'docker', :type => :class do
       it { should compile.with_all_deps }
       it { should contain_class('docker::repos').that_comes_before('Class[docker::install]') }
       it { should contain_class('docker::install').that_comes_before('Class[docker::config]') }
-      it { should contain_class('docker::service').that_subscribes_to('Class[docker::config]') }
-      it { should contain_class('docker::config') }
+      it { should contain_class('docker::config').that_comes_before('Class[docker::service]') }
 
       it { should contain_file(service_config_file).without_content(/icc=/) }
 
@@ -638,7 +637,7 @@ describe 'docker', :type => :class do
       end
 
       context 'with an invalid log_driver' do
-        let(:params) { { 'log_driver' => 'verbose'} }
+        let(:params) { { 'log_driver' => 'etwlogs'} }
         it do
           expect {
             should contain_package('docker')
@@ -867,7 +866,7 @@ describe 'docker', :type => :class do
     it do
       expect {
         should contain_package('docker')
-      }.to raise_error(Puppet::Error, /This module only works on Debian or Red Hat based systems./)
+      }.to raise_error(Puppet::Error, /This module only works on Debian, Red Hat or Windows based systems./)
     end
   end
 

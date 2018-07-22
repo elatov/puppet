@@ -32,7 +32,8 @@
 
 ## Overview
 
-The Puppet docker module installs, configures, and manages [Docker](https://github.com/docker/docker) from the [Docker repository](https://docs.docker.com/installation/). It supports the latest [Docker CE (Community Edition)](https://www.docker.com/community-edition) as well as legacy releases.
+The Puppet docker module installs, configures, and manages [Docker](https://github.com/docker/docker) from the [Docker repository](https://docs.docker.com/installation/). It supports the latest [Docker CE (Community Edition)](https://www.docker.com/community-edition) for Linux based distributions and [Docker EE(Enterprise Edition)](https://www.docker.com/enterprise-edition) for Windows and Linux as well as legacy releases.
+
 
 ## Description
 
@@ -195,6 +196,13 @@ class { 'docker':
 }
 ```
 
+Only Docker EE is supported on Windows. To install docker on Windows 2016 and above the `docker_ee` parameter must be specified: 
+```puppet
+class { 'docker':
+  docker_ee => true
+}
+```
+
 ## Usage
 
 ### Images
@@ -335,6 +343,8 @@ The `extra_parameters` parameter contains an array of command line arguments to 
 
 By default, automatic restarting of the service on failure is enabled by the service file for systemd based systems.
 
+It is highly recommended that an image tag be used at all times with the `docker::run` define type. If not, the latest image will be used, whether it be in a remote registry or installed on the server already by the `docker::image` define type. 
+
 To use an image tag, add the following code to the manifest file:
 
 ```puppet
@@ -370,11 +380,30 @@ If using Hiera, you can configure the `docker::run_instance` class:
 
 To remove a running container, add the following code to the manifest file. This will also remove the systemd service file associated with the container.
 
-'''puppet
+```puppet
 docker::run { 'helloworld':
   ensure => absent,
 }
-'''
+```
+
+To enable the restart of an unhealthy container add the following code to the manifest file.In order to set the health check interval time set the optional health_check_interval parameter, the default health check interval is 30 seconds.
+
+```puppet
+docker::run { 'helloworld':
+  image => 'base',
+  command => 'command',
+  health_check_cmd => '<command_to_execute_to_check_your_containers_health>',
+  restart_on_unhealthy => true,
+  health_check_interval => '<time between running docker healthcheck>',
+```
+
+To run command on Windows 2016 requires the `restart` parameter to be set:
+```puppet
+docker::run { 'helloworld':
+  image => 'microsoft/nanoserver',
+  command => 'ping 127.0.0.1 -t',
+  restart => 'always'
+```
 
 ### Networks
 
@@ -414,6 +443,12 @@ docker::networks::networks:
 
 A defined network can be used on a `docker::run` resource with the `net` parameter.
 
+#### Windows
+
+On windows, only one NAT network is supported. To support multiple networks Windows Server 2016 with KB4015217 is required. See [Windows Container Network Drivers](https://docs.microsoft.com/en-us/virtualization/windowscontainers/container-networking/network-drivers-topologies) and [Windows Container Networking](https://docs.microsoft.com/en-us/virtualization/windowscontainers/container-networking/architecture).
+
+The Docker daemon will create a default NAT network on the first start unless specified otherwise. To disable the network creation, use the parameter `bridge => 'none'` when installing docker.
+
 ### Volumes
 
 Docker 1.9.x added support for volumes. These are *NOT* to be confused with the legacy volumes, now known as `bind mounts`. To expose the `docker_volume` type, which is used to manage volumes, add the following code to the manifest file:
@@ -425,6 +460,23 @@ docker_volume { 'my-volume':
 ```
 
 The name value and the `ensure` parameter are required. If you do not include the `driver` value, the default `local` is used.
+
+If using Hiera, configure the `docker::volumes` class in the manifest file:
+
+```yaml
+---
+  classes:
+    - docker::volumes::volumes
+
+docker::volumes::volumes:
+  blueocean:
+    ensure: present
+    driver: local
+    options:
+      - ['type=nfs','o=addr=%{custom_manager},rw','device=:/srv/blueocean']
+```
+
+Any extra options should be passed in as an array
 
 Some of the key advantages for using `volumes` over `bind mounts` are:
 * Easier to back up or migrate rather than `bind mounts` (legacy volumes).
@@ -496,7 +548,7 @@ docker_compose { '/tmp/docker-compose.yml':
 }
 ```
 
-Give options to the ```docker-compose up``` command, such as ```--remove-orphans``, by using the ```up_args``` option.
+Give options to the ```docker-compose up``` command, such as ```--remove-orphans```, by using the ```up_args``` option.
 
 If you are using a v3.2 compose file or above on a Docker Swarm cluster, use the `docker::stack` class. Include the file resource before you run the stack command.
 
@@ -535,6 +587,14 @@ To cluster your Docker engines, use one of the following Puppet resources:
 
 * [Swarm manager](#Swarm-manager)
 * [Swarm worker](#Swarm-worker)
+
+#### Windows
+
+To configure swarm, Windows Server 2016 requires KB4015217 and the following firewall ports to be open on all nodes:
+
+* TCP port 2377 for cluster management communications
+* TCP and UDP port 7946 for communication among nodes
+* UDP port 4789 for overlay network traffic
 
 #### Swarm manager
 
@@ -693,6 +753,15 @@ docker::registry { 'example.docker.io:5000':
 }
 ```
 
+To pull images from the docker store, use the following as the registry definition with your own docker hub credentials
+
+```puppet
+  docker::registry {'https://index.docker.io/v1/':
+    username => 'username',
+    password => 'password',
+  }
+```
+
 If using hiera, configure the `docker::registry_auth` class:
 
 ```yaml
@@ -749,8 +818,10 @@ docker::exec { 'cron_allow_root':
   detach       => true,
   container    => 'mycontainer',
   command      => '/bin/echo root >> /usr/lib/cron/cron.allow',
+  onlyif       => 'running',
   tty          => true,
   unless       => 'grep root /usr/lib/cron/cron.allow 2>/dev/null',
+  refreshonly  => true,
 }
 ```
 

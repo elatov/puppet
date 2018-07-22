@@ -1,15 +1,27 @@
 require 'spec_helper_acceptance'
 
-describe 'docker network' do
-  command = 'docker'
+broken = false
 
+if fact('osfamily') == 'windows'
+  docker_args = 'docker_ee => true'
+  command = "\"/cygdrive/c/Program Files/Docker/docker\""
+elsif ('osfamily') == 'RedHat'
+  docker_args = "repo_opt => '--enablerepo=localmirror-extras'"
+  command = 'docker'
+else
+  command = 'docker'
+end
+
+describe 'docker volume' do
   before(:all) do
-    install_code = "class { 'docker': }"
-    apply_manifest(install_code, :catch_failures => true)
+    retry_on_error_matching(60, 5, /connection failure running/) do
+      install_code = "class { 'docker': #{docker_args} }"
+      apply_manifest(install_code, :catch_failures => true)
+    end
   end
 
-  describe command("#{command} volume --help") do
-    its(:exit_status) { should eq 0 }
+  it 'should expose volume subcommand' do
+    shell("#{command} volume --help", :acceptable_exit_codes => [0])
   end
 
   context 'with a local volume described in Puppet' do

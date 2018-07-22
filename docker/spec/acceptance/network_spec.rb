@@ -1,10 +1,19 @@
 require 'spec_helper_acceptance'
 
-describe 'docker network' do
+broken = false
+
+if fact('osfamily') == 'windows'
+  puts "Not implemented on Windows"
+  broken = true
+elsif fact('osfamily') == 'RedHat'
+  docker_args = "repo_opt => '--enablerepo=localmirror-extras'" 
+end
+
+describe 'docker network', :win_broken => broken do
   command = 'docker'
 
   before(:all) do
-    install_code = "class { 'docker': }"
+    install_code = "class { 'docker': #{docker_args}}"
     apply_manifest(install_code, :catch_failures=>true)
   end
 

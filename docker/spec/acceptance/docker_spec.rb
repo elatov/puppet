@@ -1,14 +1,38 @@
 require 'spec_helper_acceptance'
 
-describe 'docker' do
+broken = false
+
+if fact('osfamily') == 'windows'
+  puts "Not implemented on Windows"
+  broken = true
+elsif fact('osfamily') == 'RedHat'
+  docker_args = "repo_opt => '--enablerepo=localmirror-extras'" 
+end
+
+describe 'docker', :win_broken => broken do
   package_name = 'docker-ce'
   service_name = 'docker'
   command = 'docker'
 
+  context 'When adding system user' do
+    let(:pp) {"
+            class { 'docker':
+              docker_users => ['user1']
+            }
+    "}
+
+     it 'the docker daemon' do
+       apply_manifest(pp, :catch_failures=>true) do |r|
+         expect(r.stdout).to_not match(/docker-systemd-reload-before-service/)
+       end
+     end
+   end
+
   context 'with default parameters' do
     let(:pp) {"
 			class { 'docker':
-				docker_users => [ 'testuser' ],
+        docker_users => [ 'testuser' ],
+        #{docker_args}
 			}
 			docker::image { 'nginx': }
 			docker::run { 'nginx':

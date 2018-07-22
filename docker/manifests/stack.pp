@@ -36,13 +36,13 @@
 
 define docker::stack(
 
-  Optional[Pattern[/^present$|^absent$/]] $ensure             = 'present',
-  Optional[String] $stack_name                                = undef,
-  Optional[String] $bundle_file                               = undef,
-  Optional[String] $compose_file                              = undef,
-  Optional[String] $prune                                     = undef,
-  Optional[String] $with_registry_auth                        = undef,
-
+  Optional[Pattern[/^present$|^absent$/]] $ensure                = 'present',
+  Optional[String] $stack_name                                   = undef,
+  Optional[String] $bundle_file                                  = undef,
+  Optional[String] $compose_file                                 = undef,
+  Optional[String] $prune                                        = undef,
+  Optional[String] $with_registry_auth                           = undef,
+  Optional[Pattern[/^always$|^changed$|^never$/]] $resolve_image = undef,
   ){
 
   include docker::params
@@ -56,10 +56,11 @@ define docker::stack(
       compose_file => $compose_file,
       prune => $prune,
       with_registry_auth => $with_registry_auth,
+      resolve_image => $resolve_image,
       })
 
       $exec_stack = "${docker_command} deploy ${docker_stack_flags} ${stack_name}"
-      $unless_stack = "${docker_command} deploy ls | grep ${stack_name}"
+      $unless_stack = "${docker_command} ls | grep ${stack_name}"
 
       exec { "docker stack create ${stack_name}":
       command => $exec_stack,
@@ -72,7 +73,7 @@ define docker::stack(
 
   exec { "docker stack ${stack_name}":
     command => "${docker_command} rm ${stack_name}",
-    onlyif  => "${docker_command} deploy ls | grep ${stack_name}",
+    onlyif  => "${docker_command} ls | grep ${stack_name}",
     path    => ['/bin', '/usr/bin'],
     }
   }
