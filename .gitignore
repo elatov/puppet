@@ -129,6 +129,7 @@ custom/.project
 !epel/**
 epel/.project
 epel/Gemfile
+epel/Gemfile.lock
 !atomic/
 !atomic/**
 atomic/.project
