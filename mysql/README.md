@@ -170,6 +170,8 @@ mysql::db { 'mydb':
 }
 ```
 
+If required, the password can also be an empty string to allow connections without an password.
+
 ### Install Percona server on CentOS
 
 This example shows how to do a minimal installation of a Percona server on a
@@ -389,11 +391,11 @@ The MySQL module has an example task that allows a user to execute arbitary SQL 
 This module has been tested on:
 
 * RedHat Enterprise Linux 5, 6, 7
-* Debian 6, 7, 8
+* Debian 8, 9
 * CentOS 5, 6, 7
-* Ubuntu 10.04, 12.04, 14.04, 16.04
-* Scientific Linux 5, 6
-* SLES 11
+* Ubuntu 14.04, 16.04, 18.04
+* Scientific Linux 6, 7
+* SLES 11 SPI, 12
 
 Testing on other platforms has been minimal and cannot be guaranteed.
 
