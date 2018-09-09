@@ -7,4 +7,7 @@
    DOSBlockingPeriod 60
    DOSEmailNotify <%= scope['lynis::settings']['tests']['HTTP-6640_email'] %>
    DOSLogDir "<%= scope['lynis::settings']['tests']['HTTP-6640_logdir'] %>"
+<% if scope['lynis::settings']['tests']['HTTP-6640_doswhitelist'] -%>
+   DOSWhitelist scope['lynis::settings']['tests']['HTTP-6640_doswhitelist'] -%>
+<% end -%>
  </IfModule>
