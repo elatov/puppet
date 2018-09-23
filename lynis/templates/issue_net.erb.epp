@@ -1,0 +1,10 @@
+<% if $facts[osfamily] == 'Debian' { -%>
+Debian GNU/Linux <%= $facts[os]['release']['major'] %>
+<% } -%>
+<% if $facts[osfamily] == 'RedHat'{ -%>
+\S
+Kernel \r on an \m
+<% } -%>
+
+Unauthorized access to this machine is prohibited
+Press <Ctrl-D> if you are not an authorized user to disconnect

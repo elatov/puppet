@@ -43,8 +43,7 @@ class { 'motd':
 
 
 ## Reference
-
-### Classes
+See [REFERENCE.md](https://github.com/puppetlabs/puppetlabs-motd/blob/master/REFERENCE.md)
 
 #### Public classes
 
@@ -56,7 +55,7 @@ The following parameters are available in `motd`. All parameters are optional.
 
 ##### `template`
 
-Specifies a custom template. A template take precedence over `content`. Valid options:  '/mymodule/mytemplate.erb'. Default: 'undef'.
+Specifies a custom EPP template. A template take precedence over `content`. Valid options:  '/mymodule/mytemplate.epp'. Default: 'undef'.
 
 ##### `content`
 
@@ -68,7 +67,7 @@ Enables or disables dynamic motd on Debian systems. Valid options:  true or fals
 
 ##### `issue_template`
 
-Specifies a custom template to process and save to `/etc/issue`. A template take precedence over `issue_content`. Valid options:  '/mymodule/mytemplate.erb'. Default: 'undef'.
+Specifies a custom EPP template to process and save to `/etc/issue`. A template take precedence over `issue_content`. Valid options:  '/mymodule/mytemplate.epp'. Default: 'undef'.
 
 ##### `issue_content`
 
@@ -76,23 +75,15 @@ Specifies a static string as the `/etc/issue` content. Valid options: A string, 
 
 ##### `issue_net_template`
 
-Specifies a custom template to process and save to `/etc/issue.net`. A template take precedence over `issue_net_content`. Valid options:  '/mymodule/mytemplate.erb'. Default: 'undef'.
+Specifies a custom EPP template to process and save to `/etc/issue.net`. A template take precedence over `issue_net_content`. Valid options:  '/mymodule/mytemplate.epp'. Default: 'undef'.
 
-##### `issue__net_content`
+##### `issue_net_content`
 
 Specifies a static string as the `/etc/issue.net` content. Valid options: A string, such as "Hello!\n", or "Please lock workstations when not in use\n". Default: 'undef'.
 
 ## Limitations
 
-This module has been tested on the following platforms:
-
-* CentOS 5, 6, 7
-* Debian 6, 7, 8
-* Oracle 6, 7
-* Red Hat Enterprise Linux (RHEL) 5, 6, 7
-* SLES 10, 11, 12
-* Ubuntu 12.04, 12.10, 14.04
-* Windows 2008, 2008 R2, 2012, 2012 R2
+For an extensive list of supported operating systems, see [metadata.json](https://github.com/puppetlabs/puppetlabs-motd/blob/master/metadata.json)
 
 Disabling dynamic motd is supported only on Debian.
 

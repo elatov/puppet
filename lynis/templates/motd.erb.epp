@@ -1,0 +1,5 @@
+<%= $facts[operatingsystem] %> <%= $facts[operatingsystemrelease] %> <%= $facts[architecture] %>
+
+FQDN:         <%= $facts[fqdn] %> (<%= $facts[ipaddress] %>)
+Processor:    <%= $facts[processor0] %>
+Kernel:       <%= $facts[kernel] %>
