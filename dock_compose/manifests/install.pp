@@ -21,8 +21,8 @@ class dock_compose::install {
         require => File[$file]
       }
     }
-  } elsif ($::dock_compose::docker_compose_files != undef) {
-    dock_compose::install_files { $::dock_compose::docker_compose_files :
+  } elsif ($::dock_compose::dock_compose_files != undef) {
+    dock_compose::install_files { $::dock_compose::dock_compose_files :
       docker_compose_files_dir => $::dock_compose::settings['docker_compose_home_dir']
     }
   }

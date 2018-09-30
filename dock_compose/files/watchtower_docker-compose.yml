@@ -1,5 +1,6 @@
 version: '2'
 services:
+
   watchtower:
     image: v2tec/watchtower:latest
     hostname: watchtower
