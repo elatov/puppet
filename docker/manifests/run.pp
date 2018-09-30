@@ -72,6 +72,10 @@
 # configuration.  Most commonly used are on-failure or always.
 # Default: on-failure
 #
+# [*custom_unless*]
+# (optional) Specify an additional unless for the Docker run command when using restart.
+# Default: undef
+#
 define docker::run(
   Optional[Pattern[/^[\S]*$/]] $image,
   Optional[Pattern[/^present$|^absent$/]] $ensure       = 'present',
@@ -126,6 +130,7 @@ define docker::run(
   Optional[String]  $health_check_cmd                   = undef,
   Optional[Boolean] $restart_on_unhealthy               = false,
   Optional[Integer] $health_check_interval              = undef,
+  Optional[Array] $custom_unless                        = undef,
 ) {
   include docker::params
   if ($socket_connect != []) {
@@ -199,6 +204,7 @@ define docker::run(
     health_check_cmd      => $health_check_cmd,
     restart_on_unhealthy  => $restart_on_unhealthy,
     health_check_interval => $health_check_interval,
+    osfamily              => $::osfamily,
   })
 
   $sanitised_title = regsubst($title, '[^0-9A-Za-z.\-_]', '-', 'G')
@@ -273,9 +279,15 @@ define docker::run(
         "--name ${sanitised_title} --cidfile=${cidfile}",
         "--restart=\"${restart}\" ${image} ${command}",
       ]
+      $inspect = ["${docker_command} inspect ${sanitised_title}"]
+      if $custom_unless {
+        $exec_unless = concat($custom_unless, $inspect)
+      } else {
+        $exec_unless = $inspect
+      }
       exec { "run ${title} with docker":
         command     => join($run_with_docker_command, ' '),
-        unless      => "${docker_command} inspect ${sanitised_title}",
+        unless      => $exec_unless,
         environment => $exec_environment,
         path        => $exec_path,
         provider    => $exec_provider,
@@ -462,10 +474,20 @@ define docker::run(
       }
 
       if $restart_service {
-        [File[$initscript],File[$runscript]] ~> Service<| title == "${service_prefix}${sanitised_title}" |>
+        if $runscript {
+          [File[$initscript],File[$runscript]] ~> Service<| title == "${service_prefix}${sanitised_title}" |>
+        }
+        else {
+          [File[$initscript]] ~> Service<| title == "${service_prefix}${sanitised_title}" |>
+        }
       }
       else {
-        [File[$initscript],File[$runscript]] -> Service<| title == "${service_prefix}${sanitised_title}" |>
+        if $runscript {
+          [File[$initscript],File[$runscript]] -> Service<| title == "${service_prefix}${sanitised_title}" |>
+        }
+        else {
+          [File[$initscript]] -> Service<| title == "${service_prefix}${sanitised_title}" |>
+        }
       }
     }
   }

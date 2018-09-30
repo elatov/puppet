@@ -73,25 +73,20 @@ RSpec.configure do |c|
           on(host, 'yum install -y net-tools device-mapper')
         end
 
-        docker_compose_content = <<-EOS
-compose_test:
-  image: ubuntu:14.04
-  command: /bin/sh -c "while true; do echo hello world; sleep 1; done"
-      EOS
-        docker_compose_content_v2 = <<-EOS
-version: "2"
-services:
-  compose_test:
-    image: ubuntu:14.04
-    command: /bin/sh -c "while true; do echo hello world; sleep 1; done"
-      EOS
         docker_compose_content_v3 = <<-EOS
-version: "3"
+version: "3.4"
 services:
   compose_test:
     image: ubuntu:14.04
     command: /bin/sh -c "while true; do echo hello world; sleep 1; done"
       EOS
+        docker_compose_override_v3 = <<-EOS
+version: "3.4"
+services:
+  compose_test:
+    image: debian:jessie
+    command: /bin/sh -c "while true; do echo hello world; sleep 1; done"
+        EOS
         docker_compose_content_v3_windows = <<-EOS
 version: "3"
 services:
@@ -103,16 +98,29 @@ networks:
     external:
       name: nat
       EOS
-        create_remote_file(host, "/tmp/docker-compose.yml", docker_compose_content)
-        create_remote_file(host, "/tmp/docker-compose-v2.yml", docker_compose_content_v2)
+        docker_compose_override_v3_windows = <<-EOS
+version: "3"
+services:
+  compose_test:
+    image: hello-world:nanoserver-sac2016
+    command: cmd.exe /C "ping /t 8.8.8.8"
+networks:
+  default:
+    external:
+      name: nat
+      EOS
         if fact_on(host, 'osfamily') == 'windows'
           create_remote_file(host, "/tmp/docker-compose-v3.yml", docker_compose_content_v3_windows)
+          create_remote_file(host, "/tmp/docker-compose-override-v3.yml", docker_compose_override_v3_windows)
         else
           create_remote_file(host, "/tmp/docker-compose-v3.yml", docker_compose_content_v3)
+          create_remote_file(host, "/tmp/docker-compose-override-v3.yml", docker_compose_override_v3)
         end
 
         if fact_on(host, 'osfamily') == 'windows'
-          apply_manifest_on(host, "class { 'docker': docker_ee => true }")
+          win_host = only_host_with_role(hosts, 'default')
+          @windows_ip = win_host.ip
+          apply_manifest_on(host, "class { 'docker': docker_ee => true, extra_parameters => '\"insecure-registries\": [ \"#{@windows_ip}:5000\" ]' }")
           docker_path = "/cygdrive/c/Program Files/Docker"
           host.add_env_var('PATH', docker_path)
           puts "Waiting for box to come online"

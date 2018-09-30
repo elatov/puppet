@@ -24,12 +24,13 @@ class docker::install (
   $version                        = $docker::version,
   $nuget_package_provider_version = $docker::nuget_package_provider_version,
   $docker_msft_provider_version   = $docker::docker_msft_provider_version,
-  $docker_ee_package_name         = $docker::docker_ee_package_name
+  $docker_ee_package_name         = $docker::docker_ee_package_name,
+  $docker_download_url            = $docker::package_location
 ) {
   $docker_start_command = $docker::docker_start_command
   if $::osfamily {
     assert_type(Pattern[/^(Debian|RedHat|windows)$/], $::osfamily) |$a, $b| {
-      fail translate(('This module only works on Debian, RedHat or Windows.'))
+      fail(translate('This module only works on Debian, RedHat or Windows.'))
     }
   }
   if $docker::version and $docker::ensure != 'absent' {
@@ -54,7 +55,7 @@ class docker::install (
           $pk_provider = 'yum'
         }
         'windows' : {
-          fail translate('Custom package source is currently not implemented on windows.')
+          fail(translate('Custom package source is currently not implemented on windows.'))
         }
         default : {
           $pk_provider = undef
@@ -88,24 +89,37 @@ class docker::install (
           name   => $docker::docker_package_name,
         }))
       } else {
-        $install_script_path = 'C:/Windows/Temp/install_powershell_provider.ps1'
-        file{ $install_script_path:
-          ensure  => present,
-          force   => true,
-          content => template('docker/windows/install_powershell_provider.ps1.erb'),
-          notify  => Exec['install-docker-package']
-        }
-        exec { 'install-docker-package':
-          command     => "& ${install_script_path}",
-          provider    => powershell,
-          refreshonly => true,
-          logoutput   => true,
-          notify      => Exec['service-restart-on-failure'],
-        }
-        exec { 'service-restart-on-failure':
-          command     => 'cmd /c "SC failure Docker reset= 432000 actions= restart/30000/restart/60000/restart/60000"',
-          refreshonly => true,
-          path        => 'c:/Windows/System32/'
+        if $ensure == 'absent' {
+          exec { 'remove-docker-package':
+              command   => template('docker/windows/remove_docker.ps1.erb'),
+              provider  => powershell,
+              unless    => template('docker/windows/check_docker.ps1.erb'),
+              logoutput => true,
+            }
+        } else {
+          if $docker::package_location {
+            exec { 'install-docker-package':
+              command   => template('docker/windows/download_docker.ps1.erb'),
+              provider  => powershell,
+              unless    => template('docker/windows/check_docker_url.ps1.erb'),
+              logoutput => true,
+              notify    => Exec['service-restart-on-failure'],
+            }
+          } else {
+            exec { 'install-docker-package':
+              command   => template('docker/windows/install_powershell_provider.ps1.erb'),
+              provider  => powershell,
+              unless    => template('docker/windows/check_powershell_provider.ps1.erb'),
+              logoutput => true,
+              notify    => Exec['service-restart-on-failure'],
+            }
+          }
+          exec { 'service-restart-on-failure':
+            command     => 'SC.exe failure Docker reset= 432000 actions= restart/30000/restart/60000/restart/60000',
+            refreshonly => true,
+            logoutput   => true,
+            provider    => powershell,
+          }
         }
       }
     }

@@ -340,7 +340,7 @@ describe 'docker', :type => :class do
             'storage_driver' => 'devicemapper',
             'dm_basesize'  => '3G'
           }}
-          it { should contain_file('/etc/sysconfig/docker-storage').with_content(/^(DOCKER_STORAGE_OPTIONS=" --storage-driver=devicemapper --storage-opt dm.basesize=3G)/) }
+          it { should contain_file('/etc/sysconfig/docker-storage').with_content(/^(DOCKER_STORAGE_OPTIONS=" --storage-driver devicemapper --storage-opt dm.basesize=3G)/) }
         end
 
         context 'It should include default prerequired_packages' do
@@ -485,7 +485,7 @@ describe 'docker', :type => :class do
       ['aufs', 'devicemapper', 'btrfs', 'overlay', 'overlay2', 'vfs', 'zfs'].each do |driver|
         context "with #{driver} storage driver" do
           let(:params) { { 'storage_driver' => driver }}
-          it { should contain_file(storage_config_file).with_content(/ --storage-driver=#{driver}/) }
+          it { should contain_file(storage_config_file).with_content(/ --storage-driver #{driver}/) }
         end
       end
 
@@ -699,10 +699,22 @@ describe 'docker', :type => :class do
         end
       end
 
-      context 'with custom root dir' do
-        let(:params) { {'root_dir' => '/mnt/docker'} }
+      context 'with custom root dir && Docker version < 17.06' do
+        let(:params) { {
+          'root_dir' => '/mnt/docker',
+          'version'  => '17.03',
+        } }
         it { should contain_file(service_config_file).with_content(/-g \/mnt\/docker/) }
       end
+  
+      context 'with custom root dir && Docker version > 17.05' do
+        let(:params) { {
+          'root_dir' => '/mnt/docker',
+          'version'  => '18.03',
+        } }
+        it { should contain_file(service_config_file).with_content(/--data-root \/mnt\/docker/) }
+      end
+       
 
       context 'with ensure absent' do
         let(:params) { {'ensure' => 'absent' } }
@@ -867,6 +879,23 @@ describe 'docker', :type => :class do
       expect {
         should contain_package('docker')
       }.to raise_error(Puppet::Error, /This module only works on Debian, Red Hat or Windows based systems./)
+    end
+  end
+
+  context 'CentOS < 7' do
+    let(:facts) { {
+      :architecture              => 'x86_64',
+      :osfamily                  => 'RedHat',
+      :operatingsystem           => 'CentOS',
+      :kernelversion             => '3.10.0',
+      :operatingsystemmajrelease => '6',
+      :os                        => { :family => 'RedHat', :name => 'CentOS', :release => { :major => '6', :full => '6.0' } }
+    } }
+
+    it do
+      expect {
+        should contain_package('docker')
+      }.to raise_error(Puppet::Error, /This module only works on CentOS version 7 and higher based systems./)
     end
   end
 

@@ -490,28 +490,32 @@ class docker(
 
   if $::osfamily {
     assert_type(Pattern[/^(Debian|RedHat|windows)$/], $::osfamily) |$a, $b| {
-      fail translate(('This module only works on Debian, Red Hat or Windows based systems.'))
+      fail(translate('This module only works on Debian, Red Hat or Windows based systems.'))
     }
   }
 
+  if ($::operatingsystem == 'CentOS') and (versioncmp($::operatingsystemmajrelease, '7') < 0) {
+    fail(translate('This module only works on CentOS version 7 and higher based systems.'))
+  }
+
   if ($default_gateway) and (!$bridge) {
-    fail translate(('You must provide the $bridge parameter.'))
+    fail(translate('You must provide the $bridge parameter.'))
   }
 
   if $log_level {
     assert_type(Pattern[/^(debug|info|warn|error|fatal)$/], $log_level) |$a, $b| {
-        fail translate(('log_level must be one of debug, info, warn, error or fatal'))
+        fail(translate('log_level must be one of debug, info, warn, error or fatal'))
     }
   }
 
   if $log_driver {
     if $::osfamily == 'windows' {
       assert_type(Pattern[/^(none|json-file|syslog|gelf|fluentd|splunk|etwlogs)$/], $log_driver) |$a, $b| {
-        fail translate(('log_driver must be one of none, json-file, syslog, gelf, fluentd, splunk or etwlogs'))
+        fail(translate('log_driver must be one of none, json-file, syslog, gelf, fluentd, splunk or etwlogs'))
       }
     } else {
       assert_type(Pattern[/^(none|json-file|syslog|journald|gelf|fluentd|splunk)$/], $log_driver) |$a, $b| {
-        fail translate(('log_driver must be one of none, json-file, syslog, journald, gelf, fluentd or splunk'))
+        fail(translate('log_driver must be one of none, json-file, syslog, journald, gelf, fluentd or splunk'))
       }
     }
   }
@@ -519,34 +523,34 @@ class docker(
   if $storage_driver {
     if $::osfamily == 'windows' {
       assert_type(Pattern[/^(windowsfilter)$/], $storage_driver) |$a, $b| {
-          fail translate(('Valid values for storage_driver on windows are windowsfilter'))
+          fail(translate('Valid values for storage_driver on windows are windowsfilter'))
       }
     } else {
       assert_type(Pattern[/^(aufs|devicemapper|btrfs|overlay|overlay2|vfs|zfs)$/], $storage_driver) |$a, $b| {
-        fail translate(('Valid values for storage_driver are aufs, devicemapper, btrfs, overlay, overlay2, vfs, zfs.'))
+        fail(translate('Valid values for storage_driver are aufs, devicemapper, btrfs, overlay, overlay2, vfs, zfs.'))
       }
     }
   }
 
   if ($bridge) and ($::osfamily == 'windows') {
       assert_type(Pattern[/^(none|nat|transparent|overlay|l2bridge|l2tunnel)$/], $bridge) |$a, $b| {
-        fail translate(('bridge must be one of none, nat, transparent, overlay, l2bridge or l2tunnel on Windows.'))
+        fail(translate('bridge must be one of none, nat, transparent, overlay, l2bridge or l2tunnel on Windows.'))
     }
   }
 
   if $dm_fs {
     assert_type(Pattern[/^(ext4|xfs)$/], $dm_fs) |$a, $b| {
-      fail translate(('Only ext4 and xfs are supported currently for dm_fs.'))
+      fail(translate('Only ext4 and xfs are supported currently for dm_fs.'))
     }
   }
 
   if ($dm_loopdatasize or $dm_loopmetadatasize) and ($dm_datadev or $dm_metadatadev) {
-    fail translate(('You should provide parameters only for loop lvm or direct lvm, not both.'))
+    fail(translate('You should provide parameters only for loop lvm or direct lvm, not both.'))
   }
 
 # lint:ignore:140chars
   if ($dm_datadev or $dm_metadatadev) and $dm_thinpooldev {
-    fail translate(('You can use the $dm_thinpooldev parameter, or the $dm_datadev and $dm_metadatadev parameter pair, but you cannot use both.'))
+    fail(translate('You can use the $dm_thinpooldev parameter, or the $dm_datadev and $dm_metadatadev parameter pair, but you cannot use both.'))
   }
 # lint:endignore
 
@@ -555,22 +559,22 @@ class docker(
   }
 
   if ($dm_datadev and !$dm_metadatadev) or (!$dm_datadev and $dm_metadatadev) {
-    fail translate(('You need to provide both $dm_datadev and $dm_metadatadev parameters for direct lvm.'))
+    fail(translate('You need to provide both $dm_datadev and $dm_metadatadev parameters for direct lvm.'))
   }
 
   if ($dm_basesize or $dm_fs or $dm_mkfsarg or $dm_mountopt or $dm_blocksize or $dm_loopdatasize or
       $dm_loopmetadatasize or $dm_datadev or $dm_metadatadev) and ($storage_driver != 'devicemapper') {
-    fail translate(('Values for dm_ variables will be ignored unless storage_driver is set to devicemapper.'))
+    fail(translate('Values for dm_ variables will be ignored unless storage_driver is set to devicemapper.'))
   }
 
   if($tls_enable) {
     if(!$tcp_bind) {
-        fail translate(('You need to provide tcp bind parameter for TLS.'))
+        fail(translate('You need to provide tcp bind parameter for TLS.'))
     }
   }
 
-  if ( $version == undef ) or ( $version !~ /^(17[.]0[0-5][.]\d(~|-|\.)ce|1.\d+)/ ) {
-    if ( $docker_ee) {
+if ( $version == undef ) or ( $version !~ /^(17[.]0[0-5][.][0-1](~|-|\.)ce|1.\d+)/ ) {
+  if ( $docker_ee) {
       $package_location = $docker::docker_ee_source_location
       $package_key_source = $docker::docker_ee_key_source
       $package_key_check_source = true
@@ -594,7 +598,7 @@ class docker(
             $package_key_check_source = true
             }
           'windows': {
-            fail translate(('This module only work for Docker Enterprise Edition on Windows.'))
+            fail(translate('This module only work for Docker Enterprise Edition on Windows.'))
           }
           default: {}
         }
@@ -622,14 +626,26 @@ class docker(
     $docker_package_name = $docker_engine_package_name
   }
 
-  contain 'docker::repos'
-  contain 'docker::install'
-  contain 'docker::config'
-  contain 'docker::service'
+  if ( $version != undef ) and ( $version =~ /^(17[.]0[0-4]|1.\d+)/ ) {
+    $root_dir_flag = '-g'
+  } else {
+    $root_dir_flag = '--data-root'
+  }
 
-  Class['docker::repos'] -> Class['docker::install'] -> Class['docker::config'] -> Class['docker::service']
-  Class['docker'] -> Docker::Registry <||> -> Docker::Image <||>
-  Class['docker'] -> Docker::Image <||>
-  Class['docker'] -> Docker::Run <||>
+  if $ensure != 'absent' {
+    contain 'docker::repos'
+    contain 'docker::install'
+    contain 'docker::config'
+    contain 'docker::service'
 
+    Class['docker::repos'] -> Class['docker::install'] -> Class['docker::config'] -> Class['docker::service']
+    Class['docker'] -> Docker::Registry <||> -> Docker::Image <||>
+    Class['docker'] -> Docker::Image <||>
+    Class['docker'] -> Docker::Run <||>
+  } else {
+    contain 'docker::repos'
+    contain 'docker::install'
+
+    Class['docker::repos'] -> Class['docker::install']
+  }
 }

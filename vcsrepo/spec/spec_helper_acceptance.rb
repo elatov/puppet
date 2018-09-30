@@ -1,8 +1,11 @@
+require 'beaker-pe'
+require 'beaker-puppet'
 require 'beaker-rspec'
 require 'beaker/puppet_install_helper'
 require 'beaker/module_install_helper'
 
 run_puppet_install_helper
+configure_type_defaults_on(hosts)
 install_ca_certs unless ENV['PUPPET_INSTALL_TYPE'] =~ %r{pe}i
 install_module_on(hosts)
 install_module_dependencies_on(hosts)
@@ -48,4 +51,11 @@ RSpec.configure do |c|
       on host, 'git config --global user.name "root"'
     end
   end
+end
+
+# git with 3.18 changes the maximum enabled TLS protocol version, older OSes will fail these tests
+def only_supports_weak_encryption
+  return_val = (fact('osfamily') == 'RedHat' && fact('operatingsystemmajrelease') == '5') ||
+               (fact('operatingsystem') == 'OracleLinux' && fact('operatingsystemmajrelease') == '6')
+  return_val
 end
