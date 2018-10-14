@@ -22,15 +22,20 @@ class logrotate::params {
       }
     }
     'Debian': {
-      $default_su_user = versioncmp($facts['operatingsystemmajrelease'], '14.00') ? {
-        1        => 'root',
+      $default_su = $facts['os']['name'] ? {
+        'Ubuntu' => true,
+        default  => false,
+      }
+      $default_su_user = $facts['os']['name'] ? {
+        'Ubuntu' => 'root',
         default  => undef,
       }
-      $default_su_group = versioncmp($facts['operatingsystemmajrelease'], '14.00') ? {
-        1         => 'syslog',
+      $default_su_group = $facts['os']['name'] ? {
+        'Ubuntu'  => 'syslog',
         default   => undef
       }
       $conf_params = {
+        su       => $default_su,
         su_user  => $default_su_user,
         su_group => $default_su_group,
       }
@@ -173,7 +178,6 @@ class logrotate::params {
   $cron_daily_hour    = 1
   $cron_daily_minute  = 0
   $cron_hourly_minute = 1
-  $cron_hourly_file   = '/etc/cron.hourly/logrotate'
   $config_file        = "${configdir}/logrotate.conf"
   $logrotate_conf     = "${configdir}/logrotate.conf"
   $manage_package     = true

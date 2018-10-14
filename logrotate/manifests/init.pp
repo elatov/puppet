@@ -11,7 +11,6 @@ class logrotate (
   Integer[0,23] $cron_daily_hour         = $logrotate::params::cron_daily_hour,
   Integer[0,59] $cron_daily_minute       = $logrotate::params::cron_daily_minute,
   Integer[0,59] $cron_hourly_minute      = $logrotate::params::cron_hourly_minute,
-  String $cron_hourly_file               = $logrotate::params::cron_hourly_file,
   Stdlib::Filemode $cron_file_mode       = $logrotate::params::cron_file_mode,
   String $configdir                      = $logrotate::params::configdir,
   String $logrotate_bin                  = $logrotate::params::logrotate_bin,
@@ -22,7 +21,8 @@ class logrotate (
   Stdlib::Filemode $rules_configdir_mode = $logrotate::params::rules_configdir_mode,
   String $root_user                      = $logrotate::params::root_user,
   String $root_group                     = $logrotate::params::root_group,
-  Array[String] $logrotate_args          = []
+  Array[String[1]] $logrotate_args       = [],
+  Boolean $cron_always_output            = false,
 ) inherits logrotate::params {
 
   contain ::logrotate::install
