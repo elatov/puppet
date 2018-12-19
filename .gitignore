@@ -6,6 +6,9 @@ zabbix/files/*.tar.gz
 !mysql/
 !mysql/**
 mysql/.project
+!mailalias_core/
+!mailalias_core/**
+mailalias_core/.project
 !apt/
 !apt/**
 apt/.project
