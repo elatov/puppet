@@ -369,7 +369,7 @@ apache::vhost { 'vhost.example.com':
 
 See the [`apache::vhost`][] defined type's reference for a list of all virtual host parameters.
 
-> **Note**: Apache processes virtual hosts in alphabetical order, and server administrators can prioritize Apache's virtual host processing by prefixing a virtual host's configuration file name with a number. The [`apache::vhost`][] defined type applies a default [`priority`][] of 15, which Puppet interprets by prefixing the virtual host's file name with `15-`. This all means that if multiple sites have the same priority, or if you disable priority numbers by setting the `priority` parameter's value to false, Apache still processes virtual hosts in alphabetical order.
+> **Note**: Apache processes virtual hosts in alphabetical order, and server administrators can prioritize Apache's virtual host processing by prefixing a virtual host's configuration file name with a number. The [`apache::vhost`][] defined type applies a default [`priority`][] of 25, which Puppet interprets by prefixing the virtual host's file name with `25-`. This means that if multiple sites have the same priority, or if you disable priority numbers by setting the `priority` parameter's value to false, Apache still processes virtual hosts in alphabetical order.
 
 To configure user and group ownership for `docroot`, use the [`docroot_owner`][] and [`docroot_group`][] parameters:
 
@@ -1736,18 +1736,18 @@ class {'::apache::mod::disk_cache':
 }
 ```
 
-##### Class: `apache::mod::diskio`
+##### Class: `apache::mod::dumpio`
 
-Installs and configures [`mod_diskio`][].
+Installs and configures [`mod_dumpio`][].
 
 ```puppet
 class{'apache':
   default_mods => false,
   log_level    => 'dumpio:trace7',
 }
-class{'apache::mod::diskio':
-  disk_io_input  => 'On',
-  disk_io_output => 'Off',
+class{'apache::mod::dumpio':
+  dump_io_input  => 'On',
+  dump_io_output => 'Off',
 }
 ```
 
@@ -2267,16 +2267,18 @@ Installs and manages `mod_jk`, a connector for Apache httpd redirection to old v
 
 ``` puppet
 class { '::apache::mod::jk':
-  ip           = '192.168.2.15',
-  workers_file = 'conf/workers.properties',
-  mount_file   = 'conf/uriworkermap.properties',
-  shm_file     = 'run/jk.shm',
-  shm_size     = '50M',
-  $workers_file_content = {
+  ip                   => '192.168.2.15',
+  workers_file         => 'conf/workers.properties',
+  mount_file           => 'conf/uriworkermap.properties',
+  shm_file             => 'run/jk.shm',
+  shm_size             => '50M',
+  workers_file_content => {
     <Content>
   },
 }
 ```
+
+See [templates/mod/jk/workers.properties.erb](templates/mod/jk/workers.properties.erb) for more information.
 
 **Parameters within `apache::mod::jk`**:
 
@@ -3481,6 +3483,28 @@ Default: The value set by [`apache::mod::auth_cas`][].
 Sets the URL to use when validating a client-presented ticket in an HTTP query string.
 
 Defaults to the value set by [`apache::mod::auth_cas`][].
+
+
+##### `comment`
+
+Adds comments to the header of the configuration file. Pass as string or an array of strings.
+
+Default: `undef`.
+
+For example:
+
+``` puppet
+comment => "Account number: 123B",
+```
+
+Or:
+
+``` puppet
+comment => [
+  "Customer: X",
+  "Frontend domain: x.example.org",
+]
+```
 
 ##### `custom_fragment`
 

@@ -69,6 +69,7 @@ class apache::params inherits ::apache::version {
     $server_root          = '/etc/httpd'
     $conf_dir             = "${httpd_dir}/conf"
     $confd_dir            = "${httpd_dir}/conf.d"
+    $conf_enabled         = undef
     $mod_dir              = $::apache::version::distrelease ? {
       '7'     => "${httpd_dir}/conf.modules.d",
       default => "${httpd_dir}/conf.d",
@@ -217,6 +218,12 @@ class apache::params inherits ::apache::version {
     $server_root         = '/etc/apache2'
     $conf_dir            = $httpd_dir
     $confd_dir           = "${httpd_dir}/conf.d"
+    if ($::operatingsystem == 'Ubuntu' and versioncmp($::operatingsystemrelease, '18.04') == 0) {
+      # Overwrite conf_enabled to be false as it causes errors with Shibboleth when enabled on Ubuntu 18.04
+      $conf_enabled      = undef
+    } else {
+      $conf_enabled      = "${httpd_dir}/conf-enabled"
+    }
     $mod_dir             = "${httpd_dir}/mods-available"
     $mod_enable_dir      = "${httpd_dir}/mods-enabled"
     $vhost_dir           = "${httpd_dir}/sites-available"
@@ -260,6 +267,61 @@ class apache::params inherits ::apache::version {
         'security'              => 'libapache2-modsecurity',
         'shib2'                 => 'libapache2-mod-shib2',
         'suphp'                 => 'libapache2-mod-suphp',
+        'wsgi'                  => 'libapache2-mod-wsgi',
+        'xsendfile'             => 'libapache2-mod-xsendfile',
+      }
+    } elsif ($::operatingsystem == 'Debian' and versioncmp($::operatingsystemrelease, '9') >= 0) {
+      # Debian stretch uses a different dav_svn from Ubuntu Xenial
+      $php_version = '7.0'
+      $mod_packages = {
+        'auth_cas'              => 'libapache2-mod-auth-cas',
+        'auth_kerb'             => 'libapache2-mod-auth-kerb',
+        'auth_gssapi'           => 'libapache2-mod-auth-gssapi',
+        'auth_mellon'           => 'libapache2-mod-auth-mellon',
+        'authnz_pam'            => 'libapache2-mod-authnz-pam',
+        'dav_svn'               => 'libapache2-mod-svn',
+        'fastcgi'               => 'libapache2-mod-fastcgi',
+        'fcgid'                 => 'libapache2-mod-fcgid',
+        'geoip'                 => 'libapache2-mod-geoip',
+        'intercept_form_submit' => 'libapache2-mod-intercept-form-submit',
+        'lookup_identity'       => 'libapache2-mod-lookup-identity',
+        'nss'                   => 'libapache2-mod-nss',
+        'pagespeed'             => 'mod-pagespeed-stable',
+        'passenger'             => 'libapache2-mod-passenger',
+        'perl'                  => 'libapache2-mod-perl2',
+        'phpXXX'                => 'libapache2-mod-phpXXX',
+        'python'                => 'libapache2-mod-python',
+        'rpaf'                  => 'libapache2-mod-rpaf',
+        'security'              => 'libapache2-mod-security2',
+        'shib2'                 => 'libapache2-mod-shib2',
+        'suphp'                 => 'libapache2-mod-suphp',
+        'wsgi'                  => 'libapache2-mod-wsgi',
+        'xsendfile'             => 'libapache2-mod-xsendfile',
+      }
+    } elsif ($::operatingsystem == 'Ubuntu' and versioncmp($::operatingsystemrelease, '18.04') >= 0) {
+      # major.minor version used since Debian stretch and Ubuntu Xenial
+      $php_version = '7.2' # different to Ubuntu 16.04
+      # fastcgi and suphp got removed from #mod_packages, they aren't supported anymore
+      $mod_packages = {
+        'auth_cas'              => 'libapache2-mod-auth-cas',
+        'auth_kerb'             => 'libapache2-mod-auth-kerb',
+        'auth_gssapi'           => 'libapache2-mod-auth-gssapi',
+        'auth_mellon'           => 'libapache2-mod-auth-mellon',
+        'authnz_pam'            => 'libapache2-mod-authnz-pam',
+        'dav_svn'               => 'libapache2-mod-svn', # different to Ubuntu16.04
+        'fcgid'                 => 'libapache2-mod-fcgid',
+        'geoip'                 => 'libapache2-mod-geoip',
+        'intercept_form_submit' => 'libapache2-mod-intercept-form-submit',
+        'lookup_identity'       => 'libapache2-mod-lookup-identity',
+        'nss'                   => 'libapache2-mod-nss',
+        'pagespeed'             => 'mod-pagespeed-stable',
+        'passenger'             => 'libapache2-mod-passenger',
+        'perl'                  => 'libapache2-mod-perl2',
+        'phpXXX'                => 'libapache2-mod-phpXXX',
+        'python'                => 'libapache2-mod-python',
+        'rpaf'                  => 'libapache2-mod-rpaf',
+        'security'              => 'libapache2-mod-security2',
+        'shib2'                 => 'libapache2-mod-shib2',
         'wsgi'                  => 'libapache2-mod-wsgi',
         'xsendfile'             => 'libapache2-mod-xsendfile',
       }
@@ -326,28 +388,52 @@ class apache::params inherits ::apache::version {
     $secpcrematchlimit = 1500
     $secpcrematchlimitrecursion = 1500
     $modsec_secruleengine = 'On'
-    $modsec_default_rules = [
-      'base_rules/modsecurity_35_bad_robots.data',
-      'base_rules/modsecurity_35_scanners.data',
-      'base_rules/modsecurity_40_generic_attacks.data',
-      'base_rules/modsecurity_50_outbound.data',
-      'base_rules/modsecurity_50_outbound_malware.data',
-      'base_rules/modsecurity_crs_20_protocol_violations.conf',
-      'base_rules/modsecurity_crs_21_protocol_anomalies.conf',
-      'base_rules/modsecurity_crs_23_request_limits.conf',
-      'base_rules/modsecurity_crs_30_http_policy.conf',
-      'base_rules/modsecurity_crs_35_bad_robots.conf',
-      'base_rules/modsecurity_crs_40_generic_attacks.conf',
-      'base_rules/modsecurity_crs_41_sql_injection_attacks.conf',
-      'base_rules/modsecurity_crs_41_xss_attacks.conf',
-      'base_rules/modsecurity_crs_42_tight_security.conf',
-      'base_rules/modsecurity_crs_45_trojans.conf',
-      'base_rules/modsecurity_crs_47_common_exceptions.conf',
-      'base_rules/modsecurity_crs_49_inbound_blocking.conf',
-      'base_rules/modsecurity_crs_50_outbound.conf',
-      'base_rules/modsecurity_crs_59_outbound_blocking.conf',
-      'base_rules/modsecurity_crs_60_correlation.conf',
-    ]
+    if ($::operatingsystem == 'Debian' and versioncmp($::operatingsystemrelease, '9') >= 0) or ($::operatingsystem == 'Ubuntu' and versioncmp($::operatingsystemrelease, '18.04') >= 0) {
+      $modsec_default_rules = [
+        'crawlers-user-agents.data',
+        'iis-errors.data',
+        'java-code-leakages.data',
+        'java-errors.data',
+        'lfi-os-files.data',
+        'php-config-directives.data',
+        'php-errors.data',
+        'php-function-names-933150.data',
+        'php-function-names-933151.data',
+        'php-variables.data',
+        'restricted-files.data',
+        'scanners-headers.data',
+        'scanners-urls.data',
+        'scanners-user-agents.data',
+        'scripting-user-agents.data',
+        'sql-errors.data',
+        'sql-function-names.data',
+        'unix-shell.data',
+        'windows-powershell-commands.data',
+      ]
+    } else {
+      $modsec_default_rules = [
+        'base_rules/modsecurity_35_bad_robots.data',
+        'base_rules/modsecurity_35_scanners.data',
+        'base_rules/modsecurity_40_generic_attacks.data',
+        'base_rules/modsecurity_50_outbound.data',
+        'base_rules/modsecurity_50_outbound_malware.data',
+        'base_rules/modsecurity_crs_20_protocol_violations.conf',
+        'base_rules/modsecurity_crs_21_protocol_anomalies.conf',
+        'base_rules/modsecurity_crs_23_request_limits.conf',
+        'base_rules/modsecurity_crs_30_http_policy.conf',
+        'base_rules/modsecurity_crs_35_bad_robots.conf',
+        'base_rules/modsecurity_crs_40_generic_attacks.conf',
+        'base_rules/modsecurity_crs_41_sql_injection_attacks.conf',
+        'base_rules/modsecurity_crs_41_xss_attacks.conf',
+        'base_rules/modsecurity_crs_42_tight_security.conf',
+        'base_rules/modsecurity_crs_45_trojans.conf',
+        'base_rules/modsecurity_crs_47_common_exceptions.conf',
+        'base_rules/modsecurity_crs_49_inbound_blocking.conf',
+        'base_rules/modsecurity_crs_50_outbound.conf',
+        'base_rules/modsecurity_crs_59_outbound_blocking.conf',
+        'base_rules/modsecurity_crs_60_correlation.conf',
+      ]
+    }
     $alias_icons_path     = '/usr/share/apache2/icons'
     $error_documents_path = '/usr/share/apache2/error'
     if ($::operatingsystem == 'Ubuntu' and versioncmp($::operatingsystemrelease, '13.10') >= 0) or ($::operatingsystem == 'Debian' and versioncmp($::operatingsystemrelease, '8') >= 0) {
@@ -383,6 +469,7 @@ class apache::params inherits ::apache::version {
     $server_root      = '/usr/local'
     $conf_dir         = $httpd_dir
     $confd_dir        = "${httpd_dir}/Includes"
+    $conf_enabled     = undef
     $mod_dir          = "${httpd_dir}/Modules"
     $mod_enable_dir   = undef
     $vhost_dir        = "${httpd_dir}/Vhosts"
@@ -523,6 +610,7 @@ class apache::params inherits ::apache::version {
     $server_root         = '/etc/apache2'
     $conf_dir            = $httpd_dir
     $confd_dir           = "${httpd_dir}/conf.d"
+    $conf_enabled        = undef
     $mod_dir             = "${httpd_dir}/mods-available"
     $mod_enable_dir      = "${httpd_dir}/mods-enabled"
     $vhost_dir           = "${httpd_dir}/sites-available"
