@@ -52,14 +52,117 @@ class apache::params inherits ::apache::version {
   # no client certs should be trusted for auth by default.
   $ssl_certs_dir          = undef
 
-  if ($::operatingsystem == 'Ubuntu' and $::lsbdistrelease == '10.04') or ($::operatingsystem == 'SLES') {
-    $verify_command = '/usr/sbin/apache2ctl -t'
-  } elsif $::operatingsystem == 'FreeBSD' {
-    $verify_command = '/usr/local/sbin/apachectl -t'
-  } else {
-    $verify_command = '/usr/sbin/apachectl -t'
+  if ($::apache::version::scl_httpd_version) {
+    if $::apache::version::scl_php_version == undef {
+      fail('If you define apache::version::scl_httpd_version, you also need to specify apache::version::scl_php_version')
+    }
+    $_scl_httpd_version_nodot = regsubst($::apache::version::scl_httpd_version, '\.', '')
+    $_scl_httpd_name = "httpd${_scl_httpd_version_nodot}"
+
+    $_scl_php_version_no_dot = regsubst($::apache::version::scl_php_version, '\.', '')
+    $user                 = 'apache'
+    $group                = 'apache'
+    $root_group           = 'root'
+    $apache_name          = "${_scl_httpd_name}-httpd"
+    $service_name         = "${_scl_httpd_name}-httpd"
+    $httpd_root           = "/opt/rh/${_scl_httpd_name}/root"
+    $httpd_dir            = "${httpd_root}/etc/httpd"
+    $server_root          = "${httpd_root}/etc/httpd"
+    $conf_dir             = "${httpd_dir}/conf"
+    $confd_dir            = "${httpd_dir}/conf.d"
+    $mod_dir              = $::apache::version::distrelease ? {
+      '7'     => "${httpd_dir}/conf.modules.d",
+      default => "${httpd_dir}/conf.d",
+    }
+    $mod_enable_dir       = undef
+    $vhost_dir            = "${httpd_dir}/conf.d"
+    $vhost_enable_dir     = undef
+    $conf_file            = 'httpd.conf'
+    $ports_file           = "${conf_dir}/ports.conf"
+    $pidfile              = 'run/httpd.pid'
+    $logroot              = "/var/log/${_scl_httpd_name}"
+    $logroot_mode         = undef
+    $lib_path             = 'modules'
+    $mpm_module           = 'prefork'
+    $dev_packages         = "${_scl_httpd_name}-httpd-devel"
+    $default_ssl_cert     = '/etc/pki/tls/certs/localhost.crt'
+    $default_ssl_key      = '/etc/pki/tls/private/localhost.key'
+    $ssl_sessioncache     = '/var/cache/mod_ssl/scache(512000)'
+    $passenger_conf_file  = 'passenger_extra.conf'
+    $passenger_conf_package_file = 'passenger.conf'
+    $passenger_root       = undef
+    $passenger_ruby       = undef
+    $passenger_default_ruby = undef
+    $suphp_addhandler     = 'php5-script'
+    $suphp_engine         = 'off'
+    $suphp_configpath     = undef
+    $php_version          = $::apache::version::scl_php_version
+    $mod_packages         = {
+      "php${::apache::version::scl_php_version}" => "rh-php${_scl_php_version_no_dot}-php",
+      'ssl'                   => "${_scl_httpd_name}-mod_ssl",
+    }
+    $mod_libs             = {
+      'nss' => 'libmodnss.so',
+    }
+    $conf_template        = 'apache/httpd.conf.erb'
+    $http_protocol_options  = undef
+    $keepalive            = 'On'
+    $keepalive_timeout    = 15
+    $max_keepalive_requests = 100
+    $fastcgi_lib_path     = undef
+    $mime_support_package = 'mailcap'
+    $mime_types_config    = '/etc/mime.types'
+    $docroot              = "${httpd_root}/var/www/html"
+    $alias_icons_path     = $::apache::version::distrelease ? {
+      '7'     => "${httpd_root}/usr/share/httpd/icons",
+      default => '/var/www/icons',
+    }
+    $error_documents_path = $::apache::version::distrelease ? {
+      '7'     => "${httpd_root}/usr/share/httpd/error",
+      default => '/var/www/error'
+    }
+    if $::osfamily == 'RedHat' {
+      $wsgi_socket_prefix = '/var/run/wsgi'
+    } else {
+      $wsgi_socket_prefix = undef
+    }
+    $cas_cookie_path      = '/var/cache/mod_auth_cas/'
+    $mellon_lock_file     = '/run/mod_auth_mellon/lock'
+    $mellon_cache_size    = 100
+    $mellon_post_directory = undef
+    $modsec_crs_package   = 'mod_security_crs'
+    $modsec_crs_path      = '/usr/lib/modsecurity.d'
+    $modsec_dir           = '/etc/httpd/modsecurity.d'
+    $secpcrematchlimit = 1500
+    $secpcrematchlimitrecursion = 1500
+    $modsec_secruleengine = 'On'
+    $modsec_default_rules = [
+      'base_rules/modsecurity_35_bad_robots.data',
+      'base_rules/modsecurity_35_scanners.data',
+      'base_rules/modsecurity_40_generic_attacks.data',
+      'base_rules/modsecurity_50_outbound.data',
+      'base_rules/modsecurity_50_outbound_malware.data',
+      'base_rules/modsecurity_crs_20_protocol_violations.conf',
+      'base_rules/modsecurity_crs_21_protocol_anomalies.conf',
+      'base_rules/modsecurity_crs_23_request_limits.conf',
+      'base_rules/modsecurity_crs_30_http_policy.conf',
+      'base_rules/modsecurity_crs_35_bad_robots.conf',
+      'base_rules/modsecurity_crs_40_generic_attacks.conf',
+      'base_rules/modsecurity_crs_41_sql_injection_attacks.conf',
+      'base_rules/modsecurity_crs_41_xss_attacks.conf',
+      'base_rules/modsecurity_crs_42_tight_security.conf',
+      'base_rules/modsecurity_crs_45_trojans.conf',
+      'base_rules/modsecurity_crs_47_common_exceptions.conf',
+      'base_rules/modsecurity_crs_49_inbound_blocking.conf',
+      'base_rules/modsecurity_crs_50_outbound.conf',
+      'base_rules/modsecurity_crs_59_outbound_blocking.conf',
+      'base_rules/modsecurity_crs_60_correlation.conf',
+    ]
+    $error_log           = 'error_log'
+    $scriptalias         = "${httpd_root}/var/www/cgi-bin"
+    $access_log_file     = 'access_log'
   }
-  if $::osfamily == 'RedHat' or $::operatingsystem =~ /^[Aa]mazon$/ {
+  elsif $::osfamily == 'RedHat' or $::operatingsystem =~ /^[Aa]mazon$/ {
     $user                 = 'apache'
     $group                = 'apache'
     $root_group           = 'root'
@@ -218,12 +321,8 @@ class apache::params inherits ::apache::version {
     $server_root         = '/etc/apache2'
     $conf_dir            = $httpd_dir
     $confd_dir           = "${httpd_dir}/conf.d"
-    if ($::operatingsystem == 'Ubuntu' and versioncmp($::operatingsystemrelease, '18.04') == 0) {
-      # Overwrite conf_enabled to be false as it causes errors with Shibboleth when enabled on Ubuntu 18.04
-      $conf_enabled      = undef
-    } else {
-      $conf_enabled      = "${httpd_dir}/conf-enabled"
-    }
+    # Overwrite conf_enabled causes errors with Shibboleth when enabled on Ubuntu 18.04
+    $conf_enabled        = undef #"${httpd_dir}/conf-enabled.d"
     $mod_dir             = "${httpd_dir}/mods-available"
     $mod_enable_dir      = "${httpd_dir}/mods-enabled"
     $vhost_dir           = "${httpd_dir}/sites-available"
@@ -622,8 +721,14 @@ class apache::params inherits ::apache::version {
     $logroot_mode        = undef
     $lib_path            = '/usr/lib64/apache2' #changes for some modules based on mpm
     $mpm_module          = 'prefork'
-    $default_ssl_cert    = '/etc/apache2/ssl.crt/server.crt'
-    $default_ssl_key     = '/etc/apache2/ssl.key/server.key'
+
+    if $::operatingsystemrelease < '15' {
+      $default_ssl_cert    = '/etc/apache2/ssl.crt/server.crt'
+      $default_ssl_key     = '/etc/apache2/ssl.key/server.key'
+    } else {
+      $default_ssl_cert    = '/etc/apache2/ssl.crt/default-server.crt'
+      $default_ssl_key     = '/etc/apache2/ssl.key/default-server.key'
+    }
     $ssl_sessioncache    = '/var/lib/apache2/ssl_scache(512000)'
     $suphp_addhandler    = 'x-httpd-php'
     $suphp_engine        = 'off'
@@ -696,5 +801,15 @@ class apache::params inherits ::apache::version {
 
   } else {
     fail("Class['apache::params']: Unsupported osfamily: ${::osfamily}")
+  }
+
+  if ($::operatingsystem == 'Ubuntu' and $::lsbdistrelease == '10.04') or ($::operatingsystem == 'SLES') {
+    $verify_command = '/usr/sbin/apache2ctl -t'
+  } elsif $::operatingsystem == 'FreeBSD' {
+    $verify_command = '/usr/local/sbin/apachectl -t'
+  } elsif ($::apache::version::scl_httpd_version) {
+    $verify_command = "/opt/rh/${_scl_httpd_name}/root/usr/sbin/apachectl -t"
+  } else {
+    $verify_command = '/usr/sbin/apachectl -t'
   }
 }
