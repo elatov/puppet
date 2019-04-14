@@ -358,7 +358,7 @@ class lynis::config {
         file_line{"add-whitelist-promisc":
           path => "${::lynis::conf_dir}/${::lynis::conf_file}",
           #line => "if_promisc:$facts['networking']['interfaces']",
-          line => "if_promisc:${facts['networking']['primary']}"
+          line => "if_promisc:${facts['networking']['primary']}:"
           # line => "if_promisc:ens224",
         }
       }
