@@ -355,11 +355,12 @@ class lynis::config {
       
       if ( $::lynis::settings['tests']['NETW-3032'] == true ){
         class {'arpwatch': }
-		file_line{"add-whitelist-promisc":
-			path => "${::lynis::conf_dir}/${::lynis::conf_file}",
-			#line => "if_promisc:$facts['networking']['interfaces']",
-			line => "if_promisc:ens224",
-		}
+        file_line{"add-whitelist-promisc":
+          path => "${::lynis::conf_dir}/${::lynis::conf_file}",
+          #line => "if_promisc:$facts['networking']['interfaces']",
+          line => "if_promisc:${facts['networking']['primary']}"
+          # line => "if_promisc:ens224",
+        }
       }
       
       if ( $::lynis::settings['tests']['SSH-7408'] == true ){
