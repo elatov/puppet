@@ -182,6 +182,7 @@ lynis/.project
 !arpwatch/
 !arpwatch/**
 arpwatch/.project
+arpwatch/Gemfile
 !psacct/
 !psacct/**
 psacct/.project
