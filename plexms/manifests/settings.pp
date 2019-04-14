@@ -12,9 +12,9 @@ define plexms::settings (
   
   augeas{"plexms_setting_${key}":
        incl    => "${config_file}", 
-       lens    => 'Puppet.lns',
+       lens    => 'Systemd.lns',
        context => "/files${config_file}",
-       changes => "set */${key} ${value}",
-       onlyif  => "match */${key} not_include ${value}",
+       changes => "set Service/${key}/value ${value}",
+       onlyif  => "match Service/${key}/value not_include ${value}",
      }
 }

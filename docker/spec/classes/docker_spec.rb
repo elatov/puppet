@@ -53,7 +53,11 @@ describe 'docker', :type => :class do
         it { should contain_class('apt') }
         it { should contain_package('docker').with_name('docker-ce').with_ensure('present') }
         it { should contain_apt__source('docker').with_location('https://download.docker.com/linux/ubuntu') }
-        it { should contain_apt__pin('docker').with_origin('download.docker.com') }
+        it { should contain_apt__pin('docker')
+          .with_ensure('present')
+          .with_origin('download.docker.com')
+          .with_priority(500)
+        }
         it { should contain_package('docker').with_install_options(nil) }
 
         it { should contain_file('/etc/default/docker').without_content(/icc=/) }
@@ -64,7 +68,11 @@ describe 'docker', :type => :class do
         it { should contain_class('apt') }
         it { should contain_package('docker').with_name('docker-ce').with_ensure('present') }
         it { should contain_apt__source('docker').with_location('https://download.docker.com/linux/debian') }
-        it { should contain_apt__pin('docker').with_origin('download.docker.com') }
+        it { should contain_apt__pin('docker')
+          .with_ensure('present')
+          .with_origin('download.docker.com')
+          .with_priority(500)
+        }
         it { should contain_package('docker').with_install_options(nil) }
 
         it { should contain_file('/etc/default/docker').without_content(/icc=/) }
@@ -433,6 +441,19 @@ describe 'docker', :type => :class do
         it { should contain_file('/etc/systemd/system/docker.service.d/service-overrides.conf').with_content(/docker.io/) }
       end
 
+      context 'with an extra After entry' do
+        let(:params) {{ 'service_after_override' => 'containerd.service' }}
+        it { should contain_file('/etc/systemd/system/docker.service.d/service-overrides.conf').with_content(/containerd.service/) }
+      end
+
+      context 'with a specific socket group and override' do
+        let(:params) { { 
+           'socket_group'    => 'root',
+           'socket_override' => true,
+        } }
+        it { should contain_file('/etc/systemd/system/docker.socket.d/socket-overrides.conf').with_content(/root/) }
+      end
+
       context 'with a custom package name' do
         let(:params) { {'docker_ce_package_name' => 'docker-custom-pkg-name' } }
         it { should contain_package('docker').with_name('docker-custom-pkg-name').with_ensure('present') }
@@ -641,7 +662,7 @@ describe 'docker', :type => :class do
         it do
           expect {
             should contain_package('docker')
-          }.to raise_error(Puppet::Error, /log_driver must be one of none, json-file, syslog, journald, gelf, fluentd or splunk/)
+          }.to raise_error(Puppet::Error, /log_driver must be one of none, json-file, syslog, journald, gelf, fluentd, splunk or awslogs/)
         end
       end
 
@@ -706,7 +727,7 @@ describe 'docker', :type => :class do
         } }
         it { should contain_file(service_config_file).with_content(/-g \/mnt\/docker/) }
       end
-  
+
       context 'with custom root dir && Docker version > 17.05' do
         let(:params) { {
           'root_dir' => '/mnt/docker',
@@ -714,11 +735,18 @@ describe 'docker', :type => :class do
         } }
         it { should contain_file(service_config_file).with_content(/--data-root \/mnt\/docker/) }
       end
-       
+
 
       context 'with ensure absent' do
         let(:params) { {'ensure' => 'absent' } }
         it { should contain_package('docker').with_ensure('absent') }
+      end
+
+      context 'with ensure absent and ' do
+        let(:params) { {'ensure' => 'absent' } }
+        it { should contain_package('docker').with_ensure('absent') }
+        it { should contain_package('docker-ce-cli').with_ensure('absent') }
+        it { should contain_package('containerd.io').with_ensure('absent') }
       end
 
       context 'with an invalid combination of devicemapper options' do

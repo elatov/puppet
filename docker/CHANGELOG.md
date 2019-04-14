@@ -1,3 +1,48 @@
+# 3.5.0
+
+Changes range for dependent modules
+
+Use multiple networks in docker::run and docker::services
+
+Fixes quotes with docker::services command
+
+Publish multiple ports to docker::services
+
+A full list of issues and PRs associated with this release can be found [here](https://github.com/puppetlabs/puppetlabs-docker/milestone/7?closed=1)
+
+# 3.4.0
+
+Introduces docker_stack type and provider
+
+Fixes frozen string in docker swarm token task
+
+Acceptance testing updates
+
+Allow use of newer translate module
+
+A full list of issues and PRs associated with this release can be found [here](https://github.com/puppetlabs/puppetlabs-docker/milestone/6?closed=1)
+
+
+# Version 3.3.0
+
+Pins apt repo to 500 to ensure packages are updated
+
+Fixes issue in docker fact failing when docker is not started
+
+Acceptance testing updates
+
+Allows more recent version of the reboot module
+
+A full list of issues and PRs associated with this release can be found [here](https://github.com/puppetlabs/puppetlabs-docker/milestone/5?closed=1)
+
+# Version 3.2.0
+
+Adds in support for Puppet 6
+
+Containers will be restared due to script changes in [PR #367](https://github.com/puppetlabs/puppetlabs-docker/pull/367)
+
+A full list of issues and PRs associated with this release can be found [here](https://github.com/puppetlabs/puppetlabs-docker/milestone/4?closed=1)
+
 # Version 3.1.0
 
 Adding in the following faetures/functionality

@@ -48,14 +48,14 @@ define docker::registry(
   $docker_command = $docker::params::docker_command
 
   if $::osfamily == 'windows' {
-    $exec_environment = ['PATH=C:/Program Files/Docker/']
+    $exec_environment = ["PATH=${::docker_program_files_path}/Docker/"]
     $exec_timeout = 3000
-    $exec_path = ['c:/Windows/Temp/', 'C:/Program Files/Docker/']
+    $exec_path = ["${::docker_program_files_path}/Docker/"]
     $exec_provider = 'powershell'
     $password_env = '$env:password'
     $exec_user = undef
   } else {
-    $exec_environment = ['HOME=/root']
+    $exec_environment = []
     $exec_path = ['/bin', '/usr/bin']
     $exec_timeout = 0
     $exec_provider = undef
@@ -97,7 +97,7 @@ define docker::registry(
       $server_strip = regsubst($server, '/', '_', 'G')
 
       # no - with pw_hash
-      $local_user_strip = regsubst($local_user, '-', '', 'G')
+      $local_user_strip = regsubst($local_user, '[-_]', '', 'G')
 
       $_pass_hash = $pass_hash ? {
         Undef   => pw_hash($docker_auth, 'SHA-512', $local_user_strip),
@@ -113,8 +113,10 @@ define docker::registry(
     } else {
       # server may be an URI, which can contain /
       $server_strip = regsubst($server, '[/:]', '_', 'G')
-      $passfile = "C:/Windows/Temp/registry-auth-puppet_receipt_${server_strip}_${local_user}"
+      $passfile = "${::docker_user_temp_path}/registry-auth-puppet_receipt_${server_strip}_${local_user}"
+# lint:ignore:140chars
       $_auth_command = "if (-not (${auth_cmd})) { Remove-Item -Path ${passfile} -Force -Recurse -EA SilentlyContinue; exit 0 } else { exit 0 }"
+# lint:endignore
 
       if $ensure == 'absent' {
         file { $passfile:
@@ -123,12 +125,12 @@ define docker::registry(
         }
       } elsif $ensure == 'present' {
         exec { 'compute-hash':
-            command     => template('docker/windows/compute_hash.ps1.erb'),
-            environment => $exec_env,
-            provider    => $exec_provider,
-            logoutput   => true,
-            unless      => template('docker/windows/check_hash.ps1.erb'),
-            notify      => Exec["${title} auth"],
+          command     => template('docker/windows/compute_hash.ps1.erb'),
+          environment => $exec_env,
+          provider    => $exec_provider,
+          logoutput   => true,
+          unless      => template('docker/windows/check_hash.ps1.erb'),
+          notify      => Exec["${title} auth"],
         }
       }
     }
@@ -146,5 +148,4 @@ define docker::registry(
     provider    => $exec_provider,
     refreshonly => $receipt,
   }
-
 }

@@ -70,17 +70,29 @@
 #     Default: false
 #
 #   [*delete_on_error*]
-#     True if you want that the configuration is deleted on an error 
-#     during a complete visudo -c run. If false it will just return 
+#     True if you want that the configuration is deleted on an error
+#     during a complete visudo -c run. If false it will just return
 #     an error and will add a comment to the sudoers configuration so
 #     that the resource will be checked at the following run.
 #     Default: true
 #
 #   [*validate_single*]
 #     Do a validate on the "single" file in the sudoers.d directory.
-#     If the validate fail the file will not be saved or changed 
+#     If the validate fail the file will not be saved or changed
 #     if a file already exist.
 #     Default: false
+#
+#   [*use_sudoreplay*]
+#     Boolean to enable the usage of sudoreplay.
+#     Default: false
+#
+#   [*sudoreplay_discard*]
+#     Array of additional command to discard in sudo log.
+#     Default: undef
+#
+#   [*configs*]
+#     A hash of sudo::conf's
+#     Default: {}
 #
 # Actions:
 #   Installs sudo package and checks the state of sudoers file and
@@ -93,26 +105,29 @@
 #   class { 'sudo': }
 #
 # [Remember: No empty lines between comments and class definition]
-class sudo(
-  Boolean                  $enable              = true,
-  String                   $package             = $sudo::params::package,
-  Optional[String]         $package_ldap        = $sudo::params::package_ldap,
-  String                   $package_ensure      = $sudo::params::package_ensure,
-  Optional[String]         $package_source      = $sudo::params::package_source,
-  Optional[String]         $package_admin_file  = $sudo::params::package_admin_file,
-  Boolean                  $purge               = true,
-  Optional[String]         $purge_ignore        = undef,
-  String                   $config_file         = $sudo::params::config_file,
-  Boolean                  $config_file_replace = true,
-  String                   $config_file_mode    = $sudo::params::config_file_mode,
-  String                   $config_dir          = $sudo::params::config_dir,
-  String                   $config_dir_mode     = $sudo::params::config_dir_mode,
-  Optional[Array[String]]  $extra_include_dirs  = undef,
-  String                   $content             = $sudo::params::content,
-  Boolean                  $ldap_enable         = false,
-  Boolean                  $delete_on_error     = true,
-  Boolean                  $validate_single     = false,
-  Boolean                  $config_dir_keepme   = $sudo::params::config_dir_keepme,
+class sudo (
+  Boolean                                   $enable              = true,
+  Optional[String]                          $package             = $sudo::params::package,
+  Optional[String]                          $package_ldap        = $sudo::params::package_ldap,
+  String                                    $package_ensure      = $sudo::params::package_ensure,
+  Optional[String]                          $package_source      = $sudo::params::package_source,
+  Optional[String]                          $package_admin_file  = $sudo::params::package_admin_file,
+  Boolean                                   $purge               = true,
+  Optional[Variant[String, Array[String]]]  $purge_ignore        = undef,
+  String                                    $config_file         = $sudo::params::config_file,
+  Boolean                                   $config_file_replace = true,
+  String                                    $config_file_mode    = $sudo::params::config_file_mode,
+  String                                    $config_dir          = $sudo::params::config_dir,
+  String                                    $config_dir_mode     = $sudo::params::config_dir_mode,
+  Optional[Array[String]]                   $extra_include_dirs  = undef,
+  String                                    $content             = $sudo::params::content,
+  Boolean                                   $ldap_enable         = false,
+  Boolean                                   $delete_on_error     = true,
+  Boolean                                   $validate_single     = false,
+  Boolean                                   $config_dir_keepme   = $sudo::params::config_dir_keepme,
+  Boolean                                   $use_sudoreplay      = false,
+  Optional[Array[String]]                   $sudoreplay_discard  = undef,
+  Hash                                      $configs             = {},
 ) inherits sudo::params {
 
 
@@ -140,13 +155,15 @@ class sudo(
     }
     default: { fail('no $ldap_enable is set') }
   }
-
-  class { '::sudo::package':
-    package            => $package_real,
-    package_ensure     => $package_ensure,
-    package_source     => $package_source,
-    package_admin_file => $package_admin_file,
-    ldap_enable        => $ldap_enable,
+  if $package_real {
+    class { 'sudo::package':
+      package            => $package_real,
+      package_ensure     => $package_ensure,
+      package_source     => $package_source,
+      package_admin_file => $package_admin_file,
+      ldap_enable        => $ldap_enable,
+      before             => [ File[$config_file], File[$config_dir] ],
+    }
   }
 
   file { $config_file:
@@ -156,7 +173,6 @@ class sudo(
     mode    => $config_file_mode,
     replace => $config_file_replace,
     content => template($content),
-    require => Class['sudo::package'],
   }
 
   file { $config_dir:
@@ -167,7 +183,6 @@ class sudo(
     recurse => $purge,
     purge   => $purge,
     ignore  => $purge_ignore,
-    require => Class['sudo::package'],
   }
 
   if $config_dir_keepme {
@@ -178,22 +193,15 @@ class sudo(
     }
   }
 
-  # Load the Hiera based sudoer configuration (if enabled and present)
-  #
-  # NOTE: We must use 'include' here to avoid circular dependencies with
-  #     sudo::conf
-  #
-  # NOTE: There is no way to detect the existence of hiera. This automatic
-  #   functionality is therefore made exclusive to Puppet 3+ (hiera is embedded)
-  #   in order to preserve backwards compatibility.
-  #
-  #   http://projects.puppetlabs.com/issues/12345
-  #
-  if (versioncmp($::puppetversion, '3') != -1) {
-    include '::sudo::configs'
+  $configs.each |$config_name, $config| {
+    sudo::conf { $config_name:
+      * => $config,
+    }
   }
 
-  anchor { 'sudo::begin': }
-  -> Class['sudo::package']
-  -> anchor { 'sudo::end': }
+  if $package_real {
+    anchor { 'sudo::begin': }
+    -> Class['sudo::package']
+    -> anchor { 'sudo::end': }
+  }
 }

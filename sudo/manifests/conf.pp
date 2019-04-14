@@ -46,9 +46,8 @@ define sudo::conf(
   $sudo_config_dir  = undef,
   $sudo_file_name   = undef,
   $sudo_syntax_path = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
-  ) {
-
-    include ::sudo
+) {
+  include sudo
 
   # Hack to allow the user to set the config_dir from the
   # sudo::config parameter, but default to $sudo::params::config_dir
@@ -77,8 +76,6 @@ define sudo::conf(
 
   # replace whitespace in file name
   $cur_file_real = regsubst($cur_file, '\s+', '_', 'G')
-
-  Class['sudo'] -> Sudo::Conf[$name]
 
   if $::osfamily == 'RedHat' {
     if (versioncmp($::sudoversion, '1.7.2p1') < 0) {
@@ -128,6 +125,7 @@ define sudo::conf(
     source       => $source,
     content      => $content_real,
     notify       => $notify_real,
+    require      => File[$sudo_config_dir_real],
     validate_cmd => $validate_cmd_real,
   }
 
@@ -136,6 +134,4 @@ define sudo::conf(
     refreshonly => true,
     path        => $sudo_syntax_path,
   }
-
-
 }

@@ -19,6 +19,10 @@ require 'spec_helper'
           :operatingsystem           => 'Windows',
           :kernelrelease             => '10.0.14393',
           :operatingsystemmajrelease => '2016',
+          :docker_program_data_path  => 'C:/ProgramData',
+          :docker_program_files_path => 'C:/Program Files',
+          :docker_systemroot         => 'C:/Windows',
+          :docker_user_temp_path     => 'C:/Users/Administrator/AppData/Local/Temp',
         } }
       end
 
@@ -26,7 +30,19 @@ require 'spec_helper'
         let(:params) { {
           'init'           => true,
           'advertise_addr' => '192.168.1.1',
-                'listen_addr'    => '192.168.1.1',    
+                'listen_addr'    => '192.168.1.1',
+        } }
+        it { is_expected.to compile.with_all_deps }
+        it { should contain_exec('Swarm init').with_command(/docker swarm init/) }
+      end
+
+      context 'with ensure => present and swarm init and default-addr-pool and default_addr_pool_mask_length' do
+        let(:params) { {
+          'init'                          => true,
+          'advertise_addr'                => '192.168.1.1',
+          'listen_addr'                   => '192.168.1.1',
+          'default_addr_pool'             => ['30.30.0.0/16', '40.40.0.0/16'],
+          'default_addr_pool_mask_length' => '24',
         } }
         it { is_expected.to compile.with_all_deps }
         it { should contain_exec('Swarm init').with_command(/docker swarm init/) }

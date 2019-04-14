@@ -1,6 +1,6 @@
 {
   "name": "saz-sudo",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "author": "saz",
   "summary": "Manage sudo configuration via Puppet",
   "license": "Apache-2.0",
@@ -10,7 +10,7 @@
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">=2.6.0 < 5.0.0"
+      "version_requirement": ">=2.6.0 < 7.0.0"
     }
   ],
   "data_provider": null,

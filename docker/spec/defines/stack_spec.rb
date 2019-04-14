@@ -18,6 +18,10 @@ require 'spec_helper'
         :operatingsystem           => 'windows',
         :kernelrelease             => '10.0.14393',
         :operatingsystemmajrelease => '2016',
+        :docker_program_data_path   => 'C:/ProgramData',
+        :docker_program_files_path  => 'C:/Program Files',
+        :docker_systemroot          => 'C:/Windows',
+        :docker_user_temp_path      => 'C:/Users/Administrator/AppData/Local/Temp',
       } }
     end
 
@@ -40,6 +44,17 @@ require 'spec_helper'
       it { should contain_exec('docker stack create foo').with_command(/docker stack deploy/) }
       it { should contain_exec('docker stack create foo').with_command(/--compose-file '\/tmp\/docker-compose.yaml'/) }
       it { should contain_exec('docker stack create foo').with_command(/--compose-file '\/tmp\/docker-compose-2.yaml'/) }
+    end
+
+    context 'with prune' do
+      let(:params) { {
+        'stack_name' => 'foo', 	
+        'compose_files' => ['/tmp/docker-compose.yaml'],
+        'prune' => true,
+      } }
+      it { should contain_exec('docker stack create foo').with_command(/docker stack deploy/) }
+      it { should contain_exec('docker stack create foo').with_command(/--compose-file '\/tmp\/docker-compose.yaml'/) }
+      it { should contain_exec('docker stack create foo').with_command(/--prune/) }
     end
 
     context 'with ensure => absent'  do

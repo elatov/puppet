@@ -1,29 +1,37 @@
 require 'spec_helper_acceptance'
 
-if fact('osfamily') == 'windows'
+if fact('kernel') == 'windows'
   docker_args = 'docker_ee => true'
   default_image = 'microsoft/nanoserver'
   default_image_tag = '10.0.14393.2189'
   second_image = 'hello-world'
   default_digest = 'sha256:204c41542c0927ac0296802e44c56b886b47e99cf8220fb49d46951bd5fc1742'
-  default_dockerfile = 'c:/windows/temp/Dockerfile'
-  #The default args are set because: 
-  #restart => 'always' - there is no service created to manage containers 
+  default_dockerfile = 'C:/Users/Administrator/AppData/Local/Temp/Dockerfile'
+  dockerfile_test = 'C:/Windows/Dockerfile_test.txt'
+  #The default args are set because:
+  #restart => 'always' - there is no service created to manage containers
   #net => 'nat' - docker uses bridged by default when running a container. When installing docker on windows the default network is NAT.
   default_docker_run_arg = "restart => 'always', net => 'nat',"
   default_run_command = "ping 127.0.0.1 -t"
   docker_command = "\"/cygdrive/c/Program Files/Docker/docker\""
   default_docker_exec_lr_command = 'cmd /c "ping 127.0.0.1 -t > c:\windows\temp\test_file.txt"'
   default_docker_exec_command = 'cmd /c "echo test > c:\windows\temp\test_file.txt"'
-  docker_mount_path = "c:/windows/temp"
+  docker_mount_path = 'C:/Users/Administrator/AppData/Local/Temp'
   storage_driver = "windowsfilter"
-elsif fact('osfamily') == 'RedHat'
-  docker_args = "repo_opt => '--enablerepo=localmirror-extras'"
+else
+  if fact('os.family') == 'RedHat'
+    docker_args = "repo_opt => '--enablerepo=localmirror-extras'"
+  elsif fact('os.name') == 'Ubuntu' && fact('os.release.full') == '14.04'
+    docker_args = "version => '18.06.1~ce~3-0~ubuntu'"
+  else
+    docker_args = ''
+  end
   default_image = 'alpine'
   second_image = 'busybox'
   default_image_tag = '3.7'
   default_digest = 'sha256:3dcdb92d7432d56604d4545cbd324b14e647b313626d99b889d0626de158f73a'
   default_dockerfile = '/root/Dockerfile'
+  dockerfile_test = "#{default_dockerfile}_test.txt"
   docker_command = "docker"
   default_docker_run_arg = ''
   default_run_command = "init"
@@ -31,20 +39,13 @@ elsif fact('osfamily') == 'RedHat'
   default_docker_exec_command = 'touch /root/test_file.txt'
   docker_mount_path = "/root"
   storage_driver = "devicemapper"
-else 
-  docker_args = ''
-  default_image = 'alpine'
-  second_image = 'busybox'
-  default_image_tag = '3.7'
-  default_digest = 'sha256:3dcdb92d7432d56604d4545cbd324b14e647b313626d99b889d0626de158f73a'
-  default_dockerfile = '/root/Dockerfile'
-  docker_command = "docker"
-  default_docker_run_arg = ''
-  default_run_command = "init"
-  default_docker_exec_lr_command = '/bin/sh -c "touch /root/test_file.txt; while true; do echo hello world; sleep 1; done"'
-  default_docker_exec_command = 'touch /root/test_file.txt'
-  docker_mount_path = "/root"
-  storage_driver = "overlay2"   
+  if fact('os.family') == 'Debian' && fact('os.release.major') =~ (/14.04|^8$/)
+    storage_driver = "aufs"
+  elsif fact('os.family') == 'RedHat'
+    storage_driver = "devicemapper"
+  else
+    storage_driver = "overlay2"
+  end
 end
 
 describe 'the Puppet Docker module' do
@@ -84,7 +85,7 @@ describe 'the Puppet Docker module' do
         end
 
         it 'should be start a docker process' do
-          if fact('osfamily') == 'windows' 
+          if fact('osfamily') == 'windows'
             shell('powershell Get-Process -Name dockerd') do |r|
               expect(r.stdout).to match(/ProcessName/)
             end
@@ -145,7 +146,7 @@ describe 'the Puppet Docker module' do
 
         shell("#{docker_command} inspect container-3-6", :acceptable_exit_codes => [1])
         if fact('osfamily') == 'windows'
-          shell('test -f /cygdrive/c/Windows/Temp/container-3-6.service', :acceptable_exit_codes => [1])
+          shell('test -f /cygdrive/c/Users/Administrator/AppData/Local/Temp/container-3-6.service', :acceptable_exit_codes => [1])
         else
           shell('test -f /etc/systemd/system/container-3-6.service', :acceptable_exit_codes => [1])
         end
@@ -160,7 +161,7 @@ describe 'the Puppet Docker module' do
             storage_driver => "#{storage_driver}",
             }
           EOS
-        
+
           apply_manifest(@pp, :catch_failures => true)
           sleep 15
           end
@@ -169,8 +170,8 @@ describe 'the Puppet Docker module' do
             shell("#{docker_command} info -f \"{{ .Driver}}\"") do |r|
               expect(r.stdout).to match (/#{storage_driver}/)
             end
-          end  
-      end          
+          end
+      end
 
       context 'passing a TCP address to bind to' do
         before(:all) do
@@ -220,7 +221,7 @@ describe 'the Puppet Docker module' do
         end
 
         it 'should show docker listening on the specified unix socket' do
-          if fact('osfamily') != 'windows'  
+          if fact('osfamily') != 'windows'
             shell('ps aux | grep docker') do |r|
               expect(r.stdout).to match(/unix:\/\/\/var\/run\/docker.sock/)
             end
@@ -317,6 +318,13 @@ describe 'the Puppet Docker module' do
       end
 
       it 'should create a new image based on a Dockerfile' do
+
+        if fact('osfamily') == 'windows'
+          run_cmd = 'RUN echo test > C:\\Windows\\Temp\\Dockerfile_test.txt'
+        else
+          run_cmd = "RUN echo test > #{dockerfile_test}"
+        end
+
         pp=<<-EOS
           class { 'docker': #{docker_args} }
 
@@ -327,7 +335,7 @@ describe 'the Puppet Docker module' do
 
           file { '#{default_dockerfile}':
             ensure  => present,
-            content => "FROM #{default_image}\nRUN echo test > #{default_dockerfile}_test.txt",
+            content => "FROM #{default_image}\n#{run_cmd}",
             before  => Docker::Image['alpine_with_file'],
           }
         EOS
@@ -342,8 +350,8 @@ describe 'the Puppet Docker module' do
             expect(r.stdout).to match(/_test.txt/)
           end
         else
-          shell("#{docker_command} run alpine_with_file ls #{default_dockerfile}_test.txt") do |r|
-            expect(r.stdout).to match(/#{default_dockerfile}_test.txt/)
+          shell("#{docker_command} run alpine_with_file ls #{dockerfile_test}") do |r|
+            expect(r.stdout).to match(/#{dockerfile_test}/)
           end
         end
       end
@@ -567,7 +575,7 @@ describe 'the Puppet Docker module' do
         sleep 4
         container_id = shell("#{docker_command} ps | awk 'FNR == 2 {print $1}'")
         if fact('osfamily') == 'windows'
-          shell("#{docker_command} exec #{container_id.stdout.strip} cmd /c dir Windows\\\\Temp\\\\mnt") do |r|
+          shell("#{docker_command} exec #{container_id.stdout.strip} cmd /c dir Users\\\\Administrator\\\\AppData\\\\Local\\\\Temp\\\\mnt") do |r|
             expect(r.stdout).to match(/test_mount.txt/)
           end
         else
@@ -789,9 +797,10 @@ describe 'the Puppet Docker module' do
         apply_manifest(pp, :catch_changes => true) unless fact('selinux') == 'true'
 
       end
-      
+
       it 'should restart a unhealthy container' do
       pp5=<<-EOS
+        class { 'docker': #{docker_args} }
         docker::run { 'container_3_7_3':
           image   => '#{default_image}',
           command => '#{default_run_command}',
@@ -801,12 +810,26 @@ describe 'the Puppet Docker module' do
           }
           EOS
 
+      pp_delete=<<-EOS
+      class { 'docker': #{docker_args} }
+      docker::run { 'container_3_7_3':
+        image   => '#{default_image}',
+        ensure  => absent,
+        }
+        EOS
+
         if fact('osfamily') == 'windows'
           apply_manifest(pp5, :catch_failures => true)
+        elsif fact('os.release.major') =~ (/14.04|8/)
+          apply_manifest(pp5, :catch_failures => true) do |r|
+            expect(r.stdout).to match(/container_3_7_3/)
+          end
         else
           apply_manifest(pp5, :catch_failures => true) do |r|
             expect(r.stdout).to match(/docker-container_3_7_3-systemd-reload/)
           end
+        end
+        apply_manifest(pp_delete, :catch_failures => true)
         end
       end
     end
@@ -845,6 +868,13 @@ describe 'the Puppet Docker module' do
           }
         EOS
 
+        pp_delete=<<-EOS
+        docker::run { 'container_4_1':
+          image   => '#{default_image}',
+          ensure  => absent,
+          }
+          EOS
+
         apply_manifest(pp2, :catch_failures => true)
 
         # A sleep to give docker time to execute properly
@@ -860,6 +890,7 @@ describe 'the Puppet Docker module' do
             expect(r.stdout).to match(/test_file.txt/)
           end
         end
+        apply_manifest(pp_delete, :catch_failures => true)
       end
 
       it 'should only run if notified when refreshonly is true' do
@@ -905,6 +936,13 @@ describe 'the Puppet Docker module' do
           }
         EOS
 
+        pp_delete=<<-EOS
+        docker::run { '#{container_name}':
+          image   => '#{default_image}',
+          ensure  => absent,
+          }
+          EOS
+
         pp2 = pp + pp_extra
 
         apply_manifest(pp2, :catch_failures => true)
@@ -922,7 +960,7 @@ describe 'the Puppet Docker module' do
             expect(r.stdout).to match(/test_file.txt/)
           end
         end
+        apply_manifest(pp_delete, :catch_failures => true)
       end
     end
   end
-end

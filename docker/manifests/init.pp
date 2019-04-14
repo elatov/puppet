@@ -16,6 +16,11 @@
 #   An array of additional packages that need to be installed to support
 #   docker. Defaults change depending on the operating system.
 #
+# [*dependent_packages*]
+#  An array of packages installed by the docker-ce package v 18.09 and later.
+#  Used when uninstalling to ensure containers cannot be run on the system.
+#  Defaults change depending on the operating system.
+#
 # [*tcp_bind*]
 #   The tcp socket to bind to in the format
 #   tcp://127.0.0.1:4243
@@ -122,6 +127,8 @@
 #                Writes log messages to fluentd (forward input).
 #     splunk   : Splunk logging driver for Docker.
 #                Writes log messages to Splunk (HTTP Event Collector).
+#     awslogs  : AWS Cloudwatch Logs logging driver for Docker.
+#                Write log messages to Cloudwatch API
 #
 # [*log_opt*]
 #   Set the log driver specific options
@@ -152,6 +159,15 @@
 #     splunk   :
 #                splunk-token=<splunk_http_event_collector_token>
 #                splunk-url=https://your_splunk_instance:8088
+#     awslogs  :
+#                awslogs-group=<Cloudwatch Log Group>
+#                awslogs-stream=<Cloudwatch Log Stream>
+#                awslogs-create-group=true|false
+#                awslogs-datetime-format=<Date format> - strftime expression
+#                awslogs-multiline-pattern=multiline start pattern using a regular expression
+#                tag={{.ID}} - short container id (12 characters)|
+#                    {{.FullID}} - full container id
+#                    {{.Name}} - container name
 #
 # [*selinux_enabled*]
 #   Enable selinux support. Default is false. SELinux does  not  presently
@@ -208,7 +224,7 @@
 #
 # [*socket_group*]
 #   Group ownership of the unix control socket.
-#   Defaults to undefined
+#   Default is based on OS (docker, dockerroot, undef)
 #
 # [*extra_parameters*]
 #   Any extra parameters that should be passed to the docker daemon.
@@ -375,6 +391,7 @@ class docker(
   Optional[String] $version                                 = $docker::params::version,
   String $ensure                                            = $docker::params::ensure,
   Variant[Array[String], Hash] $prerequired_packages        = $docker::params::prerequired_packages,
+  Array $dependent_packages                                 = $docker::params::dependent_packages,
   String $docker_ce_start_command                           = $docker::params::docker_ce_start_command,
   Optional[String] $docker_ce_package_name                  = $docker::params::docker_ce_package_name,
   Optional[String] $docker_ce_source_location               = $docker::params::package_ce_source_location,
@@ -431,7 +448,7 @@ class docker(
   Optional[String] $tmp_dir                                 = $docker::params::tmp_dir,
   Variant[String,Array,Undef] $dns                          = $docker::params::dns,
   Variant[String,Array,Undef] $dns_search                   = $docker::params::dns_search,
-  Optional[String] $socket_group                            = $docker::params::socket_group,
+  Variant[String,Boolean,Undef] $socket_group               = $docker::params::socket_group,
   Array $labels                                             = $docker::params::labels,
   Variant[String,Array,Undef] $extra_parameters             = undef,
   Variant[String,Array,Undef] $shell_values                 = undef,
@@ -468,7 +485,7 @@ class docker(
   Optional[String] $storage_data_size                       = $docker::params::storage_data_size,
   Optional[String] $storage_min_data_size                   = $docker::params::storage_min_data_size,
   Optional[String] $storage_chunk_size                      = $docker::params::storage_chunk_size,
-  Optional[Boolean] $storage_growpart                      = $docker::params::storage_growpart,
+  Optional[Boolean] $storage_growpart                       = $docker::params::storage_growpart,
   Optional[String] $storage_auto_extend_pool                = $docker::params::storage_auto_extend_pool,
   Optional[String] $storage_pool_autoextend_threshold       = $docker::params::storage_pool_autoextend_threshold,
   Optional[String] $storage_pool_autoextend_percent         = $docker::params::storage_pool_autoextend_percent,
@@ -479,6 +496,9 @@ class docker(
   Variant[String,Boolean,Undef] $service_config             = $docker::params::service_config,
   Optional[String] $service_config_template                 = $docker::params::service_config_template,
   Variant[String,Boolean,Undef] $service_overrides_template = $docker::params::service_overrides_template,
+  Variant[String,Boolean,Undef] $socket_overrides_template  = $docker::params::socket_overrides_template,
+  Optional[Boolean] $socket_override                        = $docker::params::socket_override,
+  Variant[String,Boolean,Undef] $service_after_override     = $docker::params::service_after_override,
   Optional[Boolean] $service_hasstatus                      = $docker::params::service_hasstatus,
   Optional[Boolean] $service_hasrestart                     = $docker::params::service_hasrestart,
   Optional[String] $registry_mirror                         = $docker::params::registry_mirror,
@@ -504,18 +524,18 @@ class docker(
 
   if $log_level {
     assert_type(Pattern[/^(debug|info|warn|error|fatal)$/], $log_level) |$a, $b| {
-        fail(translate('log_level must be one of debug, info, warn, error or fatal'))
+      fail(translate('log_level must be one of debug, info, warn, error or fatal'))
     }
   }
 
   if $log_driver {
     if $::osfamily == 'windows' {
-      assert_type(Pattern[/^(none|json-file|syslog|gelf|fluentd|splunk|etwlogs)$/], $log_driver) |$a, $b| {
-        fail(translate('log_driver must be one of none, json-file, syslog, gelf, fluentd, splunk or etwlogs'))
+      assert_type(Pattern[/^(none|json-file|syslog|gelf|fluentd|splunk|awslogs|etwlogs)$/], $log_driver) |$a, $b| {
+        fail(translate('log_driver must be one of none, json-file, syslog, gelf, fluentd, splunk, awslogs or etwlogs'))
       }
     } else {
-      assert_type(Pattern[/^(none|json-file|syslog|journald|gelf|fluentd|splunk)$/], $log_driver) |$a, $b| {
-        fail(translate('log_driver must be one of none, json-file, syslog, journald, gelf, fluentd or splunk'))
+      assert_type(Pattern[/^(none|json-file|syslog|journald|gelf|fluentd|splunk|awslogs)$/], $log_driver) |$a, $b| {
+        fail(translate('log_driver must be one of none, json-file, syslog, journald, gelf, fluentd, splunk or awslogs'))
       }
     }
   }
@@ -523,7 +543,7 @@ class docker(
   if $storage_driver {
     if $::osfamily == 'windows' {
       assert_type(Pattern[/^(windowsfilter)$/], $storage_driver) |$a, $b| {
-          fail(translate('Valid values for storage_driver on windows are windowsfilter'))
+        fail(translate('Valid values for storage_driver on windows are windowsfilter'))
       }
     } else {
       assert_type(Pattern[/^(aufs|devicemapper|btrfs|overlay|overlay2|vfs|zfs)$/], $storage_driver) |$a, $b| {
@@ -569,12 +589,12 @@ class docker(
 
   if($tls_enable) {
     if(!$tcp_bind) {
-        fail(translate('You need to provide tcp bind parameter for TLS.'))
+      fail(translate('You need to provide tcp bind parameter for TLS.'))
     }
   }
 
-if ( $version == undef ) or ( $version !~ /^(17[.]0[0-5][.][0-1](~|-|\.)ce|1.\d+)/ ) {
-  if ( $docker_ee) {
+  if ( $version == undef ) or ( $version !~ /^(17[.]0[0-5][.][0-1](~|-|\.)ce|1.\d+)/ ) {
+    if ( $docker_ee) {
       $package_location = $docker::docker_ee_source_location
       $package_key_source = $docker::docker_ee_key_source
       $package_key_check_source = true
@@ -584,26 +604,26 @@ if ( $version == undef ) or ( $version !~ /^(17[.]0[0-5][.][0-1](~|-|\.)ce|1.\d+
       $docker_start_command = $docker::docker_ee_start_command
       $docker_package_name = $docker::docker_ee_package_name
     } else {
-        case $::osfamily {
-          'Debian' : {
-            $package_location = $docker_ce_source_location
-            $package_key_source = $docker_ce_key_source
-            $package_key = $docker_ce_key_id
-            $package_repos = $docker_ce_channel
-            $release = $docker_ce_release
-            }
-          'Redhat' : {
-            $package_location = "https://download.docker.com/linux/centos/${::operatingsystemmajrelease}/${::architecture}/${docker_ce_channel}"
-            $package_key_source = $docker_ce_key_source
-            $package_key_check_source = true
-            }
-          'windows': {
-            fail(translate('This module only work for Docker Enterprise Edition on Windows.'))
-          }
-          default: {}
+      case $::osfamily {
+        'Debian' : {
+          $package_location = $docker_ce_source_location
+          $package_key_source = $docker_ce_key_source
+          $package_key = $docker_ce_key_id
+          $package_repos = $docker_ce_channel
+          $release = $docker_ce_release
         }
-        $docker_start_command = $docker_ce_start_command
-        $docker_package_name = $docker_ce_package_name
+        'Redhat' : {
+          $package_location = $docker_ce_source_location
+          $package_key_source = $docker_ce_key_source
+          $package_key_check_source = true
+        }
+        'windows': {
+          fail(translate('This module only work for Docker Enterprise Edition on Windows.'))
+        }
+        default: {}
+      }
+      $docker_start_command = $docker_ce_start_command
+      $docker_package_name = $docker_ce_package_name
     }
   } else {
     case $::osfamily {
@@ -614,7 +634,7 @@ if ( $version == undef ) or ( $version !~ /^(17[.]0[0-5][.][0-1](~|-|\.)ce|1.\d+
         $package_key = $docker_package_key_id
         $package_repos = 'main'
         $release = $docker_package_release
-        }
+      }
       'Redhat' : {
         $package_location = $docker_package_location
         $package_key_source = $docker_package_key_source

@@ -27,11 +27,15 @@ Puppet::Type.type(:alternatives).provide(:rpm) do
   def self.all
     hash = {}
     list_alternatives.map { |x| File.basename(x) }.each do |name|
-      # rubocop:enable Style/EachWithObject
-      output = update('--display', name)
-      mode = output.match(ALT_RPM_QUERY_CURRENT_REGEX)[1]
-      path = output.match(ALT_RPM_QUERY_CURRENT_REGEX)[2]
-      hash[name] = { path: path, mode: mode }
+      begin
+        # rubocop:enable Style/EachWithObject
+        output = update('--display', name)
+        mode = output.match(ALT_RPM_QUERY_CURRENT_REGEX)[1]
+        path = output.match(ALT_RPM_QUERY_CURRENT_REGEX)[2]
+        hash[name] = { path: path, mode: mode }
+      rescue
+        Puppet.warning format(_('Failed to parse alternatives entry %{name}'), name: name)
+      end
     end
     hash
   end
@@ -56,6 +60,10 @@ Puppet::Type.type(:alternatives).provide(:rpm) do
     if first =~ %r{auto mode}
       'auto'
     elsif first =~ %r{manual mode}
+      'manual'
+    elsif first =~ %r{status is auto}
+      'auto'
+    elsif first =~ %r{status is manual}
       'manual'
     else
       raise Puppet::Error, "Could not determine if #{self} is in auto or manual mode"

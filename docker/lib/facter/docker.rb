@@ -1,8 +1,38 @@
+# frozen_string_literal: true
+
 require 'facter'
 require 'json'
 
+Facter.add(:docker_systemroot) do
+  confine osfamily: :windows
+  setcode do
+    Puppet::Util.get_env('SystemRoot')
+  end
+end
+
+Facter.add(:docker_program_files_path) do
+  confine osfamily: :windows
+  setcode do
+    Puppet::Util.get_env('ProgramFiles')
+  end
+end
+
+Facter.add(:docker_program_data_path) do
+  confine osfamily: :windows
+  setcode do
+    Puppet::Util.get_env('ProgramData')
+  end
+end
+
+Facter.add(:docker_user_temp_path) do
+  confine osfamily: :windows
+  setcode do
+    Puppet::Util.get_env('TEMP')
+  end
+end
+
 docker_command = if Facter.value(:kernel) == 'windows'
-                   'powershell -c docker'
+                   'powershell -NoProfile -NonInteractive -NoLogo -ExecutionPolicy Bypass -c docker'
                  else
                    'docker'
                  end
@@ -21,7 +51,7 @@ end
 Facter.add(:docker_server_version) do
   setcode do
     docker_version = Facter.value(:docker_version)
-    if docker_version && docker_version['Server'].is_a?(Hash)
+    if docker_version && !docker_version['Server'].nil? && docker_version['Server'].is_a?(Hash)
       docker_version['Server']['Version']
     else
       nil
@@ -54,13 +84,13 @@ Facter.add(:docker) do
           docker['network'] = {}
 
           docker['network']['managed_interfaces'] = {}
-          network_list = Facter::Util::Resolution.exec('docker network ls | tail -n +2')
+          network_list = Facter::Util::Resolution.exec("#{docker_command} network ls | tail -n +2")
           docker_network_names = []
           network_list.each_line { |line| docker_network_names.push line.split[1] }
           docker_network_ids = []
           network_list.each_line { |line| docker_network_ids.push line.split[0] }
           docker_network_names.each do |network|
-            inspect = JSON.parse(Facter::Util::Resolution.exec("docker network inspect #{network}"))
+            inspect = JSON.parse(Facter::Util::Resolution.exec("#{docker_command} network inspect #{network}"))
             docker['network'][network] = inspect[0]
             network_id = docker['network'][network]['Id'][0..11]
             interfaces.each do |iface|

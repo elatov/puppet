@@ -12,15 +12,17 @@ if fact('osfamily') == 'windows'
   docker_network = 'nat'
   registry_host = @windows_ip
   config_file = '/cygdrive/c/Users/Administrator/.docker/config.json'
-  root_dir = "C:/Windows/Temp"
+  root_dir = "C:/Users/Administrator/AppData/Local/Temp"
   server_strip = "#{registry_host}_#{registry_port}"
   bad_server_strip = "#{registry_host}_5001"
   broken = true
 else
   if fact('osfamily') == 'RedHat'
     docker_args = "repo_opt => '--enablerepo=localmirror-extras'"
+  elsif fact('os.name') == 'Ubuntu' && fact('os.release.full') == '14.04'
+    docker_args = "version => '18.06.1~ce~3-0~ubuntu'"
   else
-    docker_arg = ''
+    docker_args = ''
   end
   docker_registry_image = 'registry'
   docker_network = 'bridge'

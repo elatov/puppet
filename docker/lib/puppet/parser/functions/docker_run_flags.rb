@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'shellwords'
 #
 # docker_run_flags.rb
 #
 module Puppet::Parser::Functions
   # Transforms a hash into a string of docker flags
-  newfunction(:docker_run_flags, :type => :rvalue) do |args|
+  newfunction(:docker_run_flags, type: :rvalue) do |args|
     opts = args[0] || {}
     flags = []
 
@@ -20,7 +22,7 @@ module Puppet::Parser::Functions
       flags << "--restart '#{opts['restart']}'"
     end
 
-    if opts['net']
+    if opts['net'].is_a? String
       flags << "--net #{opts['net']}"
     end
 
@@ -42,15 +44,11 @@ module Puppet::Parser::Functions
       flags << '--privileged'
     end
 
-    if opts['detach']
-      flags << '--detach=true'
-    end
-
-    if opts['health_check_cmd'].to_s != 'undef'
+    if opts['health_check_cmd'] && opts['health_check_cmd'].to_s != 'undef'
       flags << "--health-cmd='#{opts['health_check_cmd']}'"
     end
 
-    if opts['health_check_interval'].to_s != 'undef'
+    if opts['health_check_interval'] && opts['health_check_interval'].to_s != 'undef'
       flags << "--health-interval=#{opts['health_check_interval']}s"
     end
 
@@ -62,15 +60,15 @@ module Puppet::Parser::Functions
       flags << '--read-only=true'
     end
 
-    params_join_char = if opts['osfamily'].to_s != 'undef'
+    params_join_char = if opts['osfamily'] && opts['osfamily'].to_s != 'undef'
                          opts['osfamily'].casecmp('windows').zero? ? " `\n" : " \\\n"
                        else
                          " \\\n"
                        end
 
-    multi_flags = lambda { |values, format|
+    multi_flags = ->(values, fmt) {
       filtered = [values].flatten.compact
-      filtered.map { |val| sprintf(format + params_join_char, val) }
+      filtered.map { |val| (fmt + params_join_char) % val }
     }
 
     [

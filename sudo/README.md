@@ -76,7 +76,7 @@ On Gentoo there is also the needing to include [puppet portage module by Gentoo]
     }
     sudo::conf { 'admins':
       priority => 10,
-      content  => "%admins ALL=(ALL) NOPASSWD: ALL",
+      content  => '%admins ALL=(ALL) NOPASSWD: ALL',
     }
     sudo::conf { 'joe':
       priority => 60,
@@ -102,23 +102,10 @@ Examples using:
 
 ##### Load module
 
-###### Using Puppet version 3+
-
 Load the module via Puppet Code or your ENC.
 
 ```puppet
     include sudo
-```
-
-###### Using Puppet version 2.7+
-
-After [Installing Hiera](http://docs.puppetlabs.com/hiera/1/installing.html):
-
-- Load the `sudo` and `sudo::configs` modules via Puppet Code or your ENC.
-
-```puppet
-    include sudo
-    include sudo::configs
 ```
 
 ##### Configure Hiera YAML __(defaults.yaml)__
@@ -130,7 +117,7 @@ sudo::configs:
     'web':
         'source'    : 'puppet:///files/etc/sudoers.d/web'
     'admins':
-        'content'   : "%admins ALL=(ALL) NOPASSWD: ALL"
+        'content'   : '%admins ALL=(ALL) NOPASSWD: ALL'
         'priority'  : 10
     'joe':
         'priority'  : 60
@@ -147,6 +134,12 @@ In this example we are:
 - adding the __bill__ template
 
 ```yaml
+lookup_options:
+  sudo::configs:
+    merge:
+      strategy: deep
+      merge_hash_arrays: true
+
 sudo::configs:
     'admins':
         'content'   : "%prodadmins ALL=(ALL) NOPASSWD: ALL"
@@ -158,8 +151,6 @@ sudo::configs:
         'template'  : "mymodule/bill.erb"
 ```
 
-If you have Hiera version >= 1.2.0 and enable [Hiera Deeper Merging](http://docs.puppetlabs.com/hiera/1/lookup_types.html#deep-merging-in-hiera--120) you may conditionally override any setting.
-
 In this example we are:
 - inheriting/preserving the __web__ configuration
 - overriding the __admins:content__ setting
@@ -169,6 +160,12 @@ In this example we are:
 - adding the __bill__ template
 
 ```yaml
+lookup_options:
+  sudo::configs:
+    merge:
+      strategy: deep
+      merge_hash_arrays: true
+
 sudo::configs:
     'admins':
         'content'   : "%prodadmins ALL=(ALL) NOPASSWD: ALL"
@@ -211,6 +208,7 @@ sudo::conf { "foreman-proxy":
 | config_dir          | string  | OS specific | Set config_dir _(for unsupported platforms)_ |
 | content             | string  | OS specific | Alternate content file location |
 | ldap_enable         | boolean | false       | Add support to LDAP |
+| configs             | hash    | {}          | A hash of sudo::conf's |
 
 ## sudo::conf class / sudo::configs hash parameters
 

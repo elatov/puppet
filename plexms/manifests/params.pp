@@ -35,7 +35,7 @@ class plexms::params {
 			                          }
 			
 			if (versioncmp($::operatingsystemmajrelease, '7') >= 0) {
-				$plexms_service_dir  	= '/usr/lib/systemd/system'
+				$plexms_service_dir  	= '/lib/systemd/system'
 				$plexms_config_file  	= 'plexms.sysconf.systemd'
 				$plexms_service_file 	= 'plexmediaserver.service'
 			}else{

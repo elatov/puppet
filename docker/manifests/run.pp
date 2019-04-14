@@ -49,17 +49,23 @@
 #  Default: false
 #
 # [*health_check_cmd*]
-# (optional) Specifies the command to execute to check that the container is healthy using the docker health check functionality. 
+# (optional) Specifies the command to execute to check that the container is healthy using the docker health check functionality.
 # Default: undef
 #
 # [*health_check_interval*]
 # (optional) Specifies the interval that the health check command will execute in seconds.
-# Default: undef 
+# Default: undef
 #
 # [*restart_on_unhealthy*]
 # (optional) Checks the health status of Docker container and if it is unhealthy the service will be restarted.
 # The health_check_cmd parameter must be set to true to use this functionality.
 # Default: undef
+#
+# [*net*]
+#
+# The docker network to attach to a container.
+# Can be a String or Array (if using multiple networks)
+# Default: bridge
 #
 # [*extra_parameters*]
 # An array of additional command line arguments to pass to the `docker run`
@@ -76,6 +82,10 @@
 # (optional) Specify an additional unless for the Docker run command when using restart.
 # Default: undef
 #
+# [*after_create*]
+# (optional) Specifies the command to execute after container is created but before it is started.
+# Default: undef
+#
 define docker::run(
   Optional[Pattern[/^[\S]*$/]] $image,
   Optional[Pattern[/^present$|^absent$/]] $ensure       = 'present',
@@ -90,7 +100,7 @@ define docker::run(
   Optional[Boolean] $use_name                           = false,
   Optional[Boolean] $running                            = true,
   Variant[String,Array,Undef] $volumes_from             = [],
-  Optional[String] $net                                 = 'bridge',
+  Variant[String,Array] $net                            = 'bridge',
   Variant[String,Boolean] $username                     = false,
   Variant[String,Boolean] $hostname                     = false,
   Variant[String,Array,Undef] $env                      = [],
@@ -120,6 +130,7 @@ define docker::run(
   Optional[String] $restart                             = undef,
   Variant[String,Boolean] $before_start                 = false,
   Variant[String,Boolean] $before_stop                  = false,
+  Optional[String]  $after_create                       = undef,
   Optional[Boolean] $remove_container_on_start          = true,
   Optional[Boolean] $remove_container_on_stop           = true,
   Optional[Boolean] $remove_volume_on_start             = false,
@@ -130,7 +141,7 @@ define docker::run(
   Optional[String]  $health_check_cmd                   = undef,
   Optional[Boolean] $restart_on_unhealthy               = false,
   Optional[Integer] $health_check_interval              = undef,
-  Optional[Array] $custom_unless                        = undef,
+  Variant[String,Array,Undef] $custom_unless            = [],
 ) {
   include docker::params
   if ($socket_connect != []) {
@@ -139,19 +150,19 @@ define docker::run(
   }else {
     $docker_command = $docker::params::docker_command
   }
-  $service_name = $docker::params::service_name
-  $docker_group = $docker::params::docker_group
+  $service_name = $docker::service_name
+  $docker_group = $docker::docker_group
 
   if $restart {
     assert_type(Pattern[/^(no|always|unless-stopped|on-failure)|^on-failure:[\d]+$/], $restart)
   }
 
   if ($remove_volume_on_start and !$remove_container_on_start) {
-    fail translate(("In order to remove the volume on start for ${title} you need to also remove the container"))
+    fail(translate("In order to remove the volume on start for ${title} you need to also remove the container"))
   }
 
   if ($remove_volume_on_stop and !$remove_container_on_stop) {
-    fail translate(("In order to remove the volume on stop for ${title} you need to also remove the container"))
+    fail(translate("In order to remove the volume on stop for ${title} you need to also remove the container"))
   }
 
   if $use_name {
@@ -178,7 +189,6 @@ define docker::run(
 
   $docker_run_flags = docker_run_flags({
     cpuset                => any2array($cpuset),
-    detach                => $valid_detach,
     disable_network       => $disable_network,
     dns                   => any2array($dns),
     dns_search            => any2array($dns_search),
@@ -207,35 +217,39 @@ define docker::run(
     osfamily              => $::osfamily,
   })
 
-  $sanitised_title = regsubst($title, '[^0-9A-Za-z.\-_]', '-', 'G')
+  $sanitised_title = docker::sanitised_name($title)
   if empty($depends_array) {
     $sanitised_depends_array = []
   }
   else {
-    $sanitised_depends_array = regsubst($depends_array, '[^0-9A-Za-z.\-_]', '-', 'G')
+    $sanitised_depends_array = docker::sanitised_name($depends_array)
   }
 
   if empty($after_array) {
     $sanitised_after_array = []
   }
   else {
-    $sanitised_after_array = regsubst($after_array, '[^0-9A-Za-z.\-_]', '-', 'G')
+    $sanitised_after_array = docker::sanitised_name($after_array)
   }
 
   if $::osfamily == 'windows' {
-    $exec_environment = 'PATH=C:/Program Files/Docker/;C:/Windows/System32/'
+    $exec_environment = "PATH=${::docker_program_files_path}/Docker/;${::docker_systemroot}/System32/"
     $exec_timeout = 3000
-    $exec_path = ['c:/Windows/Temp/', 'C:/Program Files/Docker/']
+    $exec_path = ["${::docker_program_files_path}/Docker/"]
     $exec_provider = 'powershell'
-    $cidfile = "c:/Windows/Temp/${service_prefix}${sanitised_title}.cid"
+    $cidfile = "${::docker_user_temp_path}/${service_prefix}${sanitised_title}.cid"
+# lint:ignore:140chars
     $restart_check = "${docker_command} inspect ${sanitised_title} -f '{{ if eq \\\"unhealthy\\\" .State.Health.Status }} {{ .Name }}{{ end }}' | findstr ${sanitised_title}"
+# lint:endignore
   } else {
     $exec_environment = 'HOME=/root'
     $exec_path = ['/bin', '/usr/bin']
     $exec_timeout = 0
     $exec_provider = undef
     $cidfile = "/var/run/${service_prefix}${sanitised_title}.cid"
+# lint:ignore:140chars
     $restart_check = "${docker_command} inspect ${sanitised_title} -f '{{ if eq \"unhealthy\" .State.Health.Status }} {{ .Name }}{{ end }}' | grep ${sanitised_title}"
+# lint:endignore
   }
 
   if $restart_on_unhealthy {
@@ -270,7 +284,7 @@ define docker::run(
       }
 
       file { $cidfile:
-              ensure => absent,
+        ensure => absent,
       }
     }
     else {
@@ -297,46 +311,51 @@ define docker::run(
       if $running == false {
         exec { "stop ${title} with docker":
           command     => "${docker_command} stop --time=${stop_wait_time} ${sanitised_title}",
-          unless      => "${docker_command} inspect ${sanitised_title} -f \"{{ if (.State.Running) }} {{ nil }}{{ end }}\"",
+          unless      => "${docker_command} inspect ${sanitised_title} -f \"{{ .State.Running }}\" | grep true",
           environment => $exec_environment,
           path        => $exec_path,
           provider    => $exec_provider,
           timeout     => $exec_timeout
           }
       } else {
-          exec { "start ${title} with docker":
+        exec { "start ${title} with docker":
           command     => "${docker_command} start ${sanitised_title}",
-          onlyif      => "${docker_command} inspect ${sanitised_title} -f \"{{ if (.State.Running) }} {{ nil }}{{ end }}\"",
+          onlyif      => "${docker_command} inspect ${sanitised_title} -f \"{{ .State.Running }}\" | grep false",
           environment => $exec_environment,
           path        => $exec_path,
           provider    => $exec_provider,
           timeout     => $exec_timeout
-          }
+        }
       }
     }
   } else {
 
+    $docker_run_inline_start = template('docker/docker-run-start.erb')
+    $docker_run_inline_stop = template('docker/docker-run-stop.erb')
+
     case $docker::params::service_provider {
       'systemd': {
         $initscript = "/etc/systemd/system/${service_prefix}${sanitised_title}.service"
-        $runscript = "/usr/local/bin/docker-run-${sanitised_title}.sh"
-        $run_template = 'docker/usr/local/bin/docker-run.sh.erb'
+        $startscript = "/usr/local/bin/docker-run-${sanitised_title}-start.sh"
+        $stopscript = "/usr/local/bin/docker-run-${sanitised_title}-stop.sh"
+        $startstop_template = 'docker/usr/local/bin/docker-run.sh.epp'
         $init_template = 'docker/etc/systemd/system/docker-run.erb'
-        $mode = '0640'
+        $mode = '0644'
       }
       'upstart': {
         $initscript = "/etc/init.d/${service_prefix}${sanitised_title}"
         $init_template = 'docker/etc/init.d/docker-run.erb'
         $mode = '0750'
-        $runscript = undef
-        $run_template = undef
+        $startscript = undef
+        $stopscript = undef
+        $starstop_template = undef
       }
       default: {
         if $::osfamily != 'windows' {
-          fail translate(('Docker needs a Debian or RedHat based system.'))
+          fail(translate('Docker needs a Debian or RedHat based system.'))
         }
         elsif $ensure == 'present' {
-          fail translate(('Restart parameter is required for Windows'))
+          fail(translate('Restart parameter is required for Windows'))
         }
       }
     }
@@ -382,18 +401,37 @@ define docker::run(
           ensure => absent,
           path   => "/etc/systemd/system/${service_prefix}${sanitised_title}.service",
         }
+        if ($startscript) {
+          file { $startscript:
+            ensure => absent
+          }
+        }
+        if ($stopscript) {
+          file { $stopscript:
+            ensure => absent
+          }
+        }
       }
       else {
         file { $cidfile:
-              ensure => absent,
+          ensure => absent,
         }
       }
     }
     else {
-      if ($runscript) {
-        file { $runscript:
+      if ($startscript) {
+        file { $startscript:
           ensure  => present,
-          content => template($run_template),
+          content => epp($startstop_template, {'script' => $docker_run_inline_start}),
+          owner   => 'root',
+          group   => $docker_group,
+          mode    => '0770'
+        }
+      }
+      if ($stopscript) {
+        file { $stopscript:
+          ensure  => present,
+          content => epp($startstop_template, {'script' => $docker_run_inline_stop}),
           owner   => 'root',
           group   => $docker_group,
           mode    => '0770'
@@ -467,23 +505,23 @@ define docker::run(
           path        => ['/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/'],
           command     => 'systemctl daemon-reload',
           refreshonly => true,
-          require     => [File[$initscript],File[$runscript]],
-          subscribe   => [File[$initscript],File[$runscript]]
+          require     => [File[$initscript],File[$startscript],File[$stopscript]],
+          subscribe   => [File[$initscript],File[$startscript],File[$stopscript]]
         }
         Exec["docker-${sanitised_title}-systemd-reload"] -> Service<| title == "${service_prefix}${sanitised_title}" |>
       }
 
       if $restart_service {
-        if $runscript {
-          [File[$initscript],File[$runscript]] ~> Service<| title == "${service_prefix}${sanitised_title}" |>
+        if $startscript or $stopscript {
+          [File[$initscript],File[$startscript],File[$stopscript]] ~> Service<| title == "${service_prefix}${sanitised_title}" |>
         }
         else {
           [File[$initscript]] ~> Service<| title == "${service_prefix}${sanitised_title}" |>
         }
       }
       else {
-        if $runscript {
-          [File[$initscript],File[$runscript]] -> Service<| title == "${service_prefix}${sanitised_title}" |>
+        if $startscript or $stopscript {
+          [File[$initscript],File[$startscript],File[$stopscript]] -> Service<| title == "${service_prefix}${sanitised_title}" |>
         }
         else {
           [File[$initscript]] -> Service<| title == "${service_prefix}${sanitised_title}" |>

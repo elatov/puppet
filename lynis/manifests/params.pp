@@ -145,6 +145,8 @@ class lynis::params {
             '/usr/bin/as',
             '/usr/local/bin/as',
             '/usr/local/bin/gcc47',
+            '/usr/bin/cc',
+            '/usr/bin/clang',
           ],
           'KRNL-6000'                =>  true,
           'KRNL-6000_enabled_options'=>  {
