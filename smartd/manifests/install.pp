@@ -3,12 +3,17 @@
 class smartd::install {
 
   if ($::operatingsystem == 'OmniOS') {
-		pkg_publisher { 'cs.umd.edu':
-			origin  => 'http://pkg.cs.umd.edu',
+        $string = split($::kernelversion,/-/)
+        #notify { "$::kernelversion":
+        #   message => "$string"
+        #}
+        $omnios_release = $string[1] 
+		pkg_publisher { 'extra.omnios':
+			origin  => "https://pkg.omniosce.org/${omnios_release}/extra",
 			enable  => true,
 			ensure  => 'present',
 		}
-    ensure_packages ($smartd::package_name,{ 'ensure'=> 'present', require => Pkg_publisher['cs.umd.edu'] })
+    ensure_packages ($smartd::package_name,{ 'ensure'=> 'present', require => Pkg_publisher['extra.omnios'] })
   } else {
     ensure_packages ($smartd::package_name,{ 'ensure'=> 'present' })
   }
