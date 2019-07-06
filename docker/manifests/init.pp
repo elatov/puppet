@@ -502,13 +502,14 @@ class docker(
   Optional[Boolean] $service_hasstatus                      = $docker::params::service_hasstatus,
   Optional[Boolean] $service_hasrestart                     = $docker::params::service_hasrestart,
   Optional[String] $registry_mirror                         = $docker::params::registry_mirror,
+  Boolean $acknowledge_unsupported_os                       = false,
   # Windows specific parameters
   Optional[String] $docker_msft_provider_version            = $docker::params::docker_msft_provider_version,
   Optional[String] $nuget_package_provider_version          = $docker::params::nuget_package_provider_version,
 ) inherits docker::params {
 
 
-  if $::osfamily {
+  if $::osfamily and !$acknowledge_unsupported_os {
     assert_type(Pattern[/^(Debian|RedHat|windows)$/], $::osfamily) |$a, $b| {
       fail(translate('This module only works on Debian, Red Hat or Windows based systems.'))
     }
@@ -593,7 +594,7 @@ class docker(
     }
   }
 
-  if ( $version == undef ) or ( $version !~ /^(17[.]0[0-5][.][0-1](~|-|\.)ce|1.\d+)/ ) {
+  if ( $version == undef ) or ( $version !~ /^(17[.][0-1][0-9][.][0-1](~|-|\.)ce|1.\d+)/ ) {
     if ( $docker_ee) {
       $package_location = $docker::docker_ee_source_location
       $package_key_source = $docker::docker_ee_key_source
@@ -620,7 +621,11 @@ class docker(
         'windows': {
           fail(translate('This module only work for Docker Enterprise Edition on Windows.'))
         }
-        default: {}
+        default: {
+          $package_location = $docker_package_location
+          $package_key_source = $docker_package_key_source
+          $package_key_check_source = $docker_package_key_check_source
+        }
       }
       $docker_start_command = $docker_ce_start_command
       $docker_package_name = $docker_ce_package_name
@@ -640,7 +645,11 @@ class docker(
         $package_key_source = $docker_package_key_source
         $package_key_check_source = $docker_package_key_check_source
       }
-      default : {}
+      default : {
+        $package_location = $docker_package_location
+        $package_key_source = $docker_package_key_source
+        $package_key_check_source = $docker_package_key_check_source
+      }
     }
     $docker_start_command = $docker_engine_start_command
     $docker_package_name = $docker_engine_package_name
@@ -651,6 +660,7 @@ class docker(
   } else {
     $root_dir_flag = '--data-root'
   }
+
 
   if $ensure != 'absent' {
     contain 'docker::repos'

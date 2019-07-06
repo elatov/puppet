@@ -57,6 +57,7 @@ Puppet::Type.newtype(:vcsrepo) do
           'The provider supports checking out only specific paths'
 
   ensurable do
+    desc 'Ensure the version control repository.'
     attr_accessor :latest
 
     def insync?(is)
@@ -291,5 +292,16 @@ Puppet::Type.newtype(:vcsrepo) do
 
   autorequire(:package) do
     ['git', 'git-core', 'mercurial', 'subversion']
+  end
+
+  private
+
+  def set_sensitive_parameters(sensitive_parameters) # rubocop:disable Style/AccessorMethodName
+    if sensitive_parameters.include?(:basic_auth_password)
+      sensitive_parameters.delete(:basic_auth_password)
+      parameter(:basic_auth_password).sensitive = true
+    end
+
+    super(sensitive_parameters)
   end
 end

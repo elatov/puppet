@@ -17,6 +17,7 @@
    * [Networks](#networks)
    * [Volumes](#volumes)
    * [Compose](#compose)
+   * [Machine](#machine)
    * [Swarm mode](#swarm-mode)
    * [Tasks](#tasks)
    * [Docker services](#docker-services)
@@ -379,7 +380,7 @@ docker::run { 'helloworld':
   ports            => ['4444', '4555'],
   expose           => ['4666', '4777'],
   links            => ['mysql:db'],
-  net              => ['my-user-def-net','my-user-def-net-2],
+  net              => ['my-user-def-net','my-user-def-net-2'],
   disable_network  => false,
   volumes          => ['/var/lib/couchdb', '/var/log'],
   volumes_from     => '6446ea52fbc9',
@@ -539,6 +540,20 @@ docker_volume { 'my-volume':
 }
 ```
 
+Additional mount options can be passed to the `local` driver. For mounting a NFS export use:
+
+```puppet
+docker_volume { 'nfs-volume':
+  ensure  => present,
+  driver  => 'local',
+  options => {
+    type   => 'nfs4',
+    o      => 'addr=10.10.10.10,rw',
+    device => ':/exports/data'
+  },
+}
+```
+
 The name value and the `ensure` parameter are required. If you do not include the `driver` value, the default `local` is used.
 
 If using Hiera, configure the `docker::volumes` class in the manifest file:
@@ -546,17 +561,20 @@ If using Hiera, configure the `docker::volumes` class in the manifest file:
 ```yaml
 ---
   classes:
-    - docker::volumes::volumes
+    - docker::volumes
 
-docker::volumes::volumes:
+docker::volumes:
   blueocean:
     ensure: present
     driver: local
     options:
-      - ['type=nfs','o=addr=%{custom_manager},rw','device=:/srv/blueocean']
+      type: "nfs"
+      o: "addr=%{custom_manager},rw",
+      device: ":/srv/blueocean"
 ```
 
-Any extra options should be passed in as an array
+Available parameters for `options` depend on the used volume driver. For details read
+[Using volumes](https://docs.docker.com/storage/volumes/) from the Docker manual.
 
 Some of the key advantages for using `volumes` over `bind mounts` are:
 
@@ -580,8 +598,6 @@ docker::run { 'helloworld':
   volumes => ['my-volume:/var/log'],
 }
 ```
-
-For more information on volumes see the [Docker Volumes](https://docs.docker.com/engine/admin/volumes/volumes) documentation.
 
 ### Compose
 
@@ -638,7 +654,7 @@ To supply multiple overide compose files add the following to the manifest file:
 
 ```puppet
 docker_compose {'test':
-  compose_files => ['master-docker-compose.yml', 'override-compose.yml],
+  compose_files => ['master-docker-compose.yml', 'override-compose.yml'],
 }
 ```
 
@@ -683,6 +699,25 @@ docker_stack { 'test':
 ```
 
 To remove the stack, set `ensure  => absent`.
+
+### Machine
+
+Docker Machine is a tool that lets you install Docker Engine on virtual hosts, and manage the hosts with docker-machine commands. You can use Machine to create Docker hosts on your local Mac or Windows box, on your company network, in your data center, or on cloud providers like Azure, AWS, or Digital Ocean.
+
+For more information on machines see the [Docker Machines](https://docs.docker.com/machine/) documentation.
+
+This module only takes responsability for installing the Docker Machine utility.
+
+To install Docker Machine, add the following code to the manifest file:
+
+```puppet
+class {'docker::machine':
+  ensure => present,
+  version => '1.16.1',
+}
+```
+
+Set the `version` parameter to any version you need to install.
 
 ### Swarm mode
 
@@ -885,7 +920,7 @@ If using Docker V1.11 or later, the docker login email flag has been deprecated.
 Add the following code to the manifest file:
 
 ```puppet
-docker::registry { 'example.docker.io:5000'}
+docker::registry { 'example.docker.io:5000':
   username => 'user',
   password => 'secret',
 }
@@ -969,6 +1004,7 @@ docker::plugin {'foo/fooplugin:latest'
 * docker
 * docker::compose
 * docker::images
+* docker::machine
 * docker::networks
 * docker::params
 * docker::plugins
@@ -1271,6 +1307,7 @@ Valid values:
 * `gelf`: Graylog Extended Log Format (GELF) logging driver that writes log messages to a GELF endpoint: Graylog or Logstash.
 * `fluentd`: fluentd logging driver that writes log messages to fluentd (forward input).
 * `splunk`: Splunk logging driver that writes log messages to Splunk (HTTP Event Collector).
+* `awslogs`: AWS Cloudwatch logging driver that writes log messages to a AWS Cloudwatch LogStream
 
 #### `log_opt`
 
@@ -1287,6 +1324,7 @@ Valid values:
 * `gelf`: gelf-address=udp://host:port, gelf-tag="some_tag"
 * `fluentd`: fluentd-address=host:port, fluentd-tag={{.ID}} - short container id (12 characters), {{.FullID}} - full container id, {{.Name}} - container name
 * `splunk`: splunk-token=<splunk_http_event_collector_token>, splunk-url=https://your_splunk_instance:8088|
+* `awslogs`: awslogs-group=<cloudwatch_log_group>, awslogs-stream=<cloudwatch_log_stream>, awslogs-create-group=true|false, awslogs-datetime-format=<strftime_date_format>, awslog-multiline-pattern=<multiline_start_regexp_pattern>, tag={{.ID}} - short container id (12 characters), {{.FullID}} - full container id, {{.Name}} - container name
 
 #### `selinux_enabled`
 
@@ -1584,12 +1622,14 @@ Sanitises string or array of strings for safe usage as container name inside scr
 
 This module supports:
 
+* Centos 7.0
 * Debian 8.0
 * Debian 9.0
+* RedHat 7.0
 * Ubuntu 14.04
 * Ubuntu 16.04
 * Ubuntu 18.04
-* Centos 7.0
+* Windows Server 2016 (Docker Enterprise Edition only)
 
 ## Development
 
