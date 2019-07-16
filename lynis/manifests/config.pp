@@ -123,7 +123,7 @@ class lynis::config {
          verify_config  => true,
          content        => template('lynis/mod-evasive-conf.erb'),
          priority       => '10',
-       }
+       #}
       }->
 			file { "${::lynis::settings['tests']['HTTP-6640_logdir']}":
 				ensure => 'directory',
@@ -132,6 +132,7 @@ class lynis::config {
 #				mode   => '0750',
         notify  => Class['my_apache'],
 			}
+      }
 			if ( $::lynis::settings['tests']['HTTP-6643'] == true ){  
        class { 'apache::mod::security': 
 				 activated_rules => [

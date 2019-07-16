@@ -15,7 +15,7 @@ class iptables::service {
 			}
 		}
 		/(?i:Debian|Ubuntu)/: {
-		  if ($::operatingsystemmajrelease == '9') {
+		  if ($::operatingsystemmajrelease == '10') {
 		    service { $iptables::service_name:
 		      provider => systemd,
 	        ensure     => running,

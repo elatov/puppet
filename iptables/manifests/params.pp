@@ -31,7 +31,7 @@ class iptables::params {
       }
     }
     /(?i:Debian|Ubuntu)/: {
-      if ($::operatingsystemmajrelease == '9') {
+      if ($::operatingsystemmajrelease == '10') {
 			 $iptables_package_name       = 'netfilter-persistent'
 			 $iptables_service_name       = 'netfilter-persistent'
 			} else {
