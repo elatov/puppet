@@ -14,8 +14,8 @@ install_module_on(hosts)
 install_module_dependencies_on(hosts)
 
 UNSUPPORTED_PLATFORMS = ['RedHat', 'Suse', 'windows', 'AIX', 'Solaris'].freeze
-MAX_RETRY_COUNT       = 12
-RETRY_WAIT            = 10
+MAX_RETRY_COUNT       = 5
+RETRY_WAIT            = 3
 ERROR_MATCHER         = %r{(no valid OpenPGP data found|keyserver timed out|keyserver receive failed)}
 
 # This method allows a block to be passed in and if an exception is raised
@@ -36,7 +36,7 @@ def retry_on_error_matching(max_retry_count = MAX_RETRY_COUNT, retry_wait_interv
     try += 1
     yield
   rescue StandardError => e
-    raise unless try < max_retry_count && (error_matcher.nil? || e.message =~ error_matcher)
+    raise(_('Attempted this %{value0} times. Raising %{value1}') % { value0: max_retry_count, value1: e }) unless try < max_retry_count && (error_matcher.nil? || e.message =~ error_matcher)
     sleep retry_wait_interval_secs
     retry
   end
@@ -64,12 +64,6 @@ RSpec.configure do |c|
         # install language on debian systems
         install_language_on(host, 'ja_JP.utf-8') if not_controller(host)
         # This will be removed, this is temporary to test localisation.
-      end
-      # Required for binding tests.
-      if fact('osfamily') == 'RedHat'
-        if fact('operatingsystemmajrelease') =~ %r{7} || fact('operatingsystem') =~ %r{Fedora}
-          shell('yum install -y bzip2')
-        end
       end
       on host, puppet('module', 'install', 'stahnma/epel')
     end
