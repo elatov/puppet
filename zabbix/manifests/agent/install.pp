@@ -15,9 +15,10 @@ class zabbix::agent::install () {
 	    /(?i:Debian)/: { 
 	      apt::source { 'zabbix':
 	        location   => "http://repo.zabbix.com/zabbix/${zabbix::agent::settings['version']}/debian",
-	        release    => 'stretch',
+	        release    => 'buster',
 	        repos      => 'main',
-	        key        => '79EA5ED4',
+	        #key        => '79EA5ED4',
+	        key        => 'FBABD5FB20255ECAB22EE194D13D58E479EA5ED4',
 #	        key_source => 'http://repo.zabbix.com/zabbix-official-repo.key',
 	        pin        => '510',
 	      }
