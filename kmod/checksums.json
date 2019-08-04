@@ -11,7 +11,7 @@
   "manifests/load.pp": "c76709d25f157304fd98cf460aece453",
   "manifests/option.pp": "9dc2b00033cebf1d5d2b090e52b0da65",
   "manifests/setting.pp": "ec710c4f97209ee0405e78bddf232ca3",
-  "metadata.json": "82762b921b9805bc6c8b05bc4424321a",
+  "metadata.json": "27e257da1124e6e6f5796ad0844ff306",
   "spec/acceptance/nodesets/centos-5-x86_64-docker.yml": "916223adf56a5eae28fc4dbc8d3d5d09",
   "spec/acceptance/nodesets/centos-5.yml": "7baa7b78e9520e7e951f85bc2588f3f2",
   "spec/acceptance/nodesets/centos-6-x86_64-docker.yml": "79ee475e5497307c173a1aba59e1a206",

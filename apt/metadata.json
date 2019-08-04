@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-apt",
-  "version": "7.0.1",
+  "version": "7.1.0",
   "author": "puppetlabs",
   "summary": "Provides an interface for managing Apt source, key, and definitions with Puppet",
   "license": "Apache-2.0",
@@ -14,7 +14,7 @@
     },
     {
       "name": "puppetlabs/translate",
-      "version_requirement": ">= 1.0.0 < 2.0.0"
+      "version_requirement": ">= 1.0.0 < 3.0.0"
     }
   ],
   "data_provider": null,
@@ -41,7 +41,7 @@
       "version_requirement": ">= 5.5.10 < 7.0.0"
     }
   ],
-  "template-url": "https://github.com/puppetlabs/pdk-templates#master",
-  "template-ref": "heads/master-0-gf778803",
-  "pdk-version": "1.10.0"
+  "template-url": "https://github.com/puppetlabs/pdk-templates/#master",
+  "template-ref": "heads/master-0-gb096033",
+  "pdk-version": "1.11.1"
 }
