@@ -8,11 +8,23 @@ class drive::params {
 	                          'host'     => $::hostname,
 	                          'home_dir' => '/usr/local'
 										      }
-  if ($::operatingsystem == "OmniOS"){
-	 $drive_package_name  = "drive-${::operatingsystem}-${::operatingsystemrelease}-${::hardwaremodel}.tar.bz2"
-	}else{
-	$drive_package_name  = "drive-${::operatingsystem}-${::operatingsystemmajrelease}-${::hardwaremodel}.tar.bz2"
-	}
+  
+  case $::operatingsystem {
+    'OmniOS': {
+			$drive_package_name  = "drive-${::operatingsystem}-${::operatingsystemrelease}-${::hardwaremodel}.tar.bz2"
+		}
+		'FreeBSD': {
+      $drive_package_name  = "drive-${::operatingsystem}-${::kernelmajversion}-${::hardwaremodel}.tar.bz2"
+    }
+    default:{
+      $drive_package_name  = "drive-${::operatingsystem}-${::operatingsystemmajrelease}-${::hardwaremodel}.tar.bz2"
+    }
+  }
+  # if ($::operatingsystem == "OmniOS"){
+	#  $drive_package_name  = "drive-${::operatingsystem}-${::operatingsystemrelease}-${::hardwaremodel}.tar.bz2"
+	# }else{
+	# $drive_package_name  = "drive-${::operatingsystem}-${::operatingsystemmajrelease}-${::hardwaremodel}.tar.bz2"
+	# }
 	$drive_initial_setup = false
 	
 	case $::osfamily {
