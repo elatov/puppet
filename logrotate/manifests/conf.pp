@@ -86,9 +86,9 @@ define logrotate::conf (
   #
   ####################################################################
 
-  include ::logrotate
+  include logrotate
 
-  $rules_configdir = $::logrotate::rules_configdir
+  $rules_configdir = $logrotate::rules_configdir
 
   file { $path:
     ensure  => $ensure,

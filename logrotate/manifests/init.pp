@@ -3,6 +3,7 @@ class logrotate (
   String $ensure                         = present,
   Boolean $hieramerge                    = false,
   Boolean $manage_cron_daily             = true,
+  Boolean $manage_cron_hourly            = true,
   Boolean $create_base_rules             = true,
   Boolean $purge_configdir               = false,
   String $package                        = 'logrotate',
@@ -25,10 +26,10 @@ class logrotate (
   Boolean $cron_always_output            = false,
 ) inherits logrotate::params {
 
-  contain ::logrotate::install
-  contain ::logrotate::config
-  contain ::logrotate::rules
-  contain ::logrotate::defaults
+  contain logrotate::install
+  contain logrotate::config
+  contain logrotate::rules
+  contain logrotate::defaults
 
   Class['::logrotate::install']
   -> Class['::logrotate::config']
