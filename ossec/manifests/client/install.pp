@@ -37,7 +37,7 @@ class ossec::client::install {
         'ubuntu': {
           apt::source { 'alienvault':
               location => "https://updates.atomicorp.com/channels/atomic/ubuntu",
-              release  => 'xenial',
+              release  => 'bionic',
               repos    => 'main',
               key      => {
                 'id'      => '181866DF9DACA40E5B429B08FFBD5D0A4520AFA9',
