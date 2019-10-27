@@ -12,10 +12,10 @@ class ossec::client::install {
     'Debian': {
       case $::operatingsystem {
         'debian': {
-          if ($::operatingsystemmajrelease == '9') {
+          if ($::operatingsystemmajrelease == '10') {
             apt::source { 'alienvault':
               location => "https://updates.atomicorp.com/channels/atomic/debian",
-              release  => 'stretch',
+              release  => 'buster',
               repos    => 'main',
               key      => {
                 'id'      => '181866DF9DACA40E5B429B08FFBD5D0A4520AFA9',
