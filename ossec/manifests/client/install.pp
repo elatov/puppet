@@ -39,6 +39,7 @@ class ossec::client::install {
               location => "https://updates.atomicorp.com/channels/atomic/ubuntu",
               release  => 'bionic',
               repos    => 'main',
+              architecture => 'amd64',
               key      => {
                 'id'      => '181866DF9DACA40E5B429B08FFBD5D0A4520AFA9',
                 'source'  => "https://www.atomicorp.com/RPM-GPG-KEY.atomicorp.txt"
