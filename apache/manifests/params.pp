@@ -120,6 +120,7 @@ class apache::params inherits ::apache::version {
     $mellon_lock_file     = '/run/mod_auth_mellon/lock'
     $mellon_cache_size    = 100
     $mellon_post_directory = undef
+    $modsec_version       = 1
     $modsec_crs_package   = 'mod_security_crs'
     $modsec_crs_path      = '/usr/lib/modsecurity.d'
     $modsec_dir           = '/etc/httpd/modsecurity.d'
@@ -272,6 +273,7 @@ class apache::params inherits ::apache::version {
     $mellon_lock_file     = '/run/mod_auth_mellon/lock'
     $mellon_cache_size    = 100
     $mellon_post_directory = undef
+    $modsec_version       = 1
     $modsec_crs_package   = 'mod_security_crs'
     $modsec_crs_path      = '/usr/lib/modsecurity.d'
     $modsec_dir           = '/etc/httpd/modsecurity.d'
@@ -424,8 +426,10 @@ class apache::params inherits ::apache::version {
     $access_log_file     = 'access.log'
     if $::osfamily == 'Debian' and versioncmp($::operatingsystemrelease, '8') < 0 {
       $shib2_lib = 'mod_shib_22.so'
-    } else {
+    } elsif ($::operatingsystem == 'Ubuntu' and versioncmp($::operatingsystemrelease, '19.04') < 0) or ($::operatingsystem == 'Debian' and versioncmp($::operatingsystemrelease, '10') < 0) {
       $shib2_lib = 'mod_shib2.so'
+    } else {
+      $shib2_lib = 'mod_shib.so'
     }
     $mod_libs             = {
       'shib2' => $shib2_lib,
@@ -447,6 +451,7 @@ class apache::params inherits ::apache::version {
     $mellon_lock_file     = undef
     $mellon_cache_size    = undef
     $mellon_post_directory = '/var/cache/apache2/mod_auth_mellon/'
+    $modsec_version       = 1
     $modsec_crs_package   = 'modsecurity-crs'
     $modsec_crs_path      = '/usr/share/modsecurity-crs'
     $modsec_dir           = '/etc/modsecurity'
@@ -743,6 +748,7 @@ class apache::params inherits ::apache::version {
     $alias_icons_path     = '/usr/share/apache2/icons'
     $error_documents_path = '/usr/share/apache2/error'
     $dev_packages        = ['libapr-util1-devel', 'libapr1-devel', 'libcurl-devel']
+    $modsec_version       = 1
     $modsec_crs_package   = undef
     $modsec_crs_path      = undef
     $modsec_default_rules = undef
