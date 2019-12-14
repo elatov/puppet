@@ -6,7 +6,7 @@
 class ohmyzsh::params {
   $settings_all	 =	{
                       'user' 	          => 'test',
-                      'repo_url'        => 'https://github.com/robbyrussell/oh-my-zsh.git',
+                      'repo_url'        => 'https://github.com/ohmyzsh/ohmyzsh.git',
                       'install_theme'   => 'rkj-repos.zsh-theme',
                       'pre_pkgs'        => [ 'git',
                                              'zsh'
