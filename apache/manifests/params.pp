@@ -195,7 +195,10 @@ class apache::params inherits ::apache::version {
     $suphp_addhandler     = 'php5-script'
     $suphp_engine         = 'off'
     $suphp_configpath     = undef
-    $php_version          = '5'
+    $php_version = $facts['operatingsystemmajrelease'] ? {
+        '8'     => '7', # RedHat8
+        default => '5', # RedHat5, RedHat6, RedHat7 
+      }
     $mod_packages         = {
       # NOTE: The auth_cas module isn't available on RH/CentOS without providing dependency packages provided by EPEL.
       'auth_cas'              => 'mod_auth_cas',
@@ -348,6 +351,7 @@ class apache::params inherits ::apache::version {
         'fcgid'                 => 'libapache2-mod-fcgid',
         'geoip'                 => 'libapache2-mod-geoip',
         'intercept_form_submit' => 'libapache2-mod-intercept-form-submit',
+        'jk'                    => 'libapache2-mod-jk',
         'lookup_identity'       => 'libapache2-mod-lookup-identity',
         'nss'                   => 'libapache2-mod-nss',
         'pagespeed'             => 'mod-pagespeed-stable',
@@ -379,6 +383,7 @@ class apache::params inherits ::apache::version {
         'fastcgi'               => 'libapache2-mod-fastcgi',
         'geoip'                 => 'libapache2-mod-geoip',
         'intercept_form_submit' => 'libapache2-mod-intercept-form-submit',
+        'jk'                    => 'libapache2-mod-jk',
         'lookup_identity'       => 'libapache2-mod-lookup-identity',
         'nss'                   => 'libapache2-mod-nss',
         'pagespeed'             => 'mod-pagespeed-stable',
@@ -406,6 +411,7 @@ class apache::params inherits ::apache::version {
         'fcgid'                 => 'libapache2-mod-fcgid',
         'geoip'                 => 'libapache2-mod-geoip',
         'intercept_form_submit' => 'libapache2-mod-intercept-form-submit',
+        'jk'                    => 'libapache2-mod-jk',
         'lookup_identity'       => 'libapache2-mod-lookup-identity',
         'nss'                   => 'libapache2-mod-nss',
         'pagespeed'             => 'mod-pagespeed-stable',

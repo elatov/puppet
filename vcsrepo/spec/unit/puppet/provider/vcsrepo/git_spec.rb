@@ -402,6 +402,20 @@ BRANCHES
         provider.revision = resource.value(:revision)
       end
     end
+    context 'when ignoring local changes' do
+      it "uses 'git stash'" do
+        resource[:revision] = 'a-commit-or-tag'
+        resource[:keep_local_changes] = true
+        expect(provider).to receive(:git).with('stash', 'save')
+        expect(provider).to receive(:git).with('branch', '-a').once.and_return(fixture(:git_branch_a))
+        expect(provider).to receive(:git).with('checkout', '--force', resource.value(:revision))
+        expect(provider).to receive(:git).with('branch', '-a').and_return(fixture(:git_branch_a))
+        expect(provider).to receive(:git).with('branch', '-a').and_return(fixture(:git_branch_a))
+        expect(provider).to receive(:git).with('submodule', 'update', '--init', '--recursive')
+        expect(provider).to receive(:git).with('stash', 'pop')
+        provider.revision = resource.value(:revision)
+      end
+    end
   end
 
   context 'when checking the source property' do
@@ -547,6 +561,28 @@ BRANCHES
         allow(provider).to receive(:git).with('--version').and_return '2.13.0'
         expect { provider.create }.not_to raise_error
       end
+    end
+  end
+  context 'owner' do
+    it 'without excludes run FileUtils.chown_R' do
+      resource[:owner] = 'john'
+      expect_chdir
+      expect(FileUtils).to receive(:chown_R).with('john', nil, '/tmp/test')
+      expect(provider).to receive(:git).with('fetch', 'origin')
+      expect(provider).to receive(:git).with('fetch', '--tags', 'origin')
+      provider.update_references
+    end
+    it 'with excludes run filtered chown_R' do
+      resource[:owner] = 'john'
+      resource[:excludes] = ['bzr', 'cvs', 'hg', 'p4', 'svn']
+      expect_chdir
+      filtered_files = ['git/a', 'git/b']
+      expect(provider).to receive(:files).and_return(filtered_files)
+      expect(FileUtils).to receive(:chown).with('john', nil, filtered_files)
+      expect(provider).to receive(:set_excludes)
+      expect(provider).to receive(:git).with('fetch', 'origin')
+      expect(provider).to receive(:git).with('fetch', '--tags', 'origin')
+      provider.update_references
     end
   end
 end
