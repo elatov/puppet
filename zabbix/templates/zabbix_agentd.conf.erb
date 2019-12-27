@@ -139,8 +139,11 @@ ListenIP=<%= scope['zabbix::agent::settings']['listenIp'] -%>
 # Range: 0-100
 # Default:
 # StartAgents=3
+<%- if scope.lookupvar('::osfamily') == 'RedHat' and scope.lookupvar('::operatingsystemmajrelease') == '8' -%>
+<% else %>
 <% if scope['zabbix::agent::settings']['startagents'] %>
 StartAgents=<%= scope['zabbix::agent::settings']['startagents'] -%>
+<% end %>
 <% end %>
 ##### Active checks related
 

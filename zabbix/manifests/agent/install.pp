@@ -3,14 +3,25 @@ class zabbix::agent::install () {
   if !(defined(Class["zabbix::server"])){
 	  case $::operatingsystem {
 	    /(?i:CentOS|fedora)/: {
-	      yumrepo { 'zabbix':
-	        name      => "zabbix",
-	        descr     => "Zabbix Official Repository - \$basearch",
-          baseurl   => "http://repo.zabbix.com/zabbix/${zabbix::agent::settings['version']}/rhel/7/\$basearch/",
-          enabled   => "1",
-          gpgcheck  => "1",
-#          gpgkey    => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ZABBIX",
-        } 
+				if (versioncmp($::operatingsystemmajrelease, '8') >= 0) {
+					yumrepo { 'zabbix':
+						name      => "zabbix",
+						descr     => "Zabbix Official Repository - \$basearch",
+						baseurl   => "http://repo.zabbix.com/zabbix/${zabbix::agent::settings['version']}/rhel/8/\$basearch/",
+						enabled   => "1",
+						gpgcheck  => "1",
+	#          gpgkey    => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ZABBIX",
+					}
+				} else {
+					yumrepo { 'zabbix':
+						name      => "zabbix",
+						descr     => "Zabbix Official Repository - \$basearch",
+						baseurl   => "http://repo.zabbix.com/zabbix/${zabbix::agent::settings['version']}/rhel/7/\$basearch/",
+						enabled   => "1",
+						gpgcheck  => "1",
+	#          gpgkey    => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ZABBIX",
+					}
+				} 
 	    }
 	    /(?i:Debian)/: { 
 	      apt::source { 'zabbix':

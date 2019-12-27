@@ -98,31 +98,56 @@ class zabbix::params {
 				
 		}
 		'Redhat': {
-			### Client/Agent
-			$agent_zabbix_user									 = 'zabbix'
-			## Package
-			$agent_zabbix_package_name           = 'zabbix-agent'
-			## Service
-			$agent_zabbix_service_name           = 'zabbix-agent'
-			## Directories
-			$agent_zabbix_config_dir             = '/etc/zabbix'
-			$agent_zabbix_custom_scripts_dir     = "${agent_zabbix_config_dir}/custom-scripts.d"
-			$agent_zabbix_custom_conf_dir        = "${agent_zabbix_config_dir}/zabbix_agentd.d"
-			## Conf Files
-			$agent_zabbix_config_file            = 'zabbix_agentd.conf'
-			## Settings
-			$agent_zabbix_version                = '3.0'
-			$agent_zabbix_default_settings       = { 'logFile'                => '/var/log/zabbix/zabbix_agentd.log',
-			                                         'logFileSize'            => '1',
-			                                         'pidFile'                => '/var/run/zabbix/zabbix_agentd.pid',
-			                                         'startagents'            => '1',
-			                                         'server'                 => '127.0.0.1',
-			                                         'hostname'               => $::fqdn,
-			                                         'listenIp'               => $::ipaddress,
-			                                         'smart'                  => false,
-			                                         'disk_perf'              => false,
-			                                       }
-			  
+			if (versioncmp($::operatingsystemmajrelease, '8') >= 0) {
+				### Client/Agent
+				$agent_zabbix_user									 = 'zabbix'
+				## Package
+				$agent_zabbix_package_name           = 'zabbix-agent2'
+				## Service
+				$agent_zabbix_service_name           = 'zabbix-agent2'
+				## Directories
+				$agent_zabbix_config_dir             = '/etc/zabbix'
+				$agent_zabbix_custom_scripts_dir     = "${agent_zabbix_config_dir}/custom-scripts.d"
+				$agent_zabbix_custom_conf_dir        = "${agent_zabbix_config_dir}/zabbix_agent2.d"
+				## Conf Files
+				$agent_zabbix_config_file            = 'zabbix_agent2.conf'
+				## Settings
+				$agent_zabbix_version                = '4.4'
+				$agent_zabbix_default_settings       = { 'logFile'                => '/var/log/zabbix/zabbix_agentd.log',
+																								'logFileSize'            => '1',
+																								'pidFile'                => '/var/run/zabbix/zabbix_agentd.pid',
+																								'server'                 => '127.0.0.1',
+																								'hostname'               => $::fqdn,
+																								'listenIp'               => $::ipaddress,
+																								'smart'                  => false,
+																								'disk_perf'              => false,
+																							}
+			} else {
+				### Client/Agent
+				$agent_zabbix_user									 = 'zabbix'
+				## Package
+				$agent_zabbix_package_name           = 'zabbix-agent'
+				## Service
+				$agent_zabbix_service_name           = 'zabbix-agent'
+				## Directories
+				$agent_zabbix_config_dir             = '/etc/zabbix'
+				$agent_zabbix_custom_scripts_dir     = "${agent_zabbix_config_dir}/custom-scripts.d"
+				$agent_zabbix_custom_conf_dir        = "${agent_zabbix_config_dir}/zabbix_agentd.d"
+				## Conf Files
+				$agent_zabbix_config_file            = 'zabbix_agentd.conf'
+				## Settings
+				$agent_zabbix_version                = '3.0'
+				$agent_zabbix_default_settings       = { 'logFile'                => '/var/log/zabbix/zabbix_agentd.log',
+																								'logFileSize'            => '1',
+																								'pidFile'                => '/var/run/zabbix/zabbix_agentd.pid',
+																								'startagents'            => '1',
+																								'server'                 => '127.0.0.1',
+																								'hostname'               => $::fqdn,
+																								'listenIp'               => $::ipaddress,
+																								'smart'                  => false,
+																								'disk_perf'              => false,
+																							}
+			}  
 		}
 		'Solaris': {
       ### Client/Agent
