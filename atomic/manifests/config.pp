@@ -17,7 +17,7 @@ class atomic::config {
 	}~>
 	exec { "${module_name}-yum-refresh":
 		path        => ["/bin","/usr/bin"],
-		command     => "yum clean all",
+		command     => "dnf clean all",
 		refreshonly => true,
 	}
 }
