@@ -3,7 +3,7 @@ Description=CouchPotato application instance
 After=network.target
 
 [Service]
-ExecStart=<%= scope['couchpotato::install_dir'] %>/CouchPotato.py --daemon
+ExecStart=/bin/python2 <%= scope['couchpotato::install_dir'] %>/CouchPotato.py --daemon
 GuessMainPID=no
 Type=forking
 User=<%= scope['couchpotato::settings']['user'] %>
