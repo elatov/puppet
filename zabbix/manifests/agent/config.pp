@@ -199,11 +199,21 @@ class zabbix::agent::config () {
 	    }
 	     
 	    # rules for user parameters
-	    file { "${zabbix::agent::custom_conf_dir}/disk_perf.conf":
-	      source  => 'puppet:///modules/zabbix/disk_perf.conf',
-	      require => File[$zabbix::agent::custom_conf_dir],
-	      mode => "644",
-	    }
+  		if ($::osfamily == 'Redhat'){
+          if (versioncmp($::operatingsystemmajrelease, '8') >= 0) {
+	        file { "${zabbix::agent::custom_conf_dir}/disk_perf.conf":
+	          source  => 'puppet:///modules/zabbix/disk_perf2.conf',
+	          require => File[$zabbix::agent::custom_conf_dir],
+	          mode => "644",
+	        }
+          }
+        } else {
+	      file { "${zabbix::agent::custom_conf_dir}/disk_perf.conf":
+	        source  => 'puppet:///modules/zabbix/disk_perf.conf',
+	        require => File[$zabbix::agent::custom_conf_dir],
+	        mode => "644",
+	      }
+        }
 	
 	    # systat
 	    ensure_packages("sysstat", {ensure => "present"})
