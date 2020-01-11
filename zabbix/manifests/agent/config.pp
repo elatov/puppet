@@ -49,16 +49,16 @@ class zabbix::agent::config () {
       owner  => $zabbix::agent::user,
       group  => 'zabbix',
     }
-    newsyslog {'/var/log/zabbix/zabbix_agentd.log':
-      owner   => $zabbix::agent::user,
-      group   => 'zabbix',
-      mode    => '644',
-      keep    => '5',
-      size    => '*',
-      when    => '@T00',
-      flags   => 'JC',
-      pidfile => '/var/run/zabbix/zabbix_agentd.pid'
-    }
+    #newsyslog {'/var/log/zabbix/zabbix_agentd.log':
+    #  owner   => $zabbix::agent::user,
+    #  group   => 'zabbix',
+    #  mode    => '644',
+    #  keep    => '5',
+    #  size    => '*',
+    #  when    => '@T00',
+    #  flags   => 'JC',
+    #  pidfile => '/var/run/zabbix/zabbix_agentd.pid'
+    #}
   }
   
   if ($::osfamily == 'Solaris'){
