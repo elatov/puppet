@@ -1,6 +1,6 @@
 {
   "name": "camptocamp-kmod",
-  "version": "2.3.1",
+  "version": "2.4.0",
   "author": "camptocamp",
   "summary": "Manage Linux kernel modules with Puppet",
   "license": "Apache-2.0",
@@ -14,7 +14,6 @@
     }
   ],
   "data_provider": null,
-  "description": "Manage Linux kernel modules with Puppet",
   "operatingsystem_support": [
     {
       "operatingsystem": "Debian",
@@ -46,5 +45,15 @@
         "7"
       ]
     }
-  ]
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.10.0 < 7.0.0"
+    }
+  ],
+  "description": "Manage Linux kernel modules with Puppet",
+  "pdk-version": "1.14.1",
+  "template-url": "pdk-default#1.14.1",
+  "template-ref": "1.14.1-0-g0b5b39b"
 }

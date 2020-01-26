@@ -30,6 +30,9 @@
 #
 # @param ssl_protocol
 #   Configure usable SSL/TLS protocol versions.
+#   Default based on the OS:
+#   - RedHat 8: [ 'all' ].
+#   - Other Platforms: [ 'all', '-SSLv2', '-SSLv3' ].
 #
 # @param ssl_proxy_protocol
 #   Configure usable SSL protocol flavors for proxy usage.
@@ -85,7 +88,7 @@ class apache::mod::ssl (
   $ssl_ca                                                   = undef,
   $ssl_cipher                                               = 'HIGH:MEDIUM:!aNULL:!MD5:!RC4:!3DES',
   Variant[Boolean, Enum['on', 'off']] $ssl_honorcipherorder = true,
-  $ssl_protocol                                             = ['all'],   # Implementations of the SSLv2 and SSLv3 protocol versions have been removed from OpenSSL (and hence mod_ssl) because these are no longer considered secure. For additional documentation https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/deploying_different_types_of_servers/setting-apache-web-server_deploying-different-types-of-servers
+  $ssl_protocol                                             = $::apache::params::ssl_protocol,
   Array $ssl_proxy_protocol                                 = [],
   $ssl_pass_phrase_dialog                                   = 'builtin',
   $ssl_random_seed_bytes                                    = '512',
