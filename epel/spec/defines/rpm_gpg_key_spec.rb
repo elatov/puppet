@@ -1,6 +1,35 @@
 require 'spec_helper'
 
 describe 'epel::rpm_gpg_key' do
+  context 'operatingsystemmajrelease => 8' do
+    let :facts do
+      default_facts.merge(
+        operatingsystemrelease:    '8.0.1905',
+        operatingsystemmajrelease: '8'
+      )
+    end
+
+    let :title do
+      'EPEL-8'
+    end
+
+    let :params do
+      {
+        path: '/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8'
+      }
+    end
+
+    it do
+      is_expected.to contain_exec("import-#{title}").with(
+        path:      '/bin:/usr/bin:/sbin:/usr/sbin',
+        command:   "rpm --import #{params[:path]}",
+        unless:    "rpm -q gpg-pubkey-$(echo $(gpg -q --throw-keyids --keyid-format short < #{params[:path]}) | grep pub | cut -f2 -d/ | cut -f1 -d' ' | tr '[A-Z]' '[a-z]')",
+        require:   "File[#{params[:path]}]",
+        logoutput: 'on_failure'
+      )
+    end
+  end
+
   context 'operatingsystemmajrelease => 7' do
     let :facts do
       default_facts.merge(
@@ -23,7 +52,7 @@ describe 'epel::rpm_gpg_key' do
       is_expected.to contain_exec("import-#{title}").with(
         path:      '/bin:/usr/bin:/sbin:/usr/sbin',
         command:   "rpm --import #{params[:path]}",
-        unless:    "rpm -q gpg-pubkey-$(echo $(gpg --throw-keyids --keyid-format short < #{params[:path]}) | cut --characters=11-18 | tr '[A-Z]' '[a-z]')",
+        unless:    "rpm -q gpg-pubkey-$(echo $(gpg -q --throw-keyids --keyid-format short < #{params[:path]}) | grep pub | cut -f2 -d/ | cut -f1 -d' ' | tr '[A-Z]' '[a-z]')",
         require:   "File[#{params[:path]}]",
         logoutput: 'on_failure'
       )
@@ -52,7 +81,7 @@ describe 'epel::rpm_gpg_key' do
       is_expected.to contain_exec("import-#{title}").with(
         path:      '/bin:/usr/bin:/sbin:/usr/sbin',
         command:   "rpm --import #{params[:path]}",
-        unless:    "rpm -q gpg-pubkey-$(echo $(gpg --throw-keyids --keyid-format short < #{params[:path]}) | cut --characters=11-18 | tr '[A-Z]' '[a-z]')",
+        unless:    "rpm -q gpg-pubkey-$(echo $(gpg -q --throw-keyids --keyid-format short < #{params[:path]}) | grep pub | cut -f2 -d/ | cut -f1 -d' ' | tr '[A-Z]' '[a-z]')",
         require:   "File[#{params[:path]}]",
         logoutput: 'on_failure'
       )
@@ -81,7 +110,7 @@ describe 'epel::rpm_gpg_key' do
       is_expected.to contain_exec("import-#{title}").with(
         path:      '/bin:/usr/bin:/sbin:/usr/sbin',
         command:   "rpm --import #{params[:path]}",
-        unless:    "rpm -q gpg-pubkey-$(echo $(gpg --throw-keyids --keyid-format short < #{params[:path]}) | cut --characters=11-18 | tr '[A-Z]' '[a-z]')",
+        unless:    "rpm -q gpg-pubkey-$(echo $(gpg -q --throw-keyids --keyid-format short < #{params[:path]}) | grep pub | cut -f2 -d/ | cut -f1 -d' ' | tr '[A-Z]' '[a-z]')",
         require:   "File[#{params[:path]}]",
         logoutput: 'on_failure'
       )
