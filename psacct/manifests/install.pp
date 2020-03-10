@@ -13,7 +13,7 @@ class psacct::install {
 		/(?i:FreeBSD)/:{
 			file {'/var/account/acct':
 				ensure  => 'present',
-				mode    => '0644',
+				mode    => '0640',
 			} ->
 			exec { "${module_name}-accton":
 			 command => "/usr/sbin/accton /var/account/acct",
