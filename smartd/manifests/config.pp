@@ -57,18 +57,18 @@ class smartd::config {
   file { $smartd::config_dir:
     ensure  => 'directory',
   }
-  
+
   file { $smartd::config_file:
     ensure  => 'present',
     path    => "${smartd::config_dir}/${smartd::config_file}",
     content => template("smartd/${smartd::config_file}.erb"),
     require => File[$smartd::config_dir],
   }
-  
-  if ($::operatingsystem == 'OmniOS'){
-	  logadm {'/var/adm/smartd.log':
-	    count => '3',
-	    post_command => "kill -HUP `cat /var/run/syslog.pid`"
-	  }
+
+  if ($::operatingsystem =~ /(?i:OmniOS|Solaris)/){
+    logadm {'/var/adm/smartd.log':
+      count => '3',
+      post_command => "kill -HUP `cat /var/run/syslog.pid`"
+    }
   }
 }

@@ -1,11 +1,11 @@
 class rsyslog::config {
   if ($rsyslog::rsyslog_d != undef){
-	  file { $rsyslog::rsyslog_d:
-	    ensure  => directory,
-	    owner   => 'root',
-	  }
+    file { $rsyslog::rsyslog_d:
+      ensure  => directory,
+      owner   => 'root',
+    }
   }
-  
+
   if ($rsyslog::remote_conf){
     file {"${rsyslog::rsyslog_d}/remote.conf":
       ensure => "present",
@@ -14,7 +14,7 @@ class rsyslog::config {
       mode    => '0644',
     }
   }
-  
+
   if ($rsyslog::iptables_conf){
     file {"${rsyslog::rsyslog_d}/iptables.conf":
       ensure  => "present",
@@ -22,34 +22,34 @@ class rsyslog::config {
       require => File[$rsyslog::rsyslog_d],
       mode    => '0644',
     }
-		logrotate::rule { 'iptables-log':
-			path         => '/var/log/iptables.log',
-			rotate       => 5,
-			rotate_every => 'week',
-			ifempty => false,
-			compress => true,
-			missingok => true,
-		}
+    logrotate::rule { 'iptables-log':
+      path         => '/var/log/iptables.log',
+      rotate       => 5,
+      rotate_every => 'week',
+      ifempty => false,
+      compress => true,
+      missingok => true,
+    }
   }
-  
+
   if ($::osfamily == 'FreeBSD'){
     file_line { "syslogd_e_in_${rsyslog::rc_conf}":
       path => $rsyslog::rc_conf,
       line => "syslogd_enable=\"YES\"",
-    } 
-		file_line { "syslogd_f_in_${rsyslog::rc_conf}":
-			path => $rsyslog::rc_conf,
-			line => "syslogd_flags=\"-4 -s -v -v\"",
-		} 
-  
+    }
+    file_line { "syslogd_f_in_${rsyslog::rc_conf}":
+      path => $rsyslog::rc_conf,
+      line => "syslogd_flags=\"-4 -s -v -v\"",
+    }
+
     file_line { "enable_remote_in_${rsyslog::conf_file}":
       path => $rsyslog::conf_file,
       line => "*.*\t@${rsyslog::settings['server']}",
-    } 
+    }
   }
-  
+
   if ($::osfamily == 'Solaris'){
-   
+
     file { '/var/adm/mail.log':
       ensure => 'present',
     }->
@@ -85,6 +85,6 @@ class rsyslog::config {
       path        => ["/bin","/usr/bin"],
       command     => "pkill -1 syslogd",
       refreshonly => true,
-    } 
+    }
   }
 }
