@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-stdlib",
-  "version": "6.2.0",
+  "version": "6.3.0",
   "author": "puppetlabs",
   "summary": "Standard library of resources for Puppet modules.",
   "license": "Apache-2.0",
@@ -106,7 +106,7 @@
     }
   ],
   "description": "Standard Library for Puppet Modules",
-  "pdk-version": "1.14.1",
+  "pdk-version": "1.17.0",
   "template-url": "https://github.com/puppetlabs/pdk-templates#master",
-  "template-ref": "heads/master-0-g643529a"
+  "template-ref": "1.17.0-0-gd3a4319"
 }
