@@ -46,39 +46,41 @@ class extra_conf {
             priority => 20,
             content  => "Defaults:elatov secure_path = /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:/opt/puppetlabs/bin",
           }
-          file {"/etc/systemd/system/wpscan.service":
-            ensure  => "present",
-            source  => "puppet:///modules/extra_conf/wpscan.service",
-            mode    => '0644',
-          } ->
-          file {"/etc/systemd/system/wpscan.timer":
-            ensure  => "present",
-            source  => "puppet:///modules/extra_conf/wpscan.timer",
-            mode    => '0644',
-          } ~>
-          service { "wpscan.timer":
-            ensure      => running,
-            hasstatus   => true,
-            hasrestart  => true,
-            enable      => true,
-            # require     => File["/etc/systemd/system/wpscan.timer"]
-          }
+          if $facts['networking']['hostname'] == 'ub' {
+            file {"/etc/systemd/system/wpscan.service":
+              ensure  => "present",
+              source  => "puppet:///modules/extra_conf/wpscan.service",
+              mode    => '0644',
+            } ->
+            file {"/etc/systemd/system/wpscan.timer":
+              ensure  => "present",
+              source  => "puppet:///modules/extra_conf/wpscan.timer",
+              mode    => '0644',
+            } ~>
+            service { "wpscan.timer":
+              ensure      => running,
+              hasstatus   => true,
+              hasrestart  => true,
+              enable      => true,
+              # require     => File["/etc/systemd/system/wpscan.timer"]
+            }
 
-          file {"/etc/systemd/system/docker-gc.service":
-            ensure  => "present",
-            source  => "puppet:///modules/extra_conf/docker-gc.service",
-            mode    => '0644',
-          } ->
-          file {"/etc/systemd/system/docker-gc.timer":
-            ensure  => "present",
-            source  => "puppet:///modules/extra_conf/docker-gc.timer",
-            mode    => '0644',
-          } ~>
-          service { "docker-gc.timer":
-            ensure      => running,
-            hasstatus   => true,
-            hasrestart  => true,
-            enable      => true,
+            file {"/etc/systemd/system/docker-gc.service":
+              ensure  => "present",
+              source  => "puppet:///modules/extra_conf/docker-gc.service",
+              mode    => '0644',
+            } ->
+            file {"/etc/systemd/system/docker-gc.timer":
+              ensure  => "present",
+              source  => "puppet:///modules/extra_conf/docker-gc.timer",
+              mode    => '0644',
+            } ~>
+            service { "docker-gc.timer":
+              ensure      => running,
+              hasstatus   => true,
+              hasrestart  => true,
+              enable      => true,
+            }
           }
         }
       }
