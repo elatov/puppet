@@ -21,11 +21,11 @@ class ohmyzsh::install {
   if ($ohmyzsh::settings['install_percol']){
     case $::osfamily {
       'Debian': {
-        ensure_packages(['python-pip'],{ 'ensure'=> 'present' })
+        ensure_packages(['python3-pip'],{ 'ensure'=> 'present' })
         ensure_packages(['percol'], {
           ensure   => present,
-          provider => 'pip',
-          require  => [ Package['python-pip'], ],
+          provider => 'pip3',
+          require  => [ Package['python3-pip'], ],
         })
       }
       'RedHat': {
