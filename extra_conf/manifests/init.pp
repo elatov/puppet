@@ -48,20 +48,20 @@ class extra_conf {
           }
           if $facts['networking']['hostname'] == 'ub' {
             file {"/etc/systemd/system/wpscan.service":
-              ensure  => "present",
+              ensure  => "absent",
               source  => "puppet:///modules/extra_conf/wpscan.service",
               mode    => '0644',
             } ->
             file {"/etc/systemd/system/wpscan.timer":
-              ensure  => "present",
+              ensure  => "absent",
               source  => "puppet:///modules/extra_conf/wpscan.timer",
               mode    => '0644',
             } ~>
             service { "wpscan.timer":
-              ensure      => running,
+              ensure      => stopped,
               hasstatus   => true,
               hasrestart  => true,
-              enable      => true,
+              enable      => false,
               # require     => File["/etc/systemd/system/wpscan.timer"]
             }
 
