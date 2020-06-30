@@ -446,7 +446,7 @@ Puppet::Type.type(:vcsrepo).provide(:git, parent: Puppet::Provider::Vcsrepo) do
 
   # @!visibility private
   def branches
-    at_path { git_with_identity('branch', '-a') }.tr('*', ' ').split(%r{\n}).map { |line| line.strip }
+    at_path { git_with_identity('branch', '--no-color', '-a') }.tr('*', ' ').split(%r{\n}).map { |line| line.strip }
   end
 
   # git < 2.4 returns 'detached from'
@@ -454,7 +454,7 @@ Puppet::Type.type(:vcsrepo).provide(:git, parent: Puppet::Provider::Vcsrepo) do
   # @!visibility private
   def on_branch?
     at_path do
-      matches = git_with_identity('branch', '-a').match %r{\*\s+(.*)}
+      matches = git_with_identity('branch', '--no-color', '-a').match %r{\*\s+(.*)}
       matches[1] unless matches[1] =~ %r{(\(detached from|\(HEAD detached at|\(no branch)}
     end
   end
@@ -584,12 +584,17 @@ Puppet::Type.type(:vcsrepo).provide(:git, parent: Puppet::Provider::Vcsrepo) do
         f.close
 
         FileUtils.chmod(0o755, f.path)
-        env_save = ENV['GIT_SSH']
-        ENV['GIT_SSH'] = f.path
+
+        env_git_ssh_save         = ENV['GIT_SSH']
+        env_git_ssh_command_save = ENV['GIT_SSH_COMMAND']
+
+        ENV['GIT_SSH']         = f.path
+        ENV['GIT_SSH_COMMAND'] = nil # Unset GIT_SSH_COMMAND environment variable
 
         ret = git(*args)
 
-        ENV['GIT_SSH'] = env_save
+        ENV['GIT_SSH']         = env_git_ssh_save
+        ENV['GIT_SSH_COMMAND'] = env_git_ssh_command_save
 
         return ret
       end
