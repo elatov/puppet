@@ -216,6 +216,23 @@
 #   parameters has a value. If none of these parameters has a value, given a virtual host 
 #   `example.com`, Puppet defaults to `$logroot/example.com_error_ssl.log` for SSL virtual 
 #   hosts and `$logroot/example.com_error.log` for non-SSL virtual hosts.
+#
+# @param error_log_format
+#   Sets the [ErrorLogFormat](https://httpd.apache.org/docs/current/mod/core.html#errorlogformat)
+#   format specification for error log entries inside virtual host
+#   For example:
+#   ``` puppet
+#   apache::vhost { 'site.name.fdqn':
+#     ...
+#     error_log_format => [
+#       '[%{uc}t] [%-m:%-l] [R:%L] [C:%{C}L] %7F: %E: %M',
+#       { '[%{uc}t] [R:%L] Request %k on C:%{c}L pid:%P tid:%T' => 'request' }, 
+#       { "[%{uc}t] [R:%L] UA:'%+{User-Agent}i'" => 'request' },
+#       { "[%{uc}t] [R:%L] Referer:'%+{Referer}i'" => 'request' },
+#       { '[%{uc}t] [C:%{c}L] local\ %a remote\ %A' => 'connection' },
+#     ],
+#   }
+#   ```
 # 
 # @param error_documents
 #   A list of hashes which can be used to override the 
@@ -1626,6 +1643,42 @@
 #   this lets you define configuration variables inside a vhost using [`Define`](https://httpd.apache.org/docs/2.4/mod/core.html#define),
 #   these can then be used to replace configuration values. All Defines are Undefined at the end of the VirtualHost.
 #
+# @param auth_oidc
+#   Enable `mod_auth_openidc` parameters for OpenID Connect authentication.
+#
+# @param oidc_settings
+#   An Apache::OIDCSettings Struct containing (mod_auth_openidc settings)[https://github.com/zmartzone/mod_auth_openidc/blob/master/auth_openidc.conf].
+#
+# @param limitreqfields
+#   The `limitreqfields` parameter sets the maximum number of request header fields in
+#   an HTTP request. This directive gives the server administrator greater control over
+#   abnormal client request behavior, which may be useful for avoiding some forms of
+#   denial-of-service attacks. The value should be increased if normal clients see an error
+#   response from the server that indicates too many fields were sent in the request.
+#
+# @param limitreqfieldsize
+#   The `limitreqfieldsize` parameter sets the maximum ammount of _bytes_ that will
+#   be allowed within a request header.
+#
+# @param limitreqline
+#   Limit the size of the HTTP request line that will be accepted from the client
+#   This directive sets the number of bytes that will be allowed on the HTTP
+#   request-line. The LimitRequestLine directive allows the server administrator
+#   to set the limit on the allowed size of a client's HTTP request-line. Since
+#   the request-line consists of the HTTP method, URI, and protocol version, the
+#   LimitRequestLine directive places a restriction on the length of a request-URI
+#   allowed for a request on the server. A server needs this value to be large
+#   enough to hold any of its resource names, including any information that might
+#   be passed in the query part of a GET request.
+#
+# @param limitreqbody
+#   Restricts the total size of the HTTP request body sent from the client
+#   The LimitRequestBody directive allows the user to set a limit on the allowed
+#   size of an HTTP request message body within the context in which the
+#   directive is given (server, per-directory, per-file or per-location). If the
+#   client request exceeds that limit, the server will return an error response
+#   instead of servicing the request.
+#
 define apache::vhost(
   Variant[Boolean,String] $docroot,
   $manage_docroot                                                                   = true,
@@ -1682,7 +1735,7 @@ define apache::vhost(
   $logroot_mode                                                                     = undef,
   $logroot_owner                                                                    = undef,
   $logroot_group                                                                    = undef,
-  $log_level                                                                        = undef,
+  Optional[Apache::LogLevel] $log_level                                             = undef,
   Boolean $access_log                                                               = true,
   $access_log_file                                                                  = false,
   $access_log_pipe                                                                  = false,
@@ -1696,6 +1749,14 @@ define apache::vhost(
   $error_log_file                                                                   = undef,
   $error_log_pipe                                                                   = undef,
   $error_log_syslog                                                                 = undef,
+  Optional[
+    Array[
+      Variant[
+        String,
+        Hash[String, Enum['connection', 'request']]
+      ]
+    ]
+  ]       $error_log_format                                                         = undef,
   Optional[Pattern[/^((Strict|Unsafe)?\s*(\b(Registered|Lenient)Methods)?\s*(\b(Allow0\.9|Require1\.0))?)$/]] $http_protocol_options = undef,
   $modsec_audit_log                                                                 = undef,
   $modsec_audit_log_file                                                            = undef,
@@ -1704,6 +1765,10 @@ define apache::vhost(
   Optional[Variant[Stdlib::Absolutepath, Enum['disabled']]] $fallbackresource       = undef,
   $scriptalias                                                                      = undef,
   $scriptaliases                                                                    = [],
+  Optional[Integer] $limitreqfieldsize                                              = undef,
+  Optional[Integer] $limitreqfields                                                 = undef,
+  Optional[Integer] $limitreqline                                                   = undef,
+  Optional[Integer] $limitreqbody                                                   = undef,
   $proxy_dest                                                                       = undef,
   $proxy_dest_match                                                                 = undef,
   $proxy_dest_reverse_match                                                         = undef,
@@ -1855,6 +1920,8 @@ define apache::vhost(
   Optional[Enum['On', 'on', 'Off', 'off', 'DNS', 'dns']] $use_canonical_name        = undef,
   Optional[Variant[String,Array[String]]] $comment                                  = undef,
   Hash $define                                                                      = {},
+  Boolean $auth_oidc                                                                = false,
+  Optional[Apache::OIDCSettings] $oidc_settings                                     = undef,
 ) {
 
   # The base class must be included first because it is used by parameter defaults
@@ -1872,10 +1939,6 @@ define apache::vhost(
   }
 
   # Input validation begins
-
-  if $log_level {
-    apache::validate_apache_log_level($log_level)
-  }
 
   if $access_log_file and $access_log_pipe {
     fail("Apache::Vhost[${name}]: 'access_log_file' and 'access_log_pipe' cannot be defined at the same time")
@@ -1899,6 +1962,10 @@ define apache::vhost(
 
   if $auth_kerb and $ensure == 'present' {
     include ::apache::mod::auth_kerb
+  }
+
+  if $auth_oidc and $ensure == 'present' {
+    include ::apache::mod::auth_openidc
   }
 
   if $virtual_docroot {
@@ -1992,6 +2059,13 @@ define apache::vhost(
     } else {
       $error_log_destination = "${logroot}/${name}_error.log"
     }
+  }
+
+  if versioncmp($apache_version, '2.4') >= 0 {
+    $error_log_format24 = $error_log_format
+  }
+  else {
+    $error_log_format24 = undef
   }
 
   if $modsec_audit_log == false {
@@ -2292,6 +2366,7 @@ define apache::vhost(
 
   # Template uses:
   # - $error_log
+  # - $error_log_format24
   # - $log_level
   # - $error_log_destination
   # - $log_level
@@ -2377,6 +2452,24 @@ define apache::vhost(
   }
 
   # Template uses:
+  # - $ssl_proxyengine
+  # - $ssl_proxy_verify
+  # - $ssl_proxy_verify_depth
+  # - $ssl_proxy_ca_cert
+  # - $ssl_proxy_check_peer_cn
+  # - $ssl_proxy_check_peer_name
+  # - $ssl_proxy_check_peer_expire
+  # - $ssl_proxy_machine_cert
+  # - $ssl_proxy_protocol
+  if $ssl_proxyengine {
+    concat::fragment { "${name}-sslproxy":
+      target  => "${priority_real}${filename}.conf",
+      order   => 160,
+      content => template('apache/vhost/_sslproxy.erb'),
+    }
+  }
+
+  # Template uses:
   # - $proxy_dest
   # - $proxy_pass
   # - $proxy_pass_match
@@ -2386,7 +2479,7 @@ define apache::vhost(
   if $proxy_dest or $proxy_pass or $proxy_pass_match or $proxy_dest_match or $proxy_preserve_host {
     concat::fragment { "${name}-proxy":
       target  => "${priority_real}${filename}.conf",
-      order   => 160,
+      order   => 170,
       content => template('apache/vhost/_proxy.erb'),
     }
   }
@@ -2482,24 +2575,6 @@ define apache::vhost(
       target  => "${priority_real}${filename}.conf",
       order   => 230,
       content => template('apache/vhost/_ssl.erb'),
-    }
-  }
-
-  # Template uses:
-  # - $ssl_proxyengine
-  # - $ssl_proxy_verify
-  # - $ssl_proxy_verify_depth
-  # - $ssl_proxy_ca_cert
-  # - $ssl_proxy_check_peer_cn
-  # - $ssl_proxy_check_peer_name
-  # - $ssl_proxy_check_peer_expire
-  # - $ssl_proxy_machine_cert
-  # - $ssl_proxy_protocol
-  if $ssl_proxyengine {
-    concat::fragment { "${name}-sslproxy":
-      target  => "${priority_real}${filename}.conf",
-      order   => 230,
-      content => template('apache/vhost/_sslproxy.erb'),
     }
   }
 
@@ -2713,6 +2788,17 @@ define apache::vhost(
       target  => "${priority_real}${filename}.conf",
       order   => 350,
       content => template('apache/vhost/_http_protocol_options.erb'),
+    }
+  }
+
+  # Template uses:
+  # - $auth_oidc
+  # - $oidc_settings
+  if $auth_oidc {
+    concat::fragment { "${name}-auth_oidc":
+      target  => "${priority_real}${filename}.conf",
+      order   => 360,
+      content => template('apache/vhost/_auth_oidc.erb'),
     }
   }
 

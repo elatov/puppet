@@ -35,6 +35,7 @@ class apache::params inherits ::apache::version {
   $vhost_include_pattern = '*'
 
   $modsec_audit_log_parts = 'ABIJDEFHZ'
+  $modsec_audit_log_type = 'Serial'
 
   # no client certs should be trusted for auth by default.
   $ssl_certs_dir          = undef
@@ -170,6 +171,7 @@ class apache::params inherits ::apache::version {
     } else {
       $mod_dir              = $::apache::version::distrelease ? {
         '7'     => "${httpd_dir}/conf.modules.d",
+        '8'     => "${httpd_dir}/conf.modules.d",
         default => "${httpd_dir}/conf.d",
       }
     }
@@ -197,7 +199,7 @@ class apache::params inherits ::apache::version {
     $suphp_configpath     = undef
     $php_version = $facts['operatingsystemmajrelease'] ? {
         '8'     => '7', # RedHat8
-        default => '5', # RedHat5, RedHat6, RedHat7 
+        default => '5', # RedHat5, RedHat6, RedHat7
       }
     $mod_packages         = {
       # NOTE: The auth_cas module isn't available on RH/CentOS without providing dependency packages provided by EPEL.
@@ -205,8 +207,10 @@ class apache::params inherits ::apache::version {
       'auth_kerb'             => 'mod_auth_kerb',
       'auth_gssapi'           => 'mod_auth_gssapi',
       'auth_mellon'           => 'mod_auth_mellon',
+      'auth_openidc'          => 'mod_auth_openidc',
       'authnz_ldap'           => $::apache::version::distrelease ? {
         '7'     => 'mod_ldap',
+        '8'     => 'mod_ldap',
         default => 'mod_authz_ldap',
       },
       'authnz_pam'            => 'mod_authnz_pam',
@@ -218,7 +222,11 @@ class apache::params inherits ::apache::version {
       'fcgid'                 => 'mod_fcgid',
       'geoip'                 => 'mod_geoip',
       'intercept_form_submit' => 'mod_intercept_form_submit',
-      'ldap'                  => 'mod_ldap',
+      'ldap'                  => $::apache::version::distrelease ? {
+        '5'     => undef,
+        '6'     => undef,
+        default => 'mod_ldap',
+      },
       'lookup_identity'       => 'mod_lookup_identity',
       'pagespeed'             => 'mod-pagespeed-stable',
       # NOTE: The passenger module isn't available on RH/CentOS without
@@ -261,10 +269,12 @@ class apache::params inherits ::apache::version {
     $docroot              = '/var/www/html'
     $alias_icons_path     = $::apache::version::distrelease ? {
       '7'     => '/usr/share/httpd/icons',
+      '8'     => '/usr/share/httpd/icons',
       default => '/var/www/icons',
     }
     $error_documents_path = $::apache::version::distrelease ? {
       '7'     => '/usr/share/httpd/error',
+      '8'     => '/usr/share/httpd/error',
       default => '/var/www/error'
     }
     if $::osfamily == 'RedHat' {
@@ -343,6 +353,7 @@ class apache::params inherits ::apache::version {
       $mod_packages = {
         'auth_cas'              => 'libapache2-mod-auth-cas',
         'auth_kerb'             => 'libapache2-mod-auth-kerb',
+        'auth_openidc'          => 'libapache2-mod-auth-openidc',
         'auth_gssapi'           => 'libapache2-mod-auth-gssapi',
         'auth_mellon'           => 'libapache2-mod-auth-mellon',
         'authnz_pam'            => 'libapache2-mod-authnz-pam',
@@ -371,16 +382,19 @@ class apache::params inherits ::apache::version {
       $php_version = $facts['operatingsystemmajrelease'] ? {
         '9'     => '7.0', # Debian Stretch
         '10'    => '7.3', # Debian Buster
+        '20.04' => '7.4', # Ubuntu Foccal Fossal
         default => '7.2', # Ubuntu Bionic, Cosmic and Disco
       }
       $mod_packages = {
         'auth_cas'              => 'libapache2-mod-auth-cas',
         'auth_kerb'             => 'libapache2-mod-auth-kerb',
+        'auth_openidc'          => 'libapache2-mod-auth-openidc',
         'auth_gssapi'           => 'libapache2-mod-auth-gssapi',
         'auth_mellon'           => 'libapache2-mod-auth-mellon',
         'authnz_pam'            => 'libapache2-mod-authnz-pam',
         'dav_svn'               => 'libapache2-mod-svn',
         'fastcgi'               => 'libapache2-mod-fastcgi',
+        'fcgid'                 => 'libapache2-mod-fcgid',
         'geoip'                 => 'libapache2-mod-geoip',
         'intercept_form_submit' => 'libapache2-mod-intercept-form-submit',
         'jk'                    => 'libapache2-mod-jk',
@@ -403,6 +417,7 @@ class apache::params inherits ::apache::version {
       $mod_packages = {
         'auth_cas'              => 'libapache2-mod-auth-cas',
         'auth_kerb'             => 'libapache2-mod-auth-kerb',
+        'auth_openidc'          => 'libapache2-mod-auth-openidc',
         'auth_gssapi'           => 'libapache2-mod-auth-gssapi',
         'auth_mellon'           => 'libapache2-mod-auth-mellon',
         'authnz_pam'            => 'libapache2-mod-authnz-pam',
@@ -578,6 +593,7 @@ class apache::params inherits ::apache::version {
       # NOTE: not sure where the shibboleth should come from
       'auth_kerb'   => 'www/mod_auth_kerb2',
       'auth_gssapi' => 'www/mod_auth_gssapi',
+      'auth_openidc'=> 'www/mod_auth_openidc',
       'fcgid'       => 'www/mod_fcgid',
       'passenger'   => 'www/rubygem-passenger',
       'perl'        => 'www/mod_perl2',
