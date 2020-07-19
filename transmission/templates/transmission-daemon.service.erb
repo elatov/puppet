@@ -7,6 +7,7 @@ User=<%= scope['transmission::server::settings']['user'] %>
 Type=notify
 ExecStart=/usr/bin/transmission-daemon -f -g <%= scope['transmission::server::config_dir'] %> -e <%= scope['transmission::server::log_dir'] %>/<%= scope['transmission::server::log_file'] %> --log-debug
 ExecReload=/bin/kill -s HUP $MAINPID
+NoNewPrivileges=true
 
 [Install]
 WantedBy=multi-user.target
