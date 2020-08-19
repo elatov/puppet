@@ -20,7 +20,8 @@ fi
 
 # Run Lynis
 if [ ${OS} = "Linux" ]; then
-	${LYNIS} audit system --auditor "${AUDITOR}" --cronjob  --bin-dirs "/bin /sbin /usr/bin /usr/sbin /opt/puppetlabs/bin /var/ossec/bin" > ${REPORT}
+	#${LYNIS} audit system --auditor "${AUDITOR}" --cronjob  --bin-dirs "/bin /sbin /usr/bin /usr/sbin /opt/puppetlabs/bin /var/ossec/bin" > ${REPORT}
+	${LYNIS} audit system --auditor "${AUDITOR}" --cronjob  --bin-dirs "/bin /sbin /usr/bin /usr/sbin /opt/puppetlabs/bin" > ${REPORT}
 elif [ ${OS} = 'FreeBSD' ]; then
     LC_CTYPE=en_US.UTF-8 ${LYNIS} audit system --auditor "${AUDITOR}" \
     --cronjob --bin-dirs "/bin /sbin /usr/bin /usr/sbin /usr/local/bin/ \
