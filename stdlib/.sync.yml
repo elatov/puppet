@@ -4,19 +4,16 @@
 ".rubocop.yml":
   default_configs:
     inherit_from: ".rubocop_todo.yml"
-    require:
-    - rubocop-i18n
-    - rubocop-rspec
 ".travis.yml":
   global_env: 
     - HONEYCOMB_WRITEKEY="7f3c63a70eecc61d635917de46bea4e6",HONEYCOMB_DATASET="litmus tests"
-  dist: trusty
   deploy_to_forge:
     enabled: false
-  branches:
-  - release
+  dist: trusty
   user: puppet
   secure: ''
+  branches:
+  - release
   use_litmus: true
   litmus:
     provision_list:
@@ -39,7 +36,7 @@
   simplecov: true
   notifications:
     slack:
-      secure: kWN4IvjB5scKS6a00jGLVgn2l0wZz6o+DC4ZyZNCxrf4LlihySJyneboPNQb6nthPwVCFh72sBxjT45Ue2JZO30dKiT7eOXGo/N2EK6NpORXEDtuIKBfuZ8ZQ+bos9hVXHmxzujnunQZemLwodDKcwEWMIEjT3QeV5NQUukOHYM=
+      secure: j5y9T97u6QlDPs4eEnDNch2IGAzbfWycVcMutP3u9Klvkgqu33xtxHgyAQOW+2A/Xw2sKQs/LzIiUeQRzlNMcAPRZ0rK19sW1w5OgZGcd131HViFDfX8W7V4R41sZVNF232JekMr7RwPGIaZ9htaGsDJeJF8TaiG1Akk32LQZV8=
 appveyor.yml:
   environment:
     HONEYCOMB_WRITEKEY: 7f3c63a70eecc61d635917de46bea4e6
@@ -58,14 +55,13 @@ Gemfile:
   use_litmus: true
   optional:
     ":development":
-    - gem: puppet-lint-i18n
     - gem: github_changelog_generator
       git: https://github.com/skywinder/github-changelog-generator
       ref: 20ee04ba1234e9e83eb2ffb5056e23d641c7a018
       condition: Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.2.2')
 Rakefile:
   requires:
-  - puppet_pot_generator/rake_tasks
+  - puppet-lint/tasks/puppet-lint
 spec/spec_helper.rb:
   mock_with: ":rspec"
   coverage_report: true

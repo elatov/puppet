@@ -1,9 +1,8 @@
-name: "release"
+name: "weekly"
 
-on: 
-  push:
-    branches:
-      - 'release'
+on:
+  schedule:
+    - cron: '0 1 * * 4'
 
 jobs:
   LitmusAcceptancePuppet5:
@@ -21,7 +20,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Litmus Parallel
-      uses: puppetlabs/action-litmus_parallel@main
+      uses: puppetlabs/action-litmus_parallel@master
       with:
         platform: ${{ matrix.platform }}
         agent_family: ${{ matrix.agent_family }}
@@ -40,7 +39,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Litmus Parallel
-      uses: puppetlabs/action-litmus_parallel@main
+      uses: puppetlabs/action-litmus_parallel@master
       with:
         platform: ${{ matrix.platform }}
         agent_family: ${{ matrix.agent_family }}
@@ -59,7 +58,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Spec Tests
-      uses: puppetlabs/action-litmus_spec@main
+      uses: puppetlabs/action-litmus_spec@master
       with:
         puppet_gem_version: ${{ matrix.puppet_gem_version }}
         check: ${{ matrix.check }}
