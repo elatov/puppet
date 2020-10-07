@@ -197,7 +197,7 @@ class apache::params inherits ::apache::version {
     $suphp_addhandler     = 'php5-script'
     $suphp_engine         = 'off'
     $suphp_configpath     = undef
-    $php_version = $facts['operatingsystemmajrelease'] ? {
+    $php_version = $::apache::version::distrelease ? {
         '8'     => '7', # RedHat8
         default => '5', # RedHat5, RedHat6, RedHat7
       }
@@ -248,7 +248,10 @@ class apache::params inherits ::apache::version {
       # See http://wiki.aaf.edu.au/tech-info/sp-install-guide
       'shibboleth'            => 'shibboleth',
       'ssl'                   => 'mod_ssl',
-      'wsgi'                  => 'mod_wsgi',
+      'wsgi'                  => $::apache::version::distrelease ? {
+        '8'     => 'python3-mod_wsgi', # RedHat8
+        default => 'mod_wsgi',         # RedHat5, RedHat6, RedHat7
+      },
       'dav_svn'               => 'mod_dav_svn',
       'suphp'                 => 'mod_suphp',
       'xsendfile'             => 'mod_xsendfile',
@@ -257,6 +260,10 @@ class apache::params inherits ::apache::version {
     }
     $mod_libs             = {
       'nss' => 'libmodnss.so',
+      'wsgi'                  => $::apache::version::distrelease ? {
+        '8'     => 'mod_wsgi_python3.so',
+        default => 'mod_wsgi.so',
+      },
     }
     $conf_template        = 'apache/httpd.conf.erb'
     $http_protocol_options  = undef

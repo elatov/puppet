@@ -11,7 +11,7 @@
 #   Sets the file or database containing global trusted Certificate Authority or global client certificates.
 # 
 # @param ldap_trusted_global_cert_type
-#   Sets the the certificate parameter of the global trusted Certificate Authority or global client certificates.
+#   Sets the certificate parameter of the global trusted Certificate Authority or global client certificates.
 # 
 # @param ldap_shared_cache_size
 #   Size in bytes of the shared-memory cache
@@ -47,7 +47,7 @@
 #   }
 #
 # @see https://httpd.apache.org/docs/current/mod/mod_ldap.html for additional documentation.
-#
+# @note Unsupported platforms: CentOS: 8; RedHat: 8
 class apache::mod::ldap (
   $apache_version                                  = undef,
   $package_name                                    = undef,

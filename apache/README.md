@@ -219,7 +219,7 @@
 [Puppet Forge]: https://forge.puppet.com
 [Puppet]: https://puppet.com
 [Puppet module]: https://docs.puppet.com/puppet/latest/reference/modules_fundamentals.html
-[Puppet module's code]: https://github.com/puppetlabs/puppetlabs-apache/blob/master/manifests/default_mods.pp
+[Puppet module's code]: https://github.com/puppetlabs/puppetlabs-apache/blob/main/manifests/default_mods.pp
 [`purge_configs`]: #purge_configs
 [`purge_vhost_dir`]: #purge_vhost_dir
 [Python]: https://www.python.org/
@@ -817,7 +817,7 @@ Load balancing scheduler algorithms (`lbmethod`) are listed [in mod_proxy_balanc
 <a id="reference"></a> 
 ## Reference
 
-For information on classes, types and functions see the [REFERENCE.md](https://github.com/puppetlabs/puppetlabs-apache/blob/master/REFERENCE.md)
+For information on classes, types and functions see the [REFERENCE.md](https://github.com/puppetlabs/puppetlabs-apache/blob/main/REFERENCE.md)
 
 ### Templates
 
@@ -830,7 +830,7 @@ The Apache module has a task that allows a user to reload the Apache config with
 <a id="limitations"></a>
 ## Limitations
 
-For an extensive list of supported operating systems, see [metadata.json](https://github.com/puppetlabs/puppetlabs-apache/blob/master/metadata.json)
+For an extensive list of supported operating systems, see [metadata.json](https://github.com/puppetlabs/puppetlabs-apache/blob/main/metadata.json)
 
 ### FreeBSD
 
@@ -851,7 +851,7 @@ The [`apache::mod::passenger`][] and [`apache::mod::proxy_html`][] classes are u
 
 #### RHEL/CentOS 6
 
-The [`apache::mod::passenger`][] class is not installing, because the the EL6 repository is missing compatible packages.
+The [`apache::mod::passenger`][] class is not installing, because the EL6 repository is missing compatible packages.
 
 #### RHEL/CentOS 7
 
@@ -901,6 +901,9 @@ apache::vhost { 'test.server':
   additional_includes => '/custom/path/include',
 }
 ```
+
+**NOTE:** On RHEL 8, the SELinux packages contained in `policycoreutils-python` have been replaced by the `policycoreutils-python-utils` package.
+See [here](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/considerations_in_adopting_rhel_8/index#selinux-python3_security) for more details.
 
 You must set the contexts using `semanage fcontext` instead of `chcon` because Puppet's `file` resources reset the values' context in the database if the resource doesn't specify it.
 
@@ -1001,7 +1004,8 @@ The `mod_supported_on_platform` helper method takes the [Apache Module][Apache M
 This functionality can be disabled by setting the `DISABLE_MOD_TEST_EXCLUSION` environment variable.
 When set, all exclusions will be ignored.
 #### Test Support Lifecycle
-Given the breadth of compatible platforms that this module is supported on, and the amount of [Apache Modules][Apache Modules] supported, it is quite common for an [Apache Module's][Apache Modules] test(s) to start failing due to the package or package dependencies being removed from a particular Linux distro's repositories.
-Whilst all reasonable effort will be made by the [IAC Team][IAC Team] to resolve these issues and update setup instructions for a particular [Apache Module][Apache Modules], given the limited time and resources available, it will mean that in some cases, the effort required to continue maintaining a particular module's test(s) and installation instructions exceeds an acceptable limit.
-In these cases, we will begin excluding test(s) from certain platforms using the functionality outlined above.
-**This does not prevent any members within the community from undertaking this task, if they so wish, and the [IAC Team][IAC Team] will be more than happy to assist in this process, as much as we can.**
+The puppetlabs-apache module supports a large number of compatible platforms and [Apache Modules][Apache modules].
+As a result, Apache Module tests can fail because a package or package dependency has been removed from a Linux distribution repository.
+The [IAC Team][IAC Team] will try to resolve these issues and keep instructions updated, but due to limited resources this won’t always be possible.
+In these cases, we will exclude test(s) from certain platforms.
+As always, we welcome help from our community members, and the IAC team is here to assist and answer questions.

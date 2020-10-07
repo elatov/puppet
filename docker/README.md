@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/puppetlabs/puppetlabs-docker.svg?branch=master)](https://travis-ci.org/puppetlabs/puppetlabs-docker)
+[![Build Status](https://travis-ci.org/puppetlabs/puppetlabs-docker.svg?branch=main)](https://travis-ci.org/puppetlabs/puppetlabs-docker)
 [![Puppet Forge](https://img.shields.io/puppetforge/v/puppetlabs/docker.svg)](https://forge.puppetlabs.com/puppetlabs/docker)
 [![Puppet Forge Downloads](http://img.shields.io/puppetforge/dt/puppetlabs/docker.svg)](https://forge.puppetlabs.com/puppetlabs/docker)
 [![Puppet Forge Endorsement](https://img.shields.io/puppetforge/e/puppetlabs/docker.svg)](https://forge.puppetlabs.com/puppetlabs/docker)
@@ -655,11 +655,11 @@ To supply multiple overide compose files add the following to the manifest file:
 
 ```puppet
 docker_compose {'test':
-  compose_files => ['master-docker-compose.yml', 'override-compose.yml'],
+  compose_files => ['server-docker-compose.yml', 'override-compose.yml'],
 }
 ```
 
-Please note you should supply your master docker-compose file as the first element in the array. As per docker, multi compose file support compose files are merged in the order they are specified in the array.
+Please note you should supply your server docker-compose file as the first element in the array. As per docker, multi compose file support compose files are merged in the order they are specified in the array.
 
 If you are using a v3.2 compose file or above on a Docker Swarm cluster, use the `docker::stack` class. Include the file resource before you run the stack command.
 
@@ -759,21 +759,21 @@ To configure the swarm worker, add the following code to the manifest file:
 
 ```puppet
 docker::swarm {'cluster_worker':
-join           => true,
-advertise_addr => '192.168.1.2',
-listen_addr    => '192.168.1.2',
-manager_ip     => '192.168.1.1',
-token          => 'your_join_token'
+  join           => true,
+  advertise_addr => '192.168.1.2',
+  listen_addr    => '192.168.1.2',
+  manager_ip     => '192.168.1.1',
+  token          => 'your_join_token'
 }
 ```
 
-To configure a worker node or a second manager, include the swarm manager IP address in the `manager_ip` parameter. To define the role of the node in the cluster, include the `token` parameter. When creating an additional swarm manager and a worker node, separate tokens are required.
+To configure a worker node or a second manager, include the swarm manager IP address in the `manager_ip` parameter. To define the role of the node in the cluster, include the `token` parameter. When creating an additional swarm manager and a worker node, separate tokens are required. These tokens (i.e. `docker_worker_join_token` and `docker_manager_join_token`) can be retrieved from Facter.
 
 To remove a node from a cluster, add the following code to the manifest file:
 
 ```puppet
 docker::swarm {'cluster_worker':
-ensure => absent
+  ensure => absent
 }
 ```
 
@@ -1000,7 +1000,7 @@ docker::plugin {'foo/fooplugin:latest'
 
 ## Reference
 
-For information on classes, types and functions see the [REFERENCE.md](https://github.com/puppetlabs/puppetlabs-docker/blob/master/REFERENCE.md).
+For information on classes, types and functions see the [REFERENCE.md](https://github.com/puppetlabs/puppetlabs-docker/blob/main/REFERENCE.md).
 
 ## Limitations
 
@@ -1018,7 +1018,7 @@ This module supports:
 
 ## Development
 
-If you would like to contribute to this module, see the guidelines in [CONTRIBUTING.MD](https://github.com/puppetlabs/puppetlabs-docker/blob/master/CONTRIBUTING.md).
+If you would like to contribute to this module, see the guidelines in [CONTRIBUTING.MD](https://github.com/puppetlabs/puppetlabs-docker/blob/main/CONTRIBUTING.md).
 
 ## Acceptance
 
