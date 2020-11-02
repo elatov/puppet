@@ -48,7 +48,7 @@ class cronjobs {
 
     }
     'Solaris': {
-      ensure_packages ("ntp", {ensure => "present"})
+      ensure_packages ("ntpsec", {ensure => "present"})
       
 #      cron {"ntp":
 #        command   => '/usr/sbin/ntpdate -s 0.north-america.pool.ntp.org',
