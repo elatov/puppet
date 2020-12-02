@@ -150,6 +150,10 @@
 # @param cas_validate_url
 #   Sets the URL to use when validating a client-presented ticket in an HTTP query string.
 # 
+# @param cas_cookie_path
+#   Sets the location where information on the current session should be stored. This should
+#   be writable by the web server only.
+#
 # @param comment
 #   Adds comments to the header of the configuration file. Pass as string or an array of strings.
 #   For example:
@@ -1475,12 +1479,30 @@
 #   }
 #   ```
 # 
+# @param gssapi
+#  Specfies mod_auth_gssapi parameters for particular directories in a virtual host directory
+#  ```puppet
+#   include apache::mod::auth_gssapi
+#   apache::vhost { 'sample.example.net':
+#     docroot     => '/path/to/directory',
+#     directories => [
+#       { path   => '/path/to/different/dir',
+#         gssapi => {
+#           credstore => 'keytab:/foo/bar.keytab',
+#           localname => 'Off',
+#           sslonly   => 'On',
+#         }
+#       },
+#     ],
+#   }
+#   ```
+#
 # @param ssl
 #   Enables SSL for the virtual host. SSL virtual hosts only respond to HTTPS queries.
 #
 # @param ssl_ca
 #   Specifies the SSL certificate authority to be used to verify client certificates used 
-#   for authentication. You must also set `ssl_verify_client` to use this.
+#   for authentication.
 #
 # @param ssl_cert
 #   Specifies the SSL certification.
@@ -1498,8 +1520,7 @@
 #   preferred order.
 #
 # @param ssl_certs_dir
-#   Specifies the location of the SSL certification directory to verify client certs. Will not 
-#   be used unless `ssl_verify_client` is also set (see below).
+#   Specifies the location of the SSL certification directory to verify client certs.
 #
 # @param ssl_chain
 #   Specifies the SSL chain. This default works out of the box, but it must be updated in 
@@ -1592,6 +1613,14 @@
 #     ssl_proxy_machine_cert => '/etc/httpd/ssl/client_certificate.pem',
 #   }
 #   ```
+# @param ssl_proxy_machine_cert_chain
+#   Sets the [SSLProxyMachineCertificateChainFile](https://httpd.apache.org/docs/current/mod/mod_ssl.html#sslproxymachinecertificatechainfile)
+#   directive, which specifies an all-in-one file where you keep the certificate chain for
+#   all of the client certs in use. This directive will be needed if the remote server
+#   presents a list of CA certificates that are not direct signers of one of the configured
+#   client certificates. This referenced file is simply the concatenation of the various
+#   PEM-encoded certificate files. Upon startup, each client certificate configured will be
+#   examined and a chain of trust will be constructed.
 #
 # @param ssl_proxy_check_peer_cn
 #   Sets the [SSLProxyCheckPeerCN](https://httpd.apache.org/docs/current/mod/mod_ssl.html#sslproxycheckpeercn) 
@@ -1691,7 +1720,13 @@
 #   client request exceeds that limit, the server will return an error response
 #   instead of servicing the request.
 #
-define apache::vhost(
+# @param $use_servername_for_filenames
+#   When set to true, default log / config file names will be derived from the sanitized
+#   value of the $servername parameter.
+#   When set to false (default), the existing behaviour of using the $name parameter
+#   will remain.
+
+define apache::vhost (
   Variant[Boolean,String] $docroot,
   $manage_docroot                                                                   = true,
   $virtual_docroot                                                                  = false,
@@ -1700,24 +1735,24 @@ define apache::vhost(
   Boolean $ip_based                                                                 = false,
   $add_listen                                                                       = true,
   $docroot_owner                                                                    = 'root',
-  $docroot_group                                                                    = $::apache::params::root_group,
+  $docroot_group                                                                    = $apache::params::root_group,
   $docroot_mode                                                                     = undef,
   Array[Enum['h2', 'h2c', 'http/1.1']] $protocols                                   = [],
   Optional[Boolean] $protocols_honor_order                                          = undef,
   $serveradmin                                                                      = undef,
   Boolean $ssl                                                                      = false,
-  $ssl_cert                                                                         = $::apache::default_ssl_cert,
-  $ssl_key                                                                          = $::apache::default_ssl_key,
-  $ssl_chain                                                                        = $::apache::default_ssl_chain,
-  $ssl_ca                                                                           = $::apache::default_ssl_ca,
-  $ssl_crl_path                                                                     = $::apache::default_ssl_crl_path,
-  $ssl_crl                                                                          = $::apache::default_ssl_crl,
-  $ssl_crl_check                                                                    = $::apache::default_ssl_crl_check,
-  $ssl_certs_dir                                                                    = $::apache::params::ssl_certs_dir,
+  $ssl_cert                                                                         = $apache::default_ssl_cert,
+  $ssl_key                                                                          = $apache::default_ssl_key,
+  $ssl_chain                                                                        = $apache::default_ssl_chain,
+  $ssl_ca                                                                           = $apache::default_ssl_ca,
+  $ssl_crl_path                                                                     = $apache::default_ssl_crl_path,
+  $ssl_crl                                                                          = $apache::default_ssl_crl,
+  $ssl_crl_check                                                                    = $apache::default_ssl_crl_check,
+  $ssl_certs_dir                                                                    = $apache::params::ssl_certs_dir,
   $ssl_protocol                                                                     = undef,
   $ssl_cipher                                                                       = undef,
   $ssl_honorcipherorder                                                             = undef,
-  $ssl_verify_client                                                                = undef,
+  Optional[Enum['none', 'optional', 'require', 'optional_no_ca']] $ssl_verify_client = undef,
   $ssl_verify_depth                                                                 = undef,
   Optional[Enum['none', 'optional', 'require', 'optional_no_ca']] $ssl_proxy_verify = undef,
   Optional[Integer[0]] $ssl_proxy_verify_depth                                      = undef,
@@ -1726,6 +1761,7 @@ define apache::vhost(
   Optional[Enum['on', 'off']] $ssl_proxy_check_peer_name                            = undef,
   Optional[Enum['on', 'off']] $ssl_proxy_check_peer_expire                          = undef,
   $ssl_proxy_machine_cert                                                           = undef,
+  $ssl_proxy_machine_cert_chain                                                     = undef,
   $ssl_proxy_cipher_suite                                                           = undef,
   $ssl_proxy_protocol                                                               = undef,
   $ssl_options                                                                      = undef,
@@ -1742,7 +1778,7 @@ define apache::vhost(
   $override                                                                         = ['None'],
   $directoryindex                                                                   = '',
   $vhost_name                                                                       = '*',
-  $logroot                                                                          = $::apache::logroot,
+  $logroot                                                                          = $apache::logroot,
   Enum['directory', 'absent'] $logroot_ensure                                       = 'directory',
   $logroot_mode                                                                     = undef,
   $logroot_owner                                                                    = undef,
@@ -1755,6 +1791,7 @@ define apache::vhost(
   $access_log_format                                                                = false,
   $access_log_env_var                                                               = false,
   Optional[Array] $access_logs                                                      = undef,
+  Optional[Boolean] $use_servername_for_filenames                                   = false,
   $aliases                                                                          = undef,
   Optional[Variant[Hash, Array[Variant[Array,Hash]]]] $directories                  = undef,
   Boolean $error_log                                                                = true,
@@ -1787,9 +1824,9 @@ define apache::vhost(
   $proxy_pass                                                                       = undef,
   $proxy_pass_match                                                                 = undef,
   Boolean $proxy_requests                                                           = false,
-  $suphp_addhandler                                                                 = $::apache::params::suphp_addhandler,
-  Enum['on', 'off'] $suphp_engine                                                   = $::apache::params::suphp_engine,
-  $suphp_configpath                                                                 = $::apache::params::suphp_configpath,
+  $suphp_addhandler                                                                 = $apache::params::suphp_addhandler,
+  Enum['on', 'off'] $suphp_engine                                                   = $apache::params::suphp_engine,
+  $suphp_configpath                                                                 = $apache::params::suphp_configpath,
   $php_flags                                                                        = {},
   $php_values                                                                       = {},
   $php_admin_flags                                                                  = {},
@@ -1836,8 +1873,8 @@ define apache::vhost(
   $fastcgi_dir                                                                      = undef,
   $fastcgi_idle_timeout                                                             = undef,
   $additional_includes                                                              = [],
-  $use_optional_includes                                                            = $::apache::use_optional_includes,
-  $apache_version                                                                   = $::apache::apache_version,
+  $use_optional_includes                                                            = $apache::use_optional_includes,
+  $apache_version                                                                   = $apache::apache_version,
   Optional[Enum['on', 'off', 'nodecode']] $allow_encoded_slashes                    = undef,
   Optional[Pattern[/^[\w-]+ [\w-]+$/]] $suexec_user_group                           = undef,
 
@@ -1931,6 +1968,7 @@ define apache::vhost(
   $cas_login_url                                                                    = undef,
   $cas_validate_url                                                                 = undef,
   $cas_validate_saml                                                                = undef,
+  $cas_cookie_path                                                                  = undef,
   Optional[String] $shib_compat_valid_user                                          = undef,
   Optional[Enum['On', 'on', 'Off', 'off', 'DNS', 'dns']] $use_canonical_name        = undef,
   Optional[Variant[String,Array[String]]] $comment                                  = undef,
@@ -1938,13 +1976,12 @@ define apache::vhost(
   Boolean $auth_oidc                                                                = false,
   Optional[Apache::OIDCSettings] $oidc_settings                                     = undef,
 ) {
-
   # The base class must be included first because it is used by parameter defaults
   if ! defined(Class['apache']) {
     fail('You must include the apache base class before using any apache defined resources')
   }
 
-  $apache_name = $::apache::apache_name
+  $apache_name = $apache::apache_name
 
   if $rewrites {
     unless empty($rewrites) {
@@ -1970,33 +2007,33 @@ define apache::vhost(
   # Input validation ends
 
   if $ssl and $ensure == 'present' {
-    include ::apache::mod::ssl
+    include apache::mod::ssl
     # Required for the AddType lines.
-    include ::apache::mod::mime
+    include apache::mod::mime
   }
 
   if $auth_kerb and $ensure == 'present' {
-    include ::apache::mod::auth_kerb
+    include apache::mod::auth_kerb
   }
 
   if $auth_oidc and $ensure == 'present' {
-    include ::apache::mod::auth_openidc
+    include apache::mod::auth_openidc
   }
 
   if $virtual_docroot {
-    include ::apache::mod::vhost_alias
+    include apache::mod::vhost_alias
   }
 
   if $wsgi_application_group or $wsgi_daemon_process or ($wsgi_import_script and $wsgi_import_script_options) or $wsgi_process_group or ($wsgi_script_aliases and ! empty($wsgi_script_aliases)) or $wsgi_pass_authorization {
-    include ::apache::mod::wsgi
+    include apache::mod::wsgi
   }
 
   if $suexec_user_group {
-    include ::apache::mod::suexec
+    include apache::mod::suexec
   }
 
   if $passenger_enabled != undef or $passenger_start_timeout != undef or $passenger_ruby != undef or $passenger_python != undef or $passenger_nodejs != undef or $passenger_meteor_app_settings != undef or $passenger_app_env != undef or $passenger_app_root != undef or $passenger_app_group_name != undef or $passenger_app_start_command != undef or $passenger_app_type != undef or $passenger_startup_file != undef or $passenger_restart_dir != undef or $passenger_spawn_method != undef or $passenger_load_shell_envvars != undef or $passenger_rolling_restarts != undef or $passenger_resist_deployment_errors != undef or $passenger_min_instances != undef or $passenger_max_instances != undef or $passenger_max_preloader_idle_time != undef or $passenger_force_max_concurrent_requests_per_process != undef or $passenger_concurrency_model != undef or $passenger_thread_count != undef or $passenger_high_performance != undef or $passenger_max_request_queue_size != undef or $passenger_max_request_queue_time != undef or $passenger_user != undef or $passenger_group != undef or $passenger_friendly_error_pages != undef or $passenger_buffer_upload != undef or $passenger_buffer_response != undef or $passenger_allow_encoded_slashes != undef or $passenger_lve_min_uid != undef or $passenger_base_uri != undef or $passenger_error_override != undef or $passenger_sticky_sessions != undef or $passenger_sticky_sessions_cookie_name != undef or $passenger_sticky_sessions_cookie_attributes != undef or $passenger_app_log_file != undef or $passenger_debugger != undef or $passenger_max_requests != undef or $passenger_max_request_time != undef or $passenger_memory_limit != undef {
-    include ::apache::mod::passenger
+    include apache::mod::passenger
   }
 
   # Configure the defaultness of a vhost
@@ -2010,8 +2047,39 @@ define apache::vhost(
     $priority_real = '25-'
   }
 
-  ## Apache include does not always work with spaces in the filename
-  $filename = regsubst($name, ' ', '_', 'G')
+  # IAC-1186: A number of configuration and log file names are generated using the $name parameter. It is possible for
+  # the $name parameter to contain spaces, which could then be transferred to the log / config filenames. Although
+  # POSIX compliant, this can be cumbersome.
+  #
+  # It seems more appropriate to use the $servername parameter to derive default log / config filenames from. We should
+  # also perform some sanitiation on the $servername parameter to strip spaces from it, as it defaults to the value of
+  # $name, should $servername NOT be defined.
+  #
+  # We will retain the default behaviour for filenames but allow the use of a sanitized version of $servername to be
+  # used, using the new $use_servername_for_filenames parameter.
+  #
+  # This will default to false until the next major release (v6.0.0), at which point, we will default this to true and
+  # warn about it's imminent deprecation in the subsequent major release (v7.0.0)
+  #
+  # In v7.0.0, we will deprecate the $use_servername_for_filenames parameter altogether and use the sanitized value of
+  # $servername for default log / config filenames.
+  $filename = $use_servername_for_filenames ? {
+    true => regsubst($servername, ' ', '_', 'G'),
+    false => $name,
+  }
+
+  if ! $use_servername_for_filenames {
+    $use_servername_for_filenames_warn_msg = '
+    It is possible for the $name parameter to be defined with spaces in it. Although supported on POSIX systems, this
+    can lead to cumbersome file names. The $servername attribute has stricter conditions from Apache (i.e. no spaces)
+    When $use_servername_for_filenames = true, the $servername parameter, sanitized, is used to construct log and config
+    file names.
+
+    From version v6.0.0 of the puppetlabs-apache module, this parameter will default to true. From version v7.0.0 of the
+    module, the $use_servername_for_filenames will be removed and log/config file names will be dervied from the
+    sanitized $servername parameter when not explicitly defined.'
+    warning($use_servername_for_filenames_warn_msg)
+  }
 
   # This ensures that the docroot exists
   # But enables it to be specified across multiple vhost resources
@@ -2047,11 +2115,11 @@ define apache::vhost(
 
   if $access_log and !$access_logs {
     $_access_logs = [{
-      'file'        => $access_log_file,
-      'pipe'        => $access_log_pipe,
-      'syslog'      => $access_log_syslog,
-      'format'      => $access_log_format,
-      'env'         => $access_log_env_var
+        'file'        => $access_log_file,
+        'pipe'        => $access_log_pipe,
+        'syslog'      => $access_log_syslog,
+        'format'      => $access_log_format,
+        'env'         => $access_log_env_var
     }]
   } elsif $access_logs {
     $_access_logs = $access_logs
@@ -2070,9 +2138,9 @@ define apache::vhost(
     $error_log_destination = $error_log_syslog
   } else {
     if $ssl {
-      $error_log_destination = "${logroot}/${name}_error_ssl.log"
+      $error_log_destination = "${logroot}/${filename}_error_ssl.log"
     } else {
-      $error_log_destination = "${logroot}/${name}_error.log"
+      $error_log_destination = "${logroot}/${filename}_error.log"
     }
   }
 
@@ -2091,14 +2159,13 @@ define apache::vhost(
     $modsec_audit_log_destination = $modsec_audit_log_pipe
   } elsif $modsec_audit_log {
     if $ssl {
-      $modsec_audit_log_destination = "${logroot}/${name}_security_ssl.log"
+      $modsec_audit_log_destination = "${logroot}/${filename}_security_ssl.log"
     } else {
-      $modsec_audit_log_destination = "${logroot}/${name}_security.log"
+      $modsec_audit_log_destination = "${logroot}/${filename}_security.log"
     }
   } else {
     $modsec_audit_log_destination = undef
   }
-
 
   if $ip {
     $_ip = any2array(enclose_ipv6($ip))
@@ -2143,48 +2210,48 @@ define apache::vhost(
   # Load mod_rewrite if needed and not yet loaded
   if $rewrites or $rewrite_cond {
     if ! defined(Class['apache::mod::rewrite']) {
-      include ::apache::mod::rewrite
+      include apache::mod::rewrite
     }
   }
 
   # Load mod_alias if needed and not yet loaded
   if ($scriptalias or $scriptaliases != [])
-    or ($aliases and $aliases != [])
-    or ($redirect_source and $redirect_dest)
-    or ($redirectmatch_regexp or $redirectmatch_status or $redirectmatch_dest){
+  or ($aliases and $aliases != [])
+  or ($redirect_source and $redirect_dest)
+  or ($redirectmatch_regexp or $redirectmatch_status or $redirectmatch_dest) {
     if ! defined(Class['apache::mod::alias'])  and ($ensure == 'present') {
-      include ::apache::mod::alias
+      include apache::mod::alias
     }
   }
 
   # Load mod_proxy if needed and not yet loaded
   if ($proxy_dest or $proxy_pass or $proxy_pass_match or $proxy_dest_match) {
     if ! defined(Class['apache::mod::proxy']) {
-      include ::apache::mod::proxy
+      include apache::mod::proxy
     }
     if ! defined(Class['apache::mod::proxy_http']) {
-      include ::apache::mod::proxy_http
+      include apache::mod::proxy_http
     }
   }
 
   # Load mod_fastcgi if needed and not yet loaded
   if $fastcgi_server and $fastcgi_socket {
     if ! defined(Class['apache::mod::fastcgi']) {
-      include ::apache::mod::fastcgi
+      include apache::mod::fastcgi
     }
   }
 
   # Check if mod_headers is required to process $headers/$request_headers
   if $headers or $request_headers {
     if ! defined(Class['apache::mod::headers']) {
-      include ::apache::mod::headers
+      include apache::mod::headers
     }
   }
 
   # Check if mod_filter is required to process $filters
   if $filters {
     if ! defined(Class['apache::mod::filter']) {
-      include ::apache::mod::filter
+      include apache::mod::filter
     }
   }
 
@@ -2193,7 +2260,7 @@ define apache::vhost(
   $use_env_mod = $setenv and ! empty($setenv)
   if ($use_env_mod) {
     if ! defined(Class['apache::mod::env']) {
-      include ::apache::mod::env
+      include apache::mod::env
     }
   }
   # Check if mod_setenvif is required and not yet loaded.
@@ -2202,7 +2269,7 @@ define apache::vhost(
 
   if ($use_setenvif_mod) {
     if ! defined(Class['apache::mod::setenvif']) {
-      include ::apache::mod::setenvif
+      include apache::mod::setenvif
     }
   }
 
@@ -2229,7 +2296,7 @@ define apache::vhost(
       }
     }
 
-    $_directories = [ merge($_directory, $_directory_version) ]
+    $_directories = [merge($_directory, $_directory_version)]
   } else {
     $_directories = undef
   }
@@ -2261,29 +2328,29 @@ define apache::vhost(
 
   concat { "${priority_real}${filename}.conf":
     ensure  => $ensure,
-    path    => "${::apache::vhost_dir}/${priority_real}${filename}.conf",
+    path    => "${apache::vhost_dir}/${priority_real}${filename}.conf",
     owner   => 'root',
-    group   => $::apache::params::root_group,
-    mode    => $::apache::file_mode,
+    group   => $apache::params::root_group,
+    mode    => $apache::file_mode,
     order   => 'numeric',
     require => Package['httpd'],
     notify  => Class['apache::service'],
   }
   # NOTE(pabelanger): This code is duplicated in ::apache::vhost::custom and
   # needs to be converted into something generic.
-  if $::apache::vhost_enable_dir {
-    $vhost_enable_dir = $::apache::vhost_enable_dir
+  if $apache::vhost_enable_dir {
+    $vhost_enable_dir = $apache::vhost_enable_dir
     $vhost_symlink_ensure = $ensure ? {
-      present => link,
+      'present' => link,
       default => $ensure,
     }
-    file{ "${priority_real}${filename}.conf symlink":
+    file { "${priority_real}${filename}.conf symlink":
       ensure  => $vhost_symlink_ensure,
       path    => "${vhost_enable_dir}/${priority_real}${filename}.conf",
-      target  => "${::apache::vhost_dir}/${priority_real}${filename}.conf",
+      target  => "${apache::vhost_dir}/${priority_real}${filename}.conf",
       owner   => 'root',
-      group   => $::apache::params::root_group,
-      mode    => $::apache::file_mode,
+      group   => $apache::params::root_group,
+      mode    => $apache::file_mode,
       require => Concat["${priority_real}${filename}.conf"],
       notify  => Class['apache::service'],
     }
@@ -2475,6 +2542,7 @@ define apache::vhost(
   # - $ssl_proxy_check_peer_name
   # - $ssl_proxy_check_peer_expire
   # - $ssl_proxy_machine_cert
+  # - $ssl_proxy_machine_cert_chain
   # - $ssl_proxy_protocol
   if $ssl_proxyengine {
     concat::fragment { "${name}-sslproxy":
@@ -2537,7 +2605,7 @@ define apache::vhost(
   # Template uses:
   # - $scriptaliases
   # - $scriptalias
-  if ( $scriptalias or $scriptaliases != [] ) {
+  if ( $scriptalias or $scriptaliases != []) {
     concat::fragment { "${name}-scriptalias":
       target  => "${priority_real}${filename}.conf",
       order   => 200,
@@ -2698,7 +2766,7 @@ define apache::vhost(
   }
 
   if $h2_copy_files != undef or $h2_direct != undef or $h2_early_hints != undef or $h2_max_session_streams != undef or $h2_modern_tls_only != undef or $h2_push != undef or $h2_push_diary_size != undef or $h2_push_priority != [] or $h2_push_resource != [] or $h2_serialize_headers != undef or $h2_stream_max_mem_size != undef or $h2_tls_cool_down_secs != undef or $h2_tls_warm_up_size != undef or $h2_upgrade != undef or $h2_window_size != undef {
-    include ::apache::mod::http2
+    include apache::mod::http2
 
     concat::fragment { "${name}-http2":
       target  => "${priority_real}${filename}.conf",

@@ -2,7 +2,7 @@ name: "weekly"
 
 on:
   schedule:
-    - cron: '0 4 * * 1'
+    - cron: '0 5 * * 2'
 
 jobs:
   LitmusAcceptancePuppet5:
