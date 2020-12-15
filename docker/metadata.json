@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-docker",
-  "version": "3.12.1",
+  "version": "3.13.0",
   "author": "puppetlabs",
   "summary": "Module for installing and managing docker",
   "license": "Apache-2.0",
@@ -30,12 +30,6 @@
     }
   ],
   "operatingsystem_support": [
-    {
-      "operatingsystem": "RedHat",
-      "operatingsystemrelease": [
-        "7"
-      ]
-    },
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
@@ -70,10 +64,10 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 5.5.10 < 7.0.0"
+      "version_requirement": ">= 5.5.10 < 8.0.0"
     }
   ],
   "pdk-version": "1.18.1",
   "template-url": "https://github.com/puppetlabs/pdk-templates#main",
-  "template-ref": "remotes/origin/main-0-g8f10887"
+  "template-ref": "heads/main-0-g5afcd3d"
 }

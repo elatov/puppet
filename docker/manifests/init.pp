@@ -470,7 +470,7 @@ class docker(
   Optional[Variant[String,Boolean]]       $service_after_override            = $docker::params::service_after_override,
   Optional[Boolean]                       $service_hasstatus                 = $docker::params::service_hasstatus,
   Optional[Boolean]                       $service_hasrestart                = $docker::params::service_hasrestart,
-  Optional[String]                        $registry_mirror                   = $docker::params::registry_mirror,
+  Optional[Variant[String,Array]]         $registry_mirror                   = $docker::params::registry_mirror,
   Boolean                                 $acknowledge_unsupported_os        = false,
 
   # Windows specific parameters
@@ -483,8 +483,8 @@ class docker(
     }
   }
 
-  if ($facts['os']['name'] == 'CentOS') and (versioncmp($facts['os']['release']['major'], '7') < 0) {
-    fail(translate('This module only works on CentOS version 7 and higher based systems.'))
+  if ($facts['os']['family'] == 'RedHat') and (versioncmp($facts['os']['release']['major'], '7') < 0) {
+    fail(translate('This module only works on Red Hat based systems version 7 and higher.'))
   }
 
   if ($default_gateway) and (!$bridge) {

@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.4.0](https://github.com/puppetlabs/puppetlabs-concat/tree/v6.4.0) (2020-12-14)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-concat/compare/v6.3.0...v6.4.0)
+
+### Added
+
+- pdksync - \(feat\) Add support for Puppet 7 [\#672](https://github.com/puppetlabs/puppetlabs-concat/pull/672) ([daianamezdrea](https://github.com/daianamezdrea))
+
+### UNCATEGORIZED PRS; LABEL THEM ON GITHUB
+
+- PDK Update for GA workflows [\#667](https://github.com/puppetlabs/puppetlabs-concat/pull/667) ([carabasdaniel](https://github.com/carabasdaniel))
+
 ## [v6.3.0](https://github.com/puppetlabs/puppetlabs-concat/tree/v6.3.0) (2020-11-30)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-concat/compare/v6.2.0...v6.3.0)
@@ -112,6 +124,10 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - \(FM-7206\) Update concat to support Ubuntu 18.04 [\#510](https://github.com/puppetlabs/puppetlabs-concat/pull/510) ([david22swan](https://github.com/david22swan))
+
+### Fixed
+
+- Handle concat\_file source when not an array [\#493](https://github.com/puppetlabs/puppetlabs-concat/pull/493) ([vicinus](https://github.com/vicinus))
 
 ## 4.2.1
 
