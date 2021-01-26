@@ -189,6 +189,7 @@ psacct/.project
 !audit/
 !audit/**
 audit/.project
+audit/Gemfile
 !sophos/
 !sophos/**
 sophos/.project
