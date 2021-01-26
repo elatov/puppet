@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.join(File.dirname(__FILE__), '..', 'vcsrepo')
 
 Puppet::Type.type(:vcsrepo).provide(:svn, parent: Puppet::Provider::Vcsrepo) do
@@ -26,6 +28,12 @@ Puppet::Type.type(:vcsrepo).provide(:svn, parent: Puppet::Provider::Vcsrepo) do
         raise('You must specify the HTTP basic authentication username')
       end
 
+      if @resource.value(:basic_auth_username) && @resource.value(:basic_auth_password)
+        if %r{[\u007B-\u00BF\u02B0-\u037F\u2000-\u2BFF]}.match?(@resource.value(:basic_auth_password).to_s)
+          raise('The password can not contain non-ASCII characters')
+        end
+      end
+
       checkout_repository(@resource.value(:source),
                           @resource.value(:path),
                           @resource.value(:revision),
@@ -43,19 +51,19 @@ Puppet::Type.type(:vcsrepo).provide(:svn, parent: Puppet::Provider::Vcsrepo) do
     if @resource.value(:source)
       begin
         svn_wrapper('info', @resource.value(:path))
-        return true
+        true
       rescue Puppet::ExecutionFailure => detail
-        if detail.message =~ %r{This client is too old}
+        if %r{This client is too old}.match?(detail.message)
           raise Puppet::Error, detail.message
         end
-        return false
+        false
       end
     else
       begin
         svnlook('uuid', @resource.value(:path))
-        return true
+        true
       rescue Puppet::ExecutionFailure
-        return false
+        false
       end
     end
   end
@@ -177,6 +185,8 @@ Puppet::Type.type(:vcsrepo).provide(:svn, parent: Puppet::Provider::Vcsrepo) do
     (@resource.parameters.key?(:basic_auth_password) && @resource.parameters[:basic_auth_password].sensitive) ? true : false # Check if there is a sensitive parameter
   end
 
+  SKIP_DIRS = ['.', '..', '.svn'].freeze
+
   def get_includes(directory)
     at_path do
       args = buildargs.push('info', directory)
@@ -184,7 +194,7 @@ Puppet::Type.type(:vcsrepo).provide(:svn, parent: Puppet::Provider::Vcsrepo) do
         return directory[2..-1].gsub(File::SEPARATOR, '/')
       end
       Dir.entries(directory).map { |entry|
-        next if ['.', '..', '.svn'].include?(entry)
+        next if SKIP_DIRS.include?(entry)
         entry = File.join(directory, entry)
         if File.directory?(entry)
           get_includes(entry)
@@ -209,7 +219,7 @@ Puppet::Type.type(:vcsrepo).provide(:svn, parent: Puppet::Provider::Vcsrepo) do
         # fire off a warning telling the user the path can't be excluded.
         Puppet.debug "Vcsrepo[#{@resource.name}]: Need to handle #{path} removal specially"
         File.delete(path)
-        if Dir.entries(File.dirname(path)).sort != ['.', '..', '.svn']
+        if Dir.entries(File.dirname(path)).sort != SKIP_DIRS
           Puppet.warning "Unable to exclude #{path} from Vcsrepo[#{@resource.name}]; update to subversion >= 1.7"
         end
 
@@ -223,7 +233,7 @@ Puppet::Type.type(:vcsrepo).provide(:svn, parent: Puppet::Provider::Vcsrepo) do
       # a non-empty folder, excluding as we go.
       while (path = path.rpartition(File::SEPARATOR)[0]) != ''
         entries = Dir.entries(path).sort
-        break if entries != ['.', '..'] && entries != ['.', '..', '.svn']
+        break if entries != ['.', '..'] && entries != SKIP_DIRS
         args = buildargs.push('update', '--set-depth', 'exclude', path)
         svn_wrapper(*args)
       end

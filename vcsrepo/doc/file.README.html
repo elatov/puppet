@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.9.19
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "";
+  relpath = '';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="file_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="puppet_type_list_link"
+        href="puppet_type_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><div id='filecontents'>
+<h1 id="label-vcsrepo">vcsrepo</h1>
+
+<h4 id="label-Table+of+contents">Table of contents</h4>
+<ol><li>
+<p><a href="#label-Overview">Overview</a></p>
+</li><li>
+<p><a href="#label-Module+description">Module Description - What the module does and
+why it is useful</a></p>
+</li><li>
+<p><a href="#label-Setup">Setup - The basics of getting started with vcsrepo</a></p>
+<ul><li>
+<p><a href="#label-Setup+requirements">Setup requirements</a></p>
+</li><li>
+<p><a href="#label-Beginning+with+vcsrepo">Beginning with vcsrepo</a></p>
+</li></ul>
+</li><li>
+<p><a href="#label-Usage">Usage - Configuration options and additional
+functionality</a></p>
+<ul><li>
+<p><a href="#label-Git">Git</a></p>
+</li><li>
+<p><a href="#label-Bazaar">Bazaar</a></p>
+</li><li>
+<p><a href="#label-Cvs">CVS</a></p>
+</li><li>
+<p><a href="#label-Mercurial">Mercurial</a></p>
+</li><li>
+<p><a href="#label-Perforce">Perforce</a></p>
+</li><li>
+<p><a href="#label-Subversion">Subversion</a></p>
+</li></ul>
+</li><li>
+<p><a href="#label-Reference">Reference - An under-the-hood peek at what the module
+is doing and how</a></p>
+<ul><li>
+<p><a href="#label-Type+vcsrepo">Type: vcsrepo</a></p>
+<ul><li>
+<p><a href="#label-Providers">Providers</a></p>
+</li><li>
+<p><a href="#label-Features">Features</a></p>
+</li></ul>
+</li></ul>
+</li><li>
+<p><a href="#label-Limitations">Limitations - OS compatibility, etc.</a></p>
+</li><li>
+<p><a href="#label-Development">Development - Guide for contributing to the
+module</a></p>
+</li></ol>
+<a id="overview"></a>
+<h2 id="label-Overview">Overview</h2>
+
+<p>The vcsrepo module lets you use Puppet to easily deploy content from your
+version control system (VCS).</p>
+<a id="module-description"></a>
+<h2 id="label-Module+description">Module description</h2>
+
+<p>The vcsrepo module provides a single type with providers to support the
+following version control systems:</p>
+<ul><li>
+<p><a href="#label-Git">Git</a></p>
+</li><li>
+<p><a href="#label-Bazaar">Bazaar</a></p>
+</li><li>
+<p><a href="#label-Cvs">CVS</a></p>
+</li><li>
+<p><a href="#label-Mercurial">Mercurial</a></p>
+</li><li>
+<p><a href="#label-Perforce">Perforce</a></p>
+</li><li>
+<p><a href="#label-Subversion">Subversion</a></p>
+</li></ul>
+
+<p><strong>Note:</strong> <code>git</code> is the only vcs provider officially
+<a href="https://forge.puppet.com/supported">supported by Puppet Inc.</a></p>
+<a id="setup"></a>
+<h2 id="label-Setup">Setup</h2>
+<a id="setup-requirements"></a>
+<h3 id="label-Setup+requirements">Setup requirements</h3>
+
+<p>The vcsrepo module does not install any VCS software for you. You must
+install a VCS before you can use this module.</p>
+
+<p>Like Puppet in general, the vcsrepo module does not automatically create
+parent directories for the files it manages. Set up any needed directory
+structures before you start.</p>
+<a id="beginning-with-vcsrepo"></a>
+<h3 id="label-Beginning+with+vcsrepo">Beginning with vcsrepo</h3>
+
+<p>To create and manage a blank repository, define the type
+<code>vcsrepo</code> with a path to your repository and supply the
+<code>provider</code> parameter based on the <a href="#label-Usage">VCS you’re
+using</a>.</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; git, } &lt;/s&gt;~</p>
+<a id="usage"></a>
+<h2 id="label-Usage">Usage</h2>
+
+<p><strong>Note:</strong> <code>git</code> is the only vcsrepo provider
+officially <a href="https://forge.puppet.com/supported">supported by Puppet
+Inc.</a></p>
+<a id="git"></a>
+<h3 id="label-Git">Git</h3>
+
+<h4 id="label-Create+a+blank+repository">Create a blank repository</h4>
+
+<p>To create a blank repository suitable for use as a central repository,
+define <code>vcsrepo</code> without <code>source</code> or
+<code>revision</code>:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; git, } &lt;/s&gt;~</p>
+
+<p>If you&#39;re managing a central or official repository, you might want to
+make it a bare repository. To do this, set <code>ensure</code> to
+&#39;bare&#39;:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; bare, 
+provider =&gt; git, } &lt;/s&gt;~</p>
+
+<h4 id="label-Clone-2Fpull+a+repository">Clone/pull a repository</h4>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; git,  source =&gt; &#39;git://example.com/repo.git&#39;, }
+&lt;/s&gt;~</p>
+
+<p>To clone your repository as bare or mirror, you can set <code>ensure</code>
+to &#39;bare&#39; or &#39;mirror&#39;:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; mirror, 
+provider =&gt; git,  source =&gt; &#39;git://example.com/repo.git&#39;, }
+&lt;/s&gt;~</p>
+
+<p>By default, <code>vcsrepo</code> will use the HEAD of the source
+repository&#39;s master branch. To use another branch or a specific commit,
+set <code>revision</code> to either a branch name or a commit SHA or tag.</p>
+
+<p>Branch name:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; git,  source =&gt; &#39;git://example.com/repo.git&#39;, 
+revision =&gt; &#39;development&#39;, } &lt;/s&gt;~</p>
+
+<p>SHA:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; git,  source =&gt; &#39;git://example.com/repo.git&#39;, 
+revision =&gt; &#39;0c466b8a5a45f6cd7de82c08df2fb4ce1e920a31&#39;, }
+&lt;/s&gt;~</p>
+
+<p>Tag:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; git,  source =&gt; &#39;git://example.com/repo.git&#39;, 
+revision =&gt; &#39;1.1.2rc1&#39;, } &lt;/s&gt;~</p>
+
+<p>To check out a branch as a specific user, supply the <code>user</code>
+parameter:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; git,  source =&gt; &#39;git://example.com/repo.git&#39;, 
+revision =&gt; &#39;0c466b8a5a45f6cd7de82c08df2fb4ce1e920a31&#39;,  user
+=&gt; &#39;someUser&#39;, } &lt;/s&gt;~</p>
+
+<p>To keep the repository at the latest revision, set <code>ensure</code> to
+&#39;latest&#39;.</p>
+
+<p><strong>WARNING:</strong> This overwrites any local changes to the
+repository.</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; latest, 
+provider =&gt; git,  source =&gt; &#39;git://example.com/repo.git&#39;, 
+revision =&gt; &#39;master&#39;, } &lt;/s&gt;~</p>
+
+<p>To clone the repository but skip initializing submodules, set
+<code>submodules</code> to &#39;false&#39;:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; latest, 
+provider =&gt; git,  source =&gt; &#39;git://example.com/repo.git&#39;, 
+submodules =&gt; false, } &lt;/s&gt;~</p>
+
+<p>To clone the repository and trust the server certificate (sslVerify=false),
+set <code>trust_server_cert</code> to &#39;true&#39;:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; git,  source =&gt; &#39;git://example.com/repo.git&#39;, 
+trust_server_cert =&gt; true, } &lt;/s&gt;~</p>
+
+<h4 id="label-Use+multiple+remotes+with+a+repository">Use multiple remotes with a repository</h4>
+
+<p>In place of a single string, you can set <code>source</code> to a hash of
+one or more name =&gt; URL pairs:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; git,  remote =&gt; &#39;origin&#39;  source =&gt; { 
+&#39;origin&#39; =&gt; &#39;<a
+href="https://github.com/puppetlabs/puppetlabs-vcsrepo.git">github.com/puppetlabs/puppetlabs-vcsrepo.git</a>&#39;,
+&#39;other_remote&#39; =&gt; &#39;<a
+href="https://github.com/other_user/puppetlabs-vcsrepo.git">github.com/other_user/puppetlabs-vcsrepo.git</a>&#39;
+}, } &lt;/s&gt;~</p>
+
+<p><strong>Note:</strong> If you set <code>source</code> to a hash, one of the
+names you specify must match the value of the <code>remote</code>
+parameter. That remote serves as the upstream of your managed repository.</p>
+
+<h4 id="label-Connect+via+SSH">Connect via SSH</h4>
+
+<p>To connect to your source repository via SSH (such as
+&#39;username@server:…&#39;), we recommend managing your SSH keys with
+Puppet and using the <a
+href="http://docs.puppet.com/references/stable/metaparameter.html#require">require</a>
+metaparameter to make sure they are present before the <code>vcsrepo</code>
+resource is applied.</p>
+
+<p>To use SSH keys associated with a user, specify the username in the
+<code>user</code> parameter:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; latest, 
+provider =&gt; git,  source =&gt;
+&#39;ssh://username@example.com/repo.git&#39;,  user =&gt; &#39;toto&#39;,
+#uses toto&#39;s $HOME/.ssh setup  require =&gt; <a
+href="'/home/toto/.ssh/id_rsa'">File</a>, } &lt;/s&gt;~</p>
+
+<p>To use SSH over a nonstandard port, use the full SSH scheme and include the
+port number:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; latest, 
+provider =&gt; git,  source =&gt;
+&#39;ssh://username@example.com:7999/repo.git&#39;, } &lt;/s&gt;~</p>
+<a id="bazaar"></a>
+<h3 id="label-Bazaar">Bazaar</h3>
+
+<h4 id="label-Create+a+blank+repository">Create a blank repository</h4>
+
+<p>To create a blank repository, suitable for use as a central repository,
+define <code>vcsrepo</code> without <code>source</code> or
+<code>revision</code>:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; bzr, } &lt;/s&gt;~</p>
+
+<h4 id="label-Branch+from+an+existing+repository">Branch from an existing repository</h4>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; bzr,  source =&gt; &#39;/some/path&#39;, } &lt;/s&gt;~</p>
+
+<p>To branch from a specific revision, set <code>revision</code> to a valid <a
+href="http://wiki.bazaar.canonical.com/BzrRevisionSpec">Bazaar revision
+spec</a>:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; bzr,  source =&gt; &#39;/some/path&#39;,  revision =&gt;
+&#39;menesis@pov.lt-20100309191856-4wmfqzc803fj300x&#39;, } &lt;/s&gt;~</p>
+
+<h4 id="label-Connect+via+SSH">Connect via SSH</h4>
+
+<p>To connect to your source repository via SSH (such as
+<code>&#39;bzr+ssh://...&#39;</code> or
+<code>&#39;sftp://...,&#39;</code>), we recommend using the <a
+href="http://docs.puppet.com/references/stable/metaparameter.html#require">require</a>
+metaparameter to make sure your SSH keys are present before the
+<code>vcsrepo</code> resource is applied:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; latest, 
+provider =&gt; bzr,  source =&gt;
+&#39;bzr+ssh://bzr.example.com/some/path&#39;,  user =&gt; &#39;toto&#39;,
+#uses toto&#39;s $HOME/.ssh setup  require =&gt; <a
+href="'/home/toto/.ssh/id_rsa'">File</a>, } &lt;/s&gt;~</p>
+<a id="cvs"></a>
+<h3 id="label-CVS">CVS</h3>
+
+<h4 id="label-Create+a+blank+repository">Create a blank repository</h4>
+
+<p>To create a blank repository suitable for use as a central repository,
+define <code>vcsrepo</code> without <code>source</code> or
+<code>revision</code>:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; cvs, } &lt;/s&gt;~</p>
+
+<h4 id="label-Checkout-2Fupdate+from+a+repository">Checkout/update from a repository</h4>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/workspace&#39;:  ensure =&gt;
+present,  provider =&gt; cvs,  source =&gt;
+&#39;:pserver:anonymous@example.com:/sources/myproj&#39;, } &lt;/s&gt;~</p>
+
+<p>To get a specific module on the current mainline, supply the
+<code>module</code> parameter:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/vagrant/lockss-daemon-source&#39;: 
+ensure =&gt; present,  provider =&gt; cvs,  source =&gt;
+&#39;:pserver:anonymous@lockss.cvs.sourceforge.net:/cvsroot/lockss&#39;, 
+module =&gt; &#39;lockss-daemon&#39;, } &lt;/s&gt;~</p>
+
+<p>To set the GZIP compression levels for your repository history, use the
+<code>compression</code> parameter:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/workspace&#39;:  ensure =&gt;
+present,  provider =&gt; cvs,  compression =&gt; 3,  source =&gt;
+&#39;:pserver:anonymous@example.com:/sources/myproj&#39;, } &lt;/s&gt;~</p>
+
+<p>To get a specific revision, set <code>revision</code> to the revision
+number.</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/workspace&#39;:  ensure =&gt;
+present,  provider =&gt; cvs,  compression =&gt; 3,  source =&gt;
+&#39;:pserver:anonymous@example.com:/sources/myproj&#39;,  revision =&gt;
+&#39;1.2&#39;, } &lt;/s&gt;~</p>
+
+<p>You can also set <code>revision</code> to a tag:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/workspace&#39;:  ensure =&gt;
+present,  provider =&gt; cvs,  compression =&gt; 3,  source =&gt;
+&#39;:pserver:anonymous@example.com:/sources/myproj&#39;,  revision =&gt;
+&#39;SOMETAG&#39;, } &lt;/s&gt;~</p>
+
+<h4 id="label-Connect+via+SSH">Connect via SSH</h4>
+
+<p>To connect to your source repository via SSH, we recommend using the <a
+href="http://docs.puppet.com/references/stable/metaparameter.html#require">require</a>
+metaparameter to make sure your SSH keys are present before the
+<code>vcsrepo</code> resource is applied:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; latest, 
+provider =&gt; cvs,  source =&gt;
+&#39;:pserver:anonymous@example.com:/sources/myproj&#39;,  user =&gt;
+&#39;toto&#39;, #uses toto&#39;s $HOME/.ssh setup  require =&gt; <a
+href="'/home/toto/.ssh/id_rsa'">File</a>, } &lt;/s&gt;~</p>
+<a id="mercurial"></a>
+<h3 id="label-Mercurial">Mercurial</h3>
+
+<h4 id="label-Create+a+blank+repository">Create a blank repository</h4>
+
+<p>To create a blank repository suitable for use as a central repository,
+define <code>vcsrepo</code> without <code>source</code> or
+<code>revision</code>:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; hg, } &lt;/s&gt;~</p>
+
+<h4 id="label-Clone-2Fpull+and+update+a+repository">Clone/pull and update a repository</h4>
+
+<p>To get the default branch tip:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; hg,  source =&gt; &#39;<a
+href="http://hg.example.com/myrepo">hg.example.com/myrepo</a>&#39;, }
+&lt;/s&gt;~</p>
+
+<p>For a specific changeset, use <code>revision</code>:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; hg,  source =&gt; &#39;<a
+href="http://hg.example.com/myrepo">hg.example.com/myrepo</a>&#39;, 
+revision =&gt; &#39;21ea4598c962&#39;, } &lt;/s&gt;~</p>
+
+<p>You can also set <code>revision</code> to a tag:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; hg,  source =&gt; &#39;<a
+href="http://hg.example.com/myrepo">hg.example.com/myrepo</a>&#39;, 
+revision =&gt; &#39;1.1.2&#39;, } &lt;/s&gt;~</p>
+
+<p>To check out as a specific user:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; hg,  source =&gt; &#39;<a
+href="http://hg.example.com/myrepo">hg.example.com/myrepo</a>&#39;,  user
+=&gt; &#39;user&#39;, } &lt;/s&gt;~</p>
+
+<p>To specify an SSH identity key:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; hg,  source =&gt; &#39;ssh://hg@hg.example.com/myrepo&#39;, 
+identity =&gt; &#39;/home/user/.ssh/id_dsa1&#39;, } &lt;/s&gt;~</p>
+
+<p>To specify a username and password for HTTP Basic authentication:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; latest, 
+provider =&gt; hg,  source =&gt; &#39;<a
+href="http://hg.example.com/myrepo">hg.example.com/myrepo</a>&#39;, 
+basic_auth_username =&gt; &#39;hgusername&#39;,  basic_auth_password =&gt;
+&#39;hgpassword&#39;, } &lt;/s&gt;~</p>
+
+<h4 id="label-Connect+via+SSH">Connect via SSH</h4>
+
+<p>To connect to your source repository via SSH (such as
+<code>&#39;ssh://...&#39;</code>), we recommend using the <a
+href="http://docs.puppet.com/references/stable/metaparameter.html#require">require
+metaparameter</a> to make sure your SSH keys are present before the
+<code>vcsrepo</code> resource is applied:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; latest, 
+provider =&gt; hg,  source =&gt;
+&#39;ssh://hg.example.com//path/to/myrepo&#39;,  user =&gt; &#39;toto&#39;,
+#uses toto&#39;s $HOME/.ssh setup  require =&gt; <a
+href="'/home/toto/.ssh/id_rsa'">File</a>, } &lt;/s&gt;~</p>
+<a id="perforce"></a>
+<h3 id="label-Perforce">Perforce</h3>
+
+<h4 id="label-Create+an+empty+workspace">Create an empty workspace</h4>
+
+<p>To set up the connection to your Perforce service, set
+<code>p4config</code> to the location of a valid Perforce <a
+href="http://www.perforce.com/perforce/doc.current/manuals/p4guide/chapter.configuration.html#configuration.process.configfiles">config
+file</a> stored on the node:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; p4,  p4config =&gt; &#39;/root/.p4config&#39; } &lt;/s&gt;~</p>
+
+<p><strong>Note:</strong> If you don&#39;t include the <code>P4CLIENT</code>
+setting in your config file, the provider generates a workspace name based
+on the digest of <code>path</code> and the node&#39;s hostname (such as
+<code>puppet-91bc00640c4e5a17787286acbe2c021c</code>).</p>
+
+<h4 id="label-Create-2Fupdate+and+sync+a+Perforce+workspace">Create/update and sync a Perforce workspace</h4>
+
+<p>To sync a depot path to head, set <code>ensure</code> to &#39;latest&#39;:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; latest, 
+provider =&gt; p4,  source =&gt; &#39;//depot/branch/…&#39; } &lt;/s&gt;~</p>
+
+<p>To sync to a specific changelist, specify its revision number with the
+<code>revision</code> parameter:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; p4,  source =&gt; &#39;//depot/branch/…&#39;,  revision
+=&gt; &#39;2341&#39; } &lt;/s&gt;~</p>
+
+<p>You can also set <code>revision</code> to a label:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; p4,  source =&gt; &#39;//depot/branch/…&#39;,  revision
+=&gt; &#39;my_label&#39; } &lt;/s&gt;~</p>
+<a id="subversion"></a>
+<h3 id="label-Subversion">Subversion</h3>
+
+<h4 id="label-Create+a+blank+repository">Create a blank repository</h4>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; svn, } &lt;/s&gt;~</p>
+
+<h4 id="label-Check+out+from+an+existing+repository">Check out from an existing repository</h4>
+
+<p>Provide a <code>source</code> pointing to the branch or tag you want to
+check out:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; svn,  source =&gt;
+&#39;svn://svnrepo/hello/branches/foo&#39;, } &lt;/s&gt;~</p>
+
+<p>You can also designate a specific revision:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; svn,  source =&gt;
+&#39;svn://svnrepo/hello/branches/foo&#39;,  revision =&gt; &#39;1234&#39;,
+} &lt;/s&gt;~</p>
+
+<h4 id="label-Checking+out+only+specific+paths">Checking out only specific paths</h4>
+
+<p><strong>Note:</strong> The <code>includes</code> param is only supported
+when subversion client version is &gt;= 1.6.</p>
+
+<p>You can check out only specific paths in a particular repository by
+providing their relative paths to the <code>includes</code> parameter, like
+so:</p>
+
+<p>&lt;s&gt;~ vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present, 
+provider =&gt; svn,  source =&gt; &#39;<a
+href="http://svnrepo/hello/trunk">svnrepo/hello/trunk</a>&#39;,  includes
+=&gt; [ &#39;root-file.txt&#39;, &#39;checkout-folder&#39;,
+&#39;file/this-file.txt&#39;, &#39;folder/this-folder/&#39;, ] }
+&lt;/s&gt;~</p>
+
+<p>This will create files <code>/path/to/repo/file-at-root-path.txt</code> and
+<code>/path/to/repo/file/nested/within/repo.jmx</code>, with folders
+<code>/path/to/repo/some-folder</code> and
+<code>/path/to/repo/nested/folder/to/checkout</code> completely recreating
+their corresponding working tree path.</p>
+
+<p>When specified, the <code>depth</code> parameter will also be applied to
+the <code>includes</code> – the root directory will be checked out using an
+<code>empty</code> depth, and the <code>includes</code> you specify will be
+checked out using the <code>depth</code> you provide.</p>
+
+<p>To illustrate this point, using the above snippet (with the specified
+<code>includes</code>) and a remote repository layout like this:</p>
+
+<p>&lt;s&gt;~ . ├── checkout-folder │ ├── file1 │ └── nested-1 │ ├── nested-2
+│ │ └── nested-file-2 │ └── nested-file-1 ├── file │ ├── NOT-this-file.txt
+│ └── this-file.txt ├── folder │ ├── never-checked-out │ └── this-folder │
+├── deep-nested-1 │ │ ├── deep-nested-2 │ │ │ └── deep-nested-file-2 │ │
+└── deep-nested-file-1 │ └── this-file.txt ├── NOT-this-file.txt ├──
+NOT-this-folder │ ├── NOT-this-file.txt │ └── NOT-this-one-either.txt └──
+root-file.txt &lt;/s&gt;~</p>
+
+<p>With no <code>depth</code> given, your local folder
+<code>/path/to/repo</code> will look like this:</p>
+
+<p>&lt;s&gt;~ . ├── checkout-folder │ ├── file1 │ └── nested-1 │ ├── nested-2
+│ │ └── nested-file-2 │ └── nested-file-1 ├── file │ └── this-file.txt ├──
+folder │ └── this-folder │ ├── deep-nested-1 │ │ ├── deep-nested-2 │ │ │
+└── deep-nested-file-2 │ │ └── deep-nested-file-1 │ └── this-file.txt └──
+root-file.txt &lt;/s&gt;~</p>
+
+<p>And with a <code>depth</code> of <code>files</code> will look like this:</p>
+
+<p>&lt;s&gt;~ . ├── checkout-folder │ └── file1 ├── file │ └── this-file.txt
+├── folder │ └── this-folder │ └── this-file.txt └── root-file.txt
+&lt;/s&gt;~</p>
+
+<h4 id="label-Use+a+specific+Subversion+configuration+directory">Use a specific Subversion configuration directory</h4>
+
+<p>Use the <code>configuration</code> parameter to designate the directory
+that contains your Subversion configuration files (typically,
+&#39;/path/to/.subversion&#39;):</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; present,
+provider =&gt; svn,  source =&gt;
+&#39;svn://svnrepo/hello/branches/foo&#39;,  configuration =&gt;
+&#39;/path/to/.subversion&#39;, } &lt;/s&gt;~</p>
+
+<h4 id="label-Connect+via+SSH">Connect via SSH</h4>
+
+<p>To connect to your source repository via SSH (such as
+<code>&#39;svn+ssh://...&#39;</code>), we recommend using the <a
+href="http://docs.puppet.com/references/stable/metaparameter.html#require">require
+metaparameter</a> to make sure your SSH keys are present before the
+<code>vcsrepo</code> resource is applied:</p>
+
+<p>&lt;s&gt;~ puppet vcsrepo { &#39;/path/to/repo&#39;:  ensure =&gt; latest, 
+provider =&gt; svn,  source =&gt;
+&#39;svn+ssh://svnrepo/hello/branches/foo&#39;,  user =&gt; &#39;toto&#39;,
+#uses toto&#39;s $HOME/.ssh setup  require =&gt; <a
+href="'/home/toto/.ssh/id_rsa'">File</a>, } &lt;/s&gt;~</p>
+<a id="reference"></a>
+<h2 id="label-Reference">Reference</h2>
+<a id="type-vcsrepo"></a>
+<h3 id="label-Type-3A+vcsrepo">Type: vcsrepo</h3>
+
+<p>The vcsrepo module adds only one type with several providers.</p>
+
+<p>For information on the classes and types, see the <a
+href="https://github.com/puppetlabs/puppetlabs-vcsrepo/blob/master/REFERENCE.md">REFERENCE.md</a></p>
+<a id="providers"></a>
+<h4 id="label-Providers">Providers</h4>
+
+<p><strong>Note:</strong> Not all features are available with all providers.</p>
+
+<h5 id="label-git+-+Supports+the+Git+VCS."><code>git</code> - Supports the Git VCS.</h5>
+
+<p>Features: <code>bare_repositories</code>, <code>depth</code>,
+<code>multiple_remotes</code>, <code>reference_tracking</code>,
+<code>ssh_identity</code>, <code>submodules</code>, <code>user</code></p>
+
+<p>Parameters: <code>depth</code>, <code>ensure</code>, <code>excludes</code>,
+<code>force</code>, <code>group</code>, <code>identity</code>,
+<code>owner</code>, <code>path</code>, <code>provider</code>,
+<code>remote</code>, <code>revision</code>, <code>source</code>,
+<code>user</code></p>
+
+<h5 id="label-bzr+-+Supports+the+Bazaar+VCS."><code>bzr</code> - Supports the Bazaar VCS.</h5>
+
+<p>Features: <code>reference_tracking</code></p>
+
+<p>Parameters: <code>ensure</code>, <code>excludes</code>, <code>force</code>,
+<code>group</code>, <code>owner</code>, <code>path</code>,
+<code>provider</code>, <code>revision</code>, <code>source</code></p>
+
+<h5 id="label-cvs+-+Supports+the+CVS+VCS."><code>cvs</code> - Supports the CVS VCS.</h5>
+
+<p>Features: <code>cvs_rsh</code>, <code>gzip_compression</code>,
+<code>modules</code>, <code>reference_tracking</code>, <code>user</code></p>
+
+<p>Parameters: <code>compression</code>, <code>cvs_rsh</code>,
+<code>ensure</code>, <code>excludes</code>, <code>force</code>,
+<code>group</code>, <code>module</code>, <code>owner</code>,
+<code>path</code>, <code>provider</code></p>
+
+<h5 id="label-hg+-+Supports+the+Mercurial+VCS."><code>hg</code> - Supports the Mercurial VCS.</h5>
+
+<p>Features: <code>reference_tracking</code>, <code>ssh_identity</code>,
+<code>user</code></p>
+
+<p>Parameters: <code>ensure</code>, <code>excludes</code>, <code>force</code>,
+<code>group</code>, <code>identity</code>, <code>owner</code>,
+<code>path</code>, <code>provider</code>, <code>revision</code>,
+<code>source</code>, <code>user</code></p>
+
+<h5 id="label-p4+-+Supports+the+Perforce+VCS."><code>p4</code> - Supports the Perforce VCS.</h5>
+
+<p>Features: <code>p4config</code>, <code>reference_tracking</code></p>
+
+<p>Parameters: <code>ensure</code>, <code>excludes</code>, <code>force</code>,
+<code>group</code>, <code>owner</code>, <code>p4config</code>,
+<code>path</code>, <code>provider</code>, <code>revision</code>,
+<code>source</code></p>
+
+<h5 id="label-svn+-+Supports+the+Subversion+VCS."><code>svn</code> - Supports the Subversion VCS.</h5>
+
+<p>Features: <code>basic_auth</code>, <code>configuration</code>,
+<code>conflict</code>, <code>depth</code>, <code>filesystem_types</code>,
+<code>reference_tracking</code></p>
+
+<p>Parameters: <code>basic_auth_password</code>,
+<code>basic_auth_username</code>, <code>configuration</code>,
+<code>conflict</code>, <code>ensure</code>, <code>excludes</code>,
+<code>force</code>, <code>fstype</code>, <code>group</code>,
+<code>includes</code>, <code>owner</code>, <code>path</code>,
+<code>provider</code>, <code>revision</code>, <code>source</code>,
+<code>trust_server_cert</code></p>
+<a id="features"></a>
+<h4 id="label-Features">Features</h4>
+
+<p><strong>Note:</strong> Not all features are available with all providers.</p>
+<ul><li>
+<p><code>bare_repositories</code> - Differentiates between bare repositories
+and those with working copies. (Available with <code>git</code>.)</p>
+</li><li>
+<p><code>basic_auth</code> - Supports HTTP Basic authentication. (Available
+with <code>hg</code> and <code>svn</code>.)</p>
+</li><li>
+<p><code>conflict</code> - Lets you decide how to resolve any conflicts
+between the source repository and your working copy. (Available with
+<code>svn</code>.)</p>
+</li><li>
+<p><code>configuration</code> - Lets you specify the location of your
+configuration files. (Available with <code>svn</code>.)</p>
+</li><li>
+<p><code>cvs_rsh</code> - Understands the <code>CVS_RSH</code> environment
+variable. (Available with <code>cvs</code>.)</p>
+</li><li>
+<p><code>depth</code> - Supports shallow clones in <code>git</code> or sets
+the scope limit in <code>svn</code>. (Available with <code>git</code> and
+<code>svn</code>.)</p>
+</li><li>
+<p><code>filesystem_types</code> - Supports multiple types of filesystem.
+(Available with <code>svn</code>.)</p>
+</li><li>
+<p><code>gzip_compression</code> - Supports explicit GZip compression levels.
+(Available with <code>cvs</code>.)</p>
+</li><li>
+<p><code>include_paths</code> - Lets you checkout only certain paths.
+(Available with <code>svn</code>.)</p>
+</li><li>
+<p><code>modules</code> - Lets you choose a specific repository module.
+(Available with <code>cvs</code>.)</p>
+</li><li>
+<p><code>multiple_remotes</code> - Tracks multiple remote repositories.
+(Available with <code>git</code>.)</p>
+</li><li>
+<p><code>reference_tracking</code> - Lets you track revision references that
+can change over time (e.g., some VCS tags and branch names). (Available
+with all providers)</p>
+</li><li>
+<p><code>ssh_identity</code> - Lets you specify an SSH identity file.
+(Available with <code>git</code> and <code>hg</code>.)</p>
+</li><li>
+<p><code>user</code> - Can run as a different user. (Available with
+<code>git</code>, <code>hg</code> and <code>cvs</code>.)</p>
+</li><li>
+<p><code>p4config</code> - Supports setting the <code>P4CONFIG</code>
+environment. (Available with <code>p4</code>.)</p>
+</li><li>
+<p><code>submodules</code> - Supports repository submodules which can be
+optionally initialized. (Available with <code>git</code>.)</p>
+</li></ul>
+<a id="limitations"></a>
+<h2 id="label-Limitations">Limitations</h2>
+
+<p>Git is the only VCS provider officially <a
+href="https://forge.puppet.com/supported">supported by Puppet Inc.</a> Git
+with 3.18 changes the maximum enabled TLS protocol version, this breaks
+some HTTPS functionality on older operating systems. They are Enterprise
+Linux 5 and OracleLinux 6.</p>
+
+<p>The includes parameter is only supported when SVN client version is &gt;=
+1.6.</p>
+
+<p>For an extensive list of supported operating systems, see <a
+href="https://github.com/puppetlabs/puppetlabs-vcsrepo/blob/master/metadata.json">metadata.json</a></p>
+<a id="development"></a>
+<h2 id="label-Development">Development</h2>
+
+<p>Puppet Inc. modules on the Puppet Forge are open projects, and community
+contributions are essential for keeping them great. We can&#39;t access the
+huge number of platforms and myriad of hardware, software, and deployment
+configurations that Puppet is intended to serve.</p>
+
+<p>We want to keep it as easy as possible to contribute changes so that our
+modules work in your environment. There are a few guidelines that we need
+contributors to follow so that we can have a chance of keeping on top of
+things.</p>
+
+<p>You can read the complete module contribution guide <a
+href="https://docs.puppet.com/guides/module_guides/bgtm.html">on the Puppet
+documentation site.</a></p>
+</div></div>
+
+      <div id="footer">
+     Generated by <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>.
+</div>
+
+    </div>
+  </body>
+</html>

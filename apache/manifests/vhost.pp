@@ -1676,6 +1676,9 @@
 #   Can be used to set the [SSLStaplingReturnResponderErrors](http://httpd.apache.org/docs/current/mod/mod_ssl.html#sslstaplingreturnrespondererrors) directive.<br />
 #   This parameter only applies to Apache 2.4 or higher and is ignored on older versions.
 #
+# @param ssl_user_name
+#   Sets the [SSLUserName](https://httpd.apache.org/docs/current/mod/mod_ssl.html#sslusername) directive.
+#
 # @param use_canonical_name
 #   Specifies whether to use the [`UseCanonicalName directive`](https://httpd.apache.org/docs/2.4/mod/core.html#usecanonicalname),
 #   which allows you to configure how the server determines it's own name and port.
@@ -1725,6 +1728,10 @@
 #   value of the $servername parameter.
 #   When set to false (default), the existing behaviour of using the $name parameter
 #   will remain.
+#
+# @param $mdomain
+#   All the names in the list are managed as one Managed Domain (MD). mod_md will request
+#   one single certificate that is valid for all these names.
 
 define apache::vhost (
   Variant[Boolean,String] $docroot,
@@ -1770,6 +1777,7 @@ define apache::vhost (
   Optional[Boolean] $ssl_stapling                                                   = undef,
   $ssl_stapling_timeout                                                             = undef,
   $ssl_stapling_return_errors                                                       = undef,
+  Optional[String] $ssl_user_name                                                   = undef,
   $priority                                                                         = undef,
   Boolean $default_vhost                                                            = false,
   $servername                                                                       = $name,
@@ -1975,6 +1983,7 @@ define apache::vhost (
   Hash $define                                                                      = {},
   Boolean $auth_oidc                                                                = false,
   Optional[Apache::OIDCSettings] $oidc_settings                                     = undef,
+  Optional[Variant[Boolean,String]] $mdomain                                        = undef,
 ) {
   # The base class must be included first because it is used by parameter defaults
   if ! defined(Class['apache']) {
@@ -2773,6 +2782,10 @@ define apache::vhost (
       order   => 300,
       content => template('apache/vhost/_http2.erb'),
     }
+  }
+
+  if $mdomain {
+    include apache::mod::md
   }
 
   # Template uses:
