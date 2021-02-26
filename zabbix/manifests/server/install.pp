@@ -37,7 +37,7 @@ class zabbix::server::install () {
 	}
     
 	case $::operatingsystem {
-		/(?i:CentOS|fedora)/: { 
+		/(?i:CentOS|fedora|RedHat)/: { 
 #		  include zabbix::repo::centos
       yumrepo { 'zabbix':
           name      => "Zabbix Official Repository - \$basearch",

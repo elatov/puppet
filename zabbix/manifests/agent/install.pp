@@ -2,7 +2,7 @@ class zabbix::agent::install () {
 
   if !(defined(Class["zabbix::server"])){
     case $::operatingsystem {
-      /(?i:CentOS|fedora)/: {
+      /(?i:CentOS|fedora|RedHat)/: {
         if (versioncmp($::operatingsystemmajrelease, '8') >= 0) {
           yumrepo { 'zabbix':
             name      => "zabbix",
@@ -81,7 +81,7 @@ class zabbix::agent::install () {
   }
 
   case $::operatingsystem {
-    /(?i:CentOS|fedora)/: {
+    /(?i:CentOS|fedora|RedHat)/: {
       exec { "${module_name}-systemd-tmpfiles":
         command => "/bin/systemd-tmpfiles --create /usr/lib/tmpfiles.d/zabbix-agent.conf",
         require => Package[$zabbix::agent::package_name],
