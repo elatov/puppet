@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-motd",
-  "version": "4.3.0",
+  "version": "5.0.0",
   "author": "puppetlabs",
   "summary": "A simple module to demonstrate managing /etc/motd or Windows Logon Message as a template",
   "license": "Apache-2.0",
@@ -10,11 +10,11 @@
   "dependencies": [
     {
       "name": "puppetlabs/registry",
-      "version_requirement": ">= 1.0.0 < 4.0.0"
+      "version_requirement": ">= 1.0.0 < 5.0.0"
     },
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 2.1.0 < 7.0.0"
+      "version_requirement": ">= 2.1.0 < 8.0.0"
     },
     {
       "name": "puppetlabs/translate",
@@ -25,7 +25,6 @@
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "5",
         "6",
         "7",
         "8"
@@ -34,7 +33,6 @@
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "5",
         "6",
         "7",
         "8"
@@ -43,7 +41,6 @@
     {
       "operatingsystem": "OracleLinux",
       "operatingsystemrelease": [
-        "5",
         "6",
         "7"
       ]
@@ -66,7 +63,6 @@
     {
       "operatingsystem": "SLES",
       "operatingsystemrelease": [
-        "11",
         "12",
         "15"
       ]
@@ -94,11 +90,11 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 5.5.10 < 8.0.0"
+      "version_requirement": ">= 6.0.0 < 8.0.0"
     }
   ],
   "description": "This module simply manages /etc/motd or the Windows Logon Message as a template, showing interpolation of system attributes",
-  "template-url": "https://github.com/puppetlabs/pdk-templates#main",
-  "template-ref": "heads/main-0-g5afcd3d",
+  "template-url": "https://github.com/puppetlabs/pdk-templates.git#main",
+  "template-ref": "heads/main-0-g2bf2de6",
   "pdk-version": "1.18.1"
 }
