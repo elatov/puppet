@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-vcsrepo",
-  "version": "3.2.1",
+  "version": "4.0.0",
   "author": "puppetlabs",
   "summary": "Puppet module providing a type to manage repositories from various version control systems",
   "license": "GPL-2.0+",
@@ -14,7 +14,6 @@
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "5",
         "6",
         "7",
         "8"
@@ -23,7 +22,6 @@
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "5",
         "6",
         "7",
         "8"
@@ -32,7 +30,6 @@
     {
       "operatingsystem": "OracleLinux",
       "operatingsystemrelease": [
-        "5",
         "6",
         "7"
       ]
@@ -47,7 +44,6 @@
     {
       "operatingsystem": "SLES",
       "operatingsystemrelease": [
-        "11 SP1",
         "12",
         "15"
       ]
@@ -73,10 +69,10 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 5.5.10 < 8.0.0"
+      "version_requirement": ">= 6.0.0 < 8.0.0"
     }
   ],
   "template-url": "https://github.com/puppetlabs/pdk-templates.git#main",
-  "template-ref": "heads/main-0-g1862b96",
-  "pdk-version": "1.19.0.pre (47)"
+  "template-ref": "heads/main-0-g44cc7ed",
+  "pdk-version": "1.18.1"
 }
