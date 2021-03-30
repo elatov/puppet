@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-concat",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "author": "puppetlabs",
   "summary": "Construct files from multiple fragments.",
   "license": "Apache-2.0",
@@ -11,10 +11,6 @@
     {
       "name": "puppetlabs/stdlib",
       "version_requirement": ">= 4.13.1 < 8.0.0"
-    },
-    {
-      "name": "puppetlabs/translate",
-      "version_requirement": ">= 1.0.0 < 3.0.0"
     }
   ],
   "operatingsystem_support": [
@@ -108,6 +104,6 @@
     }
   ],
   "template-url": "https://github.com/puppetlabs/pdk-templates.git#main",
-  "template-ref": "heads/main-0-g2bf2de6",
+  "template-ref": "heads/main-0-g7be43a3",
   "pdk-version": "1.18.1"
 }
