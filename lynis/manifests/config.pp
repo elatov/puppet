@@ -9,12 +9,23 @@ class lynis::config {
       if ( $::lynis::settings['cron_enabled'] == true ){
         ensure_packages('anacron',{ensure => 'present'})
 
+        #file {'/etc/cron.weekly/lynis':
+        #  ensure  => 'present',
+        #  content => template('lynis/lynis-cron.erb'),
+        #  mode    => '0755',
+        #  require => Package['anacron'],
+        #  links   => 'follow',
+        #}
         file {'/etc/cron.weekly/lynis':
-          ensure  => 'present',
-          content => template('lynis/lynis-cron.erb'),
-          mode    => '0755',
+          ensure  => 'link',
+          target  => '/home/elatov/.gdrive/notes/scripts/bash/lynis-cron.bash',
           require => Package['anacron'],
-          links   => 'follow',
+          mode    => '0755'
+        }
+
+        file { 'chmod-file-lynis-cron.bash':
+          path    => '/home/elatov/.gdrive/notes/scripts/bash/lynis-cron.bash',
+          mode    => '0755',
         }
       }
       if ( $::lynis::settings['tests']['BOOT-5122'] == true ){
