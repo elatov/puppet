@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-vcsrepo",
-  "version": "4.0.1",
+  "version": "5.0.0",
   "author": "puppetlabs",
   "summary": "Puppet module providing a type to manage repositories from various version control systems",
   "license": "GPL-2.0+",
@@ -73,6 +73,6 @@
     }
   ],
   "template-url": "https://github.com/puppetlabs/pdk-templates.git#main",
-  "template-ref": "heads/main-0-g2bf2de6",
-  "pdk-version": "1.18.1"
+  "template-ref": "heads/main-0-ge04486b",
+  "pdk-version": "2.0.0"
 }
