@@ -19,14 +19,14 @@ class ohmyzsh::config {
 
   file {"${ohmyzsh::user_home_dir}/.zshrc":
     ensure  => "link",
-    target  => "${ohmyzsh::user_home_dir}/.gdrive/notes/.zshrc",
-    require => [Class['drive']],
+    target  => "${ohmyzsh::user_home_dir}/.dotfiles/.zshrc",
+    #require => [Class['drive']],
   }
 
   file {"${ohmyzsh::user_home_dir}/.zsh_aliases":
     ensure  => "link",
-    target  => "${ohmyzsh::user_home_dir}/.gdrive/notes/.zsh_aliases",
-    require => [Class['drive']],
+    target  => "${ohmyzsh::user_home_dir}/.dotfiles/.zsh_aliases",
+    #require => [Class['drive']],
   }
 
 }

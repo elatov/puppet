@@ -18,13 +18,13 @@ class lynis::config {
         #}
         file {'/etc/cron.weekly/lynis':
           ensure  => 'link',
-          target  => '/home/elatov/.gdrive/notes/scripts/bash/lynis-cron.bash',
+          target  => '/home/elatov/.dotfiles/scripts/bash/lynis-cron.bash',
           require => Package['anacron'],
           mode    => '0755'
         }
 
         file { 'chmod-file-lynis-cron.bash':
-          path    => '/home/elatov/.gdrive/notes/scripts/bash/lynis-cron.bash',
+          path    => '/home/elatov/.dotfiles/scripts/bash/lynis-cron.bash',
           mode    => '0755',
         }
       }
